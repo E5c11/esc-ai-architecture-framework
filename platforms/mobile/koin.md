@@ -87,6 +87,17 @@ abstraction in core.
 
 **Rule PLAT-MOB-KOIN-ORG-03 (hard):** Circular module dependencies MUST NOT exist.
 
+## New feature module setup
+
+> **TODO:** This section is a stub. See `todo/missing-files.md` for context.
+>
+> Needs a step-by-step walkthrough covering:
+> - Which scopes to use for each layer (ViewModel → factory/viewModel, UseCase → factory, Repository → factory, DataSource → factory, DAOs → single)
+> - The order in which to declare bindings inside the module block
+> - How to register the module in `initKoin()`
+> - How to handle optional / conditional registrations (e.g. feature-flagged DataSources)
+> - A complete worked example of a feature module with all layers wired
+
 ## Violations
 
 - Feature with no dedicated `di/` module
