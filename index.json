@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-30T19:10:27.934807+00:00",
+  "generated": "2026-06-30T19:24:34.877819+00:00",
   "count": 64,
   "documents": [
     {
@@ -33,7 +33,8 @@
         "architecture",
         "layers",
         "rest-api"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-BE-CONTROLLER",
@@ -59,7 +60,8 @@
         "rest",
         "boundary",
         "thin-controller"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-BE-DATASOURCE",
@@ -86,7 +88,8 @@
         "jpa",
         "data-access",
         "store"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-BE-ENTITY",
@@ -112,7 +115,8 @@
         "migration",
         "flyway",
         "database"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-BE-ERROR",
@@ -138,7 +142,8 @@
         "http-status",
         "global-exception-handler",
         "two-tier"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-BE-SERVICE",
@@ -166,7 +171,8 @@
         "transactions",
         "time-provider",
         "dto"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-PC",
@@ -200,7 +206,8 @@
         "kmp",
         "layers",
         "mvvm"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-PC-APP-VM",
@@ -229,7 +236,8 @@
         "bottom-bar",
         "snackbar",
         "global-state"
-      ]
+      ],
+      "status": "stub"
     },
     {
       "id": "ARCH-PC-DATASOURCE",
@@ -256,7 +264,8 @@
         "mapping",
         "exceptions",
         "abstraction"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-PC-DI",
@@ -286,7 +295,8 @@
         "single",
         "viewmodel",
         "modules"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-PC-ERR-CLASSES",
@@ -312,7 +322,8 @@
         "error-severity",
         "error-presentation",
         "actionable-errors"
-      ]
+      ],
+      "status": "stub"
     },
     {
       "id": "ARCH-PC-ERROR-FLOW",
@@ -341,7 +352,8 @@
         "actionable",
         "ui-metadata",
         "layers"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-PC-FEATURE",
@@ -366,7 +378,8 @@
         "naming",
         "file-placement",
         "directories"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-PC-REPOSITORY",
@@ -394,7 +407,8 @@
         "coordination",
         "cache",
         "multi-source"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-PC-USECASE",
@@ -424,7 +438,8 @@
         "outcome",
         "flow",
         "suspend"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-PC-VIEW",
@@ -450,7 +465,8 @@
         "stateless",
         "scaffold",
         "state-hoisting"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-PC-VIEWMODEL",
@@ -480,7 +496,8 @@
         "formatting",
         "stateflow",
         "sharedflow"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-WEB",
@@ -509,7 +526,8 @@
         "architecture",
         "folder-structure",
         "feature-folders"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-WEB-COMPONENTS",
@@ -538,7 +556,8 @@
         "state-guards",
         "props",
         "composition"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "BUILD-CONVENTION-PLUGINS",
@@ -562,7 +581,8 @@
         "build-logic",
         "plugins",
         "composability"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "BUILD-COVERAGE",
@@ -589,7 +609,8 @@
         "thresholds",
         "exclusions",
         "quality-gate"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "BUILD-PROJECT-STRUCTURE",
@@ -614,7 +635,8 @@
         "project-structure",
         "modules",
         "typesafe-accessors"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "BUILD-STATIC-ANALYSIS",
@@ -639,7 +661,8 @@
         "linting",
         "code-quality",
         "baseline"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "BUILD-VERSION-CATALOG",
@@ -663,7 +686,8 @@
         "libs-versions-toml",
         "dependencies",
         "versions"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "CORE-COUPLING",
@@ -684,7 +708,8 @@
         "cohesion",
         "separation-of-concerns",
         "single-responsibility"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "CORE-DI",
@@ -706,7 +731,8 @@
         "interfaces",
         "testability",
         "composition"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "CORE-ERROR",
@@ -728,7 +754,8 @@
         "exceptions",
         "boundaries",
         "observability"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "CORE-NAMING",
@@ -749,7 +776,8 @@
         "domain-language",
         "conventions",
         "intent"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "CORE-SSOT",
@@ -771,7 +799,8 @@
         "consistency",
         "state",
         "synchronisation"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "CORE-TESTING",
@@ -794,7 +823,8 @@
         "mocking",
         "fakes",
         "coverage"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ORCH-BE-ENDPOINT",
@@ -832,7 +862,8 @@
         "jpa",
         "rest",
         "end-to-end"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ORCH-MOB-FEAT",
@@ -849,6 +880,7 @@
         "CORE-ERROR",
         "CORE-NAMING",
         "CORE-TESTING",
+        "CORE-COUPLING",
         "PAT-DATA-ACCESS",
         "PAT-OUTCOME",
         "PAT-OBSERVER",
@@ -864,15 +896,11 @@
         "PLAT-MOB-KMP",
         "PLAT-MOB-KOIN",
         "PLAT-MOB-KOTLIN",
-        "PLAT-MOB-COMPOSE",
-        "BUILD-CONVENTION-PLUGINS",
-        "BUILD-PROJECT-STRUCTURE",
-        "BUILD-COVERAGE",
-        "BUILD-STATIC-ANALYSIS",
-        "QG-TESTING"
+        "PLAT-MOB-COMPOSE"
       ],
       "related": [
-        "QG-REVIEW"
+        "QG-REVIEW",
+        "QG-TESTING"
       ],
       "tags": [
         "mobile",
@@ -881,7 +909,8 @@
         "kmp",
         "scaffold",
         "end-to-end"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "ORCH-WEB-FEAT",
@@ -915,7 +944,8 @@
         "typescript",
         "firebase",
         "dashboard"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PAT-DATA-ACCESS",
@@ -941,7 +971,8 @@
         "datasource",
         "interface",
         "storage"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PAT-OBSERVER",
@@ -966,7 +997,8 @@
         "push",
         "subscription",
         "real-time"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PAT-OUTCOME",
@@ -991,7 +1023,8 @@
         "error-handling",
         "typed-errors",
         "railway"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-BE-JPA",
@@ -1020,7 +1053,8 @@
         "allopen",
         "uuid",
         "timestamps"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-BE-SECURITY",
@@ -1046,7 +1080,8 @@
         "spring-security",
         "authentication-principal",
         "stateless"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-BE-SPRING",
@@ -1075,7 +1110,8 @@
         "path-constants",
         "constructor-injection",
         "time-provider"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-COMPOSE",
@@ -1100,7 +1136,8 @@
         "slot-api",
         "theming",
         "skeleton"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-DATASTORE",
@@ -1127,7 +1164,8 @@
         "fakeDataStore",
         "coroutines",
         "flow"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-DS-COMPONENT",
@@ -1156,7 +1194,8 @@
         "preview",
         "accessibility",
         "kmp"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-DS-ICONS",
@@ -1182,7 +1221,8 @@
         "compose",
         "accessibility",
         "kmp"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-DS-IMAGES",
@@ -1209,7 +1249,8 @@
         "placeholder",
         "kmp",
         "accessibility"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-DS-THEME",
@@ -1236,7 +1277,8 @@
         "spacing",
         "dimensions",
         "compose"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-FIREBASE",
@@ -1264,7 +1306,8 @@
         "sdk",
         "rest",
         "android"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-HTTP",
@@ -1294,7 +1337,8 @@
         "auth-header",
         "retry",
         "timeout"
-      ]
+      ],
+      "status": "stub"
     },
     {
       "id": "PLAT-MOB-HUAWEI",
@@ -1323,7 +1367,8 @@
         "di-override",
         "rest",
         "koin"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-KMP",
@@ -1349,7 +1394,8 @@
         "wasm",
         "ios",
         "android"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-KMP-WEB",
@@ -1380,7 +1426,8 @@
         "keyvaluestorage",
         "uuid",
         "rest"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-KOIN",
@@ -1406,7 +1453,8 @@
         "scopes",
         "factory",
         "single"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-KOTLIN",
@@ -1433,7 +1481,8 @@
         "sharedflow",
         "suspend",
         "dispatchers"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-NAV",
@@ -1459,7 +1508,8 @@
         "navhost",
         "deeplink",
         "back-stack"
-      ]
+      ],
+      "status": "stub"
     },
     {
       "id": "PLAT-MOB-NOTIF",
@@ -1488,7 +1538,8 @@
         "channels",
         "kmp",
         "background"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-ROOM",
@@ -1514,7 +1565,8 @@
         "entity",
         "local-database",
         "android"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-MOB-SKELETON",
@@ -1540,7 +1592,8 @@
         "placeholder",
         "compose",
         "ui-state"
-      ]
+      ],
+      "status": "stub"
     },
     {
       "id": "PLAT-WEB-A11Y",
@@ -1568,7 +1621,8 @@
         "headings",
         "keyboard",
         "focus"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-WEB-DEPLOY",
@@ -1594,7 +1648,8 @@
         "tsc",
         "sitemap",
         "robots"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-WEB-FIREBASE",
@@ -1621,7 +1676,8 @@
         "hooks",
         "environment-variables",
         "real-time"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-WEB-REACT",
@@ -1649,7 +1705,8 @@
         "hooks",
         "cleanup",
         "as-const"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-WEB-STATE",
@@ -1676,7 +1733,8 @@
         "react-router",
         "routing",
         "auth-guard"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-WEB-STYLING",
@@ -1701,7 +1759,8 @@
         "design-tokens",
         "inline-styles",
         "common-styles"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "QG-REVIEW",
@@ -1730,7 +1789,8 @@
         "pre-merge",
         "code-review",
         "enforcement"
-      ]
+      ],
+      "status": ""
     },
     {
       "id": "QG-TESTING",
@@ -1757,7 +1817,8 @@
         "mocking",
         "coverage",
         "philosophy"
-      ]
+      ],
+      "status": ""
     }
   ]
 }

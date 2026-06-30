@@ -134,6 +134,7 @@ def collect_documents(root: Path) -> list[dict]:
                 "requires":     meta.get("requires", []) if isinstance(meta.get("requires"), list) else [],
                 "related":      meta.get("related",  []) if isinstance(meta.get("related"),  list) else [],
                 "tags":         meta.get("tags",     []) if isinstance(meta.get("tags"),     list) else [],
+                "status":       meta.get("status", ""),
             })
     return documents
 
@@ -166,10 +167,11 @@ def write_markdown_index(documents: list[dict], out_path: Path) -> None:
             continue
         lines.append(f"## {layer}/")
         lines.append("")
-        lines.append("| ID | Type | Path |")
-        lines.append("|---|---|---|")
+        lines.append("| ID | Type | Path | Status |")
+        lines.append("|---|---|---|---|")
         for doc in sorted(docs, key=lambda d: d["id"]):
-            lines.append(f"| `{doc['id']}` | {doc['type']} | `{doc['path']}` |")
+            status = "⚠ stub" if doc.get("status") == "stub" else ""
+            lines.append(f"| `{doc['id']}` | {doc['type']} | `{doc['path']}` | {status} |")
         lines.append("")
 
     out_path.write_text("\n".join(lines), encoding="utf-8")
