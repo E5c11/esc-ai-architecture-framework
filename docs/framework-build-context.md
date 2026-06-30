@@ -10,11 +10,11 @@ continue in a future session without losing context.
 | Phase | Status |
 |-------|--------|
 | 1 — Skeleton, schemas, conventions | Done (commit ff74c49) |
-| 2 — Core principles | Next |
-| 3 — Mobile platform extraction | Planned |
-| 4 — Pragmatic Clean Architecture | Planned |
-| 5 — Build system patterns | Planned |
-| 6 — Backend platform extraction | Planned |
+| 2 — Core principles | Done |
+| 3 — Mobile platform extraction | Done |
+| 4 — Pragmatic Clean Architecture | Done |
+| 5 — Build system patterns | Done |
+| 6 — Backend platform extraction | Next |
 | 7 — Web platform extraction | Planned |
 | 8 — Quality gates and CI validation | Planned |
 | 9 — Retrieval index and RAG | Planned |
