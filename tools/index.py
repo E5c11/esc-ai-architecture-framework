@@ -53,7 +53,7 @@ def _parse_scalar(raw: str) -> str:
     return raw.strip().strip('"').strip("'")
 
 
-def _parse_list(raw: str) -> list[str]:
+def _parse_inline_list(raw: str) -> list[str]:
     inner = raw.strip()
     if inner.startswith("[") and inner.endswith("]"):
         inner = inner[1:-1]
@@ -66,21 +66,41 @@ def parse_front_matter(text: str) -> dict:
     match = re.match(r"^---\s*\n(.*?)\n---", text, re.DOTALL)
     if not match:
         return {}
-    front = match.group(1)
+    lines = match.group(1).splitlines()
     result: dict = {}
-    for line in front.splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            i += 1
             continue
-        if ":" not in line:
+        if ":" not in stripped:
+            i += 1
             continue
-        key, _, rest = line.partition(":")
+        key, _, rest = stripped.partition(":")
         key = key.strip()
         rest = rest.strip()
         if rest.startswith("["):
-            result[key] = _parse_list(rest)
+            result[key] = _parse_inline_list(rest)
+            i += 1
+        elif rest == "":
+            items = []
+            i += 1
+            while i < len(lines):
+                next_stripped = lines[i].strip()
+                if next_stripped.startswith("- "):
+                    items.append(next_stripped[2:].strip().strip('"').strip("'"))
+                    i += 1
+                elif next_stripped == "" or next_stripped.startswith("#"):
+                    i += 1
+                    break
+                else:
+                    break
+            result[key] = items if items else ""
         else:
             result[key] = _parse_scalar(rest)
+            i += 1
     return result
 
 
