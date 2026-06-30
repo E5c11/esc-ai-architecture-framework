@@ -1,0 +1,86 @@
+# Document Metadata Schema
+# Every framework document must open with a metadata block conforming to this schema.
+#
+# Usage in a document:
+#
+#   ---
+#   id: PAT-DATA-ACCESS
+#   type: pattern
+#   layer: pattern
+#   platform: [all]
+#   architecture: [all]
+#   requires: []
+#   related: [ARCH-PC-DATASOURCE, ARCH-PC-REPOSITORY]
+#   tags: [data, abstraction, repository]
+#   ---
+
+schema:
+  version: "1.0"
+  type: document-metadata
+
+fields:
+
+  id:
+    type: string
+    required: true
+    pattern: "^[A-Z]+-[A-Z0-9-]+$"
+    description: >
+      Unique identifier, namespace-prefixed.
+      Prefix must match the document's layer (see CLAUDE.md).
+      Examples: PAT-DATA-ACCESS, CORE-DI, ARCH-PC-DATASOURCE
+
+  type:
+    type: enum
+    required: true
+    values:
+      - principle     # An engineering principle — the why
+      - pattern       # A reusable solution to a recurring problem — the what
+      - guide         # How to implement something — the how
+      - rule-set      # A collection of machine-readable rules
+      - architecture  # A full architectural style definition
+      - platform      # Platform-specific implementation guide
+      - orchestrator  # A step-by-step implementation plan
+    description: The kind of knowledge this document contains.
+
+  layer:
+    type: enum
+    required: true
+    values: [core, pattern, architecture, platform, build, quality, orchestrator]
+    description: Which framework layer this document belongs to.
+
+  platform:
+    type: array
+    required: true
+    values: [mobile, backend, web, build, all]
+    description: >
+      Which platforms this document applies to.
+      Use [all] for platform-agnostic documents.
+
+  architecture:
+    type: array
+    required: true
+    values: [pragmatic-clean, backend-service, all]
+    description: >
+      Which architectures this document applies to.
+      Use [all] for architecture-agnostic documents.
+
+  requires:
+    type: array
+    required: false
+    item_type: string
+    description: >
+      Document IDs that must be loaded before this document.
+      The executor must read these first — this document builds on them.
+
+  related:
+    type: array
+    required: false
+    item_type: string
+    description: >
+      Related document IDs for context. Non-blocking cross-references.
+
+  tags:
+    type: array
+    required: false
+    item_type: string
+    description: Free-form retrieval tags for future RAG indexing.

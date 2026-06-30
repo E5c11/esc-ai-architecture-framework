@@ -1,0 +1,86 @@
+# Rule Definition Schema
+# Rules are defined within framework documents (inline or in dedicated rule-set files).
+# Every rule must conform to this schema.
+#
+# Usage in a rule-set document:
+#
+#   rules:
+#     REP-SSOT-01:
+#       statement: "Repository MUST observe local DataSource as single source of truth"
+#       type: hard
+#       scope: behavior
+#       condition: "Repository coordinates both local and remote DataSources"
+#       enforced_by: [planner, executor]
+#       violation_message: "Repository observing remote DataSource instead of local"
+
+schema:
+  version: "1.0"
+  type: rule
+
+fields:
+
+  id:
+    type: string
+    required: true
+    pattern: "^[A-Z]+-[A-Z]+-[0-9]+$"
+    description: >
+      Unique rule ID owned by this framework.
+      Format: {CATEGORY}-{SUBCATEGORY}-{NUMBER}
+      Examples: REP-SSOT-01, DI-SCOPE-03, CTRL-LOGIC-01
+
+  statement:
+    type: string
+    required: true
+    description: >
+      The rule as a single actionable imperative sentence.
+      Use MUST for hard rules, SHOULD for soft rules.
+
+  type:
+    type: enum
+    required: true
+    values:
+      - hard    # Must not be violated. No exceptions without explicit ADR.
+      - soft    # Should be followed. Deviation requires justification.
+    description: How strictly this rule must be followed.
+
+  scope:
+    type: enum
+    required: true
+    values:
+      - structure       # File/class/module organisation
+      - behavior        # Runtime or data-flow behaviour
+      - naming          # Identifier naming conventions
+      - return-type     # Function/method return type constraints
+      - di              # Dependency injection wiring
+      - error-handling  # Exception and error propagation
+      - testing         # Test structure and coverage
+      - performance     # Performance constraints
+    description: What aspect of implementation this rule governs.
+
+  enforced_by:
+    type: array
+    required: true
+    values: [planner, executor, reviewer, ci]
+    description: >
+      Which agent role or automated system is responsible for checking this rule.
+      - planner:  checked when designing the approach
+      - executor: checked while writing code
+      - reviewer: checked during code review
+      - ci:       checked by automated pipeline
+
+  violation_message:
+    type: string
+    required: true
+    description: What to report when this rule is violated. Should be specific.
+
+  condition:
+    type: string
+    required: false
+    description: >
+      When this rule applies. Omit if the rule is unconditional.
+      Example: "Repository coordinates both local and remote DataSources"
+
+  note:
+    type: string
+    required: false
+    description: Additional rationale or implementation guidance.

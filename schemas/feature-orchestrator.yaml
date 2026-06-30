@@ -1,0 +1,109 @@
+# Feature Orchestrator Schema
+# A Feature Orchestrator is the implementation plan for a complete engineering task.
+# It defines phases, steps, validation gates, and which framework knowledge is required.
+#
+# Orchestrators live in feature-orchestrators/ and are referenced by project-specific
+# context when an AI agent is asked to implement a feature.
+#
+# Example orchestrator (feature-orchestrators/mobile/create-feature.yaml):
+#
+#   id: ORCH-MOB-CREATE-FEATURE
+#   title: "Create New Feature Module"
+#   platform: [mobile]
+#   architecture: [pragmatic-clean]
+#   goal: "Scaffold a complete feature module with all layers wired"
+#   requires_knowledge:
+#     - PLAT-MOB-KOIN
+#     - ARCH-PC-DATASOURCE
+#     - ARCH-PC-REPOSITORY
+#     - ARCH-PC-USECASE
+#     - ARCH-PC-VIEWMODEL
+#     - ARCH-PC-VIEW
+#   phases:
+#     - phase: 1
+#       name: "Scaffold"
+#       steps:
+#         - "Create directory structure"
+#         - "Create build.gradle.kts from BUILD-GRADLE-FEATURE template"
+#       validation:
+#         - "Module compiles"
+#     - phase: 2
+#       name: "Data Layer"
+#       steps:
+#         - "Follow ARCH-PC-DATASOURCE"
+#       validation:
+#         - "DataSource tests pass"
+
+schema:
+  version: "1.0"
+  type: feature-orchestrator
+
+fields:
+
+  id:
+    type: string
+    required: true
+    pattern: "^ORCH-[A-Z0-9-]+$"
+    description: >
+      Unique orchestrator ID.
+      Format: ORCH-{PLATFORM}-{TASK}
+      Examples: ORCH-MOB-CREATE-FEATURE, ORCH-BE-CREATE-ENDPOINT
+
+  title:
+    type: string
+    required: true
+    description: Human-readable name for the orchestrated task.
+
+  platform:
+    type: array
+    required: true
+    values: [mobile, backend, web, all]
+    description: Platforms this orchestrator applies to.
+
+  architecture:
+    type: array
+    required: true
+    values: [pragmatic-clean, backend-service, all]
+    description: Architectures this orchestrator applies to.
+
+  goal:
+    type: string
+    required: true
+    description: >
+      Single sentence describing what the executor produces upon completion.
+
+  requires_knowledge:
+    type: array
+    required: true
+    item_type: string
+    description: >
+      Framework document IDs that must be loaded before execution begins.
+      The executor reads these documents in addition to the orchestrator itself.
+
+  phases:
+    type: array
+    required: true
+    description: Ordered implementation phases. Must be executed in sequence.
+    items:
+      phase:
+        type: integer
+        required: true
+        description: Phase number. Must be sequential starting from 1.
+      name:
+        type: string
+        required: true
+        description: Phase name.
+      steps:
+        type: array
+        required: true
+        item_type: string
+        description: >
+          Ordered steps within this phase.
+          Steps may reference framework document IDs using "Follow {ID}".
+      validation:
+        type: array
+        required: true
+        item_type: string
+        description: >
+          Gates that must pass before proceeding to the next phase.
+          If any gate fails, do not advance.

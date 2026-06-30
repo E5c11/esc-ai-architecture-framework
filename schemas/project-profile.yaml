@@ -1,0 +1,94 @@
+# Project Profile Schema
+# Every project consuming this framework defines one project-profile.yaml
+# in its context/ directory.
+#
+# The profile is the retrieval key — it determines which framework
+# layers and documents are loaded for a given task.
+#
+# Example profile (context/project-profile.yaml in a consuming project):
+#
+#   project: ampm
+#   platform: mobile
+#   language: kotlin
+#   architecture: pragmatic-clean
+#   frameworks:
+#     di: koin
+#     ui: compose
+#     network: ktor
+#     database: room
+#     cloud: firebase
+#   build:
+#     system: gradle
+#     convention-plugins: true
+
+schema:
+  version: "1.0"
+  type: project-profile
+
+fields:
+
+  project:
+    type: string
+    required: true
+    description: Project identifier. Lowercase, hyphen-separated.
+
+  platform:
+    type: enum
+    required: true
+    values: [mobile, backend, web]
+    description: >
+      Primary platform. Determines which platforms/{name}/ layer is loaded.
+
+  language:
+    type: string
+    required: true
+    description: >
+      Primary implementation language.
+      Examples: kotlin, typescript, java
+
+  architecture:
+    type: enum
+    required: true
+    values:
+      - pragmatic-clean   # Clean Architecture layers without full abstraction overhead
+      - backend-service   # Controller → Service → DataSource
+      - vertical-slice    # Feature-first, no shared layers
+      - hexagonal         # Ports and adapters
+    description: >
+      Architectural style. Determines which architectures/{name}/ layer is loaded
+      and which patterns are required.
+
+  frameworks:
+    type: object
+    required: false
+    description: >
+      Technology choices that select platform-specific modules.
+      Omit any key that does not apply to this project.
+    properties:
+      di:
+        type: string
+        description: "Dependency injection framework. Examples: koin, spring, none"
+      ui:
+        type: string
+        description: "UI framework. Examples: compose, react, next, none"
+      network:
+        type: string
+        description: "Network layer. Examples: ktor, retrofit, axios, spring-web"
+      database:
+        type: string
+        description: "Local database. Examples: room, jpa, firebase, none"
+      cloud:
+        type: string
+        description: "Cloud/backend provider. Examples: firebase, gcp, aws, none"
+
+  build:
+    type: object
+    required: false
+    description: Build system configuration.
+    properties:
+      system:
+        type: string
+        description: "Build tool. Examples: gradle, maven, npm"
+      convention-plugins:
+        type: boolean
+        description: "Whether this project uses Gradle convention plugins."
