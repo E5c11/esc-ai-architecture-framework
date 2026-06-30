@@ -16,7 +16,7 @@ continue in a future session without losing context.
 | 5 — Build system patterns | Done |
 | 6 — Backend platform extraction | Done |
 | 7 — Web platform extraction | Done |
-| 8 — Quality gates and CI validation | Planned |
+| 8 — Quality gates and CI validation | Done |
 | 9 — Retrieval index and RAG | Planned |
 
 ---
