@@ -8,9 +8,14 @@ document IDs an AI agent should load before executing the orchestrator.
 The list is a topological sort of the `requires` graph rooted at the orchestrator.
 Core principles come first; the orchestrator itself comes last.
 
+Pass --profile to include provider-specific docs derived from a project profile.
+
 Usage:
   # By orchestrator ID
   python tools/lookup.py --orchestrator ORCH-MOB-FEAT
+
+  # With project profile (adds provider-specific docs)
+  python tools/lookup.py --orchestrator ORCH-MOB-FEAT --profile context/project-profile.yaml
 
   # List all orchestrators
   python tools/lookup.py --list
@@ -29,7 +34,7 @@ import sys
 import json
 import argparse
 from pathlib import Path
-from collections import defaultdict, deque
+from collections import defaultdict
 
 FRAMEWORK_ROOT = Path(__file__).parent.parent
 
@@ -54,9 +59,31 @@ LAYER_ORDER = {
     "feature-orchestrators": 6,
 }
 
+# Maps project profile frameworks fields to additional doc IDs to include.
+# Key: frameworks sub-field name. Value: {field_value: [doc_ids]}.
+PROFILE_DOC_MAP: dict[str, dict[str, list[str]]] = {
+    "database": {
+        "room":    ["PLAT-MOB-ROOM"],
+    },
+    "network": {
+        "ktor":     ["PLAT-MOB-HTTP"],
+        "http":     ["PLAT-MOB-HTTP"],
+        "retrofit": ["PLAT-MOB-HTTP"],
+    },
+    "cloud": {
+        "firebase": ["PLAT-MOB-FIREBASE"],
+    },
+    "notifications": {
+        "workmanager": ["PLAT-MOB-NOTIF"],
+    },
+    "storage": {
+        "datastore": ["PLAT-MOB-DATASTORE"],
+    },
+}
+
 
 # ---------------------------------------------------------------------------
-# Front matter parser (duplicated from validate.py — no shared module needed)
+# Front matter parser
 # ---------------------------------------------------------------------------
 
 def _parse_inline_list(raw: str) -> list[str]:
@@ -115,6 +142,52 @@ def parse_front_matter(text: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Project profile parser (no external dependencies)
+# ---------------------------------------------------------------------------
+
+def parse_profile(path: Path) -> dict:
+    """
+    Parse a 2-level project-profile.yaml without external dependencies.
+    Handles top-level scalar fields and one level of nested objects (e.g. frameworks:).
+    """
+    result: dict = {}
+    current_section: str | None = None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        indent = len(line) - len(line.lstrip())
+        if ":" not in stripped:
+            continue
+        key, _, val = stripped.partition(":")
+        key, val = key.strip(), val.strip()
+        if indent == 0:
+            if not val:
+                current_section = key
+                result[key] = {}
+            else:
+                current_section = None
+                result[key] = val
+        elif current_section and isinstance(result.get(current_section), dict):
+            result[current_section][key] = val
+    return result
+
+
+def profile_extra_docs(profile: dict) -> list[str]:
+    """Return additional doc IDs implied by the project profile's frameworks section."""
+    extras: list[str] = []
+    frameworks = profile.get("frameworks", {})
+    if not isinstance(frameworks, dict):
+        return extras
+    for field, value in frameworks.items():
+        mapping = PROFILE_DOC_MAP.get(field, {})
+        for doc_id in mapping.get(value, []):
+            if doc_id not in extras:
+                extras.append(doc_id)
+    return extras
+
+
+# ---------------------------------------------------------------------------
 # Index building
 # ---------------------------------------------------------------------------
 
@@ -144,6 +217,7 @@ def build_index(root: Path) -> dict[str, dict]:
                 "requires": meta.get("requires", []) if isinstance(meta.get("requires"), list) else [],
                 "related":  meta.get("related",  []) if isinstance(meta.get("related"),  list) else [],
                 "platform": platform,
+                "status":   meta.get("status", ""),
             }
     return index
 
@@ -157,7 +231,6 @@ def resolve(start_id: str, index: dict[str, dict]) -> list[dict]:
     Topological sort of the `requires` graph rooted at `start_id`.
     Returns documents in dependency order: dependencies before dependents.
     The start document (the orchestrator) is last.
-    Cycles are broken by layer order (core before patterns before architectures...).
     """
     if start_id not in index:
         return []
@@ -179,9 +252,7 @@ def resolve(start_id: str, index: dict[str, dict]) -> list[dict]:
 
     visit(start_id)
 
-    # Stable sort: within the DFS order, respect layer priority
     result.sort(key=lambda doc_id: LAYER_ORDER.get(index[doc_id]["layer"], 99))
-    # Put the orchestrator last
     if start_id in result:
         result.remove(start_id)
         result.append(start_id)
@@ -189,11 +260,34 @@ def resolve(start_id: str, index: dict[str, dict]) -> list[dict]:
     return [index[doc_id] for doc_id in result if doc_id in index]
 
 
+def merge_profile_docs(docs: list[dict], extra_ids: list[str], index: dict[str, dict]) -> list[dict]:
+    """
+    Add profile-driven docs to the resolved set, maintaining layer order.
+    The orchestrator (last doc) stays last.
+    """
+    resolved_ids = {d["id"] for d in docs}
+    orchestrator = docs[-1] if docs else None
+    base = docs[:-1] if orchestrator else docs[:]
+
+    for extra_id in extra_ids:
+        if extra_id not in resolved_ids and extra_id in index:
+            base.append(index[extra_id])
+            resolved_ids.add(extra_id)
+
+    base.sort(key=lambda d: LAYER_ORDER.get(d["layer"], 99))
+    return base + ([orchestrator] if orchestrator else [])
+
+
 # ---------------------------------------------------------------------------
 # Commands
 # ---------------------------------------------------------------------------
 
-def cmd_lookup(orchestrator_id: str, index: dict[str, dict], as_json: bool) -> int:
+def cmd_lookup(
+    orchestrator_id: str,
+    index: dict[str, dict],
+    as_json: bool,
+    extra_ids: list[str] | None = None,
+) -> int:
     if orchestrator_id not in index:
         print(f"Error: orchestrator '{orchestrator_id}' not found.", file=sys.stderr)
         print("Run with --list to see available orchestrators.", file=sys.stderr)
@@ -209,14 +303,34 @@ def cmd_lookup(orchestrator_id: str, index: dict[str, dict], as_json: bool) -> i
 
     docs = resolve(orchestrator_id, index)
 
+    if extra_ids:
+        docs = merge_profile_docs(docs, extra_ids, index)
+
+    # Warn about stubs
+    stubs = [d for d in docs if d.get("status") == "stub"]
+    if stubs:
+        print(f"Warning: {len(stubs)} stub doc(s) in resolved set — gap protocol applies:", file=sys.stderr)
+        for s in stubs:
+            print(f"  {s['id']}  ({s['path']})", file=sys.stderr)
+        print(file=sys.stderr)
+
+    profile_ids = set(extra_ids or [])
+
     if as_json:
-        output = [{"id": d["id"], "path": d["path"], "type": d["type"]} for d in docs]
+        output = [{"id": d["id"], "path": d["path"], "type": d["type"], "status": d.get("status", "")} for d in docs]
         print(json.dumps(output, indent=2))
     else:
+        source_label = lambda d: "(from profile) " if d["id"] in profile_ids else ""
+        stub_label   = lambda d: " ⚠ stub"         if d.get("status") == "stub" else ""
+        orch_label   = lambda d: " ← orchestrator"  if d["id"] == orchestrator_id else ""
+
         print(f"Load order for {orchestrator_id} ({len(docs)} documents):\n")
         for i, d in enumerate(docs, 1):
-            marker = "← orchestrator" if d["id"] == orchestrator_id else ""
-            print(f"  {i:2}. {d['id']:<40} {d['layer']}/{Path(d['path']).name}  {marker}")
+            print(
+                f"  {i:2}. {d['id']:<40} "
+                f"{source_label(d)}{d['layer']}/{Path(d['path']).name}"
+                f"{stub_label(d)}{orch_label(d)}"
+            )
 
     return 0
 
@@ -255,10 +369,11 @@ def main() -> int:
         description="Look up the ordered document set for a framework orchestrator."
     )
     parser.add_argument("--orchestrator", "-o", help="Orchestrator ID to resolve (e.g. ORCH-MOB-FEAT)")
-    parser.add_argument("--list",     "-l", action="store_true", help="List all available orchestrators")
-    parser.add_argument("--platform", "-p", help="Filter --list by platform (mobile/backend/web)")
-    parser.add_argument("--json",          action="store_true", help="Output as JSON array")
-    parser.add_argument("--root",          default=".", help="Framework repo root (default: .)")
+    parser.add_argument("--profile",      "-p", help="Path to project-profile.yaml for provider-specific docs")
+    parser.add_argument("--list",         "-l", action="store_true", help="List all available orchestrators")
+    parser.add_argument("--platform",           help="Filter --list by platform (mobile/backend/web)")
+    parser.add_argument("--json",               action="store_true", help="Output as JSON array")
+    parser.add_argument("--root",               default=".", help="Framework repo root (default: .)")
 
     args = parser.parse_args()
     root = Path(args.root).resolve()
@@ -269,7 +384,18 @@ def main() -> int:
         return cmd_list(index, args.platform)
 
     if args.orchestrator:
-        return cmd_lookup(args.orchestrator, index, args.json)
+        extra_ids: list[str] = []
+        if args.profile:
+            profile_path = Path(args.profile)
+            if not profile_path.exists():
+                print(f"Error: profile not found: {profile_path}", file=sys.stderr)
+                return 1
+            profile = parse_profile(profile_path)
+            extra_ids = profile_extra_docs(profile)
+            if extra_ids:
+                print(f"Profile adds: {', '.join(extra_ids)}\n")
+
+        return cmd_lookup(args.orchestrator, index, args.json, extra_ids or None)
 
     parser.print_help()
     return 0

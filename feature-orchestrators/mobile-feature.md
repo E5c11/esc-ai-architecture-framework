@@ -11,6 +11,7 @@ requires:
   - CORE-ERROR
   - CORE-NAMING
   - CORE-TESTING
+  - CORE-COUPLING
   - PAT-DATA-ACCESS
   - PAT-OUTCOME
   - PAT-OBSERVER
@@ -27,12 +28,7 @@ requires:
   - PLAT-MOB-KOIN
   - PLAT-MOB-KOTLIN
   - PLAT-MOB-COMPOSE
-  - BUILD-CONVENTION-PLUGINS
-  - BUILD-PROJECT-STRUCTURE
-  - BUILD-COVERAGE
-  - BUILD-STATIC-ANALYSIS
-  - QG-TESTING
-related: [QG-REVIEW]
+related: [QG-REVIEW, QG-TESTING]
 tags: [mobile, feature, pragmatic-clean, kmp, scaffold, end-to-end]
 ---
 
@@ -49,11 +45,19 @@ Read all documents listed in `requires` above. The architecture documents define
 the contracts; the platform documents define the syntax. Execute no phase until
 you understand the layer contract.
 
+Also resolve any provider-specific docs from your project profile:
+- `PLAT-MOB-ROOM` — if `frameworks.database: room`
+- `PLAT-MOB-HTTP` — if `frameworks.network: ktor / http / retrofit`
+- `PLAT-MOB-FIREBASE` — if `frameworks.cloud: firebase`
+
 ---
 
 ## Phase 1 — Scaffold
 
-**Goal:** Module exists, compiles, and is registered in the build.
+**Required framework docs:** `ARCH-PC-FEATURE`, `PLAT-MOB-KMP`, `BUILD-CONVENTION-PLUGINS`, `BUILD-PROJECT-STRUCTURE`
+**Code paths:** `settings.gradle.kts`, `:feature:{name}/build.gradle.kts`
+**Assumes:** Nothing — this is the first phase.
+**Produces:** Empty, compiling feature module registered in the build.
 
 ### Steps
 
@@ -86,9 +90,11 @@ you understand the layer contract.
 
 ## Phase 2 — DataSource layer
 
-**Goal:** Remote and local DataSources are implemented, tested, and typed.
-
-Read: `ARCH-PC-DATASOURCE`, `PAT-DATA-ACCESS`, `PAT-OUTCOME`, `PLAT-MOB-KOTLIN`
+**Required framework docs:** `ARCH-PC-DATASOURCE`, `PAT-DATA-ACCESS`, `PAT-OUTCOME`, `PLAT-MOB-KOTLIN`, `ARCH-PC-ERROR-FLOW`
+**Provider docs (load one based on project profile):** `PLAT-MOB-ROOM` (local cache), `PLAT-MOB-HTTP` (REST), `PLAT-MOB-FIREBASE` (Firebase)
+**Code paths:** `domain/model/`, `domain/datasource/`, `data/datasource/`
+**Assumes:** Phase 1 complete — module compiles.
+**Produces:** Domain models, DataSource interfaces and implementations, DataSource unit tests.
 
 ### Steps
 
@@ -115,9 +121,13 @@ Read: `ARCH-PC-DATASOURCE`, `PAT-DATA-ACCESS`, `PAT-OUTCOME`, `PLAT-MOB-KOTLIN`
 
 ## Phase 3 — Repository layer
 
-**Goal:** Repository enforces SSOT and is the single observed source of truth.
+**Required framework docs:** `ARCH-PC-REPOSITORY`, `CORE-SSOT`, `PAT-OBSERVER`
+**Code paths:** `domain/repository/`, `data/repository/`
+**Assumes:** Phase 2 complete — DataSource interfaces and implementations exist.
+**Produces:** Repository interface and implementation, Repository unit tests.
 
-Read: `ARCH-PC-REPOSITORY`, `CORE-SSOT`, `PAT-OBSERVER`
+> **Skip this phase if** there is only one DataSource and no coordination is needed.
+> Inject the DataSource directly into the UseCase instead.
 
 ### Steps
 
@@ -127,9 +137,6 @@ Read: `ARCH-PC-REPOSITORY`, `CORE-SSOT`, `PAT-OBSERVER`
    - On fetch: write to local DataSource; never return remote data directly
    - On write: update remote first, then sync to local on success
 3. Write unit tests for the Repository (mock both DataSources)
-
-### Skip this phase if: there is only one DataSource (no coordination needed).
-Inject the DataSource directly into the UseCase instead.
 
 ### Validation
 
@@ -143,9 +150,10 @@ Inject the DataSource directly into the UseCase instead.
 
 ## Phase 4 — UseCase layer
 
-**Goal:** Business logic is encapsulated, typed, and independently testable.
-
-Read: `ARCH-PC-USECASE`, `PAT-OUTCOME`
+**Required framework docs:** `ARCH-PC-USECASE`, `PAT-OUTCOME`, `CORE-ERROR`, `ARCH-PC-ERROR-FLOW`
+**Code paths:** `domain/usecase/`
+**Assumes:** Phase 3 complete (or Phase 2 if Phase 3 was skipped) — Repository or DataSource interface exists.
+**Produces:** One UseCase class per distinct business operation, with unit tests.
 
 ### Steps
 
@@ -167,9 +175,10 @@ Read: `ARCH-PC-USECASE`, `PAT-OUTCOME`
 
 ## Phase 5 — ViewModel layer
 
-**Goal:** UI state is derived from UseCase results and exposed as immutable Flows.
-
-Read: `ARCH-PC-VIEWMODEL`, `PLAT-MOB-KOIN`
+**Required framework docs:** `ARCH-PC-VIEWMODEL`, `PLAT-MOB-KOTLIN`, `PLAT-MOB-KOIN`
+**Code paths:** `presentation/viewmodel/`
+**Assumes:** Phase 4 complete — UseCase interfaces exist.
+**Produces:** State class, Event sealed class, ViewModel with unit tests.
 
 ### Steps
 
@@ -194,56 +203,63 @@ Read: `ARCH-PC-VIEWMODEL`, `PLAT-MOB-KOIN`
 
 ## Phase 6 — View layer
 
-**Goal:** Screen renders correctly from ViewModel state; interactions post events.
-
-Read: `ARCH-PC-VIEW`, `PLAT-MOB-COMPOSE`
+**Required framework docs:** `ARCH-PC-VIEW`, `PLAT-MOB-COMPOSE`, `PLAT-MOB-NAV`
+**Code paths:** `presentation/view/`, app-level NavGraph
+**Assumes:** Phase 5 complete — ViewModel, State, and Event types exist.
+**Produces:** Screen composable, stateless View composable, navigation registration.
 
 ### Steps
 
 1. Create `{Feature}Screen.kt` — the Composable entry point that collects state
    and wires the scaffold
-2. Create `{Feature}Content.kt` (or equivalent sub-Composables) — stateless,
-   receives data via parameters, emits actions via callbacks
+2. Create `{Feature}View.kt` — stateless, receives data via parameters, emits
+   actions via callbacks
 3. Collect ViewModel state via `collectAsStateWithLifecycle()`
 4. Collect events via `LaunchedEffect` and handle navigation/toasts
+5. Register the destination in the app NavGraph (see `PLAT-MOB-NAV`)
 
 ### Validation
 
 - [ ] Single `Scaffold` per screen (VIEW-SCAFFOLD-01)
+- [ ] Top bar claimed with token and released in `onDispose` (VIEW-SCAFFOLD-03)
 - [ ] No ViewModel construction in Composables — ViewModel injected via Koin
 - [ ] No business logic in Composables
-- [ ] Preview Composables exist for the main content component
+- [ ] `{Feature}View` is stateless — no ViewModel or UseCase references
+- [ ] Preview Composables exist for the main View component
 
 ---
 
 ## Phase 7 — DI registration
 
-**Goal:** All bindings declared in one module; ViewModel injectable from the View.
-
-Read: `ARCH-PC-DI`, `PLAT-MOB-KOIN`
+**Required framework docs:** `ARCH-PC-DI`, `PLAT-MOB-KOIN`
+**Code paths:** `di/{Feature}Module.kt`, app-level `initKoin()`
+**Assumes:** Phases 2–6 complete — all concrete types exist.
+**Produces:** Fully wired Koin module; app starts without `NoBeanDefinitionException`.
 
 ### Steps
 
 1. In `{Feature}Module.kt`:
-   - Bind DataSource interfaces to implementations as `single { }`
-   - Bind Repository interface to implementation as `single { }`
-   - Bind UseCases (usually `factory { }`)
-   - Declare ViewModel with `activityScopedViewModel { }` or `viewModel { }`
-2. Register `{Feature}Module` in the app's Koin module list
+   - Bind DataSource interfaces to implementations (`single { }`)
+   - Bind Repository interface to implementation (`single { }`)
+   - Bind UseCases (`factory { }` or `factoryOf(::UseCaseName)`)
+   - Declare ViewModel with `viewModelOf(::FeatureViewModel)`
+2. Register `{feature}Module()` in the app's Koin module list in `initKoin()`
 
 ### Validation
 
 - [ ] All DI bindings use interfaces, not concrete types (CORE-DI)
 - [ ] ViewModel declared with the correct Koin scope (ARCH-PC-DI)
+- [ ] Module follows naming convention: `fun {feature}Module()` (PLAT-MOB-KOIN-MOD-02)
 - [ ] App starts without `NoBeanDefinitionException`
 
 ---
 
 ## Phase 8 — Coverage and static analysis
 
-**Goal:** Module meets quality gates before merge.
-
-Read: `BUILD-COVERAGE`, `BUILD-STATIC-ANALYSIS`
+**Required framework docs:** `BUILD-COVERAGE`, `BUILD-STATIC-ANALYSIS`, `QG-TESTING`
+**Code paths:** `:{feature}/build.gradle.kts`, `detekt-baseline.xml` (if needed)
+**Assumes:** All prior phases complete and passing.
+**Produces:** Module meeting coverage and lint quality gates; ready for merge.
 
 ### Steps
 

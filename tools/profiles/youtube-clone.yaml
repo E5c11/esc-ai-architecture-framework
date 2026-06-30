@@ -1,0 +1,17 @@
+# Sample project profile — YouTube Clone
+# Used for Phase 3 RAG simulation and framework validation.
+# Place a project-specific copy at context/project-profile.yaml in the consuming project.
+
+project: youtube-clone
+platform: mobile
+language: kotlin
+architecture: pragmatic-clean
+frameworks:
+  di: koin
+  ui: compose
+  network: ktor
+  database: room
+  cloud: none
+build:
+  system: gradle
+  convention-plugins: true

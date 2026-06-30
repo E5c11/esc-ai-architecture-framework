@@ -1,0 +1,16 @@
+# Sample project profile — AMPM
+# Reference: ampm-ai-framework/ for AMPM-specific docs (AMPM-* IDs).
+
+project: ampm
+platform: mobile
+language: kotlin
+architecture: pragmatic-clean
+frameworks:
+  di: koin
+  ui: compose
+  network: ktor
+  database: room
+  cloud: firebase
+build:
+  system: gradle
+  convention-plugins: true
