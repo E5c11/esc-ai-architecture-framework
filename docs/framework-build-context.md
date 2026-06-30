@@ -14,7 +14,7 @@ continue in a future session without losing context.
 | 3 — Mobile platform extraction | Done |
 | 4 — Pragmatic Clean Architecture | Done |
 | 5 — Build system patterns | Done |
-| 6 — Backend platform extraction | Next |
+| 6 — Backend platform extraction | Done |
 | 7 — Web platform extraction | Planned |
 | 8 — Quality gates and CI validation | Planned |
 | 9 — Retrieval index and RAG | Planned |
