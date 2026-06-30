@@ -1,0 +1,1763 @@
+{
+  "generated": "2026-06-30T19:10:27.934807+00:00",
+  "count": 64,
+  "documents": [
+    {
+      "id": "ARCH-BE",
+      "type": "overview",
+      "layer": "architectures",
+      "path": "architectures/backend-service/overview.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "CORE-DI",
+        "CORE-ERROR",
+        "CORE-NAMING",
+        "CORE-COUPLING",
+        "PAT-DATA-ACCESS"
+      ],
+      "related": [
+        "ARCH-BE-CONTROLLER",
+        "ARCH-BE-SERVICE",
+        "ARCH-BE-DATASOURCE",
+        "ARCH-BE-ENTITY",
+        "ARCH-BE-ERROR",
+        "PLAT-BE-SPRING",
+        "PLAT-BE-JPA"
+      ],
+      "tags": [
+        "backend",
+        "spring-boot",
+        "architecture",
+        "layers",
+        "rest-api"
+      ]
+    },
+    {
+      "id": "ARCH-BE-CONTROLLER",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/backend-service/controller.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "ARCH-BE",
+        "CORE-COUPLING"
+      ],
+      "related": [
+        "ARCH-BE-SERVICE",
+        "ARCH-BE-ERROR",
+        "PLAT-BE-SPRING"
+      ],
+      "tags": [
+        "controller",
+        "http",
+        "rest",
+        "boundary",
+        "thin-controller"
+      ]
+    },
+    {
+      "id": "ARCH-BE-DATASOURCE",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/backend-service/datasource.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "ARCH-BE",
+        "PAT-DATA-ACCESS",
+        "CORE-DI"
+      ],
+      "related": [
+        "ARCH-BE-SERVICE",
+        "ARCH-BE-ENTITY",
+        "PLAT-BE-JPA"
+      ],
+      "tags": [
+        "datasource",
+        "repository",
+        "jpa",
+        "data-access",
+        "store"
+      ]
+    },
+    {
+      "id": "ARCH-BE-ENTITY",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/backend-service/entity.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "ARCH-BE",
+        "CORE-NAMING"
+      ],
+      "related": [
+        "ARCH-BE-DATASOURCE",
+        "PLAT-BE-JPA"
+      ],
+      "tags": [
+        "entity",
+        "jpa",
+        "schema",
+        "migration",
+        "flyway",
+        "database"
+      ]
+    },
+    {
+      "id": "ARCH-BE-ERROR",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/backend-service/error-flow.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "ARCH-BE",
+        "CORE-ERROR"
+      ],
+      "related": [
+        "ARCH-BE-SERVICE",
+        "ARCH-BE-CONTROLLER",
+        "PLAT-BE-SPRING"
+      ],
+      "tags": [
+        "error-handling",
+        "exceptions",
+        "http-status",
+        "global-exception-handler",
+        "two-tier"
+      ]
+    },
+    {
+      "id": "ARCH-BE-SERVICE",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/backend-service/service.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "ARCH-BE",
+        "CORE-DI",
+        "CORE-ERROR"
+      ],
+      "related": [
+        "ARCH-BE-CONTROLLER",
+        "ARCH-BE-DATASOURCE",
+        "ARCH-BE-ERROR",
+        "PLAT-BE-SPRING"
+      ],
+      "tags": [
+        "service",
+        "business-logic",
+        "transactions",
+        "time-provider",
+        "dto"
+      ]
+    },
+    {
+      "id": "ARCH-PC",
+      "type": "architecture",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/overview.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "CORE-DI",
+        "CORE-COUPLING",
+        "CORE-SSOT",
+        "PAT-DATA-ACCESS",
+        "PAT-OUTCOME",
+        "PAT-OBSERVER"
+      ],
+      "related": [
+        "ARCH-PC-DATASOURCE",
+        "ARCH-PC-REPOSITORY",
+        "ARCH-PC-USECASE",
+        "ARCH-PC-VIEWMODEL",
+        "ARCH-PC-VIEW",
+        "ARCH-PC-DI",
+        "ARCH-PC-ERROR-FLOW"
+      ],
+      "tags": [
+        "pragmatic-clean",
+        "clean-architecture",
+        "kmp",
+        "layers",
+        "mvvm"
+      ]
+    },
+    {
+      "id": "ARCH-PC-APP-VM",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/app-viewmodel.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC-VIEWMODEL",
+        "ARCH-PC-VIEW",
+        "PLAT-MOB-KOIN"
+      ],
+      "related": [
+        "PLAT-MOB-NAV",
+        "PLAT-MOB-COMPOSE"
+      ],
+      "tags": [
+        "viewmodel",
+        "app-viewmodel",
+        "scaffold",
+        "app-state",
+        "top-bar",
+        "bottom-bar",
+        "snackbar",
+        "global-state"
+      ]
+    },
+    {
+      "id": "ARCH-PC-DATASOURCE",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/datasource.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC",
+        "PAT-DATA-ACCESS",
+        "PLAT-MOB-KOTLIN"
+      ],
+      "related": [
+        "ARCH-PC-REPOSITORY",
+        "ARCH-PC-ERROR-FLOW",
+        "ARCH-PC-DI"
+      ],
+      "tags": [
+        "datasource",
+        "provider",
+        "mapping",
+        "exceptions",
+        "abstraction"
+      ]
+    },
+    {
+      "id": "ARCH-PC-DI",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/di.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC",
+        "PLAT-MOB-KOIN",
+        "CORE-DI"
+      ],
+      "related": [
+        "ARCH-PC-DATASOURCE",
+        "ARCH-PC-USECASE",
+        "ARCH-PC-VIEWMODEL"
+      ],
+      "tags": [
+        "di",
+        "dependency-injection",
+        "koin",
+        "scope",
+        "factory",
+        "single",
+        "viewmodel",
+        "modules"
+      ]
+    },
+    {
+      "id": "ARCH-PC-ERR-CLASSES",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/exception-classes.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC-ERROR-FLOW",
+        "CORE-ERROR"
+      ],
+      "related": [
+        "PAT-OUTCOME",
+        "PLAT-MOB-KOTLIN"
+      ],
+      "tags": [
+        "error-handling",
+        "exceptions",
+        "domain-exceptions",
+        "error-severity",
+        "error-presentation",
+        "actionable-errors"
+      ]
+    },
+    {
+      "id": "ARCH-PC-ERROR-FLOW",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/error-flow.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC",
+        "CORE-ERROR",
+        "ARCH-PC-DATASOURCE",
+        "ARCH-PC-USECASE",
+        "ARCH-PC-VIEWMODEL",
+        "ARCH-PC-VIEW"
+      ],
+      "related": [
+        "PAT-OUTCOME"
+      ],
+      "tags": [
+        "error-handling",
+        "exceptions",
+        "propagation",
+        "actionable",
+        "ui-metadata",
+        "layers"
+      ]
+    },
+    {
+      "id": "ARCH-PC-FEATURE",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/feature-structure.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC"
+      ],
+      "related": [
+        "ARCH-PC-DI",
+        "ARCH-PC-DATASOURCE"
+      ],
+      "tags": [
+        "feature",
+        "module",
+        "structure",
+        "naming",
+        "file-placement",
+        "directories"
+      ]
+    },
+    {
+      "id": "ARCH-PC-REPOSITORY",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/repository.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC",
+        "ARCH-PC-DATASOURCE",
+        "CORE-SSOT",
+        "PAT-DATA-ACCESS"
+      ],
+      "related": [
+        "ARCH-PC-USECASE",
+        "ARCH-PC-ERROR-FLOW",
+        "ARCH-PC-DI"
+      ],
+      "tags": [
+        "repository",
+        "ssot",
+        "coordination",
+        "cache",
+        "multi-source"
+      ]
+    },
+    {
+      "id": "ARCH-PC-USECASE",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/usecase.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC",
+        "PAT-OUTCOME",
+        "PAT-OBSERVER",
+        "PLAT-MOB-KOTLIN"
+      ],
+      "related": [
+        "ARCH-PC-REPOSITORY",
+        "ARCH-PC-VIEWMODEL",
+        "ARCH-PC-ERROR-FLOW",
+        "ARCH-PC-DI"
+      ],
+      "tags": [
+        "usecase",
+        "orchestrator",
+        "business-logic",
+        "outcome",
+        "flow",
+        "suspend"
+      ]
+    },
+    {
+      "id": "ARCH-PC-VIEW",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/view.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC",
+        "ARCH-PC-VIEWMODEL",
+        "PLAT-MOB-COMPOSE"
+      ],
+      "related": [
+        "ARCH-PC-ERROR-FLOW"
+      ],
+      "tags": [
+        "view",
+        "screen",
+        "compose",
+        "stateless",
+        "scaffold",
+        "state-hoisting"
+      ]
+    },
+    {
+      "id": "ARCH-PC-VIEWMODEL",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/viewmodel.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC",
+        "PLAT-MOB-KOTLIN",
+        "PLAT-MOB-KOIN"
+      ],
+      "related": [
+        "ARCH-PC-USECASE",
+        "ARCH-PC-VIEW",
+        "ARCH-PC-ERROR-FLOW",
+        "ARCH-PC-DI"
+      ],
+      "tags": [
+        "viewmodel",
+        "state",
+        "events",
+        "presentation",
+        "formatting",
+        "stateflow",
+        "sharedflow"
+      ]
+    },
+    {
+      "id": "ARCH-WEB",
+      "type": "overview",
+      "layer": "architectures",
+      "path": "architectures/web-spa/overview.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-spa",
+      "requires": [
+        "CORE-COUPLING",
+        "CORE-NAMING",
+        "PAT-DATA-ACCESS"
+      ],
+      "related": [
+        "ARCH-WEB-COMPONENTS",
+        "PLAT-WEB-REACT",
+        "PLAT-WEB-STATE",
+        "PLAT-WEB-FIREBASE"
+      ],
+      "tags": [
+        "web",
+        "react",
+        "spa",
+        "architecture",
+        "folder-structure",
+        "feature-folders"
+      ]
+    },
+    {
+      "id": "ARCH-WEB-COMPONENTS",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/web-spa/components.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-spa",
+      "requires": [
+        "ARCH-WEB",
+        "CORE-COUPLING",
+        "CORE-DI"
+      ],
+      "related": [
+        "PLAT-WEB-REACT",
+        "PLAT-WEB-STATE",
+        "PLAT-WEB-A11Y"
+      ],
+      "tags": [
+        "components",
+        "container",
+        "presentation",
+        "error-boundary",
+        "state-guards",
+        "props",
+        "composition"
+      ]
+    },
+    {
+      "id": "BUILD-CONVENTION-PLUGINS",
+      "type": "guide",
+      "layer": "build",
+      "path": "build/convention-plugins.md",
+      "platform": [
+        "mobile",
+        "backend"
+      ],
+      "architecture": "all",
+      "requires": [],
+      "related": [
+        "BUILD-PROJECT-STRUCTURE",
+        "BUILD-VERSION-CATALOG",
+        "BUILD-STATIC-ANALYSIS"
+      ],
+      "tags": [
+        "gradle",
+        "convention-plugins",
+        "build-logic",
+        "plugins",
+        "composability"
+      ]
+    },
+    {
+      "id": "BUILD-COVERAGE",
+      "type": "guide",
+      "layer": "build",
+      "path": "build/coverage.md",
+      "platform": [
+        "mobile",
+        "backend"
+      ],
+      "architecture": "all",
+      "requires": [
+        "BUILD-CONVENTION-PLUGINS",
+        "BUILD-PROJECT-STRUCTURE"
+      ],
+      "related": [
+        "BUILD-STATIC-ANALYSIS",
+        "QG-TESTING"
+      ],
+      "tags": [
+        "coverage",
+        "kover",
+        "jacoco",
+        "thresholds",
+        "exclusions",
+        "quality-gate"
+      ]
+    },
+    {
+      "id": "BUILD-PROJECT-STRUCTURE",
+      "type": "guide",
+      "layer": "build",
+      "path": "build/project-structure.md",
+      "platform": [
+        "mobile",
+        "backend"
+      ],
+      "architecture": "all",
+      "requires": [
+        "BUILD-CONVENTION-PLUGINS"
+      ],
+      "related": [
+        "BUILD-VERSION-CATALOG"
+      ],
+      "tags": [
+        "gradle",
+        "multi-module",
+        "settings",
+        "project-structure",
+        "modules",
+        "typesafe-accessors"
+      ]
+    },
+    {
+      "id": "BUILD-STATIC-ANALYSIS",
+      "type": "guide",
+      "layer": "build",
+      "path": "build/static-analysis.md",
+      "platform": [
+        "mobile",
+        "backend"
+      ],
+      "architecture": "all",
+      "requires": [
+        "BUILD-CONVENTION-PLUGINS"
+      ],
+      "related": [
+        "BUILD-COVERAGE",
+        "QG-TESTING"
+      ],
+      "tags": [
+        "detekt",
+        "static-analysis",
+        "linting",
+        "code-quality",
+        "baseline"
+      ]
+    },
+    {
+      "id": "BUILD-VERSION-CATALOG",
+      "type": "guide",
+      "layer": "build",
+      "path": "build/version-catalog.md",
+      "platform": [
+        "mobile",
+        "backend"
+      ],
+      "architecture": "all",
+      "requires": [
+        "BUILD-PROJECT-STRUCTURE"
+      ],
+      "related": [
+        "BUILD-CONVENTION-PLUGINS"
+      ],
+      "tags": [
+        "gradle",
+        "version-catalog",
+        "libs-versions-toml",
+        "dependencies",
+        "versions"
+      ]
+    },
+    {
+      "id": "CORE-COUPLING",
+      "type": "principle",
+      "layer": "core",
+      "path": "core/coupling.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [],
+      "related": [
+        "CORE-DI",
+        "CORE-NAMING"
+      ],
+      "tags": [
+        "coupling",
+        "cohesion",
+        "separation-of-concerns",
+        "single-responsibility"
+      ]
+    },
+    {
+      "id": "CORE-DI",
+      "type": "principle",
+      "layer": "core",
+      "path": "core/dependency-inversion.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [],
+      "related": [
+        "CORE-COUPLING",
+        "PAT-DATA-ACCESS"
+      ],
+      "tags": [
+        "dependency-inversion",
+        "abstraction",
+        "interfaces",
+        "testability",
+        "composition"
+      ]
+    },
+    {
+      "id": "CORE-ERROR",
+      "type": "principle",
+      "layer": "core",
+      "path": "core/error-propagation.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [],
+      "related": [
+        "PAT-OUTCOME",
+        "CORE-COUPLING"
+      ],
+      "tags": [
+        "error-handling",
+        "propagation",
+        "exceptions",
+        "boundaries",
+        "observability"
+      ]
+    },
+    {
+      "id": "CORE-NAMING",
+      "type": "principle",
+      "layer": "core",
+      "path": "core/naming.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [],
+      "related": [
+        "CORE-COUPLING"
+      ],
+      "tags": [
+        "naming",
+        "readability",
+        "domain-language",
+        "conventions",
+        "intent"
+      ]
+    },
+    {
+      "id": "CORE-SSOT",
+      "type": "principle",
+      "layer": "core",
+      "path": "core/single-source-of-truth.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [],
+      "related": [
+        "PAT-DATA-ACCESS",
+        "PAT-OBSERVER"
+      ],
+      "tags": [
+        "ssot",
+        "single-source-of-truth",
+        "consistency",
+        "state",
+        "synchronisation"
+      ]
+    },
+    {
+      "id": "CORE-TESTING",
+      "type": "principle",
+      "layer": "core",
+      "path": "core/testing.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [],
+      "related": [
+        "CORE-DI",
+        "CORE-COUPLING"
+      ],
+      "tags": [
+        "testing",
+        "behaviour",
+        "unit-tests",
+        "mocking",
+        "fakes",
+        "coverage"
+      ]
+    },
+    {
+      "id": "ORCH-BE-ENDPOINT",
+      "type": "orchestrator",
+      "layer": "feature-orchestrators",
+      "path": "feature-orchestrators/backend-endpoint.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "CORE-DI",
+        "CORE-ERROR",
+        "CORE-NAMING",
+        "CORE-TESTING",
+        "PAT-DATA-ACCESS",
+        "ARCH-BE",
+        "ARCH-BE-CONTROLLER",
+        "ARCH-BE-SERVICE",
+        "ARCH-BE-DATASOURCE",
+        "ARCH-BE-ENTITY",
+        "ARCH-BE-ERROR",
+        "PLAT-BE-SPRING",
+        "PLAT-BE-JPA",
+        "PLAT-BE-SECURITY",
+        "QG-TESTING"
+      ],
+      "related": [
+        "QG-REVIEW"
+      ],
+      "tags": [
+        "backend",
+        "endpoint",
+        "spring-boot",
+        "jpa",
+        "rest",
+        "end-to-end"
+      ]
+    },
+    {
+      "id": "ORCH-MOB-FEAT",
+      "type": "orchestrator",
+      "layer": "feature-orchestrators",
+      "path": "feature-orchestrators/mobile-feature.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "CORE-DI",
+        "CORE-SSOT",
+        "CORE-ERROR",
+        "CORE-NAMING",
+        "CORE-TESTING",
+        "PAT-DATA-ACCESS",
+        "PAT-OUTCOME",
+        "PAT-OBSERVER",
+        "ARCH-PC",
+        "ARCH-PC-DATASOURCE",
+        "ARCH-PC-REPOSITORY",
+        "ARCH-PC-USECASE",
+        "ARCH-PC-VIEWMODEL",
+        "ARCH-PC-VIEW",
+        "ARCH-PC-DI",
+        "ARCH-PC-ERROR-FLOW",
+        "ARCH-PC-FEATURE",
+        "PLAT-MOB-KMP",
+        "PLAT-MOB-KOIN",
+        "PLAT-MOB-KOTLIN",
+        "PLAT-MOB-COMPOSE",
+        "BUILD-CONVENTION-PLUGINS",
+        "BUILD-PROJECT-STRUCTURE",
+        "BUILD-COVERAGE",
+        "BUILD-STATIC-ANALYSIS",
+        "QG-TESTING"
+      ],
+      "related": [
+        "QG-REVIEW"
+      ],
+      "tags": [
+        "mobile",
+        "feature",
+        "pragmatic-clean",
+        "kmp",
+        "scaffold",
+        "end-to-end"
+      ]
+    },
+    {
+      "id": "ORCH-WEB-FEAT",
+      "type": "orchestrator",
+      "layer": "feature-orchestrators",
+      "path": "feature-orchestrators/web-feature.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-spa",
+      "requires": [
+        "CORE-COUPLING",
+        "CORE-NAMING",
+        "CORE-TESTING",
+        "ARCH-WEB",
+        "ARCH-WEB-COMPONENTS",
+        "PLAT-WEB-REACT",
+        "PLAT-WEB-STYLING",
+        "PLAT-WEB-STATE",
+        "PLAT-WEB-FIREBASE",
+        "PLAT-WEB-A11Y",
+        "QG-TESTING"
+      ],
+      "related": [
+        "QG-REVIEW"
+      ],
+      "tags": [
+        "web",
+        "feature",
+        "react",
+        "typescript",
+        "firebase",
+        "dashboard"
+      ]
+    },
+    {
+      "id": "PAT-DATA-ACCESS",
+      "type": "pattern",
+      "layer": "patterns",
+      "path": "patterns/data-access-abstraction.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [
+        "CORE-DI"
+      ],
+      "related": [
+        "CORE-SSOT",
+        "PAT-OUTCOME",
+        "PAT-OBSERVER"
+      ],
+      "tags": [
+        "data-access",
+        "abstraction",
+        "repository",
+        "datasource",
+        "interface",
+        "storage"
+      ]
+    },
+    {
+      "id": "PAT-OBSERVER",
+      "type": "pattern",
+      "layer": "patterns",
+      "path": "patterns/observable-data.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [
+        "CORE-SSOT"
+      ],
+      "related": [
+        "PAT-DATA-ACCESS",
+        "PAT-OUTCOME"
+      ],
+      "tags": [
+        "observer",
+        "reactive",
+        "streams",
+        "push",
+        "subscription",
+        "real-time"
+      ]
+    },
+    {
+      "id": "PAT-OUTCOME",
+      "type": "pattern",
+      "layer": "patterns",
+      "path": "patterns/result-type.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [
+        "CORE-ERROR"
+      ],
+      "related": [
+        "PAT-DATA-ACCESS",
+        "CORE-ERROR"
+      ],
+      "tags": [
+        "result-type",
+        "outcome",
+        "either",
+        "error-handling",
+        "typed-errors",
+        "railway"
+      ]
+    },
+    {
+      "id": "PLAT-BE-JPA",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/backend/jpa.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "ARCH-BE-ENTITY",
+        "ARCH-BE-DATASOURCE"
+      ],
+      "related": [
+        "PLAT-BE-SPRING",
+        "PLAT-BE-SECURITY"
+      ],
+      "tags": [
+        "jpa",
+        "hibernate",
+        "flyway",
+        "postgresql",
+        "entity",
+        "migrations",
+        "allopen",
+        "uuid",
+        "timestamps"
+      ]
+    },
+    {
+      "id": "PLAT-BE-SECURITY",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/backend/security.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "ARCH-BE",
+        "ARCH-BE-CONTROLLER",
+        "ARCH-BE-SERVICE"
+      ],
+      "related": [
+        "PLAT-BE-SPRING"
+      ],
+      "tags": [
+        "security",
+        "jwt",
+        "authentication",
+        "spring-security",
+        "authentication-principal",
+        "stateless"
+      ]
+    },
+    {
+      "id": "PLAT-BE-SPRING",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/backend/spring.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "ARCH-BE",
+        "ARCH-BE-CONTROLLER",
+        "ARCH-BE-SERVICE",
+        "ARCH-BE-ERROR"
+      ],
+      "related": [
+        "PLAT-BE-JPA",
+        "PLAT-BE-SECURITY"
+      ],
+      "tags": [
+        "spring-boot",
+        "annotations",
+        "rest-controller",
+        "service",
+        "path-constants",
+        "constructor-injection",
+        "time-provider"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-COMPOSE",
+      "type": "platform",
+      "layer": "platforms",
+      "path": "platforms/mobile/compose.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "PLAT-MOB-KOTLIN"
+      ],
+      "related": [
+        "PLAT-MOB-KMP"
+      ],
+      "tags": [
+        "compose",
+        "jetpack-compose",
+        "ui",
+        "state-hoisting",
+        "slot-api",
+        "theming",
+        "skeleton"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-DATASTORE",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/datastore.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "PLAT-MOB-KMP",
+        "PLAT-MOB-KOIN"
+      ],
+      "related": [
+        "PLAT-MOB-ROOM",
+        "ARCH-PC-DATASOURCE"
+      ],
+      "tags": [
+        "datastore",
+        "preferences",
+        "kmp",
+        "testing",
+        "fakeDataStore",
+        "coroutines",
+        "flow"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-DS-COMPONENT",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/design-system/component.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "PLAT-MOB-COMPOSE",
+        "PLAT-MOB-DS-THEME",
+        "PLAT-MOB-DS-ICONS"
+      ],
+      "related": [
+        "ARCH-PC-VIEW",
+        "PLAT-MOB-DS-IMAGES"
+      ],
+      "tags": [
+        "design-system",
+        "compose",
+        "component",
+        "m3",
+        "material3",
+        "preview",
+        "accessibility",
+        "kmp"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-DS-ICONS",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/design-system/icons.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "PLAT-MOB-COMPOSE",
+        "PLAT-MOB-DS-THEME"
+      ],
+      "related": [
+        "PLAT-MOB-DS-COMPONENT"
+      ],
+      "tags": [
+        "design-system",
+        "icons",
+        "imagevector",
+        "svg",
+        "compose",
+        "accessibility",
+        "kmp"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-DS-IMAGES",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/design-system/images.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "PLAT-MOB-COMPOSE",
+        "PLAT-MOB-DS-THEME",
+        "PLAT-MOB-KMP-WEB"
+      ],
+      "related": [
+        "PLAT-MOB-DS-COMPONENT"
+      ],
+      "tags": [
+        "design-system",
+        "images",
+        "coil",
+        "async-image",
+        "placeholder",
+        "kmp",
+        "accessibility"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-DS-THEME",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/design-system/theme.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "PLAT-MOB-COMPOSE"
+      ],
+      "related": [
+        "PLAT-MOB-DS-COMPONENT",
+        "PLAT-MOB-DS-ICONS"
+      ],
+      "tags": [
+        "design-system",
+        "theme",
+        "material3",
+        "colors",
+        "typography",
+        "spacing",
+        "dimensions",
+        "compose"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-FIREBASE",
+      "type": "platform",
+      "layer": "platforms",
+      "path": "platforms/mobile/firebase.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "PAT-DATA-ACCESS",
+        "PLAT-MOB-KMP",
+        "PLAT-MOB-KOTLIN"
+      ],
+      "related": [
+        "PLAT-MOB-KOIN",
+        "PLAT-MOB-ROOM"
+      ],
+      "tags": [
+        "firebase",
+        "firestore",
+        "auth",
+        "cloud",
+        "sdk",
+        "rest",
+        "android"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-HTTP",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/http-client.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC-DATASOURCE",
+        "CORE-DI",
+        "PLAT-MOB-KOTLIN"
+      ],
+      "related": [
+        "ARCH-PC-ERROR-FLOW",
+        "ARCH-PC-ERR-CLASSES",
+        "PAT-OUTCOME"
+      ],
+      "tags": [
+        "http",
+        "ktor",
+        "api-client",
+        "rest",
+        "serialization",
+        "auth-header",
+        "retry",
+        "timeout"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-HUAWEI",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/huawei.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "PLAT-MOB-KOIN",
+        "PLAT-MOB-KMP"
+      ],
+      "related": [
+        "PLAT-MOB-KMP-WEB",
+        "ARCH-PC-DI"
+      ],
+      "tags": [
+        "huawei",
+        "appgallery",
+        "hms",
+        "gms",
+        "flavor",
+        "build-variant",
+        "di-override",
+        "rest",
+        "koin"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-KMP",
+      "type": "platform",
+      "layer": "platforms",
+      "path": "platforms/mobile/kmp.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "CORE-DI"
+      ],
+      "related": [
+        "PLAT-MOB-KOIN",
+        "PLAT-MOB-KOTLIN"
+      ],
+      "tags": [
+        "kmp",
+        "kotlin-multiplatform",
+        "source-sets",
+        "expect-actual",
+        "wasm",
+        "ios",
+        "android"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-KMP-WEB",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/kmp-web-target.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "PLAT-MOB-KMP",
+        "PLAT-MOB-KOIN",
+        "PLAT-MOB-FIREBASE"
+      ],
+      "related": [
+        "PLAT-MOB-HUAWEI",
+        "PLAT-MOB-DS-IMAGES",
+        "PLAT-MOB-NOTIF"
+      ],
+      "tags": [
+        "kmp",
+        "wasmjs",
+        "web",
+        "compose-multiplatform",
+        "noop",
+        "source-sets",
+        "keyvaluestorage",
+        "uuid",
+        "rest"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-KOIN",
+      "type": "platform",
+      "layer": "platforms",
+      "path": "platforms/mobile/koin.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "CORE-DI",
+        "PLAT-MOB-KMP"
+      ],
+      "related": [
+        "PLAT-MOB-KOTLIN"
+      ],
+      "tags": [
+        "koin",
+        "dependency-injection",
+        "modules",
+        "qualifiers",
+        "scopes",
+        "factory",
+        "single"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-KOTLIN",
+      "type": "platform",
+      "layer": "platforms",
+      "path": "platforms/mobile/kotlin-coroutines.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "PAT-OBSERVER",
+        "PAT-OUTCOME"
+      ],
+      "related": [
+        "PLAT-MOB-KOIN",
+        "PLAT-MOB-COMPOSE"
+      ],
+      "tags": [
+        "kotlin",
+        "coroutines",
+        "flow",
+        "stateflow",
+        "sharedflow",
+        "suspend",
+        "dispatchers"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-NAV",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/navigation.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC-VIEW",
+        "PLAT-MOB-COMPOSE",
+        "PLAT-MOB-KOIN"
+      ],
+      "related": [
+        "ARCH-PC-FEATURE"
+      ],
+      "tags": [
+        "navigation",
+        "compose-navigation",
+        "navgraph",
+        "navhost",
+        "deeplink",
+        "back-stack"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-NOTIF",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/notifications.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC-USECASE",
+        "ARCH-PC-DI",
+        "PLAT-MOB-KOIN",
+        "PLAT-MOB-DATASTORE"
+      ],
+      "related": [
+        "PLAT-MOB-KMP",
+        "PLAT-MOB-KMP-WEB"
+      ],
+      "tags": [
+        "notifications",
+        "workmanager",
+        "scheduler",
+        "clockprovider",
+        "channels",
+        "kmp",
+        "background"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-ROOM",
+      "type": "platform",
+      "layer": "platforms",
+      "path": "platforms/mobile/room.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "PAT-DATA-ACCESS",
+        "PLAT-MOB-KOTLIN"
+      ],
+      "related": [
+        "PLAT-MOB-KOIN",
+        "PLAT-MOB-FIREBASE"
+      ],
+      "tags": [
+        "room",
+        "sqlite",
+        "dao",
+        "entity",
+        "local-database",
+        "android"
+      ]
+    },
+    {
+      "id": "PLAT-MOB-SKELETON",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/skeleton-loading.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC-VIEW",
+        "ARCH-PC-VIEWMODEL",
+        "PLAT-MOB-COMPOSE"
+      ],
+      "related": [
+        "PAT-OUTCOME"
+      ],
+      "tags": [
+        "skeleton",
+        "loading",
+        "shimmer",
+        "placeholder",
+        "compose",
+        "ui-state"
+      ]
+    },
+    {
+      "id": "PLAT-WEB-A11Y",
+      "type": "rules",
+      "layer": "platforms",
+      "path": "platforms/web/accessibility.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-spa",
+      "requires": [
+        "ARCH-WEB",
+        "ARCH-WEB-COMPONENTS"
+      ],
+      "related": [
+        "PLAT-WEB-REACT",
+        "PLAT-WEB-STYLING"
+      ],
+      "tags": [
+        "accessibility",
+        "a11y",
+        "semantic-html",
+        "aria",
+        "alt-text",
+        "headings",
+        "keyboard",
+        "focus"
+      ]
+    },
+    {
+      "id": "PLAT-WEB-DEPLOY",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/deploy.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-spa",
+      "requires": [
+        "ARCH-WEB",
+        "PLAT-WEB-REACT"
+      ],
+      "related": [
+        "PLAT-WEB-FIREBASE"
+      ],
+      "tags": [
+        "deploy",
+        "build",
+        "vite",
+        "firebase-hosting",
+        "tsc",
+        "sitemap",
+        "robots"
+      ]
+    },
+    {
+      "id": "PLAT-WEB-FIREBASE",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/firebase.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-spa",
+      "requires": [
+        "ARCH-WEB",
+        "PLAT-WEB-REACT",
+        "PLAT-WEB-STATE"
+      ],
+      "related": [
+        "PLAT-WEB-DEPLOY"
+      ],
+      "tags": [
+        "firebase",
+        "firestore",
+        "auth",
+        "on-snapshot",
+        "hooks",
+        "environment-variables",
+        "real-time"
+      ]
+    },
+    {
+      "id": "PLAT-WEB-REACT",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/react-typescript.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-spa",
+      "requires": [
+        "ARCH-WEB",
+        "ARCH-WEB-COMPONENTS"
+      ],
+      "related": [
+        "PLAT-WEB-STYLING",
+        "PLAT-WEB-STATE",
+        "PLAT-WEB-FIREBASE"
+      ],
+      "tags": [
+        "react",
+        "typescript",
+        "strict",
+        "props",
+        "hooks",
+        "cleanup",
+        "as-const"
+      ]
+    },
+    {
+      "id": "PLAT-WEB-STATE",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/state.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-spa",
+      "requires": [
+        "ARCH-WEB",
+        "ARCH-WEB-COMPONENTS"
+      ],
+      "related": [
+        "PLAT-WEB-REACT",
+        "PLAT-WEB-FIREBASE"
+      ],
+      "tags": [
+        "state",
+        "use-state",
+        "custom-hooks",
+        "context",
+        "react-router",
+        "routing",
+        "auth-guard"
+      ]
+    },
+    {
+      "id": "PLAT-WEB-STYLING",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/styling.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-spa",
+      "requires": [
+        "ARCH-WEB"
+      ],
+      "related": [
+        "PLAT-WEB-REACT",
+        "PLAT-WEB-A11Y"
+      ],
+      "tags": [
+        "styling",
+        "css-properties",
+        "theme",
+        "design-tokens",
+        "inline-styles",
+        "common-styles"
+      ]
+    },
+    {
+      "id": "QG-REVIEW",
+      "type": "guide",
+      "layer": "quality-gates",
+      "path": "quality-gates/review.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [
+        "CORE-DI",
+        "CORE-COUPLING",
+        "CORE-ERROR",
+        "CORE-NAMING",
+        "CORE-SSOT"
+      ],
+      "related": [
+        "QG-TESTING",
+        "BUILD-COVERAGE",
+        "BUILD-STATIC-ANALYSIS"
+      ],
+      "tags": [
+        "review",
+        "checklist",
+        "pre-merge",
+        "code-review",
+        "enforcement"
+      ]
+    },
+    {
+      "id": "QG-TESTING",
+      "type": "guide",
+      "layer": "quality-gates",
+      "path": "quality-gates/testing.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [
+        "CORE-TESTING",
+        "CORE-COUPLING"
+      ],
+      "related": [
+        "QG-REVIEW",
+        "BUILD-COVERAGE",
+        "BUILD-STATIC-ANALYSIS"
+      ],
+      "tags": [
+        "testing",
+        "unit-tests",
+        "integration",
+        "mocking",
+        "coverage",
+        "philosophy"
+      ]
+    }
+  ]
+}
