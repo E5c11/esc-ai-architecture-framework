@@ -39,16 +39,20 @@ tags: [mobile, feature, pragmatic-clean, kmp, scaffold, end-to-end]
 Produce a complete, tested, DI-wired feature module. Every layer is implemented
 in dependency order: DataSource → Repository → UseCase → ViewModel → View.
 
-## Before you start
+## Loading strategy
 
-Read all documents listed in `requires` above. The architecture documents define
-the contracts; the platform documents define the syntax. Execute no phase until
-you understand the layer contract.
+Load docs progressively — fetch only what each phase needs, not all 22 upfront.
 
-Also resolve any provider-specific docs from your project profile:
-- `PLAT-MOB-ROOM` — if `frameworks.database: room`
-- `PLAT-MOB-HTTP` — if `frameworks.network: ktor / http / retrofit`
-- `PLAT-MOB-FIREBASE` — if `frameworks.cloud: firebase`
+1. Read this orchestrator to understand all phases and their scope.
+2. Before each phase, run:
+   ```
+   python tools/lookup.py --orchestrator ORCH-MOB-FEAT --phase N [--profile context/project-profile.yaml]
+   ```
+   This returns the 4-6 docs for that phase only, sorted by layer.
+3. Implement the phase. Run its validation checklist. Commit.
+4. Discard the phase docs before loading the next phase.
+
+The `requires` list in this document's frontmatter is for validation tooling only — not a loading instruction.
 
 ---
 
