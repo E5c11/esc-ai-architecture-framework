@@ -36,7 +36,6 @@ class SubjectEntity(
     var updatedAt: Instant = Instant.now(),
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
     val id: UUID = UUID.randomUUID(),
 ) {
@@ -62,12 +61,30 @@ at compile time. No `open` modifier needed in the source; no `data class` allowe
 
 ## UUID primary key
 
-Use `@GeneratedValue(strategy = GenerationType.UUID)` on a `UUID` field.
-The corresponding SQL column uses `gen_random_uuid()` as its default:
+Default to a plain Kotlin constructor default with no generation-strategy
+annotation: `@Id val id: UUID = UUID.randomUUID()`. The JVM assigns the ID when
+the object is constructed, before Hibernate is involved at all — there is no
+`@GeneratedValue` to configure and no round trip needed to learn the generated
+value after insert. This is the pattern used in production by `UserEntity` and
+`RefreshTokenEntity`.
+
+The migration still declares `DEFAULT gen_random_uuid()` on the column:
 
 ```sql
 id UUID PRIMARY KEY DEFAULT gen_random_uuid()
 ```
+
+Under the constructor-default approach this SQL default is **not** the primary
+generation mechanism — Hibernate always sends the already-populated JVM value on
+insert, so the column default never actually fires for entity-based writes. Keep
+it anyway as an optional safety net: it only matters for a raw SQL `INSERT` that
+bypasses the entity layer entirely (a one-off migration backfill, a manual
+`psql` insert), and costs nothing to leave in place.
+
+`@GeneratedValue(strategy = GenerationType.UUID)` is an acceptable alternative if
+you'd rather have Hibernate own generation (see `ENT-ID-01` for the full
+three-option comparison), but it is not required — do not add it back to the
+constructor-default pattern above, the two are redundant with each other.
 
 Never use `GenerationType.IDENTITY` with `Long` or `Int` — sequential integer IDs
 are enumerable in URLs and unsafe to expose in API responses.

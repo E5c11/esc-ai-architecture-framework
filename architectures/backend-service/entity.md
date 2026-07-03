@@ -27,10 +27,33 @@ repo deployable at every commit.
 > Violation: Adding a field to an entity without a corresponding migration SQL file.
 > Fix: Write the migration SQL first, then update the entity to match.
 
-**Rule ENT-ID-01 (hard):** Entities MUST use a UUID primary key. The UUID MUST be
-generated at the database level (`gen_random_uuid()` SQL default) or via JPA
-`GenerationType.UUID`. Avoid sequential integer PKs — they are enumerable in
-URLs and unsafe to expose.
+**Rule ENT-ID-01 (hard):** Entities MUST use a UUID primary key. Avoid sequential
+integer PKs — they are enumerable in URLs and unsafe to expose. Three generation
+approaches are acceptable:
+
+1. **Kotlin constructor default (recommended):** `@Id val id: UUID =
+   UUID.randomUUID()` with no `@GeneratedValue` annotation. The JVM generates the
+   ID at object-construction time, before Hibernate ever sees the entity. This is
+   the simplest option — no generation-strategy machinery, no round-trip needed to
+   learn the ID before the row is flushed — and it is the pattern already proven
+   in production (`UserEntity`, `RefreshTokenEntity`). Pair it with a
+   `DEFAULT gen_random_uuid()` column default anyway (see below); Hibernate never
+   exercises that default on entity-based inserts, but it becomes a safety net
+   for any raw-SQL insert that bypasses the entity.
+2. **JPA `GenerationType.UUID`:** `@GeneratedValue(strategy = GenerationType.UUID)`
+   on the `id` field. Hibernate generates the value itself. Equivalent outcome to
+   option 1 with more annotation overhead; prefer option 1 for new entities.
+3. **Database-level default only:** the column declares
+   `DEFAULT gen_random_uuid()` and the entity has no in-memory default, relying on
+   the database to populate `id` on insert and Hibernate to read it back. This
+   requires the entity's `id` to be nullable until persisted, which complicates
+   `equals`/`hashCode` (see `ENT-EQUALS-01`) for transient instances. Only use this
+   when the ID must be assigned exclusively by the database (e.g. inserts that can
+   also happen outside the JPA layer).
+
+Whichever approach is used, be consistent about it: don't mix option 1 and option
+2 across entities in the same codebase, since they document the same intent
+two different ways.
 
 **Rule ENT-TIMESTAMP-01 (hard):** Every entity MUST have `createdAt` and `updatedAt`
 timestamp columns. `createdAt` MUST be immutable (`updatable = false`). Both columns
