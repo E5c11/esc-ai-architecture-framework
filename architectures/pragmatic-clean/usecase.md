@@ -75,6 +75,16 @@ continue executing after it has been cancelled, and corrupts crash reporting.
 exception must also guard against cancellation separately. An outer guard cannot
 protect against cancellation swallowed by an inner catch.
 
+**Rule ARCH-PC-UC-NETWORK-01 (hard):** Every Flow-based UseCase that performs
+I/O MUST inject both `CrashReporter` and `NetworkStatusMonitor` via constructor.
+
+**Rule ARCH-PC-UC-NETWORK-02 (hard):** A Flow-based UseCase MUST catch using
+`catchWithNetworkStatus(crashReporter, networkMonitor) { e -> ... }`, never a
+raw `.catch { }`. A raw `.catch { emit(Outcome.Success(...)) }` compiles, passes
+tests, and passes lint — but silently swallows real crashes instead of
+reporting them, and can't distinguish "the device is offline" from "the
+provider actually failed."
+
 ## Side-effects that must not block the result
 
 When a UseCase must return a result immediately while non-critical persistence
@@ -119,3 +129,5 @@ UseCases and Orchestrators are `factory` scoped. See `ARCH-PC-DI`.
 - A Flow-based UseCase collapsed to a single suspend call
 - Hardcoded dispatcher instead of injected dispatcher provider
 - Cancellation exception swallowed inside an inner catch block
+- A raw `.catch { emit(Outcome.Success(...)) }` in place of `catchWithNetworkStatus` —
+  compiles clean, passes tests, silently swallows crashes

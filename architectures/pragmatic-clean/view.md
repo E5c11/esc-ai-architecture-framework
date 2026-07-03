@@ -48,6 +48,12 @@ own Scaffold, TopBar, or BottomBar composables directly in the layout tree.
 via the app state in a `DisposableEffect` and cleared on dispose. This prevents
 a previous screen's top bar from persisting when navigating forward.
 
+**Rule ARCH-PC-VIEW-SCAFFOLD-03 (hard):** Bottom bar (and other non-disposable
+scaffold visibility flags) MUST be set via `LaunchedEffect(Unit)`, not
+`DisposableEffect`. Visibility is a plain state-set, not a resource that needs
+dispose-time cleanup — `DisposableEffect` is the wrong tool and invites an
+empty or incorrect `onDispose { }` block.
+
 ## View responsibilities
 
 - Accept state as parameters
@@ -72,6 +78,34 @@ has no meaning outside it: expanded/collapsed, focus state, scroll position.
 MUST NOT be stored in `remember`. If a value matters to the ViewModel or affects
 what is displayed across recompositions, it belongs in ViewModel state.
 
+## Components
+
+Shared or extracted composables in `ui/components/` (see Naming) are part of
+the View layer, not a third category with looser rules. `ARCH-PC-VIEW-STATE-01`
+and `ARCH-PC-VIEW-CALLBACK-01` apply to them exactly as they apply to the root
+`{Feature}View` — a component two levels deep in the render tree still MUST NOT
+reach into DI.
+
+**Rule ARCH-PC-VIEW-COMPONENT-01 (hard):** A component MUST NOT call
+`koinInject()`, construct a ViewModel, or read from any DI container — including
+for cross-cutting concerns like an analytics tracker. Surface the action as a
+callback parameter and let the caller (Screen, or the composable that already
+holds the dependency) perform the side effect. This is `ARCH-PC-VIEW-STATE-01`
+restated explicitly for nested components, because in practice it is the rule
+most often missed once a component lives a few call-sites away from the Screen.
+
+**Rule ARCH-PC-VIEW-COMPONENT-02 (soft):** An inline UI block that has grown
+large enough to have its own clear responsibility (a card, a row, a nudge
+banner) SHOULD be extracted into its own file in `ui/components/` rather than
+left inlined inside a `Screen` or another component. There is no hard line
+count — extract when the block obscures the surrounding composable's own
+structure, not on a fixed threshold.
+
+**Rule ARCH-PC-VIEW-PREVIEW-01 (hard):** Every component MUST have at least one
+`@Preview` function using realistic sample data, wrapped in the app's theme.
+Components with meaningfully different visual states (loading / error / empty,
+enabled / disabled) SHOULD have one preview per state.
+
 ## Error display
 
 The View receives the full domain exception object in state and renders it
@@ -90,3 +124,7 @@ composables in `ui/components/`).
 - Business state stored in `remember` instead of ViewModel state
 - A View composable containing `if` logic that mirrors a business rule
 - Top bar or FAB not cleared in `onDispose`, leaving remnants on the next screen
+- Bottom bar visibility set in `DisposableEffect` instead of `LaunchedEffect(Unit)`
+- A nested component in `ui/components/` calling `koinInject()` directly instead
+  of receiving a callback
+- A component with no `@Preview`
