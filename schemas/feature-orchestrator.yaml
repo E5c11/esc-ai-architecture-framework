@@ -1,42 +1,74 @@
 # Feature Orchestrator Schema
 # A Feature Orchestrator is the implementation plan for a complete engineering task.
-# It defines phases, steps, validation gates, and which framework knowledge is required.
+# It defines phases, steps, and validation gates, and declares which framework
+# knowledge is required.
 #
-# Orchestrators live in feature-orchestrators/ and are referenced by project-specific
-# context when an AI agent is asked to implement a feature.
+# Orchestrators are markdown documents with a YAML front matter block — the same
+# document-metadata shape as every other framework document (see document.yaml),
+# plus one orchestrator-specific field (`goal`). They are NOT standalone .yaml
+# files — there is no structured phases/steps/validation array in the front
+# matter. Phases are prose sections in the document body, matching how every
+# other framework document (architectures/, platforms/) already expresses steps.
 #
-# Example orchestrator (feature-orchestrators/mobile/create-feature.yaml):
+# Orchestrators live in feature-orchestrators/{mobile,backend,web,shared}/ and
+# are referenced by project-specific context when an AI agent is asked to
+# implement a feature. See feature-orchestrators/README.md for the folder
+# convention — `shared/` is for orchestrators with platform: [all] that
+# sequence 2+ platform orchestrators for a cross-repo feature.
 #
-#   id: ORCH-MOB-CREATE-FEATURE
-#   title: "Create New Feature Module"
+# Example orchestrator (feature-orchestrators/mobile/mobile-feature.md):
+#
+#   ---
+#   id: ORCH-MOB-FEAT
+#   type: orchestrator
+#   layer: feature-orchestrators
 #   platform: [mobile]
 #   architecture: [pragmatic-clean]
-#   goal: "Scaffold a complete feature module with all layers wired"
-#   requires_knowledge:
+#   goal: "Implement a complete mobile feature module with all Pragmatic Clean layers wired and tested"
+#   requires:
 #     - PLAT-MOB-KOIN
 #     - ARCH-PC-DATASOURCE
 #     - ARCH-PC-REPOSITORY
 #     - ARCH-PC-USECASE
 #     - ARCH-PC-VIEWMODEL
 #     - ARCH-PC-VIEW
-#   phases:
-#     - phase: 1
-#       name: "Scaffold"
-#       steps:
-#         - "Create directory structure"
-#         - "Create build.gradle.kts from BUILD-GRADLE-FEATURE template"
-#       validation:
-#         - "Module compiles"
-#     - phase: 2
-#       name: "Data Layer"
-#       steps:
-#         - "Follow ARCH-PC-DATASOURCE"
-#       validation:
-#         - "DataSource tests pass"
+#   related: [QG-REVIEW, QG-TESTING]
+#   tags: [mobile, feature, pragmatic-clean, kmp, scaffold, end-to-end]
+#   ---
+#
+#   # Implement Mobile Feature (Pragmatic Clean)
+#
+#   ## Goal
+#   <one paragraph: what gets produced, in what order>
+#
+#   ## Phase 1 — Scaffold
+#
+#   **Required framework docs:** `ARCH-PC-FEATURE`, `PLAT-MOB-KMP`
+#   **Code paths:** `:feature:{name}/build.gradle.kts`
+#   **Assumes:** Nothing — this is the first phase.
+#   **Produces:** Empty, compiling feature module registered in the build.
+#   **Docs to update:** the feature's wiki doc, or `None` if this phase changes
+#     no user-facing or documented behavior. (Recommended field — mirrors the
+#     same gap found and fixed in AMPM's `todo/README.md`: an omitted doc
+#     update is easy to miss, an explicit `None` is a verified claim.)
+#
+#   ### Steps
+#   1. ...
+#
+#   ### Validation
+#   - [ ] ...
+#
+# Note: the three existing orchestrators (ORCH-MOB-FEAT, ORCH-BE-ENDPOINT,
+# ORCH-WEB-FEAT) predate the `Docs to update:` field and don't yet include it —
+# new orchestrators should, existing ones can be backfilled separately.
 
 schema:
   version: "1.0"
   type: feature-orchestrator
+  extends: document.yaml
+  # All fields from document.yaml apply (id, type: orchestrator,
+  # layer: feature-orchestrators, platform, architecture, requires, related,
+  # tags). Only the orchestrator-specific addition is listed below.
 
 fields:
 
@@ -46,64 +78,26 @@ fields:
     pattern: "^ORCH-[A-Z0-9-]+$"
     description: >
       Unique orchestrator ID.
-      Format: ORCH-{PLATFORM}-{TASK}
-      Examples: ORCH-MOB-CREATE-FEATURE, ORCH-BE-CREATE-ENDPOINT
-
-  title:
-    type: string
-    required: true
-    description: Human-readable name for the orchestrated task.
-
-  platform:
-    type: array
-    required: true
-    values: [mobile, backend, web, all]
-    description: Platforms this orchestrator applies to.
-
-  architecture:
-    type: array
-    required: true
-    values: [pragmatic-clean, backend-service, all]
-    description: Architectures this orchestrator applies to.
+      Format: ORCH-{PLATFORM}-{TASK}. Use ORCH-ALL-{TASK} for a shared/
+      cross-repo orchestrator (platform: [all]).
+      Examples: ORCH-MOB-FEAT, ORCH-BE-ENDPOINT, ORCH-ALL-CROSS-REPO
 
   goal:
     type: string
     required: true
     description: >
       Single sentence describing what the executor produces upon completion.
+      This is the one field orchestrators add on top of document.yaml.
 
-  requires_knowledge:
-    type: array
-    required: true
-    item_type: string
-    description: >
-      Framework document IDs that must be loaded before execution begins.
-      The executor reads these documents in addition to the orchestrator itself.
-
-  phases:
-    type: array
-    required: true
-    description: Ordered implementation phases. Must be executed in sequence.
-    items:
-      phase:
-        type: integer
-        required: true
-        description: Phase number. Must be sequential starting from 1.
-      name:
-        type: string
-        required: true
-        description: Phase name.
-      steps:
-        type: array
-        required: true
-        item_type: string
-        description: >
-          Ordered steps within this phase.
-          Steps may reference framework document IDs using "Follow {ID}".
-      validation:
-        type: array
-        required: true
-        item_type: string
-        description: >
-          Gates that must pass before proceeding to the next phase.
-          If any gate fails, do not advance.
+# Body convention (not machine-validated, but required for consistency):
+#
+#   - One `## Phase N — Name` section per phase, in execution order.
+#   - Each phase states its **Goal:** and, where the phase touches code,
+#     **Required framework docs:** / **Code paths:** / **Assumes:** /
+#     **Produces:** / **Docs to update:** — matching the phase-header contract
+#     every consuming project's own TODO/task format should also use.
+#   - Each phase ends with a `### Validation` checklist — gates that must pass
+#     before advancing. If any gate fails, do not advance.
+#   - A `shared/` orchestrator's phases may simply say "Follow `ORCH-XXX`" and
+#     add only what that platform orchestrator can't cover on its own (contract
+#     design, cross-repo documentation) — see ORCH-ALL-CROSS-REPO.

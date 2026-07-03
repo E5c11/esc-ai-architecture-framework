@@ -8,14 +8,21 @@ before executing.
 
 ## Structure
 
-Orchestrators are organised by platform:
+Orchestrators are organised by platform, mirroring `platforms/`:
 
 ```
 feature-orchestrators/
-├── mobile/
-├── backend/
-└── shared/      # Orchestrators that span platforms
+├── mobile/       # platform: [mobile]
+├── backend/      # platform: [backend]
+├── web/          # platform: [web]
+└── shared/       # platform: [all] — orchestrators that span 2+ repos/platforms
 ```
+
+A cross-repo orchestrator in `shared/` does not duplicate a platform
+orchestrator's phases — it sequences them (`ORCH-BE-ENDPOINT` →
+`ORCH-MOB-FEAT` → ...) and adds only the steps none of them can cover alone:
+contract design before either side is built, and cross-repo documentation
+after both are done.
 
 ## What makes a good orchestrator
 

@@ -353,7 +353,7 @@ def cmd_lookup(
             profile_label = "(from profile) " if d["id"] in profile_ids else ""
             stub_label    = " ⚠ stub"          if d.get("status") == "stub" else ""
             orch_label    = " ← orchestrator"   if d["id"] == orchestrator_id else ""
-            print(f"  {i:2}. {d['id']:<40} {profile_label}{d['layer']}/{Path(d['path']).name}{stub_label}{orch_label}")
+            print(f"  {i:2}. {d['id']:<40} {profile_label}{d['path']}{stub_label}{orch_label}")
     return 0
 
 
@@ -428,7 +428,7 @@ def cmd_phase(
         for i, d in enumerate(docs, 1):
             profile_label = " (from profile)" if d["id"] in profile_ids else ""
             stub_label    = " ⚠ stub"          if d.get("status") == "stub" else ""
-            print(f"  {i:2}. {d['id']:<40} {d['layer']}/{Path(d['path']).name}{profile_label}{stub_label}")
+            print(f"  {i:2}. {d['id']:<40} {d['path']}{profile_label}{stub_label}")
     return 0
 
 

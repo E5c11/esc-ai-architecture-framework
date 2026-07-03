@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-30T19:24:34.877819+00:00",
-  "count": 64,
+  "generated": "2026-07-03T08:59:23.987589+00:00",
+  "count": 65,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -827,10 +827,41 @@
       "status": ""
     },
     {
+      "id": "ORCH-ALL-CROSS-REPO",
+      "type": "orchestrator",
+      "layer": "feature-orchestrators",
+      "path": "feature-orchestrators/shared/cross-repo-feature.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [
+        "CORE-DI",
+        "CORE-SSOT",
+        "CORE-NAMING"
+      ],
+      "related": [
+        "ORCH-BE-ENDPOINT",
+        "ORCH-MOB-FEAT",
+        "ORCH-WEB-FEAT",
+        "QG-REVIEW"
+      ],
+      "tags": [
+        "cross-platform",
+        "cross-repo",
+        "backend",
+        "mobile",
+        "web",
+        "contract",
+        "orchestration"
+      ],
+      "status": ""
+    },
+    {
       "id": "ORCH-BE-ENDPOINT",
       "type": "orchestrator",
       "layer": "feature-orchestrators",
-      "path": "feature-orchestrators/backend-endpoint.md",
+      "path": "feature-orchestrators/backend/backend-endpoint.md",
       "platform": [
         "backend"
       ],
@@ -869,7 +900,7 @@
       "id": "ORCH-MOB-FEAT",
       "type": "orchestrator",
       "layer": "feature-orchestrators",
-      "path": "feature-orchestrators/mobile-feature.md",
+      "path": "feature-orchestrators/mobile/mobile-feature.md",
       "platform": [
         "mobile"
       ],
@@ -916,7 +947,7 @@
       "id": "ORCH-WEB-FEAT",
       "type": "orchestrator",
       "layer": "feature-orchestrators",
-      "path": "feature-orchestrators/web-feature.md",
+      "path": "feature-orchestrators/web/web-feature.md",
       "platform": [
         "web"
       ],

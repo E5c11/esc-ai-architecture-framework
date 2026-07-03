@@ -1,6 +1,6 @@
 # Framework Document Index
 
-*Generated 2026-06-30 — 64 documents*
+*Generated 2026-07-03 — 65 documents*
 
 ## core/
 
@@ -97,6 +97,7 @@
 
 | ID | Type | Path | Status |
 |---|---|---|---|
-| `ORCH-BE-ENDPOINT` | orchestrator | `feature-orchestrators/backend-endpoint.md` |  |
-| `ORCH-MOB-FEAT` | orchestrator | `feature-orchestrators/mobile-feature.md` |  |
-| `ORCH-WEB-FEAT` | orchestrator | `feature-orchestrators/web-feature.md` |  |
+| `ORCH-ALL-CROSS-REPO` | orchestrator | `feature-orchestrators/shared/cross-repo-feature.md` |  |
+| `ORCH-BE-ENDPOINT` | orchestrator | `feature-orchestrators/backend/backend-endpoint.md` |  |
+| `ORCH-MOB-FEAT` | orchestrator | `feature-orchestrators/mobile/mobile-feature.md` |  |
+| `ORCH-WEB-FEAT` | orchestrator | `feature-orchestrators/web/web-feature.md` |  |
