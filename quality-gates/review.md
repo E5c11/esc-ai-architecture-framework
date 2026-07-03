@@ -111,6 +111,8 @@ The earlier a violation is caught, the cheaper it is to fix.
 - [ ] Write methods annotated `@Transactional` (SVC-TX-01, SVC-TX-02)
 - [ ] Known errors throw `ResponseStatusException` (SVC-ERROR-01)
 - [ ] Constructor injection only (SVC-INJECT-01)
+- [ ] Sensitive tokens hashed at rest, single-use rotation, validity checks both
+      `revoked` and expiry (SVC-TOKEN-01, SVC-TOKEN-02, SVC-TOKEN-03)
 
 ### DataSource
 - [ ] Custom wrapper only when warranted by REP-WHEN-01

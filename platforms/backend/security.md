@@ -6,7 +6,7 @@ platform: [backend]
 architecture: backend-service
 requires: [ARCH-BE, ARCH-BE-CONTROLLER, ARCH-BE-SERVICE]
 related: [PLAT-BE-SPRING]
-tags: [security, jwt, authentication, spring-security, authentication-principal, stateless]
+tags: [security, jwt, authentication, spring-security, authentication-principal, stateless, refresh-token, token-rotation]
 ---
 
 # Spring Security / JWT Platform Guide
@@ -150,9 +150,57 @@ the `userId.toString()` as the subject value.
 required on `@WebMvcTest` classes that test endpoints protected by the JWT filter.
 Public endpoints (under `PERMIT_ALL` paths) do not need `@Import` for the security beans.
 
+## Refresh token storage
+
+Refresh tokens are the long-lived half of the JWT pair and MUST follow the
+sensitive-token rules in `ARCH-BE-SERVICE` (`SVC-TOKEN-01`, `SVC-TOKEN-02`,
+`SVC-TOKEN-03`): hashed at rest, single-use/rotated on exchange, and validated
+against both `revoked` and `expiresAt`. Those rules are framework-agnostic; this
+is what they look like wired into `AuthService`:
+
+```kotlin
+@Transactional
+fun refresh(request: RefreshRequest): AuthResponse {
+    if (!jwtService.isValid(request.refreshToken)) {
+        throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid refresh token")
+    }
+    val stored = refreshTokenRepository.findByTokenHash(sha256(request.refreshToken))
+        ?: throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token not recognised")
+    if (stored.revoked || stored.expiresAt.isBefore(timeProvider.now())) {
+        throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token expired or revoked")
+    }
+    val user = stored.user
+    refreshTokenRepository.delete(stored) // single-use rotation
+    return issueTokens(user)
+}
+
+private fun issueTokens(user: UserEntity): AuthResponse {
+    val accessToken = jwtService.generateAccessToken(user.id)
+    val refreshToken = jwtService.generateRefreshToken(user.id)
+    refreshTokenRepository.save(
+        RefreshTokenEntity(
+            user = user,
+            tokenHash = sha256(refreshToken),
+            expiresAt = timeProvider.now().plusMillis(jwtService.refreshTokenExpirationMs),
+        )
+    )
+    return AuthResponse(accessToken, refreshToken, ...)
+}
+```
+
+`RefreshTokenEntity.tokenHash` stores `sha256(refreshToken)` — the raw JWT refresh
+token is generated, returned to the client once, and never persisted. `logout()`
+performs the same hash lookup to delete a token on demand, so a stolen-but-unused
+token can still be revoked before an attacker exchanges it.
+
 ## Violations
 
 - `SecurityContextHolder.getContext()` called in a service class
 - Path patterns hardcoded as strings in `SecurityConfig.requestMatchers`
 - `@SpringBootTest` used for controller tests that only need MockMvc
 - No test for the unauthenticated (401) case on a protected endpoint
+- Refresh token persisted or logged in raw form instead of hashed (`SVC-TOKEN-01`)
+- Refresh endpoint issues a new token pair without deleting/rotating the old row
+  (`SVC-TOKEN-02`)
+- Refresh validity check tests `expiresAt` or `revoked` alone instead of both
+  (`SVC-TOKEN-03`)

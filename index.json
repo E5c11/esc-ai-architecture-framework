@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-03T09:18:04.298960+00:00",
+  "generated": "2026-07-03T10:13:06.401051+00:00",
   "count": 65,
   "documents": [
     {
@@ -170,7 +170,10 @@
         "business-logic",
         "transactions",
         "time-provider",
-        "dto"
+        "dto",
+        "token",
+        "refresh-token",
+        "rotation"
       ],
       "status": ""
     },
@@ -1110,7 +1113,9 @@
         "authentication",
         "spring-security",
         "authentication-principal",
-        "stateless"
+        "stateless",
+        "refresh-token",
+        "token-rotation"
       ],
       "status": ""
     },

@@ -6,7 +6,7 @@ platform: [backend]
 architecture: backend-service
 requires: [ARCH-BE, CORE-DI, CORE-ERROR]
 related: [ARCH-BE-CONTROLLER, ARCH-BE-DATASOURCE, ARCH-BE-ERROR, PLAT-BE-SPRING]
-tags: [service, business-logic, transactions, time-provider, dto]
+tags: [service, business-logic, transactions, time-provider, dto, token, refresh-token, rotation]
 ---
 
 # Service Layer
@@ -76,6 +76,49 @@ Creating a wrapper for a single `findBy*` call adds indirection with no benefit.
 
 **Rule SVC-NAMING-01 (soft):** Service class: `{Domain}Service`. Methods: verb-noun
 pattern (`login`, `register`, `updateProfile`, `createSubject`).
+
+## Sensitive token handling
+
+Any service that issues and persists its own long-lived tokens — refresh tokens,
+password-reset links, email-verification codes, API keys — is running a credential
+store, not just writing a business record. The same discipline applied to
+passwords applies here, regardless of which HTTP framework or JWT library sits on
+top.
+
+**Rule SVC-TOKEN-01 (hard):** A long-lived token persisted by the service MUST be
+stored as a one-way hash (SHA-256 or stronger), never in raw form. Look up an
+incoming token by hashing it and querying on the hash column. A raw token sitting
+in a database row is equivalent to a plaintext password — a database leak hands
+the attacker a live, immediately usable credential with no cracking required.
+
+> Violation: `RefreshTokenEntity(tokenHash = refreshToken, ...)`
+> Fix: `RefreshTokenEntity(tokenHash = sha256(refreshToken), ...)` — return the raw
+> token to the caller once at issuance; never store or log it again.
+
+**Rule SVC-TOKEN-02 (hard):** An exchange/refresh operation MUST invalidate the
+presented token as part of issuing its replacement (single-use rotation). Delete
+or mark the stored token row consumed once it passes validation, before generating
+the new pair. Without rotation, a stolen token stays valid for its entire
+remaining lifetime even after the legitimate client has moved past it — rotation
+caps a leaked token's usable window at one exchange, and a second exchange attempt
+against an already-deleted token hash is a reliable replay signal.
+
+> Violation: validate the token, issue a new pair, and leave the old row in place
+> ("it'll expire on its own eventually").
+> Fix: `refreshTokenRepository.delete(stored) // single-use rotation` before
+> calling the token-issuance path.
+
+**Rule SVC-TOKEN-03 (hard):** A token validity check MUST test both explicit
+revocation and expiry — never one in isolation. A token can be individually
+revoked (logout, admin action, detected compromise) long before its natural
+expiry, and a token can simply outlive its TTL without ever being revoked.
+Checking only `expiresAt` misses revoked-but-unexpired tokens; checking only
+`revoked` misses tokens that expired on schedule.
+
+> Violation: `if (stored.expiresAt.isBefore(timeProvider.now())) throw ...`
+> (revocation never checked)
+> Fix: `if (stored.revoked || stored.expiresAt.isBefore(timeProvider.now()))
+> throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expired or revoked")`
 
 ## Business error HTTP status guide
 
