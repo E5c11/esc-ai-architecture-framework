@@ -51,6 +51,12 @@ The earlier a violation is caught, the cheaper it is to fix.
 ### SSOT (CORE-SSOT)
 - [ ] Local source is authoritative; remote feeds it, not bypasses it
 - [ ] No two sources of truth for the same domain data
+- [ ] No hardcoded fallback list/constant duplicates data that should be single-sourced from
+      a remote/config source (e.g. a client-side "available options" list that silently
+      drifts from what the backend actually returns) — a stale default is a correctness bug,
+      not just missing data. This is semantic, not structural: a reviewer must check whether
+      each hardcoded default is a genuine one-time seed value or a duplicate of a remote
+      source of truth someone forgot to wire up — no lint rule can tell those apart
 
 ### Testing
 - [ ] New logic has tests
