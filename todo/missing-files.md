@@ -31,10 +31,6 @@ Resolve before writing.
 `arrow-errors` library owned by the project author. The implementation guide depends
 on this answer.
 
-### HTTP client layer — `platforms/mobile/http-client.md` (PLAT-MOB-HTTP)
-**Status: stub.** Context: Firebase SDK → Spring Boot backend migration. Ktor assumed
-for KMP; confirm before writing.
-
 ---
 
 ## Low priority
@@ -67,6 +63,24 @@ to reuse across projects and now live in `platforms/mobile/`.
 | `PLAT-MOB-DS-THEME` | `platforms/mobile/design-system/theme.md` | DS-THEME-01 through DS-THEME-10 rules, Spacing/Corners/Elevations, Alpha constants |
 | `PLAT-MOB-DS-ICONS` | `platforms/mobile/design-system/icons.md` | AppIcons singleton, ImageVector, DS-ICON rules, touch targets |
 | `PLAT-MOB-DS-IMAGES` | `platforms/mobile/design-system/images.md` | Coil abstraction, AppAsyncImage/AppCircularImage, placeholder types, KMP engine split |
+
+---
+
+## Completed (arrow-http library-platform gap analysis, 2026-07-10)
+
+Triggered by evaluating `arrow-http` (a published KMP HTTP library) as the transport for a
+future generated API-client codegen pipeline. Surfaced that the framework had no vocabulary
+for "publishing a library" as distinct from "building mobile/backend/web apps" — added a new
+`library` platform (see `schemas/document.yaml` v1.1 and `platforms/library/README.md`) —
+and that `PLAT-MOB-HTTP` had sat as an empty stub despite a real, working reference
+implementation existing to write it from.
+
+| Doc ID | File | Notes |
+|--------|------|-------|
+| `CORE-API-STABILITY` | `core/api-stability.md` | Semver discipline, additive-only public API evolution, default-vs-abstract interface method rule |
+| `PLAT-LIB-KMP` | `platforms/library/kmp-packaging.md` | `api`/`implementation` visibility, Maven Central publishing, worked example from `arrow-http`'s real build config |
+| `PLAT-MOB-HTTP` | `platforms/mobile/http-client.md` | Previously a stub — written for real using `arrow-http` (`HeaderProvider`/`AuthRefresher`/`RetryPolicy`/`HttpException` hierarchy) as the reference implementation |
+| `PLAT-LIB-JS-EXPORT` | `platforms/library/js-npm-export.md` | Written for real from `arrow-http` 1.2.0's Phase 2 spike: verified Gradle DSL, per-type `@JsExport` results (including the hard `suspend fun` export blocker), the critical finding that `@JsExport` breaks non-`js` targets if placed in `commonMain`, the `webMain`/default-hierarchy-template conflict, and two Kotlin Gradle plugin bugs (KT-69996 and a `rootPackageJson` collision) that only surface with `js`+`wasmJs` together |
 
 ---
 
