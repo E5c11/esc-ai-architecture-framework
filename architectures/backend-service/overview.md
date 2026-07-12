@@ -5,7 +5,7 @@ layer: architectures
 platform: [backend]
 architecture: backend-service
 requires: [CORE-DI, CORE-ERROR, CORE-NAMING, CORE-COUPLING, PAT-DATA-ACCESS]
-related: [ARCH-BE-CONTROLLER, ARCH-BE-SERVICE, ARCH-BE-DATASOURCE, ARCH-BE-ENTITY, ARCH-BE-ERROR, PLAT-BE-SPRING, PLAT-BE-JPA]
+related: [ARCH-BE-CONTROLLER, ARCH-BE-SERVICE, ARCH-BE-DATASOURCE, ARCH-BE-ENTITY, ARCH-BE-ERROR, ARCH-BE-PAGINATION, ARCH-BE-PUBLISHING, PLAT-BE-SPRING, PLAT-BE-JPA]
 tags: [backend, spring-boot, architecture, layers, rest-api]
 ---
 
