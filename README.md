@@ -29,12 +29,15 @@ esc-ai-framework/
 
 ## For AI agents
 
-Start with `CLAUDE.md`.
+See [`INSTRUCTIONS.md`](./INSTRUCTIONS.md) — the canonical, provider-agnostic guide to
+using this framework. Provider-specific entry files (`CLAUDE.md`, etc.) just point here.
 
 ## For projects consuming this framework
 
 Define `context/project-profile.yaml` in your project.
 The profile determines which framework layers are loaded for each task.
+See `INSTRUCTIONS.md`'s Gap Protocol for what to do when this framework and your
+project's own internal framework extension both lack coverage for a scenario.
 
 ## Roadmap
 
