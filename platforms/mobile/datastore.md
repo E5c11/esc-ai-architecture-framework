@@ -5,7 +5,7 @@ layer: platform
 platform: [mobile]
 architecture: [pragmatic-clean]
 requires: [PLAT-MOB-KMP, PLAT-MOB-KOIN]
-related: [PLAT-MOB-ROOM, ARCH-PC-DATASOURCE]
+related: [PLAT-MOB-ROOM, ARCH-PC-DATASOURCE, PLAT-MOB-SECURE-STORAGE]
 tags: [datastore, preferences, kmp, testing, fakeDataStore, coroutines, flow]
 ---
 
@@ -108,6 +108,21 @@ single<DataStore<Preferences>> {
     )
 }
 ```
+
+### Native/iOS construction
+
+On Native, construct the DataStore with a path inside the application support/files
+container. Path selection is a platform adapter responsibility; preference read/write logic
+remains common.
+
+**Rule PLAT-MOB-DS-NATIVE-01 (hard):** Native DataStore files MUST live in an
+application-owned persistent container and use one stable path per logical store.
+
+**Rule PLAT-MOB-DS-SECRET-01 (hard):** Access tokens, refresh tokens and cryptographic
+keys MUST NOT be stored in DataStore. Use `PLAT-MOB-SECURE-STORAGE`.
+
+Add an iOS integration test for construction, write/read and recreation using a temporary
+application-owned test path; common `FakeDataStore` tests do not validate filesystem wiring.
 
 ---
 
@@ -248,6 +263,8 @@ Exception-handling paths require instrumented tests or a throwable variant of `F
 - [ ] Every write function has a write → read round-trip test
 - [ ] Every Flow function uses Turbine with `cancelAndIgnoreRemainingEvents()`
 - [ ] No `mock()` for DataStore — use `FakeDataStore`
+- [ ] Native file path is application-owned and stable; recreation test passes
+- [ ] Sensitive credentials use secure storage rather than DataStore
 
 ---
 

@@ -31,6 +31,8 @@ Output (--json):  JSON object/array suitable for programmatic consumption.
 Exit code: 0 = success, 1 = orchestrator not found or error.
 """
 
+from __future__ import annotations
+
 import re
 import sys
 import json
@@ -74,10 +76,26 @@ PROFILE_DOC_MAP: dict[str, dict[str, list[str]]] = {
     },
     "notifications": {
         "workmanager": ["PLAT-MOB-NOTIF"],
+        "multiplatform": ["PLAT-MOB-NOTIF"],
     },
     "storage": {
         "datastore": ["PLAT-MOB-DATASTORE"],
     },
+    "secure-storage": {
+        "keychain": ["PLAT-MOB-SECURE-STORAGE"],
+        "platform": ["PLAT-MOB-SECURE-STORAGE"],
+    },
+    "auth": {
+        "oauth": ["PLAT-MOB-IOS-AUTH"],
+        "firebase": ["PLAT-MOB-IOS-AUTH"],
+    },
+    "billing": {
+        "storekit": ["PLAT-MOB-IOS-BILLING"],
+    },
+}
+
+TARGET_DOC_MAP: dict[str, list[str]] = {
+    "ios": ["PLAT-MOB-KMP-IOS"],
 }
 
 
@@ -163,15 +181,22 @@ def parse_profile(path: Path) -> dict:
                 result[key] = {}
             else:
                 current_section = None
-                result[key] = val
+                result[key] = _parse_inline_list(val) if val.startswith("[") else val
         elif current_section and isinstance(result.get(current_section), dict):
-            result[current_section][key] = val
+            result[current_section][key] = _parse_inline_list(val) if val.startswith("[") else val
     return result
 
 
 def profile_extra_docs(profile: dict) -> list[str]:
     """Return additional doc IDs implied by the project profile's frameworks section."""
     extras: list[str] = []
+    targets = profile.get("targets", [])
+    if isinstance(targets, str):
+        targets = [targets]
+    for target in targets:
+        for doc_id in TARGET_DOC_MAP.get(target, []):
+            if doc_id not in extras:
+                extras.append(doc_id)
     frameworks = profile.get("frameworks", {})
     if not isinstance(frameworks, dict):
         return extras

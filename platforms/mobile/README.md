@@ -14,5 +14,12 @@ tooling. They assume the reader has already loaded the relevant architecture lay
 - Room (local database)
 - Ktor (networking)
 - Firebase Android/KMP SDK
+- Apple targets, Xcode framework integration, UIKit interop, OAuth and StoreKit
+
+## Target-specific entry points
+
+- `PLAT-MOB-KMP-IOS` — Apple target graph, framework/Xcode bootstrap and validation
+- `PLAT-MOB-KMP-WEB` — Wasm/browser target structure and NoOp policy
+- `ORCH-MOB-IOS` — dependency-to-archive iOS port sequence
 
 ## Document ID prefix: `PLAT-MOB-`

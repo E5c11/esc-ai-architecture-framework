@@ -15,7 +15,7 @@
 #   ---
 
 schema:
-  version: "1.0"
+  version: "1.1"
   type: document-metadata
 
 fields:
@@ -40,18 +40,20 @@ fields:
       - architecture  # A full architectural style definition
       - platform      # Platform-specific implementation guide
       - orchestrator  # A step-by-step implementation plan
+      - overview      # A layer/architecture overview document
+      - rules         # An actionable collection of rules
     description: The kind of knowledge this document contains.
 
   layer:
     type: enum
     required: true
-    values: [core, pattern, architecture, platform, build, quality, orchestrator]
+    values: [core, pattern, architecture, architectures, platform, platforms, build, quality, quality-gates, orchestrator, feature-orchestrators]
     description: Which framework layer this document belongs to.
 
   platform:
     type: array
     required: true
-    values: [mobile, backend, web, build, all]
+    values: [mobile, backend, web, library, build, all]
     description: >
       Which platforms this document applies to.
       Use [all] for platform-agnostic documents.
@@ -59,7 +61,7 @@ fields:
   architecture:
     type: array
     required: true
-    values: [pragmatic-clean, backend-service, all]
+    values: [pragmatic-clean, backend-service, web-spa, vertical-slice, hexagonal, all]
     description: >
       Which architectures this document applies to.
       Use [all] for architecture-agnostic documents.
@@ -84,3 +86,9 @@ fields:
     required: false
     item_type: string
     description: Free-form retrieval tags for future RAG indexing.
+
+  status:
+    type: enum
+    required: false
+    values: [active, stub, deprecated]
+    description: Lifecycle state. Omit for active documents; stub triggers the Gap Protocol.

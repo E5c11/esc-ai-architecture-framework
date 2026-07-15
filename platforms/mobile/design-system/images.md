@@ -126,10 +126,20 @@ androidMain {
 wasmJsMain {
     dependencies { implementation(libs.coil.network.ktor) }
 }
+iosMain {
+    dependencies {
+        implementation(libs.coil.network.ktor)
+        implementation(libs.ktor.client.darwin)
+    }
+}
 ```
 
 No code changes needed in components — Coil 3 detects the engine automatically.
 See `PLAT-MOB-KMP-WEB` for source set placement rules.
+
+**Rule DS-IMAGE-IOS-01 (hard):** iOS remote-image loading MUST include a compatible
+Ktor/Coil engine and be proven by a simulator image-load smoke test. Common compilation
+alone does not prove engine availability.
 
 ---
 

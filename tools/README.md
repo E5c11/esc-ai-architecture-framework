@@ -5,13 +5,16 @@ Validation scripts and CLI utilities for framework maintenance.
 Tools in this directory enforce framework health — they are not consumed by
 AI agents during feature implementation.
 
-## Planned tools (Phase 6)
+## Framework commands
 
-- `validate-references` — detect broken document ID references
-- `validate-schema` — check document metadata against schemas/
-- `check-duplicate-ids` — catch duplicate document or rule IDs
-- `check-circular-refs` — detect circular requires chains
-- `generate-index` — build retrieval index from document metadata
+- `python3 tools/validate.py` — validates IDs, metadata values, references, dependency
+  cycles and generated-index freshness.
+- `python3 tools/index.py` — regenerates `index.json` and `index.md` from document metadata.
+- `python3 tools/lookup.py --orchestrator DOC-ID [--phase N] [--profile PATH]` — resolves
+  the ordered document set for an orchestrator or one implementation phase.
+
+Run the index generator after document metadata changes, then run validation and at least one
+filesystem and `--use-index` lookup for every new orchestrator.
 
 ## `check_wiki_staleness.py`
 

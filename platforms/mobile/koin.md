@@ -5,7 +5,7 @@ layer: platform
 platform: [mobile]
 architecture: [all]
 requires: [CORE-DI, PLAT-MOB-KMP]
-related: [PLAT-MOB-KOTLIN]
+related: [PLAT-MOB-KOTLIN, PLAT-MOB-KMP-IOS]
 tags: [koin, dependency-injection, modules, qualifiers, scopes, factory, single]
 ---
 
@@ -89,14 +89,53 @@ abstraction in core.
 
 ## New feature module setup
 
-> **TODO:** This section is a stub. See `todo/missing-files.md` for context.
->
-> Needs a step-by-step walkthrough covering:
-> - Which scopes to use for each layer (ViewModel → factory/viewModel, UseCase → factory, Repository → factory, DataSource → factory, DAOs → single)
-> - The order in which to declare bindings inside the module block
-> - How to register the module in `initKoin()`
-> - How to handle optional / conditional registrations (e.g. feature-flagged DataSources)
-> - A complete worked example of a feature module with all layers wired
+Declare bindings in dependency order and use architecture-appropriate lifetimes:
+
+```kotlin
+fun profileModule() = module {
+    single<ProfileLocalDataSource> { DefaultProfileLocalDataSource(get()) }
+    factory<ProfileRemoteDataSource> { DefaultProfileRemoteDataSource(get()) }
+    factory<ProfileRepository> { DefaultProfileRepository(get(), get()) }
+    factoryOf(::ObserveProfileUseCase)
+    factoryOf(::UpdateProfileUseCase)
+    viewModelOf(::ProfileViewModel)
+}
+```
+
+Use `single` for expensive/stateful resources and platform SDK clients, `factory` for
+stateless DataSources/repositories/UseCases unless architecture state requires otherwise,
+and `viewModelOf` for ViewModels. Register the feature module once in the shared module list.
+
+Conditional capabilities should bind one explicit implementation selected from build/runtime
+configuration. If unsupported, bind an explicit unsupported result and hide/disable its UI.
+
+**Rule PLAT-MOB-KOIN-FEAT-01 (hard):** Every constructor dependency in a feature graph
+MUST resolve in a dedicated module-resolution test for every supported platform module.
+
+**Rule PLAT-MOB-KOIN-COND-01 (hard):** Conditional DI MUST select exactly one binding
+per interface and expose unsupported capability explicitly.
+
+## iOS bootstrap
+
+Keep the shared module list in common code and supply one platform module from the iOS entry
+point. The platform module is registered last so intentional platform implementations can
+replace portable defaults without duplicating feature modules.
+
+**Rule PLAT-MOB-KOIN-IOS-01 (hard):** iOS MUST initialize Koin exactly once before the
+root Compose controller renders content.
+
+**Rule PLAT-MOB-KOIN-IOS-02 (hard):** The iOS platform module MUST bind every interface
+used by common code whose implementation is platform-specific. Validate the graph at startup
+or in a dedicated resolution test.
+
+```kotlin
+fun initKoin(platformModule: Module): KoinApplication = startKoin {
+    modules(commonModules + platformModule)
+}
+```
+
+Do not put UIKit/Foundation objects in common modules. Controller recreation should reuse
+the initialized graph rather than catch and ignore duplicate-start exceptions.
 
 ## Violations
 
@@ -106,3 +145,4 @@ abstraction in core.
 - `UseCase<TypeA>` and `UseCase<TypeB>` registered without named qualifiers
 - Firebase instance declared as `factory` (reconstructed on every injection)
 - Feature module registered before a core module it depends on
+- iOS controller composing before Koin initialization

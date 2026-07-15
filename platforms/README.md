@@ -12,7 +12,8 @@ redefines architecture rules — it only adds platform-specific expression of th
 platforms/
 ├── mobile/      # Kotlin / KMP / Compose / Koin / Coroutines
 ├── backend/     # Kotlin / Spring Boot / JPA / Spring Security
-└── web/         # TypeScript / React / Next.js
+├── web/         # TypeScript / React / Next.js
+└── library/     # Independently published KMP libraries and exports
 ```
 
 ## Document ID prefix: `PLAT-`

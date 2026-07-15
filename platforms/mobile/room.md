@@ -5,8 +5,8 @@ layer: platform
 platform: [mobile]
 architecture: [all]
 requires: [PAT-DATA-ACCESS, PLAT-MOB-KOTLIN]
-related: [PLAT-MOB-KOIN, PLAT-MOB-FIREBASE]
-tags: [room, sqlite, dao, entity, local-database, android]
+related: [PLAT-MOB-KOIN, PLAT-MOB-FIREBASE, PLAT-MOB-KMP-IOS]
+tags: [room, sqlite, dao, entity, local-database, android, ios, kmp]
 ---
 
 # Room — Local Database
@@ -59,6 +59,33 @@ construct and must not be re-created per injection.
 migration. `fallbackToDestructiveMigration()` is only acceptable in development;
 production builds MUST provide explicit `Migration` objects.
 
+## KMP and iOS construction
+
+Put portable entities, DAOs and the database declaration in a source set compiled by every
+target that needs persistence. Configure Room's compiler/KSP task for each target rather than
+only `kspAndroid`. Keep platform database-builder/path code in platform source sets.
+
+**Rule PLAT-MOB-ROOM-KSP-01 (hard):** Every target compiling Room declarations MUST
+run the compatible Room compiler/KSP configuration and generated sources must be available
+to that target compilation.
+
+**Rule PLAT-MOB-ROOM-IOS-01 (hard):** The iOS database path MUST live in an
+application-owned persistent container and database construction MUST use the project's
+supported Native SQLite driver.
+
+**Rule PLAT-MOB-ROOM-SCHEMA-01 (hard):** All platforms share one schema version and
+migration history. Platform-specific destructive fallback is not a migration strategy.
+
+Do not move Android-only platform APIs into common code while moving Room declarations.
+If only selected features are ported, their schema/DAO dependencies must still form a
+complete database compilation unit.
+
+## Native verification
+
+Common DAO/DataSource tests verify contracts. Add simulator integration tests that open the
+real database, migrate representative old schemas, observe Flow updates, close/reopen the
+database and verify persistence. Use temporary paths and clean them after the test.
+
 ## DataSource responsibility
 
 A DataSource wraps a DAO. It maps entity types to domain types and translates
@@ -75,3 +102,5 @@ exceptions MUST NOT cross the DataSource boundary.
 - DAO constructing domain objects or calling domain logic
 - Room database declared as `factory` scope in Koin
 - Production code using `fallbackToDestructiveMigration()`
+- Room declarations compiled for iOS without an iOS KSP/compiler configuration
+- iOS database created in a cache/temporary directory for durable user data

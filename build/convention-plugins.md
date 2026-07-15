@@ -119,6 +119,20 @@ the `build-logic/convention/build.gradle.kts` `kotlin {}` block and replicated
 consistently in every convention plugin that configures JVM compilation.
 Never declare different JVM targets in different modules.
 
+## Multiplatform target conventions
+
+Target declarations shared by library/feature modules belong in a KMP convention helper.
+Application modules may add binary configuration, but should reuse the same target set.
+
+**Rule BUILD-CP-KMP-01 (hard):** A KMP convention plugin MUST configure the complete
+shared target set consistently for every module that participates in the application graph.
+
+**Rule BUILD-CP-KMP-IOS-01 (hard):** Apple targets MUST be declared independently of the
+current host OS. Host checks may select runnable tasks, never remove targets from the model.
+
+Keep `iosArm64` and `iosSimulatorArm64` setup in one helper. Do not copy target blocks into
+every module or require Linux developers to edit build files.
+
 ## Violations
 
 - Build configuration copy-pasted across module `build.gradle.kts` files
@@ -126,3 +140,4 @@ Never declare different JVM targets in different modules.
 - Plugin ID using underscores or camelCase instead of dot notation
 - Same Detekt or JVM config duplicated in multiple convention plugins
 - Gradle plugin API declared as `implementation` instead of `compileOnly`
+- Apple targets guarded by a macOS-only configuration branch

@@ -17,6 +17,7 @@ Exit code: 0 = all checks passed, 1 = one or more failures.
 
 import re
 import sys
+import json
 import argparse
 from pathlib import Path
 from collections import defaultdict, deque
@@ -44,6 +45,20 @@ LAYER_PREFIXES = {
 }
 
 ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$")
+
+ALLOWED_TYPES = {
+    "principle", "pattern", "guide", "rule-set", "architecture", "platform", "orchestrator",
+    "overview", "rules",
+}
+ALLOWED_META_LAYERS = {
+    "core", "pattern", "architecture", "architectures", "platform", "platforms", "build",
+    "quality", "quality-gates", "orchestrator", "feature-orchestrators",
+}
+ALLOWED_PLATFORMS = {"mobile", "backend", "web", "library", "build", "all"}
+ALLOWED_ARCHITECTURES = {
+    "pragmatic-clean", "backend-service", "web-spa", "vertical-slice", "hexagonal", "all"
+}
+ALLOWED_STATUSES = {"", "active", "stub", "deprecated"}
 
 
 # ---------------------------------------------------------------------------
@@ -143,6 +158,11 @@ def collect_documents(root: Path) -> list[dict]:
                 "path":     md_file.relative_to(root),
                 "layer":    layer_dir,
                 "id":       meta.get("id", ""),
+                "type":     meta.get("type", ""),
+                "meta_layer": meta.get("layer", ""),
+                "platform": meta.get("platform", []) if isinstance(meta.get("platform"), list) else [meta.get("platform", "")],
+                "architecture": meta.get("architecture", []) if isinstance(meta.get("architecture"), list) else [meta.get("architecture", "")],
+                "status":   meta.get("status", ""),
                 "requires": meta.get("requires", []) if isinstance(meta.get("requires"), list) else [],
                 "related":  meta.get("related",  []) if isinstance(meta.get("related"),  list) else [],
             })
@@ -201,6 +221,30 @@ def check_layer_prefix(documents: list[dict]) -> list[str]:
     return errors
 
 
+def check_metadata_values(documents: list[dict]) -> list[str]:
+    errors = []
+    for doc in documents:
+        path = doc["path"]
+        checks = [
+            ("type", [doc["type"]], ALLOWED_TYPES),
+            ("layer", [doc["meta_layer"]], ALLOWED_META_LAYERS),
+            ("platform", doc["platform"], ALLOWED_PLATFORMS),
+            ("architecture", doc["architecture"], ALLOWED_ARCHITECTURES),
+            ("status", [doc["status"]], ALLOWED_STATUSES),
+        ]
+        for field, values, allowed in checks:
+            if field != "status" and (not values or values == [""]):
+                errors.append(f"  MISSING METADATA  {field} in {path}")
+                continue
+            invalid = [value for value in values if value not in allowed]
+            if invalid:
+                errors.append(
+                    f"  INVALID METADATA  {field}={invalid!r} in {path}; "
+                    f"allowed={sorted(allowed)!r}"
+                )
+    return errors
+
+
 def check_broken_references(documents: list[dict]) -> list[str]:
     known_ids = {doc["id"] for doc in documents if doc["id"]}
     errors = []
@@ -242,6 +286,48 @@ def check_circular_requires(documents: list[dict]) -> list[str]:
     return errors
 
 
+def check_generated_indexes(root: Path, documents: list[dict]) -> list[str]:
+    errors = []
+    expected = {
+        doc["id"]: {
+            "path": str(doc["path"]),
+            "status": doc["status"],
+        }
+        for doc in documents if doc["id"]
+    }
+
+    json_path = root / "index.json"
+    if not json_path.exists():
+        errors.append("  MISSING INDEX  index.json")
+    else:
+        try:
+            data = json.loads(json_path.read_text(encoding="utf-8"))
+            actual = {
+                item["id"]: {
+                    "path": item.get("path", ""),
+                    "status": item.get("status", ""),
+                }
+                for item in data.get("documents", [])
+            }
+            if actual != expected or data.get("count") != len(expected):
+                errors.append("  STALE INDEX  index.json (run: python3 tools/index.py)")
+        except (json.JSONDecodeError, KeyError, TypeError) as exc:
+            errors.append(f"  INVALID INDEX  index.json: {exc}")
+
+    markdown_path = root / "index.md"
+    if not markdown_path.exists():
+        errors.append("  MISSING INDEX  index.md")
+    else:
+        indexed_ids = set(re.findall(
+            r"^\| `([A-Z][A-Z0-9-]+)` \|",
+            markdown_path.read_text(encoding="utf-8"),
+            re.MULTILINE,
+        ))
+        if indexed_ids != set(expected):
+            errors.append("  STALE INDEX  index.md (run: python3 tools/index.py)")
+    return errors
+
+
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
@@ -266,8 +352,10 @@ def main() -> int:
         ("Duplicate IDs",         check_duplicate_ids(documents)),
         ("Invalid ID format",     check_id_pattern(documents)),
         ("Layer prefix mismatch", check_layer_prefix(documents)),
+        ("Metadata schema values", check_metadata_values(documents)),
         ("Broken references",     check_broken_references(documents)),
         ("Circular requires",     check_circular_requires(documents)),
+        ("Generated indexes",     check_generated_indexes(root, documents)),
     ]
 
     any_failure = False

@@ -3,6 +3,7 @@
 
 project: ampm
 platform: mobile
+targets: [android, ios, wasmJs]
 language: kotlin
 architecture: pragmatic-clean
 frameworks:
@@ -11,6 +12,11 @@ frameworks:
   network: ktor
   database: room
   cloud: firebase
+  storage: datastore
+  secure-storage: keychain
+  auth: oauth
+  billing: storekit
+  notifications: multiplatform
 build:
   system: gradle
   convention-plugins: true

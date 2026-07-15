@@ -84,6 +84,13 @@ in a module build file without wiring it to the shared config.
 The build MUST pass `detekt` with zero new violations before merging. Baseline
 violations do not count as failures.
 
+For KMP, configure analysis inputs to include portable and platform source sets, including
+`nativeMain`/`iosMain` where supported by the selected task strategy. A root task that
+silently analyzes Android/JVM sources only is not whole-project evidence.
+
+**Rule BUILD-SA-KMP-01 (hard):** Static-analysis configuration MUST enumerate or otherwise
+prove coverage of every maintained source set; new Native source sets cannot be omitted.
+
 ## What Detekt checks (examples)
 
 - Complexity: function length, class length, cyclomatic complexity
@@ -99,3 +106,4 @@ The specific rules enabled are defined in `config/detekt/detekt.yml`.
 - Adding a `@Suppress("Detekt.RuleName")` annotation without also creating a baseline entry
 - Modifying `detekt.yml` in a single module to disable rules for that module only
 - Not committing `detekt-baseline.xml` files, causing Detekt to fail for new contributors
+- Adding `iosMain` while the configured analysis inputs still cover Android/JVM only

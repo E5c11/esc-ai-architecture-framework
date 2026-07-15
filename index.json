@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-03T10:14:28.109818+00:00",
-  "count": 65,
+  "generated": "2026-07-15T17:55:34.032129+00:00",
+  "count": 78,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -24,6 +24,8 @@
         "ARCH-BE-DATASOURCE",
         "ARCH-BE-ENTITY",
         "ARCH-BE-ERROR",
+        "ARCH-BE-PAGINATION",
+        "ARCH-BE-PUBLISHING",
         "PLAT-BE-SPRING",
         "PLAT-BE-JPA"
       ],
@@ -142,6 +144,64 @@
         "http-status",
         "global-exception-handler",
         "two-tier"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-BE-PAGINATION",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/backend-service/pagination.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "ARCH-BE",
+        "ARCH-BE-SERVICE",
+        "ARCH-BE-CONTROLLER"
+      ],
+      "related": [
+        "ARCH-BE-ENTITY",
+        "ARCH-BE-ERROR",
+        "PLAT-BE-SPRING",
+        "PLAT-BE-JPA"
+      ],
+      "tags": [
+        "pagination",
+        "list-endpoints",
+        "offset",
+        "page",
+        "dto-boundary",
+        "ordering"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-BE-PUBLISHING",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/backend-service/publishing.md",
+      "platform": [
+        "backend"
+      ],
+      "architecture": "backend-service",
+      "requires": [
+        "ARCH-BE",
+        "ARCH-BE-ENTITY",
+        "ARCH-BE-SERVICE"
+      ],
+      "related": [
+        "ARCH-BE-CONTROLLER",
+        "ARCH-BE-PAGINATION",
+        "PLAT-BE-JPA"
+      ],
+      "tags": [
+        "publishing",
+        "content-lifecycle",
+        "draft",
+        "admin-content",
+        "visibility"
       ],
       "status": ""
     },
@@ -326,7 +386,7 @@
         "error-presentation",
         "actionable-errors"
       ],
-      "status": "stub"
+      "status": ""
     },
     {
       "id": "ARCH-PC-ERROR-FLOW",
@@ -563,6 +623,36 @@
       "status": ""
     },
     {
+      "id": "BUILD-APPLE-CI",
+      "type": "guide",
+      "layer": "build",
+      "path": "build/apple-ci.md",
+      "platform": [
+        "mobile",
+        "build"
+      ],
+      "architecture": "all",
+      "requires": [
+        "BUILD-CONVENTION-PLUGINS",
+        "BUILD-PROJECT-STRUCTURE",
+        "PLAT-MOB-KMP-IOS"
+      ],
+      "related": [
+        "BUILD-STATIC-ANALYSIS",
+        "BUILD-COVERAGE",
+        "QG-MOB-NATIVE"
+      ],
+      "tags": [
+        "ci",
+        "macos",
+        "ios",
+        "xcodebuild",
+        "kotlin-native",
+        "signing"
+      ],
+      "status": ""
+    },
+    {
       "id": "BUILD-CONVENTION-PLUGINS",
       "type": "guide",
       "layer": "build",
@@ -689,6 +779,30 @@
         "libs-versions-toml",
         "dependencies",
         "versions"
+      ],
+      "status": ""
+    },
+    {
+      "id": "CORE-API-STABILITY",
+      "type": "principle",
+      "layer": "core",
+      "path": "core/api-stability.md",
+      "platform": [
+        "all"
+      ],
+      "architecture": "all",
+      "requires": [
+        "CORE-COUPLING"
+      ],
+      "related": [
+        "PLAT-LIB-KMP"
+      ],
+      "tags": [
+        "api",
+        "compatibility",
+        "semver",
+        "binary-compatibility",
+        "library"
       ],
       "status": ""
     },
@@ -947,6 +1061,46 @@
       "status": ""
     },
     {
+      "id": "ORCH-MOB-IOS",
+      "type": "orchestrator",
+      "layer": "feature-orchestrators",
+      "path": "feature-orchestrators/mobile/ios-port.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "CORE-API-STABILITY",
+        "ARCH-PC-ERR-CLASSES",
+        "PLAT-LIB-KMP",
+        "PLAT-MOB-KMP-IOS",
+        "PLAT-MOB-HTTP",
+        "PLAT-MOB-FIREBASE",
+        "PLAT-MOB-ROOM",
+        "PLAT-MOB-SECURE-STORAGE",
+        "PLAT-MOB-IOS-INTEROP",
+        "PLAT-MOB-IOS-AUTH",
+        "PLAT-MOB-IOS-BILLING",
+        "PLAT-MOB-NOTIF",
+        "BUILD-APPLE-CI",
+        "QG-MOB-NATIVE"
+      ],
+      "related": [
+        "ORCH-MOB-FEAT",
+        "QG-REVIEW"
+      ],
+      "tags": [
+        "mobile",
+        "kmp",
+        "ios",
+        "apple",
+        "port",
+        "xcode",
+        "release"
+      ],
+      "status": ""
+    },
+    {
       "id": "ORCH-WEB-FEAT",
       "type": "orchestrator",
       "layer": "feature-orchestrators",
@@ -1150,6 +1304,60 @@
       "status": ""
     },
     {
+      "id": "PLAT-LIB-JS-EXPORT",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/library/js-npm-export.md",
+      "platform": [
+        "library"
+      ],
+      "architecture": "all",
+      "requires": [
+        "PLAT-LIB-KMP"
+      ],
+      "related": [
+        "PLAT-MOB-KMP-WEB"
+      ],
+      "tags": [
+        "kotlin-js",
+        "npm",
+        "typescript",
+        "jsexport",
+        "dts",
+        "esmodules",
+        "wasmjs"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "PLAT-LIB-KMP",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/library/kmp-packaging.md",
+      "platform": [
+        "library"
+      ],
+      "architecture": "all",
+      "requires": [
+        "CORE-API-STABILITY",
+        "BUILD-VERSION-CATALOG"
+      ],
+      "related": [
+        "PLAT-LIB-JS-EXPORT",
+        "PLAT-MOB-KMP-IOS"
+      ],
+      "tags": [
+        "kmp",
+        "library",
+        "maven-central",
+        "publication",
+        "variants",
+        "klib",
+        "apple"
+      ],
+      "status": ""
+    },
+    {
       "id": "PLAT-MOB-COMPOSE",
       "type": "platform",
       "layer": "platforms",
@@ -1190,7 +1398,8 @@
       ],
       "related": [
         "PLAT-MOB-ROOM",
-        "ARCH-PC-DATASOURCE"
+        "ARCH-PC-DATASOURCE",
+        "PLAT-MOB-SECURE-STORAGE"
       ],
       "tags": [
         "datastore",
@@ -1332,7 +1541,9 @@
       ],
       "related": [
         "PLAT-MOB-KOIN",
-        "PLAT-MOB-ROOM"
+        "PLAT-MOB-ROOM",
+        "PLAT-MOB-HTTP",
+        "PLAT-MOB-SECURE-STORAGE"
       ],
       "tags": [
         "firebase",
@@ -1341,7 +1552,8 @@
         "cloud",
         "sdk",
         "rest",
-        "android"
+        "android",
+        "ios"
       ],
       "status": ""
     },
@@ -1356,13 +1568,14 @@
       "architecture": "pragmatic-clean",
       "requires": [
         "ARCH-PC-DATASOURCE",
+        "ARCH-PC-ERR-CLASSES",
         "CORE-DI",
         "PLAT-MOB-KOTLIN"
       ],
       "related": [
         "ARCH-PC-ERROR-FLOW",
-        "ARCH-PC-ERR-CLASSES",
-        "PAT-OUTCOME"
+        "PAT-OUTCOME",
+        "PLAT-MOB-KMP-IOS"
       ],
       "tags": [
         "http",
@@ -1374,7 +1587,7 @@
         "retry",
         "timeout"
       ],
-      "status": "stub"
+      "status": ""
     },
     {
       "id": "PLAT-MOB-HUAWEI",
@@ -1407,6 +1620,92 @@
       "status": ""
     },
     {
+      "id": "PLAT-MOB-IOS-AUTH",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/ios-auth.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "PLAT-MOB-IOS-INTEROP",
+        "PLAT-MOB-SECURE-STORAGE",
+        "ARCH-PC-DATASOURCE"
+      ],
+      "related": [
+        "PLAT-MOB-FIREBASE",
+        "PLAT-MOB-HTTP"
+      ],
+      "tags": [
+        "ios",
+        "auth",
+        "oauth",
+        "callback",
+        "url-scheme",
+        "session"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-MOB-IOS-BILLING",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/ios-billing.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "PLAT-MOB-IOS-INTEROP",
+        "ARCH-PC-DATASOURCE",
+        "ARCH-PC-REPOSITORY",
+        "ARCH-PC-USECASE"
+      ],
+      "related": [
+        "PLAT-MOB-SECURE-STORAGE"
+      ],
+      "tags": [
+        "ios",
+        "storekit",
+        "billing",
+        "subscriptions",
+        "entitlements",
+        "restore"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-MOB-IOS-INTEROP",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/ios-interop.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "PLAT-MOB-KMP-IOS",
+        "ARCH-PC-DATASOURCE",
+        "ARCH-PC-VIEW"
+      ],
+      "related": [
+        "PLAT-MOB-IOS-AUTH",
+        "PLAT-MOB-IOS-BILLING",
+        "PLAT-MOB-NOTIF"
+      ],
+      "tags": [
+        "ios",
+        "uikit",
+        "foundation",
+        "interop",
+        "permissions",
+        "lifecycle",
+        "sharing"
+      ],
+      "status": ""
+    },
+    {
       "id": "PLAT-MOB-KMP",
       "type": "platform",
       "layer": "platforms",
@@ -1420,7 +1719,9 @@
       ],
       "related": [
         "PLAT-MOB-KOIN",
-        "PLAT-MOB-KOTLIN"
+        "PLAT-MOB-KOTLIN",
+        "PLAT-MOB-KMP-IOS",
+        "PLAT-MOB-KMP-WEB"
       ],
       "tags": [
         "kmp",
@@ -1430,6 +1731,36 @@
         "wasm",
         "ios",
         "android"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-MOB-KMP-IOS",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/kmp-ios.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "PLAT-MOB-KMP",
+        "PLAT-MOB-KOIN",
+        "BUILD-CONVENTION-PLUGINS"
+      ],
+      "related": [
+        "BUILD-APPLE-CI",
+        "PLAT-MOB-IOS-INTEROP",
+        "QG-MOB-NATIVE"
+      ],
+      "tags": [
+        "kmp",
+        "ios",
+        "apple",
+        "kotlin-native",
+        "xcode",
+        "framework",
+        "source-sets"
       ],
       "status": ""
     },
@@ -1479,7 +1810,8 @@
         "PLAT-MOB-KMP"
       ],
       "related": [
-        "PLAT-MOB-KOTLIN"
+        "PLAT-MOB-KOTLIN",
+        "PLAT-MOB-KMP-IOS"
       ],
       "tags": [
         "koin",
@@ -1564,7 +1896,9 @@
       ],
       "related": [
         "PLAT-MOB-KMP",
-        "PLAT-MOB-KMP-WEB"
+        "PLAT-MOB-KMP-WEB",
+        "PLAT-MOB-KMP-IOS",
+        "PLAT-MOB-IOS-INTEROP"
       ],
       "tags": [
         "notifications",
@@ -1573,7 +1907,8 @@
         "clockprovider",
         "channels",
         "kmp",
-        "background"
+        "background",
+        "ios"
       ],
       "status": ""
     },
@@ -1592,7 +1927,8 @@
       ],
       "related": [
         "PLAT-MOB-KOIN",
-        "PLAT-MOB-FIREBASE"
+        "PLAT-MOB-FIREBASE",
+        "PLAT-MOB-KMP-IOS"
       ],
       "tags": [
         "room",
@@ -1600,7 +1936,37 @@
         "dao",
         "entity",
         "local-database",
-        "android"
+        "android",
+        "ios",
+        "kmp"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-MOB-SECURE-STORAGE",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/mobile/secure-storage.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "PLAT-MOB-KMP",
+        "ARCH-PC-DATASOURCE"
+      ],
+      "related": [
+        "PLAT-MOB-DATASTORE",
+        "PLAT-MOB-IOS-AUTH",
+        "PLAT-MOB-HTTP"
+      ],
+      "tags": [
+        "security",
+        "keychain",
+        "credentials",
+        "tokens",
+        "storage",
+        "ios"
       ],
       "status": ""
     },
@@ -1795,6 +2161,33 @@
         "design-tokens",
         "inline-styles",
         "common-styles"
+      ],
+      "status": ""
+    },
+    {
+      "id": "QG-MOB-NATIVE",
+      "type": "guide",
+      "layer": "quality-gates",
+      "path": "quality-gates/mobile-native-tests.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "all",
+      "requires": [
+        "QG-TESTING",
+        "PLAT-MOB-KMP-IOS"
+      ],
+      "related": [
+        "BUILD-APPLE-CI",
+        "BUILD-COVERAGE"
+      ],
+      "tags": [
+        "testing",
+        "kotlin-native",
+        "ios",
+        "simulator",
+        "xcode",
+        "integration"
       ],
       "status": ""
     },

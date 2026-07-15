@@ -5,7 +5,7 @@ layer: platform
 platform: [mobile]
 architecture: [all]
 requires: [CORE-DI]
-related: [PLAT-MOB-KOIN, PLAT-MOB-KOTLIN]
+related: [PLAT-MOB-KOIN, PLAT-MOB-KOTLIN, PLAT-MOB-KMP-IOS, PLAT-MOB-KMP-WEB]
 tags: [kmp, kotlin-multiplatform, source-sets, expect-actual, wasm, ios, android]
 ---
 
@@ -57,6 +57,11 @@ SDKs) MUST be declared in their respective platform DI module, not in `commonMai
 
 **Rule PLAT-MOB-KMP-DI-02 (soft):** Platform modules SHOULD use `includes()` to
 compose feature-level platform sub-modules.
+
+Platform-specific target setup and validation belong in target guides:
+
+- Apple/iOS: `PLAT-MOB-KMP-IOS`
+- Browser/Wasm: `PLAT-MOB-KMP-WEB`
 
 ## wasmJs (web target)
 

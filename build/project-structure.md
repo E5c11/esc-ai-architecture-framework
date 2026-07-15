@@ -107,6 +107,19 @@ than re-declaring the full plugin list. One line per concern.
 override JVM target, compiler options, or shared tool configuration. Those belong
 in convention plugins.
 
+## KMP target graph
+
+An application target can consume only project dependencies that publish a compatible
+variant. Adding iOS requires every transitive shared module to expose the same target,
+normally through the convention plugin.
+
+**Rule BUILD-PS-KMP-GRAPH-01 (hard):** Before enabling an application target, enumerate
+its complete project dependency graph and ensure every shared module exposes a compatible
+variant. Fix the graph bottom-up rather than adding ad-hoc module exceptions.
+
+Custom source sets (`nativeMain`, `restMain`) must have a documented ownership/`dependsOn`
+diagram when they replace the default hierarchy.
+
 ## Module naming
 
 **Rule BUILD-PS-NAME-01 (hard):** Module directory names MUST be lowercase
@@ -122,4 +135,5 @@ under `:core:`. Feature modules under `:feature:` (mobile) or at root domain lev
 - Repository declarations in individual module `build.gradle.kts`
 - `build-logic` not declared as an included build, requiring plugin IDs to be resolved externally
 - Full plugin and compiler configuration duplicated in a module instead of using a convention plugin
+- Application Apple target enabled while a transitive project module has no Apple variant
 - Module names using camelCase or underscores

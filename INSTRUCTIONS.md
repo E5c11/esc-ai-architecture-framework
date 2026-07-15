@@ -21,7 +21,7 @@ itself.
 ### Step 1 — Read the project profile
 
 Every project that consumes this framework defines a `context/project-profile.yaml`.
-It declares the platform, architecture, and technology choices.
+It declares the platform, concrete targets, architecture, and technology choices.
 
 ### Step 2 — Load the relevant framework layers
 

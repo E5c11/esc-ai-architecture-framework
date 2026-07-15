@@ -39,6 +39,12 @@ fields:
     description: >
       Primary platform. Determines which platforms/{name}/ layer is loaded.
 
+  targets:
+    type: array
+    required: false
+    values: [android, ios, jvm, js, wasmJs]
+    description: Concrete KMP/runtime targets used to select target-specific guides.
+
   language:
     type: string
     required: true
@@ -80,6 +86,21 @@ fields:
       cloud:
         type: string
         description: "Cloud/backend provider. Examples: firebase, gcp, aws, none"
+      storage:
+        type: string
+        description: "Preferences storage. Examples: datastore, none"
+      secure-storage:
+        type: string
+        description: "Credential storage. Examples: keychain, keystore, platform"
+      auth:
+        type: string
+        description: "Authentication integration. Examples: oauth, firebase, none"
+      billing:
+        type: string
+        description: "Billing provider. Examples: storekit, play-billing, none"
+      notifications:
+        type: string
+        description: "Notification strategy. Examples: multiplatform, workmanager, none"
 
   build:
     type: object
