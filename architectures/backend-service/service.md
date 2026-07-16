@@ -24,10 +24,16 @@ about HTTP.
 
 ## Rules
 
-**Rule SVC-TIME-01 (hard):** Time-dependent logic MUST use an injected `TimeProvider`
-abstraction. Direct calls to `Instant.now()`, `LocalDate.now()`, or
-`System.currentTimeMillis()` inside a service method are forbidden. Direct time
-calls make tests non-deterministic.
+```rule
+id: SVC-TIME-01
+statement: Time-dependent logic MUST use an injected `TimeProvider` abstraction.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates SVC-TIME-01 — Time-dependent logic MUST use an injected `TimeProvider` abstraction.
+```
+
+Direct calls to `Instant.now()`, `LocalDate.now()`, or `System.currentTimeMillis()` inside a service method are forbidden. Direct time calls make tests non-deterministic.
 
 > Violation: `val now = Instant.now()`
 > Fix: inject `TimeProvider` via constructor and call `timeProvider.now()`
@@ -37,9 +43,16 @@ Inject `TimeProvider` whenever the method:
 - Computes an expiry (`timeProvider.now().plusSeconds(ttl)`)
 - Compares a stored time to now (`stored.expiresAt.isBefore(timeProvider.now())`)
 
-**Rule SVC-RETURN-01 (hard):** Service methods MUST return DTOs or primitives to
-their callers. Returning a JPA entity couples the HTTP contract to the JPA schema
-and can trigger unexpected lazy-loading outside a transaction.
+```rule
+id: SVC-RETURN-01
+statement: Service methods MUST return DTOs or primitives to their callers.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates SVC-RETURN-01 — Service methods MUST return DTOs or primitives to their callers.
+```
+
+Returning a JPA entity couples the HTTP contract to the JPA schema and can trigger unexpected lazy-loading outside a transaction.
 
 > Violation: `fun getUser(): UserEntity`
 > Fix: map the entity to a response DTO before returning
@@ -49,33 +62,71 @@ Map inside the service using a private extension function in the same file:
 private fun {Domain}Entity.toResponse() = {Domain}Response(...)
 ```
 
-**Rule SVC-TX-01 (hard):** `@Transactional` belongs on service methods — never on
-DataSource/repository methods. Transaction scope must span the full operation,
-which is defined at the service layer. A transaction on a repository method creates
-an incomplete boundary that does not cover the surrounding service logic.
+```rule
+id: SVC-TX-01
+statement: `@Transactional` belongs on service methods — never on DataSource/repository methods.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates SVC-TX-01 — `@Transactional` belongs on service methods — never on DataSource/repository methods.
+```
 
-**Rule SVC-TX-02 (hard):** Any service method that writes to more than one table
-MUST be annotated with `@Transactional`. Without a transaction, a failure after
-the first write leaves the database in a partially-written state.
+Transaction scope must span the full operation, which is defined at the service layer. A transaction on a repository method creates an incomplete boundary that does not cover the surrounding service logic.
 
-**Rule SVC-ERROR-01 (hard):** Known business errors MUST be thrown as
-`ResponseStatusException` with the appropriate HTTP status from the service layer.
-Returning null or a flag to signal an error, and letting the controller decide the
-status, is a violation. See `ARCH-BE-ERROR` for the full two-tier error strategy.
+```rule
+id: SVC-TX-02
+statement: Any service method that writes to more than one table MUST be annotated with `@Transactional`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates SVC-TX-02 — Any service method that writes to more than one table MUST be annotated with `@Transactional`.
+```
 
-**Rule SVC-INJECT-01 (hard):** Services MUST use constructor injection. `@Autowired`
-field injection is forbidden. Constructor injection makes dependencies explicit and
-allows mock injection in unit tests without a Spring context.
+Without a transaction, a failure after the first write leaves the database in a partially-written state.
 
-**Rule SVC-REPO-01 (soft):** Inject `JpaRepository` directly unless a wrapper is
-clearly justified. A `{Domain}Store` wrapper is warranted only when:
-(a) a single service operation requires 3+ separate JPA repository calls,
-(b) the operation must combine data from multiple repositories, or
-(c) a native/complex JPQL query benefits from isolation.
-Creating a wrapper for a single `findBy*` call adds indirection with no benefit.
+```rule
+id: SVC-ERROR-01
+statement: Known business errors MUST be thrown as `ResponseStatusException` with the appropriate HTTP status from the service layer.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates SVC-ERROR-01 — Known business errors MUST be thrown as `ResponseStatusException` with the appropriate HTTP status from the service layer.
+```
 
-**Rule SVC-NAMING-01 (soft):** Service class: `{Domain}Service`. Methods: verb-noun
-pattern (`login`, `register`, `updateProfile`, `createSubject`).
+Returning null or a flag to signal an error, and letting the controller decide the status, is a violation. See `ARCH-BE-ERROR` for the full two-tier error strategy.
+
+```rule
+id: SVC-INJECT-01
+statement: Services MUST use constructor injection.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates SVC-INJECT-01 — Services MUST use constructor injection.
+```
+
+`@Autowired` field injection is forbidden. Constructor injection makes dependencies explicit and allows mock injection in unit tests without a Spring context.
+
+```rule
+id: SVC-REPO-01
+statement: Inject `JpaRepository` directly unless a wrapper is clearly justified.
+type: soft
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates SVC-REPO-01 — Inject `JpaRepository` directly unless a wrapper is clearly justified.
+```
+
+A `{Domain}Store` wrapper is warranted only when: (a) a single service operation requires 3+ separate JPA repository calls, (b) the operation must combine data from multiple repositories, or (c) a native/complex JPQL query benefits from isolation. Creating a wrapper for a single `findBy*` call adds indirection with no benefit.
+
+```rule
+id: SVC-NAMING-01
+statement: Service class: `{Domain}Service`.
+type: soft
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates SVC-NAMING-01 — Service class: `{Domain}Service`.
+```
+
+Methods: verb-noun pattern (`login`, `register`, `updateProfile`, `createSubject`).
 
 ## Sensitive token handling
 
@@ -85,35 +136,47 @@ store, not just writing a business record. The same discipline applied to
 passwords applies here, regardless of which HTTP framework or JWT library sits on
 top.
 
-**Rule SVC-TOKEN-01 (hard):** A long-lived token persisted by the service MUST be
-stored as a one-way hash (SHA-256 or stronger), never in raw form. Look up an
-incoming token by hashing it and querying on the hash column. A raw token sitting
-in a database row is equivalent to a plaintext password — a database leak hands
-the attacker a live, immediately usable credential with no cracking required.
+```rule
+id: SVC-TOKEN-01
+statement: A long-lived token persisted by the service MUST be stored as a one-way hash (SHA-256 or stronger), never in raw form.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates SVC-TOKEN-01 — A long-lived token persisted by the service MUST be stored as a one-way hash (SHA-256 or stronger), never in raw form.
+```
+
+Look up an incoming token by hashing it and querying on the hash column. A raw token sitting in a database row is equivalent to a plaintext password — a database leak hands the attacker a live, immediately usable credential with no cracking required.
 
 > Violation: `RefreshTokenEntity(tokenHash = refreshToken, ...)`
 > Fix: `RefreshTokenEntity(tokenHash = sha256(refreshToken), ...)` — return the raw
 > token to the caller once at issuance; never store or log it again.
 
-**Rule SVC-TOKEN-02 (hard):** An exchange/refresh operation MUST invalidate the
-presented token as part of issuing its replacement (single-use rotation). Delete
-or mark the stored token row consumed once it passes validation, before generating
-the new pair. Without rotation, a stolen token stays valid for its entire
-remaining lifetime even after the legitimate client has moved past it — rotation
-caps a leaked token's usable window at one exchange, and a second exchange attempt
-against an already-deleted token hash is a reliable replay signal.
+```rule
+id: SVC-TOKEN-02
+statement: An exchange/refresh operation MUST invalidate the presented token as part of issuing its replacement (single-use rotation).
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates SVC-TOKEN-02 — An exchange/refresh operation MUST invalidate the presented token as part of issuing its replacement (single-use rotation).
+```
+
+Delete or mark the stored token row consumed once it passes validation, before generating the new pair. Without rotation, a stolen token stays valid for its entire remaining lifetime even after the legitimate client has moved past it — rotation caps a leaked token's usable window at one exchange, and a second exchange attempt against an already-deleted token hash is a reliable replay signal.
 
 > Violation: validate the token, issue a new pair, and leave the old row in place
 > ("it'll expire on its own eventually").
 > Fix: `refreshTokenRepository.delete(stored) // single-use rotation` before
 > calling the token-issuance path.
 
-**Rule SVC-TOKEN-03 (hard):** A token validity check MUST test both explicit
-revocation and expiry — never one in isolation. A token can be individually
-revoked (logout, admin action, detected compromise) long before its natural
-expiry, and a token can simply outlive its TTL without ever being revoked.
-Checking only `expiresAt` misses revoked-but-unexpired tokens; checking only
-`revoked` misses tokens that expired on schedule.
+```rule
+id: SVC-TOKEN-03
+statement: A token validity check MUST test both explicit revocation and expiry — never one in isolation.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates SVC-TOKEN-03 — A token validity check MUST test both explicit revocation and expiry — never one in isolation.
+```
+
+A token can be individually revoked (logout, admin action, detected compromise) long before its natural expiry, and a token can simply outlive its TTL without ever being revoked. Checking only `expiresAt` misses revoked-but-unexpired tokens; checking only `revoked` misses tokens that expired on schedule.
 
 > Violation: `if (stored.expiresAt.isBefore(timeProvider.now())) throw ...`
 > (revocation never checked)

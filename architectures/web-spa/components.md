@@ -28,9 +28,16 @@ Any feature that fetches data uses a two-component structure:
 - Owns all the visual styles
 - Is stateless or manages only local UI state (e.g. expanded/collapsed)
 
-**Rule ARCH-WEB-CP-01 (hard):** Container components MUST guard all three states —
-loading, error, and data — before rendering the presentation component. Never render
-a presentation component with potentially undefined or in-flight data.
+```rule
+id: ARCH-WEB-CP-01
+statement: Container components MUST guard all three states — loading, error, and data — before rendering the presentation component.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-CP-01 — Container components MUST guard all three states — loading, error, and data — before rendering the presentation component.
+```
+
+Never render a presentation component with potentially undefined or in-flight data.
 
 ```tsx
 const FeaturePage: React.FC = () => {
@@ -43,16 +50,31 @@ const FeaturePage: React.FC = () => {
 };
 ```
 
-**Rule ARCH-WEB-CP-02 (soft):** Container components SHOULD contain no visual styles.
+```rule
+id: ARCH-WEB-CP-02
+statement: Container components SHOULD contain no visual styles.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-CP-02 — Container components SHOULD contain no visual styles.
+```
+
 The presentation component is the styling boundary.
 
 ## Error boundaries
 
 A runtime error in any component, without a boundary, crashes the entire page.
 
-**Rule ARCH-WEB-EB-01 (hard):** Every page-level route MUST be wrapped in an
-`ErrorBoundary`. For dashboards, wrapping the `AppShell` (which renders inside
-the layout) is sufficient; for websites, wrap each route element.
+```rule
+id: ARCH-WEB-EB-01
+statement: Every page-level route MUST be wrapped in an `ErrorBoundary`.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-EB-01 — Every page-level route MUST be wrapped in an `ErrorBoundary`.
+```
+
+For dashboards, wrapping the `AppShell` (which renders inside the layout) is sufficient; for websites, wrap each route element.
 
 ```tsx
 // App.tsx — website
@@ -70,9 +92,16 @@ as function components). Place it in `src/common/ErrorBoundary.tsx`.
 
 ## Props — Interface Segregation
 
-**Rule ARCH-WEB-PROPS-01 (hard):** Props interfaces MUST contain only the fields
-a component actually uses. Never pass an entire data object when the component
-needs only one or two fields.
+```rule
+id: ARCH-WEB-PROPS-01
+statement: Props interfaces MUST contain only the fields a component actually uses.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-PROPS-01 — Props interfaces MUST contain only the fields a component actually uses.
+```
+
+Never pass an entire data object when the component needs only one or two fields.
 
 ```tsx
 // ✅ — component needs name and avatar only
@@ -85,16 +114,29 @@ needs only one or two fields.
 Oversized props create invisible coupling: the component breaks whenever the
 parent's data shape changes, even if the rendered output is unaffected.
 
-**Rule ARCH-WEB-PROPS-02 (soft):** Props interfaces SHOULD be defined inline at the
-top of the component file. Only extract to a shared type when the exact same
-interface is imported by two or more components.
+```rule
+id: ARCH-WEB-PROPS-02
+statement: Props interfaces SHOULD be defined inline at the top of the component file.
+type: soft
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-PROPS-02 — Props interfaces SHOULD be defined inline at the top of the component file.
+```
+
+Only extract to a shared type when the exact same interface is imported by two or more components.
 
 ## Composition over conditional props
 
-**Rule ARCH-WEB-COMP-01 (soft):** Shared components SHOULD express variation through
-composition (`children`, slot props, wrapping) rather than through special-case
-boolean or enum props. Conditional branches inside a component accumulate and
-the component becomes unreadable.
+```rule
+id: ARCH-WEB-COMP-01
+statement: Shared components SHOULD express variation through composition (`children`, slot props, wrapping) rather than through special-case boolean or enum props.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-COMP-01 — Shared components SHOULD express variation through composition (`children`, slot props, wrapping) rather than through special-case boolean or enum props.
+```
+
+Conditional branches inside a component accumulate and the component becomes unreadable.
 
 ```tsx
 // ✅ — caller composes what it needs
@@ -109,23 +151,52 @@ the component becomes unreadable.
 
 ## Extracting shared components
 
-**Rule ARCH-WEB-SHARE-01 (soft):** A component SHOULD only be moved to `src/components/`
-when it is used in two or more features. Do not move it there pre-emptively. Premature
-abstraction creates components with no consumers and diffuse responsibility.
+```rule
+id: ARCH-WEB-SHARE-01
+statement: A component SHOULD only be moved to `src/components/` when it is used in two or more features.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-SHARE-01 — A component SHOULD only be moved to `src/components/` when it is used in two or more features.
+```
+
+Do not move it there pre-emptively. Premature abstraction creates components with no consumers and diffuse responsibility.
 
 ## Naming
 
-**Rule ARCH-WEB-NAME-01 (hard):** Component files MUST use PascalCase `.tsx`.
-Hook files: `use` prefix, camelCase, `.ts`. Utility files: camelCase, `.ts`.
-Type/interface files: PascalCase, `.ts`.
+```rule
+id: ARCH-WEB-NAME-01
+statement: Component files MUST use PascalCase `.tsx`.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-NAME-01 — Component files MUST use PascalCase `.tsx`.
+```
 
-**Rule ARCH-WEB-NAME-02 (soft):** Components SHOULD be named by what they show,
-not by their technical role. `UserTable` over `UserPresenter`. `OverviewPage`
-over `OverviewContainer`.
+Hook files: `use` prefix, camelCase, `.ts`. Utility files: camelCase, `.ts`. Type/interface files: PascalCase, `.ts`.
+
+```rule
+id: ARCH-WEB-NAME-02
+statement: Components SHOULD be named by what they show, not by their technical role.
+type: soft
+scope: naming
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-NAME-02 — Components SHOULD be named by what they show, not by their technical role.
+```
+
+`UserTable` over `UserPresenter`. `OverviewPage` over `OverviewContainer`.
 
 ## Export convention
 
-**Rule ARCH-WEB-EXPORT-01 (soft):** Component files SHOULD use `export default`.
+```rule
+id: ARCH-WEB-EXPORT-01
+statement: Component files SHOULD use `export default`.
+type: soft
+scope: naming
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-EXPORT-01 — Component files SHOULD use `export default`.
+```
+
 Named exports are for hooks, types, and utilities.
 
 ## Keeping page components lean

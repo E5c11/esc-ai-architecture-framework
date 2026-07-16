@@ -23,49 +23,102 @@ A controller method may:
 
 ## Rules
 
-**Rule CTRL-LOGIC-01 (hard):** Controllers MUST contain zero business logic.
-No conditional branching, domain decisions, computations, or calls to multiple
-services inside a controller method. Any branching or computation belongs in
-the service.
+```rule
+id: CTRL-LOGIC-01
+statement: Controllers MUST contain zero business logic.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates CTRL-LOGIC-01 — Controllers MUST contain zero business logic.
+```
+
+No conditional branching, domain decisions, computations, or calls to multiple services inside a controller method. Any branching or computation belongs in the service.
 
 > Violation: `if (request.type == "admin") adminService.grant() else userService.update()`
 > Fix: Move the conditional to a service method; the controller calls that one method.
 
-**Rule CTRL-RETURN-01 (hard):** Controllers MUST return response DTOs, never JPA entities.
-Returning an entity exposes the database schema as the API contract. Schema changes
-break the API.
+```rule
+id: CTRL-RETURN-01
+statement: Controllers MUST return response DTOs, never JPA entities.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates CTRL-RETURN-01 — Controllers MUST return response DTOs, never JPA entities.
+```
+
+Returning an entity exposes the database schema as the API contract. Schema changes break the API.
 
 > Violation: `fun getUser(): UserEntity`
 > Fix: Service maps entity to `UserResponse`; controller returns `UserResponse`.
 
-**Rule CTRL-VALIDATION-01 (hard):** Input validation MUST use `@Valid` on the request
-body parameter. Field-level constraints (`@NotBlank`, `@NotNull`, etc.) are declared
-on the DTO. Manual null checks in a controller for fields expressible as Bean Validation
-constraints are a violation.
+```rule
+id: CTRL-VALIDATION-01
+statement: Input validation MUST use `@Valid` on the request body parameter.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates CTRL-VALIDATION-01 — Input validation MUST use `@Valid` on the request body parameter.
+```
 
-**Rule CTRL-STATUS-01 (hard):** HTTP status codes MUST be set via `@ResponseStatus`
-annotation or `ResponseEntity` with an `HttpStatus` enum value. Raw integer status
-codes are forbidden.
+Field-level constraints (`@NotBlank`, `@NotNull`, etc.) are declared on the DTO. Manual null checks in a controller for fields expressible as Bean Validation constraints are a violation.
+
+```rule
+id: CTRL-STATUS-01
+statement: HTTP status codes MUST be set via `@ResponseStatus` annotation or `ResponseEntity` with an `HttpStatus` enum value.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates CTRL-STATUS-01 — HTTP status codes MUST be set via `@ResponseStatus` annotation or `ResponseEntity` with an `HttpStatus` enum value.
+```
+
+Raw integer status codes are forbidden.
 
 > Violation: `ResponseEntity(body, 201)`
 > Fix: `ResponseEntity(body, HttpStatus.CREATED)` or `@ResponseStatus(HttpStatus.CREATED)`
 
-**Rule CTRL-INJECT-01 (hard):** Controllers MUST use constructor injection. `@Autowired`
-field injection is forbidden. Constructor injection makes dependencies explicit and
-the controller testable without a Spring context.
+```rule
+id: CTRL-INJECT-01
+statement: Controllers MUST use constructor injection.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates CTRL-INJECT-01 — Controllers MUST use constructor injection.
+```
 
-**Rule CTRL-MAPPING-01 (hard):** One controller per domain. A controller MUST NOT
-inject two domain services and combine their results. Cross-domain orchestration
-belongs in a service.
+`@Autowired` field injection is forbidden. Constructor injection makes dependencies explicit and the controller testable without a Spring context.
 
-**Rule CTRL-NAMING-01 (soft):** Controller class: `{Domain}Controller`. Endpoint
-methods: verb-noun pattern (`register`, `login`, `updateProfile`) — not HTTP verb
-names (`post`, `get`, `put`).
+```rule
+id: CTRL-MAPPING-01
+statement: One controller per domain.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates CTRL-MAPPING-01 — One controller per domain.
+```
 
-**Rule CTRL-PATH-01 (hard):** `@RequestMapping` and `@GetMapping`/`@PostMapping` etc.
-MUST reference named path constants from the `:core:api` constants module. Literal
-path strings (including literal `/v1`) are forbidden. A future API version change
-must require editing exactly one constant.
+A controller MUST NOT inject two domain services and combine their results. Cross-domain orchestration belongs in a service.
+
+```rule
+id: CTRL-NAMING-01
+statement: Controller class: `{Domain}Controller`.
+type: soft
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates CTRL-NAMING-01 — Controller class: `{Domain}Controller`.
+```
+
+Endpoint methods: verb-noun pattern (`register`, `login`, `updateProfile`) — not HTTP verb names (`post`, `get`, `put`).
+
+```rule
+id: CTRL-PATH-01
+statement: `@RequestMapping` and `@GetMapping`/`@PostMapping` etc.
+type: hard
+scope: naming
+enforced_by: [reviewer]
+violation_message: Violates CTRL-PATH-01 — `@RequestMapping` and `@GetMapping`/`@PostMapping` etc.
+```
+
+MUST reference named path constants from the `:core:api` constants module. Literal path strings (including literal `/v1`) are forbidden. A future API version change must require editing exactly one constant.
 
 See `PLAT-BE-SPRING` for the path constants pattern and controller annotation syntax.
 

@@ -47,30 +47,66 @@ data sources.
 
 ## Rules
 
-**Rule REP-WHEN-01 (hard):** A `{Domain}Store` wrapper MUST only be created when
-one of the three justifying conditions above is met. Creating a wrapper to rename
-`findById` or wrap a single derived query adds indirection with no benefit.
+```rule
+id: REP-WHEN-01
+statement: A `{Domain}Store` wrapper MUST only be created when one of the three justifying conditions above is met.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates REP-WHEN-01 — A `{Domain}Store` wrapper MUST only be created when one of the three justifying conditions above is met.
+```
 
-**Rule REP-INTERFACE-01 (hard):** If a custom Store wrapper is created, it MUST
-define an interface. The interface is required so service unit tests can mock the
-dependency with Mockk.
+Creating a wrapper to rename `findById` or wrap a single derived query adds indirection with no benefit.
+
+```rule
+id: REP-INTERFACE-01
+statement: If a custom Store wrapper is created, it MUST define an interface.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates REP-INTERFACE-01 — If a custom Store wrapper is created, it MUST define an interface.
+```
+
+The interface is required so service unit tests can mock the dependency with Mockk.
 
 > Violation: `@Repository class UserStore` with no interface, injected by concrete type.
 > Fix: define `interface UserStore` and implement it in `UserStoreImpl`.
 
-**Rule REP-TX-01 (hard):** `@Transactional` MUST NOT be placed on DataSource or
-repository methods. Transaction scope is defined at the service layer.
+```rule
+id: REP-TX-01
+statement: `@Transactional` MUST NOT be placed on DataSource or repository methods.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates REP-TX-01 — `@Transactional` MUST NOT be placed on DataSource or repository methods.
+```
 
-**Rule REP-RETURN-01 (hard):** DataSource methods MUST return JPA entities or
-primitives — never DTOs or HTTP-specific types. The DataSource is a persistence
-boundary; it must not know about HTTP contracts.
+Transaction scope is defined at the service layer.
+
+```rule
+id: REP-RETURN-01
+statement: DataSource methods MUST return JPA entities or primitives — never DTOs or HTTP-specific types.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates REP-RETURN-01 — DataSource methods MUST return JPA entities or primitives — never DTOs or HTTP-specific types.
+```
+
+The DataSource is a persistence boundary; it must not know about HTTP contracts.
 
 > Violation: `fun getUser(): UserResponse`
 > Fix: `fun getUser(): UserEntity` — the service maps it to a DTO.
 
-**Rule REP-NAMING-01 (soft):** Spring Data interfaces: `{Domain}Repository`.
-Custom wrappers: `{Domain}Store` (interface) / `{Domain}StoreImpl` (implementation).
-Avoid names like `UserDao`, `UserManager`, `UserJpaRepository`.
+```rule
+id: REP-NAMING-01
+statement: Spring Data interfaces: `{Domain}Repository`.
+type: soft
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates REP-NAMING-01 — Spring Data interfaces: `{Domain}Repository`.
+```
+
+Custom wrappers: `{Domain}Store` (interface) / `{Domain}StoreImpl` (implementation). Avoid names like `UserDao`, `UserManager`, `UserJpaRepository`.
 
 ## Decision tree
 

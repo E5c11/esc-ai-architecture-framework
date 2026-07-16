@@ -63,52 +63,108 @@ All user-facing exceptions MUST extend the domain exception base type and carry
 this metadata. Raw technical exceptions (IOException, etc.) MUST NEVER reach
 the ViewModel.
 
-**Rule ARCH-PC-ERR-BASE-01 (hard):** All user-facing exceptions MUST extend the
-project's domain exception base type. Never extend the language's base exception
-type directly for a user-facing error.
+```rule
+id: ARCH-PC-ERR-BASE-01
+statement: All user-facing exceptions MUST extend the project's domain exception base type.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-ERR-BASE-01 — All user-facing exceptions MUST extend the project's domain exception base type.
+```
 
-**Rule ARCH-PC-ERR-BASE-02 (hard):** Domain exceptions MUST be defined in
-`data/errors/` within the feature that owns them, never in `core/` unless they
-genuinely apply across all features.
+Never extend the language's base exception type directly for a user-facing error.
+
+```rule
+id: ARCH-PC-ERR-BASE-02
+statement: Domain exceptions MUST be defined in `data/errors/` within the feature that owns them, never in `core/` unless they genuinely apply across all features.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-ERR-BASE-02 — Domain exceptions MUST be defined in `data/errors/` within the feature that owns them, never in `core/` unless they genuinely apply across all features.
+```
 
 ## Translation rules
 
-**Rule ARCH-PC-ERR-TRANSLATE-01 (hard):** Translation of provider exceptions to
-domain exceptions happens ONLY in the DataSource. It MUST NOT happen in UseCases,
-Repositories, or ViewModels.
+```rule
+id: ARCH-PC-ERR-TRANSLATE-01
+statement: Translation of provider exceptions to domain exceptions happens ONLY in the DataSource.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-ERR-TRANSLATE-01 — Translation of provider exceptions to domain exceptions happens ONLY in the DataSource.
+```
 
-**Rule ARCH-PC-ERR-TRANSLATE-02 (hard):** Domain exceptions MUST be rethrown
-unchanged at every layer above the DataSource. Re-wrapping a domain exception
-loses its UI metadata.
+It MUST NOT happen in UseCases, Repositories, or ViewModels.
 
-**Rule ARCH-PC-ERR-FALLBACK-01 (hard):** The fallback exception in a UseCase's
-catch handler MUST be named after the operation (e.g. `FetchVideosException`),
-not a generic "unknown error" type. Generic fallbacks lose diagnostic context
-in crash reporting.
+```rule
+id: ARCH-PC-ERR-TRANSLATE-02
+statement: Domain exceptions MUST be rethrown unchanged at every layer above the DataSource.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-ERR-TRANSLATE-02 — Domain exceptions MUST be rethrown unchanged at every layer above the DataSource.
+```
+
+Re-wrapping a domain exception loses its UI metadata.
+
+```rule
+id: ARCH-PC-ERR-FALLBACK-01
+statement: The fallback exception in a UseCase's catch handler MUST be named after the operation (e.g.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-ERR-FALLBACK-01 — The fallback exception in a UseCase's catch handler MUST be named after the operation (e.g.
+```
+
+`FetchVideosException`), not a generic "unknown error" type. Generic fallbacks lose diagnostic context in crash reporting.
 
 ## Coroutine cancellation
 
-**Rule ARCH-PC-ERR-CANCEL-01 (hard):** Coroutine cancellation exceptions MUST
-be rethrown at every catch site before any other handling. An inner catch block
-that swallows cancellation causes the coroutine to continue executing code that
-should have been cancelled.
+```rule
+id: ARCH-PC-ERR-CANCEL-01
+statement: Coroutine cancellation exceptions MUST be rethrown at every catch site before any other handling.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-ERR-CANCEL-01 — Coroutine cancellation exceptions MUST be rethrown at every catch site before any other handling.
+```
+
+An inner catch block that swallows cancellation causes the coroutine to continue executing code that should have been cancelled.
 
 ## State in ViewModel
 
-**Rule ARCH-PC-ERR-STATE-01 (hard):** The ViewModel MUST store the full domain
-exception in state, not individual extracted fields. Extracting a message string
-discards severity, presentation style, and available actions.
+```rule
+id: ARCH-PC-ERR-STATE-01
+statement: The ViewModel MUST store the full domain exception in state, not individual extracted fields.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-ERR-STATE-01 — The ViewModel MUST store the full domain exception in state, not individual extracted fields.
+```
 
-**Rule ARCH-PC-ERR-STATE-02 (soft):** ViewModels SHOULD expose a `clearError()`
-function that sets the error state back to null, used after the user dismisses
-an error.
+Extracting a message string discards severity, presentation style, and available actions.
+
+```rule
+id: ARCH-PC-ERR-STATE-02
+statement: ViewModels SHOULD expose a `clearError()` function that sets the error state back to null, used after the user dismisses an error.
+type: soft
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-ERR-STATE-02 — ViewModels SHOULD expose a `clearError()` function that sets the error state back to null, used after the user dismisses an error.
+```
 
 ## Network exceptions
 
-**Rule ARCH-PC-ERR-NETWORK-01 (soft):** Network connectivity errors are
-user-side noise, not application bugs. They SHOULD NOT be recorded in crash
-reporting. The UseCase layer is responsible for distinguishing network errors
-from real application faults before logging.
+```rule
+id: ARCH-PC-ERR-NETWORK-01
+statement: Network connectivity errors are user-side noise, not application bugs.
+type: soft
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-ERR-NETWORK-01 — Network connectivity errors are user-side noise, not application bugs.
+```
+
+They SHOULD NOT be recorded in crash reporting. The UseCase layer is responsible for distinguishing network errors from real application faults before logging.
 
 ## Violations
 

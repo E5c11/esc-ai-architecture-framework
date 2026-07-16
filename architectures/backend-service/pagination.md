@@ -19,11 +19,16 @@ rows). A small, fixed enumeration (status types, category lookups, a handful of
 configuration rows) does not benefit from pagination; the ceremony adds nothing when
 there are, and will only ever be, a few dozen rows at most.
 
-**Rule PAG-SCOPE-01 (soft):** Before adding pagination to a list endpoint, check whether
-the underlying table is bounded (a fixed taxonomy/enumeration) or unbounded (grows with
-content/user volume). Paginate only the unbounded ones. Paginating a bounded reference
-table is unnecessary complexity; leaving an unbounded one unpaginated is an
-unbounded-response and scrape/cost-amplification risk.
+```rule
+id: PAG-SCOPE-01
+statement: Before adding pagination to a list endpoint, check whether the underlying table is bounded (a fixed taxonomy/enumeration) or unbounded (grows with content/user volume).
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PAG-SCOPE-01 — Before adding pagination to a list endpoint, check whether the underlying table is bounded (a fixed taxonomy/enumeration) or unbounded (grows with content/user volume).
+```
+
+Paginate only the unbounded ones. Paginating a bounded reference table is unnecessary complexity; leaving an unbounded one unpaginated is an unbounded-response and scrape/cost-amplification risk.
 
 ## Offset vs. cursor
 
@@ -36,12 +41,16 @@ project's data is high-churn, that's a deliberate exception to document, not the
 
 ## Shape
 
-**Rule PAG-SHAPE-01 (hard):** A paginated endpoint's request and response types MUST be
-plain, framework-free data classes — never Spring Data's `Pageable`/`Page<T>` directly on
-the controller signature or in a DTO. Spring Data types are a persistence-layer concern;
-leaking them into the API contract couples the wire format to the JPA/Spring Data version,
-and if the project has a shared multiplatform contracts layer, Spring Data types cannot
-cross into it at all (JVM-only).
+```rule
+id: PAG-SHAPE-01
+statement: A paginated endpoint's request and response types MUST be plain, framework-free data classes — never Spring Data's `Pageable`/`Page<T>` directly on the controller signature or in a DTO.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PAG-SHAPE-01 — A paginated endpoint's request and response types MUST be plain, framework-free data classes — never Spring Data's `Pageable`/`Page<T>` directly on the controller signature or in a DTO.
+```
+
+Spring Data types are a persistence-layer concern; leaking them into the API contract couples the wire format to the JPA/Spring Data version, and if the project has a shared multiplatform contracts layer, Spring Data types cannot cross into it at all (JVM-only).
 
 ```kotlin
 data class PageRequest(val page: Int, val size: Int)
@@ -75,9 +84,16 @@ SpringPageRequest`.
 
 ## Size limits
 
-**Rule PAG-SIZE-01 (hard):** The server MUST enforce a maximum page size regardless of
-what the caller requests. An unbounded caller-supplied `size` defeats the entire purpose
-of pagination — it becomes an optional courtesy, not a hardening control.
+```rule
+id: PAG-SIZE-01
+statement: The server MUST enforce a maximum page size regardless of what the caller requests.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PAG-SIZE-01 — The server MUST enforce a maximum page size regardless of what the caller requests.
+```
+
+An unbounded caller-supplied `size` defeats the entire purpose of pagination — it becomes an optional courtesy, not a hardening control.
 
 ```kotlin
 val size = requestedSize.coerceIn(1, MAX_PAGE_SIZE)
@@ -89,13 +105,16 @@ universal requirement that one exists and is enforced server-side.
 
 ## Deterministic ordering
 
-**Rule PAG-ORDER-01 (hard):** Every paginated query MUST specify an explicit, stable sort
-order (`ORDER BY id` or another column guaranteed unique and immutable). Offset pagination
-without a deterministic order silently repeats or skips rows across pages when the
-underlying result order isn't guaranteed by the database — this is invisible in manual
-testing (small datasets often happen to come back in insertion order) and only surfaces as
-missing/duplicate data once the table is large enough for the database to choose a
-different physical scan order.
+```rule
+id: PAG-ORDER-01
+statement: Every paginated query MUST specify an explicit, stable sort order (`ORDER BY id` or another column guaranteed unique and immutable).
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates PAG-ORDER-01 — Every paginated query MUST specify an explicit, stable sort order (`ORDER BY id` or another column guaranteed unique and immutable).
+```
+
+Offset pagination without a deterministic order silently repeats or skips rows across pages when the underlying result order isn't guaranteed by the database — this is invisible in manual testing (small datasets often happen to come back in insertion order) and only surfaces as missing/duplicate data once the table is large enough for the database to choose a different physical scan order.
 
 ```kotlin
 val pageable = PageRequest.of(page, size, Sort.by("id"))
@@ -115,10 +134,16 @@ paginate" reopens exactly the unbounded-response risk `PAG-SIZE-01` exists to cl
 a caller can simply supply a filter value guaranteed to match everything (or omit a value
 the filter would otherwise narrow on) to get an unpaginated dump.
 
-**Rule PAG-FILTER-01 (hard):** A list endpoint accepting both pagination parameters and a
-filter parameter MUST apply pagination to every response, regardless of which filter
-values are present. Never expose an alternate, unpaginated response shape gated on a
-filter parameter's presence.
+```rule
+id: PAG-FILTER-01
+statement: A list endpoint accepting both pagination parameters and a filter parameter MUST apply pagination to every response, regardless of which filter values are present.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PAG-FILTER-01 — A list endpoint accepting both pagination parameters and a filter parameter MUST apply pagination to every response, regardless of which filter values are present.
+```
+
+Never expose an alternate, unpaginated response shape gated on a filter parameter's presence.
 
 If a project has a domain-specific incremental sync architecture with requirements beyond
 this general composition rule, its own framework layer is the right place to document
