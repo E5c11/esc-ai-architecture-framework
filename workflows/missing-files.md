@@ -20,15 +20,6 @@ converted to a proper ```rule block (deciding `type`/`scope` per item) — real
 authorship, not a mechanical fix. `platforms/mobile/design-system/images.md`
 has the same issue for `DS-IMAGE-03/04/05`.
 
-### `platforms/mobile/kmp.md` + `platforms/mobile/http-client.md` — rule migration pending
-Deliberately excluded from the rule-embedding migration's Phase 3 (parallel
-worktree agents can't see uncommitted working-tree changes, and both files
-had unrelated in-flight edits at the time). Once those edits are committed,
-run `python tools/migrate_rules.py platforms/mobile/kmp.md platforms/mobile/http-client.md`
-and validate — `http-client.md` currently has 3 citations
-(`PLAT-MOB-KMP-WEB-02`, `PLAT-MOB-KMP-SS-01`, `PLAT-MOB-KMP-DI-01`) that will
-stay unresolved until `kmp.md`'s rules are migrated.
-
 ### Layer-specific unit test guides
 No actionable test guides exist for any architecture layer. The framework has
 philosophy (`CORE-TESTING`, `QG-TESTING`) but nothing that tells an agent how
