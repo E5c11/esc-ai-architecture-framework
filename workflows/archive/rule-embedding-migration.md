@@ -74,3 +74,37 @@ clean, promote it from WARN to a real failure. Update `workflows/README.md`'s
 "How to Add New Docs" section to reference the shipped format concretely.
 Final check: `grep -rn "\*\*Rule [A-Z]" .` returns nothing. Move this doc to
 `workflows/archive/`.
+
+## Outcome
+
+337 rules migrated across every file that used the bold-rule format (46 of
+70 docs). All of `check_missing_ids` through `check_duplicate_rule_ids` pass
+clean. Deviations from the plan above, and why:
+
+- **Agent D's worktree wasn't actually isolated** — its commit
+  (`8dadf48`) landed directly on `main`'s history instead of a separate
+  branch. Content was verified clean (exactly the 6 target files, nothing
+  else), so no harm done, but Agents A, B, C all had to fast-forward their
+  stale worktree branches onto `main` to pick up tooling `8dadf48` had
+  already added by the time they checked. Agent A separately caught itself
+  editing the shared main checkout by mistake mid-run and reverted before
+  redoing the work in its actual worktree — verified clean afterward.
+- **Two real bugs surfaced post-merge**, both the same edge case (adjacent
+  `**Rule` lines with no blank line between them — the script's
+  paragraph-based splitter can't tell where one rule's paragraph ends and
+  the next begins): `platforms/mobile/koin.md` had 3 rules merged into one
+  corrupted block (Agent B didn't catch it, unlike Agent A which hit and
+  fixed the same pattern independently in its own scope), and
+  `platforms/mobile/datastore.md` had a stale, malformed duplicate
+  definition of a koin.md rule that the script correctly never touched
+  (missing its `(hard)` marker) — replaced with a citation instead of a
+  second definition, per the ownership model. Both fixed by hand in Phase 4.
+- **`tools/migrate_rules.py` was NOT deleted** — `platforms/mobile/kmp.md`
+  and `platforms/mobile/http-client.md` were deliberately excluded from
+  Phase 3 (unrelated uncommitted work in progress at the time) and still
+  need it; tracked in `workflows/missing-files.md`.
+- **`check_rule_citations` was NOT promoted to a real failure** — 26
+  citations remain unresolved, all attributable to two tracked gaps in
+  `workflows/missing-files.md` (design-system checklist items that were
+  never real rule definitions in any format, plus the deferred kmp.md/
+  http-client.md pair), not migration defects. Promote once both close.
