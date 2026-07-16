@@ -29,15 +29,27 @@ prove I touched this line?"
 | Slice/component | Thin layer, framework wired but not full stack | HTTP boundary, UI route | Medium |
 | End-to-end | Full stack, real environment | Critical user journeys | Slow |
 
-**Rule QG-TEST-SCOPE-01 (hard):** Unit tests MUST mock all collaborators outside
-the class under test. A unit test that starts a database, HTTP server, or file
-system is a slow integration test with poor diagnostics — the failure does not
-point at the unit that is broken.
+```rule
+id: QG-TEST-SCOPE-01
+statement: Unit tests MUST mock all collaborators outside the class under test.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates QG-TEST-SCOPE-01 — Unit tests MUST mock all collaborators outside the class under test.
+```
 
-**Rule QG-TEST-SCOPE-02 (hard):** Integration tests MUST run against real
-infrastructure — a real database, a real file system — not mocks. Mocking a
-database in an integration test eliminates the primary value of the test: proving
-that the query or schema works.
+A unit test that starts a database, HTTP server, or file system is a slow integration test with poor diagnostics — the failure does not point at the unit that is broken.
+
+```rule
+id: QG-TEST-SCOPE-02
+statement: Integration tests MUST run against real infrastructure — a real database, a real file system — not mocks.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates QG-TEST-SCOPE-02 — Integration tests MUST run against real infrastructure — a real database, a real file system — not mocks.
+```
+
+Mocking a database in an integration test eliminates the primary value of the test: proving that the query or schema works.
 
 ## What to test in each layer
 
@@ -80,8 +92,14 @@ Testing these produces coverage numbers but no diagnostic value.
 
 ## Naming
 
-**Rule QG-TEST-NAME-01 (soft):** Test names SHOULD be written as complete sentences
-describing the expected behaviour, not the method being called.
+```rule
+id: QG-TEST-NAME-01
+statement: Test names SHOULD be written as complete sentences describing the expected behaviour, not the method being called.
+type: soft
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates QG-TEST-NAME-01 — Test names SHOULD be written as complete sentences describing the expected behaviour, not the method being called.
+```
 
 ```
 // ✅ — describes what the system does
@@ -103,16 +121,38 @@ Never mix assertion into the arrange phase.
 
 ## Mocking philosophy
 
-**Rule QG-TEST-MOCK-01 (soft):** Mock at architectural boundaries, not within
-a layer. If the Service → DataSource boundary is the boundary, mock the DataSource
-interface. Do not mock private methods within the same class.
+```rule
+id: QG-TEST-MOCK-01
+statement: Mock at architectural boundaries, not within a layer.
+type: soft
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates QG-TEST-MOCK-01 — Mock at architectural boundaries, not within a layer.
+```
 
-**Rule QG-TEST-MOCK-02 (hard):** Never mock the class under test. Mocking the
-subject of the test means you are not testing the real implementation.
+If the Service → DataSource boundary is the boundary, mock the DataSource interface. Do not mock private methods within the same class.
 
-**Rule QG-TEST-MOCK-03 (soft):** Verify side effects (`save` was called,
-notification was sent) with `verify()` calls. Do not rely on coverage to prove
-a side effect occurred.
+```rule
+id: QG-TEST-MOCK-02
+statement: Never mock the class under test.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates QG-TEST-MOCK-02 — Never mock the class under test.
+```
+
+Mocking the subject of the test means you are not testing the real implementation.
+
+```rule
+id: QG-TEST-MOCK-03
+statement: Verify side effects (`save` was called, notification was sent) with `verify()` calls.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates QG-TEST-MOCK-03 — Verify side effects (`save` was called, notification was sent) with `verify()` calls.
+```
+
+Do not rely on coverage to prove a side effect occurred.
 
 ## Test fixtures
 

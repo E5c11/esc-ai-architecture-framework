@@ -44,26 +44,60 @@ The root `settings.gradle.kts` is the authoritative list of all modules. It:
 - Configures repository resolution
 - Includes all project modules
 
-**Rule BUILD-PS-SETTINGS-01 (hard):** `build-logic` MUST be registered as an
-included build in `pluginManagement { includeBuild("build-logic") }`. This
-makes convention plugin IDs resolvable before the main build is evaluated.
+```rule
+id: BUILD-PS-SETTINGS-01
+statement: `build-logic` MUST be registered as an included build in `pluginManagement { includeBuild("build-logic") }`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-PS-SETTINGS-01 — `build-logic` MUST be registered as an included build in `pluginManagement { includeBuild("build-logic") }`.
+```
 
-**Rule BUILD-PS-SETTINGS-02 (hard):** Repository declarations belong in
-`dependencyResolutionManagement { repositories { } }` in `settings.gradle.kts`,
-not in individual module `build.gradle.kts` files.
+This makes convention plugin IDs resolvable before the main build is evaluated.
+
+```rule
+id: BUILD-PS-SETTINGS-02
+statement: Repository declarations belong in `dependencyResolutionManagement { repositories { } }` in `settings.gradle.kts`, not in individual module `build.gradle.kts` files.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates BUILD-PS-SETTINGS-02 — Repository declarations belong in `dependencyResolutionManagement { repositories { } }` in `settings.gradle.kts`, not in individual module `build.gradle.kts` files.
+```
 
 ## Module registration
 
-**Rule BUILD-PS-REG-01 (hard):** Every module MUST be registered with `include()`
-in `settings.gradle.kts`. A module directory that exists but is not included is
-silently ignored by Gradle — it will not compile and will not appear in the build.
+```rule
+id: BUILD-PS-REG-01
+statement: Every module MUST be registered with `include()` in `settings.gradle.kts`.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates BUILD-PS-REG-01 — Every module MUST be registered with `include()` in `settings.gradle.kts`.
+```
 
-**Rule BUILD-PS-REG-02 (soft):** Module registrations SHOULD be kept in
-alphabetical order within each group (`core:` before `feature:`). Alphabetical
-order makes it easy to verify at a glance that a new module was registered.
+A module directory that exists but is not included is silently ignored by Gradle — it will not compile and will not appear in the build.
 
-**Rule BUILD-PS-REG-03 (hard):** Module path format uses colon-separated segments:
-`:core:common`, `:feature:auth`. Never use directory path syntax.
+```rule
+id: BUILD-PS-REG-02
+statement: Module registrations SHOULD be kept in alphabetical order within each group (`core:` before `feature:`).
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-PS-REG-02 — Module registrations SHOULD be kept in alphabetical order within each group (`core:` before `feature:`).
+```
+
+Alphabetical order makes it easy to verify at a glance that a new module was registered.
+
+```rule
+id: BUILD-PS-REG-03
+statement: Module path format uses colon-separated segments: `:core:common`, `:feature:auth`.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates BUILD-PS-REG-03 — Module path format uses colon-separated segments: `:core:common`, `:feature:auth`.
+```
+
+Never use directory path syntax.
 
 ## Typesafe project accessors
 
@@ -78,10 +112,16 @@ implementation(project(":core:common"))
 implementation(projects.core.common)
 ```
 
-**Rule BUILD-PS-ACCESSOR-01 (soft):** Projects SHOULD enable typesafe project
-accessors via `enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")`. The accessor
-name is derived from the module path — renaming a module produces a compile error
-rather than a silent runtime failure.
+```rule
+id: BUILD-PS-ACCESSOR-01
+statement: Projects SHOULD enable typesafe project accessors via `enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")`.
+type: soft
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates BUILD-PS-ACCESSOR-01 — Projects SHOULD enable typesafe project accessors via `enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")`.
+```
+
+The accessor name is derived from the module path — renaming a module produces a compile error rather than a silent runtime failure.
 
 ## Root build.gradle.kts
 
@@ -89,9 +129,16 @@ The root `build.gradle.kts` is minimal. It applies only project-wide configurati
 that cannot live in a convention plugin (e.g. `allprojects` tasks, root-level
 plugin declarations needed for subproject resolution).
 
-**Rule BUILD-PS-ROOT-01 (soft):** The root `build.gradle.kts` SHOULD contain as
-little as possible. Module-specific configuration belongs in the module's own
-`build.gradle.kts`. Shared tool configuration belongs in a convention plugin.
+```rule
+id: BUILD-PS-ROOT-01
+statement: The root `build.gradle.kts` SHOULD contain as little as possible.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-PS-ROOT-01 — The root `build.gradle.kts` SHOULD contain as little as possible.
+```
+
+Module-specific configuration belongs in the module's own `build.gradle.kts`. Shared tool configuration belongs in a convention plugin.
 
 ## Module build.gradle.kts
 
@@ -100,21 +147,51 @@ Each module's `build.gradle.kts`:
 2. Declares module-specific dependencies
 3. Adds module-specific overrides only (e.g. coverage threshold, extra source sets)
 
-**Rule BUILD-PS-MODULE-01 (hard):** Modules MUST apply a convention plugin rather
-than re-declaring the full plugin list. One line per concern.
+```rule
+id: BUILD-PS-MODULE-01
+statement: Modules MUST apply a convention plugin rather than re-declaring the full plugin list.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-PS-MODULE-01 — Modules MUST apply a convention plugin rather than re-declaring the full plugin list.
+```
 
-**Rule BUILD-PS-MODULE-02 (hard):** Module `build.gradle.kts` files MUST NOT
-override JVM target, compiler options, or shared tool configuration. Those belong
-in convention plugins.
+One line per concern.
+
+```rule
+id: BUILD-PS-MODULE-02
+statement: Module `build.gradle.kts` files MUST NOT override JVM target, compiler options, or shared tool configuration.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates BUILD-PS-MODULE-02 — Module `build.gradle.kts` files MUST NOT override JVM target, compiler options, or shared tool configuration.
+```
+
+Those belong in convention plugins.
 
 ## Module naming
 
-**Rule BUILD-PS-NAME-01 (hard):** Module directory names MUST be lowercase
-and hyphen-separated. The Gradle path uses colons: `:feature:user-profile`.
+```rule
+id: BUILD-PS-NAME-01
+statement: Module directory names MUST be lowercase and hyphen-separated.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates BUILD-PS-NAME-01 — Module directory names MUST be lowercase and hyphen-separated.
+```
 
-**Rule BUILD-PS-NAME-02 (soft):** Core infrastructure modules SHOULD be grouped
-under `:core:`. Feature modules under `:feature:` (mobile) or at root domain level
-(backend). Avoid flat structures once the project exceeds three modules.
+The Gradle path uses colons: `:feature:user-profile`.
+
+```rule
+id: BUILD-PS-NAME-02
+statement: Core infrastructure modules SHOULD be grouped under `:core:`.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-PS-NAME-02 — Core infrastructure modules SHOULD be grouped under `:core:`.
+```
+
+Feature modules under `:feature:` (mobile) or at root domain level (backend). Avoid flat structures once the project exceeds three modules.
 
 ## Violations
 

@@ -53,12 +53,27 @@ build-logic/
         └── ...
 ```
 
-**Rule BUILD-CP-STRUCT-01 (hard):** Convention plugins MUST live in `build-logic/convention/`
-and be declared as an included build via `includeBuild("build-logic")` in the root
-`settings.gradle.kts`. Never place convention plugins inside the main build.
+```rule
+id: BUILD-CP-STRUCT-01
+statement: Convention plugins MUST live in `build-logic/convention/` and be declared as an included build via `includeBuild("build-logic")` in the root `settings.gradle.kts`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-CP-STRUCT-01 — Convention plugins MUST live in `build-logic/convention/` and be declared as an included build via `includeBuild("build-logic")` in the root `settings.gradle.kts`.
+```
 
-**Rule BUILD-CP-STRUCT-02 (hard):** Each convention plugin MUST be a Kotlin class
-implementing `Plugin<Project>`. All build configuration logic lives inside `apply()`.
+Never place convention plugins inside the main build.
+
+```rule
+id: BUILD-CP-STRUCT-02
+statement: Each convention plugin MUST be a Kotlin class implementing `Plugin<Project>`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-CP-STRUCT-02 — Each convention plugin MUST be a Kotlin class implementing `Plugin<Project>`.
+```
+
+All build configuration logic lives inside `apply()`.
 
 ## Plugin registration
 
@@ -76,11 +91,27 @@ gradlePlugin {
 }
 ```
 
-**Rule BUILD-CP-REG-01 (hard):** Plugin IDs MUST use reverse-domain dot notation:
-`{project}.{platform}.{purpose}`. Examples: `ampm.kmp.feature`, `ampm.backend.module`.
+```rule
+id: BUILD-CP-REG-01
+statement: Plugin IDs MUST use reverse-domain dot notation: `{project}.{platform}.{purpose}`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-CP-REG-01 — Plugin IDs MUST use reverse-domain dot notation: `{project}.{platform}.{purpose}`.
+```
 
-**Rule BUILD-CP-REG-02 (hard):** Each plugin ID MUST map to exactly one implementation
-class. The class name mirrors the ID in PascalCase.
+Examples: `ampm.kmp.feature`, `ampm.backend.module`.
+
+```rule
+id: BUILD-CP-REG-02
+statement: Each plugin ID MUST map to exactly one implementation class.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-CP-REG-02 — Each plugin ID MUST map to exactly one implementation class.
+```
+
+The class name mirrors the ID in PascalCase.
 
 ## Plugin hierarchy
 
@@ -94,11 +125,24 @@ myproject.kmp.library           KMP + Android library baseline
               └── myproject.kmp.room   + Room + KSP (added alongside feature)
 ```
 
-**Rule BUILD-CP-HIER-01 (soft):** Convention plugins SHOULD compose via
-`pluginManager.apply("parent.plugin.id")` rather than duplicating parent configuration.
+```rule
+id: BUILD-CP-HIER-01
+statement: Convention plugins SHOULD compose via `pluginManager.apply("parent.plugin.id")` rather than duplicating parent configuration.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-CP-HIER-01 — Convention plugins SHOULD compose via `pluginManager.apply("parent.plugin.id")` rather than duplicating parent configuration.
+```
 
-**Rule BUILD-CP-HIER-02 (hard):** Shared tool configuration (static analysis,
-JVM target, compiler options) MUST live in a base plugin and be inherited.
+```rule
+id: BUILD-CP-HIER-02
+statement: Shared tool configuration (static analysis, JVM target, compiler options) MUST live in a base plugin and be inherited.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-CP-HIER-02 — Shared tool configuration (static analysis, JVM target, compiler options) MUST live in a base plugin and be inherited.
+```
+
 Never configure the same tool in multiple sibling plugins.
 
 ## Version catalog in convention plugins
@@ -107,16 +151,28 @@ Access the version catalog inside a convention plugin via a `libs` extension
 function on `Project`. Reference library and version aliases rather than
 hardcoding version strings.
 
-**Rule BUILD-CP-DEPS-01 (hard):** Convention plugin dependencies declared in
-`build-logic/convention/build.gradle.kts` MUST use `compileOnly()` for Gradle
-plugin APIs. They are provided by the Gradle runtime; declaring them as
-`implementation` causes classpath conflicts.
+```rule
+id: BUILD-CP-DEPS-01
+statement: Convention plugin dependencies declared in `build-logic/convention/build.gradle.kts` MUST use `compileOnly()` for Gradle plugin APIs.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-CP-DEPS-01 — Convention plugin dependencies declared in `build-logic/convention/build.gradle.kts` MUST use `compileOnly()` for Gradle plugin APIs.
+```
+
+They are provided by the Gradle runtime; declaring them as `implementation` causes classpath conflicts.
 
 ## JVM target
 
-**Rule BUILD-CP-JVM-01 (hard):** JVM target version MUST be declared once in
-the `build-logic/convention/build.gradle.kts` `kotlin {}` block and replicated
-consistently in every convention plugin that configures JVM compilation.
+```rule
+id: BUILD-CP-JVM-01
+statement: JVM target version MUST be declared once in the `build-logic/convention/build.gradle.kts` `kotlin {}` block and replicated consistently in every convention plugin that configures JVM compilation.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-CP-JVM-01 — JVM target version MUST be declared once in the `build-logic/convention/build.gradle.kts` `kotlin {}` block and replicated consistently in every convention plugin that configures JVM compilation.
+```
+
 Never declare different JVM targets in different modules.
 
 ## Violations

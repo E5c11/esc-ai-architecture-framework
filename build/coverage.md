@@ -24,32 +24,66 @@ Platform-specific:
   `inline` functions and multiplatform source sets correctly
 - **Java:** JaCoCo
 
-**Rule BUILD-COV-TOOL-01 (soft):** KMP/Kotlin projects SHOULD use Kover. JaCoCo
-does not handle Kotlin `inline` functions correctly and may over- or under-report
-coverage for multiplatform modules.
+```rule
+id: BUILD-COV-TOOL-01
+statement: KMP/Kotlin projects SHOULD use Kover.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-COV-TOOL-01 — KMP/Kotlin projects SHOULD use Kover.
+```
+
+JaCoCo does not handle Kotlin `inline` functions correctly and may over- or under-report coverage for multiplatform modules.
 
 ## Per-module threshold
 
 Each module declares its own minimum coverage bound. New modules start at a lower
 threshold and raise it once the initial test suite is stable.
 
-**Rule BUILD-COV-THRESH-01 (hard):** Every module with testable code MUST declare
-a coverage verification rule with a minimum bound.
+```rule
+id: BUILD-COV-THRESH-01
+statement: Every module with testable code MUST declare a coverage verification rule with a minimum bound.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates BUILD-COV-THRESH-01 — Every module with testable code MUST declare a coverage verification rule with a minimum bound.
+```
 
-**Rule BUILD-COV-THRESH-02 (soft):** New modules SHOULD start at 80% and raise
-to 85% once the initial test suite is complete and coverage is stable.
+```rule
+id: BUILD-COV-THRESH-02
+statement: New modules SHOULD start at 80% and raise to 85% once the initial test suite is complete and coverage is stable.
+type: soft
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates BUILD-COV-THRESH-02 — New modules SHOULD start at 80% and raise to 85% once the initial test suite is complete and coverage is stable.
+```
 
-**Rule BUILD-COV-THRESH-03 (hard):** Never lower a module's threshold once it is
-established. If coverage drops, write the missing tests.
+```rule
+id: BUILD-COV-THRESH-03
+statement: Never lower a module's threshold once it is established.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates BUILD-COV-THRESH-03 — Never lower a module's threshold once it is established.
+```
+
+If coverage drops, write the missing tests.
 
 ## Aggregate report
 
 The root app module merges per-module coverage data into a single aggregate
 report. The aggregate threshold is enforced alongside per-module thresholds.
 
-**Rule BUILD-COV-AGG-01 (hard):** Every module with production code MUST be
-included in the aggregate coverage merge. A module omitted from the merge
-contributes zero to the aggregate denominator, inflating the aggregate percentage.
+```rule
+id: BUILD-COV-AGG-01
+statement: Every module with production code MUST be included in the aggregate coverage merge.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-COV-AGG-01 — Every module with production code MUST be included in the aggregate coverage merge.
+```
+
+A module omitted from the merge contributes zero to the aggregate denominator, inflating the aggregate percentage.
 
 ## Standard exclusions
 
@@ -70,13 +104,25 @@ non-testable code.
 | `**.navigation.*` | Navigation route declarations |
 | Generated resource accessors | Compose Multiplatform generated code |
 
-**Rule BUILD-COV-EXCL-01 (hard):** Standard exclusions MUST be applied consistently
-in every module. Never include generated or logic-free code in the coverage
-denominator — it distorts the threshold and creates incentives to add boilerplate.
+```rule
+id: BUILD-COV-EXCL-01
+statement: Standard exclusions MUST be applied consistently in every module.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-COV-EXCL-01 — Standard exclusions MUST be applied consistently in every module.
+```
 
-**Rule BUILD-COV-EXCL-02 (hard):** Module-specific exclusions (e.g. platform
-SDK wrappers that require a device to test) MUST be declared explicitly in that
-module's Kover configuration with a comment explaining why they are excluded.
+Never include generated or logic-free code in the coverage denominator — it distorts the threshold and creates incentives to add boilerplate.
+
+```rule
+id: BUILD-COV-EXCL-02
+statement: Module-specific exclusions (e.g. platform SDK wrappers that require a device to test) MUST be declared explicitly in that module's Kover configuration with a comment explaining why they are excluded.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates BUILD-COV-EXCL-02 — Module-specific exclusions (e.g. platform SDK wrappers that require a device to test) MUST be declared explicitly in that module's Kover configuration with a comment explaining why they are excluded.
+```
 
 ## Running coverage
 
@@ -86,9 +132,16 @@ module's Kover configuration with a comment explaining why they are excluded.
 ./gradlew :{module}:koverVerify    # Verify a single module
 ```
 
-**Rule BUILD-COV-CI-01 (hard):** Coverage verification MUST run in CI on every
-merge request. A build that passes unit tests but fails `koverVerify` MUST NOT
-be merged.
+```rule
+id: BUILD-COV-CI-01
+statement: Coverage verification MUST run in CI on every merge request.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates BUILD-COV-CI-01 — Coverage verification MUST run in CI on every merge request.
+```
+
+A build that passes unit tests but fails `koverVerify` MUST NOT be merged.
 
 ## What coverage does NOT measure
 

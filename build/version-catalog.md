@@ -44,28 +44,62 @@ implementation(libs.koin.core)
 
 ## File location
 
-**Rule BUILD-VC-LOC-01 (hard):** The version catalog MUST be at `gradle/libs.versions.toml`.
+```rule
+id: BUILD-VC-LOC-01
+statement: The version catalog MUST be at `gradle/libs.versions.toml`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-VC-LOC-01 — The version catalog MUST be at `gradle/libs.versions.toml`.
+```
+
 Gradle resolves this path automatically; no explicit registration is needed.
 
 ## Alias naming
 
-**Rule BUILD-VC-ALIAS-01 (hard):** Library aliases MUST use kebab-case and follow
-the pattern `{group}-{artifact}`. Hyphens in the TOML become dots in Kotlin:
-`koin-core` → `libs.koin.core`.
+```rule
+id: BUILD-VC-ALIAS-01
+statement: Library aliases MUST use kebab-case and follow the pattern `{group}-{artifact}`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-VC-ALIAS-01 — Library aliases MUST use kebab-case and follow the pattern `{group}-{artifact}`.
+```
 
-**Rule BUILD-VC-ALIAS-02 (hard):** Version aliases MUST use kebab-case and be
-named after the library or library group they govern: `kotlin`, `koin`, `spring-boot`.
+Hyphens in the TOML become dots in Kotlin: `koin-core` → `libs.koin.core`.
+
+```rule
+id: BUILD-VC-ALIAS-02
+statement: Version aliases MUST use kebab-case and be named after the library or library group they govern: `kotlin`, `koin`, `spring-boot`.
+type: hard
+scope: naming
+enforced_by: [reviewer]
+violation_message: Violates BUILD-VC-ALIAS-02 — Version aliases MUST use kebab-case and be named after the library or library group they govern: `kotlin`, `koin`, `spring-boot`.
+```
+
 Never use generic names (`version1`, `v2`).
 
-**Rule BUILD-VC-ALIAS-03 (soft):** Plugin aliases SHOULD mirror the library alias
-for the same project: `kotlinx-serialization` (library) and `kotlinx-serialization`
-(plugin) both reference the same version.
+```rule
+id: BUILD-VC-ALIAS-03
+statement: Plugin aliases SHOULD mirror the library alias for the same project: `kotlinx-serialization` (library) and `kotlinx-serialization` (plugin) both reference the same version.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-VC-ALIAS-03 — Plugin aliases SHOULD mirror the library alias for the same project: `kotlinx-serialization` (library) and `kotlinx-serialization` (plugin) both reference the same version.
+```
 
 ## Version references
 
-**Rule BUILD-VC-VER-01 (hard):** Library entries MUST reference a version alias
-via `version.ref` rather than inlining the version string. Inline versions defeat
-the purpose of a catalog — the version appears in two places and will drift.
+```rule
+id: BUILD-VC-VER-01
+statement: Library entries MUST reference a version alias via `version.ref` rather than inlining the version string.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-VC-VER-01 — Library entries MUST reference a version alias via `version.ref` rather than inlining the version string.
+```
+
+Inline versions defeat the purpose of a catalog — the version appears in two places and will drift.
 
 ```toml
 # ✅ Correct
@@ -88,7 +122,15 @@ plugins {
 }
 ```
 
-**Rule BUILD-VC-PLUGIN-01 (hard):** Gradle plugin application MUST use `alias(libs.plugins.*)`.
+```rule
+id: BUILD-VC-PLUGIN-01
+statement: Gradle plugin application MUST use `alias(libs.plugins.*)`.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates BUILD-VC-PLUGIN-01 — Gradle plugin application MUST use `alias(libs.plugins.*)`.
+```
+
 Never hardcode plugin IDs with version strings in module build files.
 
 Exception: Convention plugin IDs (defined in `build-logic/`) are applied with `id()`
@@ -99,9 +141,16 @@ because they are not declared in the version catalog.
 Convention plugin `build.gradle.kts` accesses the catalog via the `libs` extension.
 Gradle plugin APIs used only during the build process are declared `compileOnly`.
 
-**Rule BUILD-VC-CP-01 (hard):** Convention plugins MUST declare Gradle plugin API
-dependencies as `compileOnly(libs.*)`. They are provided by the Gradle runtime
-and must not be bundled.
+```rule
+id: BUILD-VC-CP-01
+statement: Convention plugins MUST declare Gradle plugin API dependencies as `compileOnly(libs.*)`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-VC-CP-01 — Convention plugins MUST declare Gradle plugin API dependencies as `compileOnly(libs.*)`.
+```
+
+They are provided by the Gradle runtime and must not be bundled.
 
 ## Adding a new dependency
 
@@ -110,8 +159,16 @@ and must not be bundled.
 3. Add a plugin entry to `[plugins]` if it has a Gradle plugin
 4. Reference the alias in the module `build.gradle.kts`
 
-**Rule BUILD-VC-ADD-01 (hard):** Dependencies MUST NOT be added as raw coordinate
-strings in module `build.gradle.kts`. Every dependency goes through the catalog.
+```rule
+id: BUILD-VC-ADD-01
+statement: Dependencies MUST NOT be added as raw coordinate strings in module `build.gradle.kts`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-VC-ADD-01 — Dependencies MUST NOT be added as raw coordinate strings in module `build.gradle.kts`.
+```
+
+Every dependency goes through the catalog.
 
 ## Violations
 

@@ -30,13 +30,27 @@ root/
     └── detekt-baseline.xml
 ```
 
-**Rule BUILD-SA-CONFIG-01 (hard):** There MUST be exactly one shared `detekt.yml`
-at the root of the project. All modules use the same ruleset. Per-module configs
-that override rules undermine consistency.
+```rule
+id: BUILD-SA-CONFIG-01
+statement: There MUST be exactly one shared `detekt.yml` at the root of the project.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-SA-CONFIG-01 — There MUST be exactly one shared `detekt.yml` at the root of the project.
+```
 
-**Rule BUILD-SA-CONFIG-02 (hard):** The path to the shared config MUST be set in
-the Detekt convention plugin, not in individual modules. Modules must not re-declare
-or override the config path.
+All modules use the same ruleset. Per-module configs that override rules undermine consistency.
+
+```rule
+id: BUILD-SA-CONFIG-02
+statement: The path to the shared config MUST be set in the Detekt convention plugin, not in individual modules.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-SA-CONFIG-02 — The path to the shared config MUST be set in the Detekt convention plugin, not in individual modules.
+```
+
+Modules must not re-declare or override the config path.
 
 ```kotlin
 // In the Detekt convention plugin
@@ -53,26 +67,54 @@ introduced to a module. Baseline violations are suppressed so they do not block
 the build, but any new violation added after the baseline was created is still
 caught.
 
-**Rule BUILD-SA-BASELINE-01 (hard):** Baselines are per-module files
-(`detekt-baseline.xml`). Never use a single shared baseline — it hides new
-violations in modules that were already clean.
+```rule
+id: BUILD-SA-BASELINE-01
+statement: Baselines are per-module files (`detekt-baseline.xml`).
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates BUILD-SA-BASELINE-01 — Baselines are per-module files (`detekt-baseline.xml`).
+```
 
-**Rule BUILD-SA-BASELINE-02 (soft):** Baseline files SHOULD be committed to
-version control. They represent a snapshot of accepted technical debt at a point
-in time and allow new developers to run Detekt without encountering pre-existing failures.
+Never use a single shared baseline — it hides new violations in modules that were already clean.
 
-**Rule BUILD-SA-BASELINE-03 (soft):** Baseline entries SHOULD be reduced over
-time. When fixing a violation, remove it from the baseline rather than leaving
-a stale suppression.
+```rule
+id: BUILD-SA-BASELINE-02
+statement: Baseline files SHOULD be committed to version control.
+type: soft
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates BUILD-SA-BASELINE-02 — Baseline files SHOULD be committed to version control.
+```
+
+They represent a snapshot of accepted technical debt at a point in time and allow new developers to run Detekt without encountering pre-existing failures.
+
+```rule
+id: BUILD-SA-BASELINE-03
+statement: Baseline entries SHOULD be reduced over time.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates BUILD-SA-BASELINE-03 — Baseline entries SHOULD be reduced over time.
+```
+
+When fixing a violation, remove it from the baseline rather than leaving a stale suppression.
 
 ## Convention plugin wiring
 
 Detekt is applied via a convention plugin that every module inherits, not declared
 individually per module.
 
-**Rule BUILD-SA-PLUGIN-01 (hard):** Detekt MUST be applied via a convention plugin
-that sets the shared config path. Never apply the Detekt Gradle plugin directly
-in a module build file without wiring it to the shared config.
+```rule
+id: BUILD-SA-PLUGIN-01
+statement: Detekt MUST be applied via a convention plugin that sets the shared config path.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates BUILD-SA-PLUGIN-01 — Detekt MUST be applied via a convention plugin that sets the shared config path.
+```
+
+Never apply the Detekt Gradle plugin directly in a module build file without wiring it to the shared config.
 
 ## Running Detekt
 
