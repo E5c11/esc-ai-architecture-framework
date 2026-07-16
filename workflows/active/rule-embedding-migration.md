@@ -22,6 +22,7 @@ with:
 ````
 ```rule
 id: ARCH-PC-REP-INTERFACE-01
+statement: Repository MUST define an interface.
 type: hard
 scope: structure
 enforced_by: [reviewer]

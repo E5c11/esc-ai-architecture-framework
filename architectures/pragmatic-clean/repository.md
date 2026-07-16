@@ -20,8 +20,16 @@ when to fetch from remote and how to update local after a successful remote call
 
 ## When to create a Repository
 
-**Rule ARCH-PC-REP-OPTIONAL-01 (soft):** The Repository layer MAY be skipped when
-a feature has exactly one DataSource. The UseCase may consume the DataSource directly.
+```rule
+id: ARCH-PC-REP-OPTIONAL-01
+statement: The Repository layer MAY be skipped when a feature has exactly one DataSource.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-OPTIONAL-01 — The Repository layer MAY be skipped when a feature has exactly one DataSource.
+```
+
+The UseCase may consume the DataSource directly.
 
 Create a Repository only when:
 - There is a local DataSource AND a remote DataSource that must be coordinated
@@ -35,41 +43,115 @@ data/repository/
 └── Default{Feature}Repository.kt    Implementation
 ```
 
-**Rule ARCH-PC-REP-INTERFACE-01 (hard):** Repository MUST define an interface.
+```rule
+id: ARCH-PC-REP-INTERFACE-01
+statement: Repository MUST define an interface.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-INTERFACE-01 — Repository MUST define an interface.
+```
 
-**Rule ARCH-PC-REP-NAMING-01 (hard):** Interface is `{Feature}Repository`.
+```rule
+id: ARCH-PC-REP-NAMING-01
+statement: Interface is `{Feature}Repository`.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-NAMING-01 — Interface is `{Feature}Repository`.
+```
+
 Implementation is `Default{Feature}Repository`.
 
 ## What a Repository talks to
 
-**Rule ARCH-PC-REP-DATASOURCE-01 (hard):** Repository MUST only call DataSources.
+```rule
+id: ARCH-PC-REP-DATASOURCE-01
+statement: Repository MUST only call DataSources.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-DATASOURCE-01 — Repository MUST only call DataSources.
+```
+
 It MUST NOT call DAOs, APIs, or any provider directly.
 
-**Rule ARCH-PC-REP-INJECT-01 (hard):** DataSources are injected via constructor.
+```rule
+id: ARCH-PC-REP-INJECT-01
+statement: DataSources are injected via constructor.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-INJECT-01 — DataSources are injected via constructor.
+```
+
 The Repository never instantiates them.
 
 ## Return types
 
-**Rule ARCH-PC-REP-RETURN-01 (hard):** Repository methods returning sync-dependent
-data MUST return `Flow<T>`.
+```rule
+id: ARCH-PC-REP-RETURN-01
+statement: Repository methods returning sync-dependent data MUST return `Flow<T>`.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-RETURN-01 — Repository methods returning sync-dependent data MUST return `Flow<T>`.
+```
 
-**Rule ARCH-PC-REP-RETURN-02 (hard):** One-shot operations MUST use suspend functions.
+```rule
+id: ARCH-PC-REP-RETURN-02
+statement: One-shot operations MUST use suspend functions.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-RETURN-02 — One-shot operations MUST use suspend functions.
+```
 
-**Rule ARCH-PC-REP-RETURN-03 (hard):** Repository MUST NOT return loading states
-or resource wrappers. That is the ViewModel's responsibility.
+```rule
+id: ARCH-PC-REP-RETURN-03
+statement: Repository MUST NOT return loading states or resource wrappers.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-RETURN-03 — Repository MUST NOT return loading states or resource wrappers.
+```
 
-**Rule ARCH-PC-REP-RETURN-04 (hard):** Return types are plain domain models only.
+That is the ViewModel's responsibility.
+
+```rule
+id: ARCH-PC-REP-RETURN-04
+statement: Return types are plain domain models only.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-RETURN-04 — Return types are plain domain models only.
+```
+
 Never DTOs, entities, or provider types.
 
 ## SSOT enforcement
 
-**Rule ARCH-PC-REP-SSOT-01 (hard):** When coordinating local and remote DataSources,
-the Repository MUST observe the local DataSource as the stream that consumers read.
+```rule
+id: ARCH-PC-REP-SSOT-01
+statement: When coordinating local and remote DataSources, the Repository MUST observe the local DataSource as the stream that consumers read.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-SSOT-01 — When coordinating local and remote DataSources, the Repository MUST observe the local DataSource as the stream that consumers read.
+```
+
 Never observe the remote DataSource directly.
 
-**Rule ARCH-PC-REP-SSOT-02 (hard):** After a successful remote fetch, the Repository
-MUST write the result to the local DataSource. The local DataSource then emits
-the update to all observers.
+```rule
+id: ARCH-PC-REP-SSOT-02
+statement: After a successful remote fetch, the Repository MUST write the result to the local DataSource.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-SSOT-02 — After a successful remote fetch, the Repository MUST write the result to the local DataSource.
+```
+
+The local DataSource then emits the update to all observers.
 
 ### Standard coordination pattern
 
@@ -84,8 +166,15 @@ Remote failure during step 1 does not prevent step 2 from emitting cached data.
 
 ## Error handling
 
-**Rule ARCH-PC-REP-FALLBACK-01 (hard):** When implementing fallback strategies,
-the Repository MUST rethrow domain exceptions after fallback logic is exhausted.
+```rule
+id: ARCH-PC-REP-FALLBACK-01
+statement: When implementing fallback strategies, the Repository MUST rethrow domain exceptions after fallback logic is exhausted.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-FALLBACK-01 — When implementing fallback strategies, the Repository MUST rethrow domain exceptions after fallback logic is exhausted.
+```
+
 Never swallow exceptions silently.
 
 Domain exceptions pass through the Repository unchanged — they were already
