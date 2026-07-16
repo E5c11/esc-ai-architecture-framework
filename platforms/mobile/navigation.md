@@ -12,7 +12,7 @@ status: stub
 
 # Compose Navigation
 
-> **TODO:** This document is a stub. See `todo/missing-files.md` for context.
+> **TODO:** This document is a stub. See `workflows/missing-files.md` for context.
 >
 > **Open question:** Verify whether the navigation layer is owned by this platform doc
 > or partially by `ARCH-PC-VIEW`. The existing `ARCH-PC-VIEW` covers the single-Scaffold

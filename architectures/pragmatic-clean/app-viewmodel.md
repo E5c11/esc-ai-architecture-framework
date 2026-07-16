@@ -12,7 +12,7 @@ status: stub
 
 # App-Level ViewModel
 
-> **TODO:** This document is a stub. See `todo/missing-files.md` for context.
+> **TODO:** This document is a stub. See `workflows/missing-files.md` for context.
 
 ## What this document must cover
 

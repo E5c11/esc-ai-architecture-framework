@@ -50,7 +50,7 @@ architectural decision is **not documented in the framework**, you MUST:
 2. **Create a stub document** in the appropriate framework layer (`architectures/`,
    `platforms/`, `patterns/`, etc.) with a `status: stub` frontmatter field, a clear
    outline of what the document must cover, and a TODO note.
-3. **Add an entry to `todo/missing-files.md`** describing the gap and any open questions.
+3. **Add an entry to `workflows/missing-files.md`** describing the gap and any open questions.
 4. **Notify the user.** Report the gap, the stub location, and what decision or research
    is needed before the document can be written.
 5. **Do not continue** until the framework document is written and the gap is resolved.

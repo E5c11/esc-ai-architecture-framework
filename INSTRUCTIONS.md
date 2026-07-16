@@ -102,6 +102,10 @@ Formal schemas for all framework document types. Used for validation and tooling
 ### `tools/`
 Validation scripts and CLI utilities for framework maintenance.
 
+### `workflows/`
+This framework's own build/extension phase tracking and gap log. Not
+consumed by downstream projects — see `workflows/README.md`.
+
 ---
 
 ## Document IDs
@@ -155,7 +159,7 @@ Then, in order:
    - **Create a stub** if the doc ID doesn't exist yet — minimal frontmatter,
      `status: stub`, a `TODO:` description of what it needs to cover (same shape as
      every existing stub in this framework).
-   - **Register it in `todo/missing-files.md`** (or confirm it's already listed there).
+   - **Register it in `workflows/missing-files.md`** (or confirm it's already listed there).
    - **Notify the project owner**: "This task requires `DOC-ID`, which is missing/stub
      and not covered by the project's internal framework either. Created the stub at
      `<path>`. Please spec it before I continue."
