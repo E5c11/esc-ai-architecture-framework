@@ -1,17 +1,21 @@
 # Rule Definition Schema
-# Rules are defined within framework documents (inline or in dedicated rule-set files).
-# Every rule must conform to this schema.
+# Rules are defined inline in the framework document that owns them, as a
+# fenced ```rule block immediately in place of the rule's prose statement.
+# Every rule must conform to this schema. A rule is defined in exactly one
+# doc; every other doc that needs it cites the ID in prose instead of
+# redefining it (see workflows/README.md's "How to Add New Docs" section).
 #
-# Usage in a rule-set document:
+# Usage in a document body:
 #
-#   rules:
-#     REP-SSOT-01:
-#       statement: "Repository MUST observe local DataSource as single source of truth"
-#       type: hard
-#       scope: behavior
-#       condition: "Repository coordinates both local and remote DataSources"
-#       enforced_by: [planner, executor]
-#       violation_message: "Repository observing remote DataSource instead of local"
+#   ```rule
+#   id: REP-SSOT-01
+#   statement: Repository MUST observe local DataSource as single source of truth
+#   type: hard
+#   scope: behavior
+#   condition: Repository coordinates both local and remote DataSources
+#   enforced_by: [planner, executor]
+#   violation_message: Repository observing remote DataSource instead of local
+#   ```
 
 schema:
   version: "1.0"
@@ -22,11 +26,12 @@ fields:
   id:
     type: string
     required: true
-    pattern: "^[A-Z]+-[A-Z]+-[0-9]+$"
+    pattern: "^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$"
     description: >
-      Unique rule ID owned by this framework.
-      Format: {CATEGORY}-{SUBCATEGORY}-{NUMBER}
-      Examples: REP-SSOT-01, DI-SCOPE-03, CTRL-LOGIC-01
+      Unique rule ID owned by this framework. Same shape as a document ID
+      (uppercase hyphenated segments, trailing number) — hierarchy depth is
+      not fixed, existing rules range from 2 segments to 5.
+      Examples: REP-SSOT-01, DI-SCOPE-03, CTRL-LOGIC-01, ARCH-PC-REP-INTERFACE-01
 
   statement:
     type: string

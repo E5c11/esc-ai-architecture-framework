@@ -8,11 +8,16 @@ Checks:
   3. All IDs referenced in `requires` and `related` exist (reference check).
   4. No circular `requires` chains (cycle check).
   5. Document ID prefix matches the document's layer directory.
+  6. Every ```rule block matches schemas/rule.yaml (required fields, enums).
+  7. No two ```rule blocks anywhere in the repo share the same rule ID.
+  8. Every rule-ID-shaped citation in body text resolves to a known rule or
+     document ID (WARN-only for now — see check_rule_citations docstring).
 
 Usage:
   python tools/validate.py [--root <path>]
 
-Exit code: 0 = all checks passed, 1 = one or more failures.
+Exit code: 0 = all checks passed, 1 = one or more failures. WARN-only
+findings from check_rule_citations do not affect the exit code.
 """
 
 import re
@@ -43,11 +48,25 @@ LAYER_PREFIXES = {
     "feature-orchestrators": "ORCH-",
 }
 
+# Shared by both document IDs and rule IDs — hierarchy depth isn't fixed,
+# see schemas/document.yaml and schemas/rule.yaml.
 ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$")
+
+RULE_BLOCK_PATTERN = re.compile(r"```rule\s*\n(.*?)\n```", re.DOTALL)
+
+RULE_TYPES = {"hard", "soft"}
+RULE_SCOPES = {
+    "structure", "behavior", "naming", "return-type",
+    "di", "error-handling", "testing", "performance",
+}
+RULE_ENFORCERS = {"planner", "executor", "reviewer", "ci"}
 
 
 # ---------------------------------------------------------------------------
-# Front matter parsing — no external dependencies
+# Flat-YAML parsing — no external dependencies
+#
+# Shared by front matter (delimited by '---') and ```rule blocks: both are
+# flat key: value maps with optional inline/block lists, nothing nested.
 # ---------------------------------------------------------------------------
 
 def _parse_scalar(raw: str) -> str:
@@ -64,20 +83,14 @@ def _parse_inline_list(raw: str) -> list[str]:
     return [item.strip().strip('"').strip("'") for item in inner.split(",") if item.strip()]
 
 
-def parse_front_matter(text: str) -> dict:
+def _parse_flat_yaml(lines: list[str]) -> dict:
     """
-    Extract fields from YAML front matter delimited by '---'.
-    Returns {} if no front matter is found.
+    Parse a flat list of YAML-ish lines into a dict.
     Handles scalar values, inline lists [A, B], and block sequences:
       key:
         - A
         - B
     """
-    match = re.match(r"^---\s*\n(.*?)\n---", text, re.DOTALL)
-    if not match:
-        return {}
-
-    lines = match.group(1).splitlines()
     result: dict = {}
     i = 0
 
@@ -120,6 +133,30 @@ def parse_front_matter(text: str) -> dict:
     return result
 
 
+def parse_front_matter(text: str) -> dict:
+    """
+    Extract fields from YAML front matter delimited by '---'.
+    Returns {} if no front matter is found.
+    """
+    match = re.match(r"^---\s*\n(.*?)\n---", text, re.DOTALL)
+    if not match:
+        return {}
+    return _parse_flat_yaml(match.group(1).splitlines())
+
+
+def extract_rule_blocks(text: str, path) -> list[dict]:
+    """
+    Find every fenced ```rule block in a document's body and parse it as a
+    flat YAML map, tagged with its source path for error reporting.
+    """
+    rules = []
+    for match in RULE_BLOCK_PATTERN.finditer(text):
+        rule = _parse_flat_yaml(match.group(1).splitlines())
+        rule["_path"] = path
+        rules.append(rule)
+    return rules
+
+
 # ---------------------------------------------------------------------------
 # Document collection
 # ---------------------------------------------------------------------------
@@ -127,7 +164,9 @@ def parse_front_matter(text: str) -> dict:
 def collect_documents(root: Path) -> list[dict]:
     """
     Walk every layer directory and return a list of document records:
-    { path, id, layer, requires, related }
+    { path, id, layer, requires, related, body }
+    `body` is the full file text (front matter included) — kept so rule
+    extraction and citation scanning don't need to re-read every file.
     """
     documents = []
     for layer_dir in LAYER_DIRS:
@@ -145,8 +184,17 @@ def collect_documents(root: Path) -> list[dict]:
                 "id":       meta.get("id", ""),
                 "requires": meta.get("requires", []) if isinstance(meta.get("requires"), list) else [],
                 "related":  meta.get("related",  []) if isinstance(meta.get("related"),  list) else [],
+                "body":     text,
             })
     return documents
+
+
+def collect_rules(documents: list[dict]) -> list[dict]:
+    """Extract every ```rule block across all documents."""
+    rules = []
+    for doc in documents:
+        rules.extend(extract_rule_blocks(doc["body"], doc["path"]))
+    return rules
 
 
 # ---------------------------------------------------------------------------
@@ -242,6 +290,83 @@ def check_circular_requires(documents: list[dict]) -> list[str]:
     return errors
 
 
+def check_rule_schema(rules: list[dict]) -> list[str]:
+    """Every ```rule block must satisfy schemas/rule.yaml's required fields and enums."""
+    errors = []
+    for rule in rules:
+        rule_id = rule.get("id", "")
+        path = rule["_path"]
+        prefix = f"  {rule_id or '(missing id)'}  ({path})"
+
+        for field in ("id", "statement", "type", "scope", "enforced_by", "violation_message"):
+            if not rule.get(field):
+                errors.append(f"{prefix}  MISSING FIELD '{field}'")
+
+        if rule_id and not ID_PATTERN.match(rule_id):
+            errors.append(f"{prefix}  INVALID ID FORMAT {rule_id!r}")
+
+        rule_type = rule.get("type", "")
+        if rule_type and rule_type not in RULE_TYPES:
+            errors.append(f"{prefix}  INVALID type {rule_type!r} (expected one of {sorted(RULE_TYPES)})")
+
+        scope = rule.get("scope", "")
+        if scope and scope not in RULE_SCOPES:
+            errors.append(f"{prefix}  INVALID scope {scope!r} (expected one of {sorted(RULE_SCOPES)})")
+
+        enforced_by = rule.get("enforced_by", [])
+        if isinstance(enforced_by, str):
+            enforced_by = [enforced_by] if enforced_by else []
+        for enforcer in enforced_by:
+            if enforcer not in RULE_ENFORCERS:
+                errors.append(f"{prefix}  INVALID enforced_by entry {enforcer!r} (expected one of {sorted(RULE_ENFORCERS)})")
+
+    return errors
+
+
+def check_duplicate_rule_ids(rules: list[dict]) -> list[str]:
+    """No two ```rule blocks anywhere in the repo may share the same rule ID."""
+    seen: dict[str, list] = defaultdict(list)
+    for rule in rules:
+        if rule.get("id"):
+            seen[rule["id"]].append(rule["_path"])
+    errors = []
+    for rule_id, paths in seen.items():
+        if len(paths) > 1:
+            listed = "\n".join(f"    {p}" for p in paths)
+            errors.append(f"  DUPLICATE RULE ID  {rule_id}\n{listed}")
+    return errors
+
+
+def check_rule_citations(documents: list[dict], rules: list[dict]) -> list[str]:
+    """
+    Scan every document's body for ID_PATTERN-shaped tokens and flag any that
+    resolve to neither a known rule ID nor a known document ID.
+
+    WARN-only for now (caller must not fold these into the exit code): the
+    citation syntax in the wild hasn't been confirmed clean across the full
+    corpus yet. Promote to a real failure once a pass across the fully
+    migrated repo comes back empty — see workflows/active/rule-embedding-migration.md.
+    """
+    known_rule_ids = {rule["id"] for rule in rules if rule.get("id")}
+    known_doc_ids = {doc["id"] for doc in documents if doc["id"]}
+    known_ids = known_rule_ids | known_doc_ids
+
+    # Only tokens set off as citations (backticked or parenthesized) count —
+    # a bare ID_PATTERN match in running prose is too noisy to trust.
+    citation_pattern = re.compile(
+        r"`([A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+)`|\(([A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+)\)"
+    )
+
+    warnings = []
+    for doc in documents:
+        body_without_blocks = RULE_BLOCK_PATTERN.sub("", doc["body"])
+        for match in citation_pattern.finditer(body_without_blocks):
+            token = match.group(1) or match.group(2)
+            if token not in known_ids:
+                warnings.append(f"  UNRESOLVED CITATION  {token!r}  ({doc['path']})")
+    return warnings
+
+
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
@@ -259,7 +384,9 @@ def main() -> int:
     print(f"Validating framework at: {root}\n")
 
     documents = collect_documents(root)
-    print(f"Found {len(documents)} documents across {len(LAYER_DIRS)} layer directories.\n")
+    rules = collect_rules(documents)
+    print(f"Found {len(documents)} documents across {len(LAYER_DIRS)} layer directories.")
+    print(f"Found {len(rules)} rule blocks.\n")
 
     all_errors: list[tuple[str, list[str]]] = [
         ("Missing IDs",           check_missing_ids(documents)),
@@ -268,6 +395,8 @@ def main() -> int:
         ("Layer prefix mismatch", check_layer_prefix(documents)),
         ("Broken references",     check_broken_references(documents)),
         ("Circular requires",     check_circular_requires(documents)),
+        ("Rule schema",           check_rule_schema(rules)),
+        ("Duplicate rule IDs",    check_duplicate_rule_ids(rules)),
     ]
 
     any_failure = False
@@ -280,6 +409,15 @@ def main() -> int:
             print()
         else:
             print(f"OK    {check_name}")
+
+    citation_warnings = check_rule_citations(documents, rules)
+    if citation_warnings:
+        print(f"WARN  Rule citations ({len(citation_warnings)} unresolved — not fatal yet):")
+        for warning in citation_warnings:
+            print(warning)
+        print()
+    else:
+        print("OK    Rule citations")
 
     print()
     if any_failure:
