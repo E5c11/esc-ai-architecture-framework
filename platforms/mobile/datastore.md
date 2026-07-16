@@ -105,7 +105,7 @@ suspend fun clearDismissedId(id: String) {
 
 ## DI Registration
 
-**Rule PLAT-MOB-KOIN-SINGLE-02:** `DataStore<Preferences>` instances MUST be declared as `single`.
+`DataStore<Preferences>` instances MUST be declared as `single` (`PLAT-MOB-KOIN-SINGLE-02`, defined in `platforms/mobile/koin.md`).
 
 ```kotlin
 // In platform or core DI module

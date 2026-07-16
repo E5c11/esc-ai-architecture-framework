@@ -7,6 +7,28 @@ document must cover. Write the full content before removing the entry from this 
 
 ## High priority
 
+### `platforms/mobile/design-system/component.md` — checklist items never defined as rules
+Surfaced by `check_rule_citations` after the rule-embedding migration
+(`workflows/archive/rule-embedding-migration.md`). `component.md` documents
+~17 requirements as inline checklist bullets (`- **DS-STRUCTURE-01:** ...`,
+`DS-A11Y-01..03`, `DS-M3-01..02`, `DS-KMP-01`, `DS-STRUCTURE-01..08`) that
+never matched the canonical `**Rule ID (type):** statement` format, so they
+were never real rule definitions — citations to them from `icons.md`,
+`images.md`, `quality-gates/review.md`, and `feature-orchestrators/mobile/mobile-feature.md`
+have always been unresolved, just never checked before. Needs each item
+converted to a proper ```rule block (deciding `type`/`scope` per item) — real
+authorship, not a mechanical fix. `platforms/mobile/design-system/images.md`
+has the same issue for `DS-IMAGE-03/04/05`.
+
+### `platforms/mobile/kmp.md` + `platforms/mobile/http-client.md` — rule migration pending
+Deliberately excluded from the rule-embedding migration's Phase 3 (parallel
+worktree agents can't see uncommitted working-tree changes, and both files
+had unrelated in-flight edits at the time). Once those edits are committed,
+run `python tools/migrate_rules.py platforms/mobile/kmp.md platforms/mobile/http-client.md`
+and validate — `http-client.md` currently has 3 citations
+(`PLAT-MOB-KMP-WEB-02`, `PLAT-MOB-KMP-SS-01`, `PLAT-MOB-KMP-DI-01`) that will
+stay unresolved until `kmp.md`'s rules are migrated.
+
 ### Layer-specific unit test guides
 No actionable test guides exist for any architecture layer. The framework has
 philosophy (`CORE-TESTING`, `QG-TESTING`) but nothing that tells an agent how

@@ -75,11 +75,29 @@ Heavy or stateful resources are declared `single{}` so they are created once and
 
 ```rule
 id: PLAT-MOB-KOIN-SINGLE-01
-statement: Room DAOs MUST be declared as `single`. **Rule PLAT-MOB-KOIN-SINGLE-02 (hard):** `DataStore<Preferences>` instances MUST be declared as `single`. **Rule PLAT-MOB-KOIN-SINGLE-03 (hard):** Firebase SDK instances MUST be declared as `single`.
+statement: Room DAOs MUST be declared as `single`.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates PLAT-MOB-KOIN-SINGLE-01 — Room DAOs MUST be declared as `single`. **Rule PLAT-MOB-KOIN-SINGLE-02 (hard):** `DataStore<Preferences>` instances MUST be declared as `single`. **Rule PLAT-MOB-KOIN-SINGLE-03 (hard):** Firebase SDK instances MUST be declared as `single`.
+violation_message: Violates PLAT-MOB-KOIN-SINGLE-01 — Room DAOs MUST be declared as `single`.
+```
+
+```rule
+id: PLAT-MOB-KOIN-SINGLE-02
+statement: `DataStore<Preferences>` instances MUST be declared as `single`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-SINGLE-02 — `DataStore<Preferences>` instances MUST be declared as `single`.
+```
+
+```rule
+id: PLAT-MOB-KOIN-SINGLE-03
+statement: Firebase SDK instances MUST be declared as `single`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-SINGLE-03 — Firebase SDK instances MUST be declared as `single`.
 ```
 
 Firebase objects are expensive to construct and are designed to be shared.
@@ -166,7 +184,7 @@ violation_message: Violates PLAT-MOB-KOIN-ORG-03 — Circular module dependencie
 
 ## New feature module setup
 
-> **TODO:** This section is a stub. See `todo/missing-files.md` for context.
+> **TODO:** This section is a stub. See `workflows/missing-files.md` for context.
 >
 > Needs a step-by-step walkthrough covering:
 > - Which scopes to use for each layer (ViewModel → factory/viewModel, UseCase → factory, Repository → factory, DataSource → factory, DAOs → single)

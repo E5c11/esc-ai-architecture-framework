@@ -30,6 +30,34 @@ If a rule names a specific technology (Koin, Flow, Compose, Spring), it
 belongs in `platforms/`. If removing the technology name still leaves the
 rule meaningful, it belongs in `architectures/`.
 
+**Rule format:**
+A rule is a fenced ```rule block conforming to `schemas/rule.yaml`, sitting
+where its prose statement used to be:
+
+````
+```rule
+id: ARCH-PC-REP-INTERFACE-01
+statement: Repository MUST define an interface.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-REP-INTERFACE-01 — Repository MUST define an interface.
+```
+````
+
+`statement` is one sentence. If the rule needs more explanation — rationale,
+a `> Violation:`/`> Fix:` example, edge cases — write that as plain prose
+immediately after the block, same as any other paragraph; don't cram it into
+the block. `enforced_by` should name every role that actually checks the
+rule (`planner`/`executor`/`reviewer`/`ci`) — don't claim `ci` unless a real
+check exists somewhere. `python tools/validate.py` checks every block against
+the schema and catches duplicate rule IDs across the whole repo.
+
+A citation — referencing a rule defined elsewhere, without redefining it —
+is just the ID mentioned in prose, conventionally backticked or parenthesized
+(` `ARCH-PC-REP-INTERFACE-01` ` or `(ARCH-PC-REP-INTERFACE-01)`); `validate.py`
+flags any such citation that doesn't resolve to a real rule or document ID.
+
 **Rule ownership and citation:**
 Every rule ID is defined in exactly one owning doc — the doc that governs the
 behavior the rule constrains. Any other doc that needs that rule cites it by

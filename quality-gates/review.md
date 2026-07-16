@@ -73,7 +73,7 @@ The earlier a violation is caught, the cheaper it is to fix.
 - [ ] DataSource interface is in `domain/` or `data/`; implementation is in the platform module
 - [ ] DataSource returns `Outcome<T>` or equivalent typed result — no raw exceptions
 - [ ] Remote never observed directly (REP-SSOT-01, REP-SSOT-02)
-- [ ] Exception wrapping happens at the DataSource boundary (DS-EXCEPTION-01)
+- [ ] Exception wrapping happens at the DataSource boundary (ARCH-PC-DS-EXCEPTION-01)
 
 ### Repository
 - [ ] Repository interface injected, not concrete class

@@ -108,8 +108,8 @@ The `requires` list in this document's frontmatter is for validation tooling onl
    - Local DataSource interface: `{Feature}LocalDataSource` (if persistent)
 3. Implement `{Feature}RemoteDataSourceImpl` in `data/datasource/`:
    - All methods return `Outcome<T>` or equivalent typed result
-   - Map provider exceptions to domain types at this boundary (DS-EXCEPTION-01)
-   - Map provider DTOs to domain models at this boundary (DS-MAPPING-01)
+   - Map provider exceptions to domain types at this boundary (ARCH-PC-DS-EXCEPTION-01)
+   - Map provider DTOs to domain models at this boundary (ARCH-PC-DS-MAPPING-01)
 4. Implement `{Feature}LocalDataSourceImpl` in `data/datasource/` (if persistent)
 5. Write unit tests for each DataSource implementation
 
@@ -117,7 +117,7 @@ The `requires` list in this document's frontmatter is for validation tooling onl
 
 - [ ] DataSource interfaces declare only domain types — no provider SDK types
 - [ ] All DataSource methods return `Outcome<T>` or `Flow<Outcome<T>>`
-- [ ] Exceptions from the provider are caught and mapped inside the DataSource (DS-EXCEPTION-01)
+- [ ] Exceptions from the provider are caught and mapped inside the DataSource (ARCH-PC-DS-EXCEPTION-01)
 - [ ] Unit tests cover: success path, all error conditions, empty collection
 - [ ] Tests pass: `./gradlew :{feature}:testDebugUnitTest`
 
@@ -145,8 +145,8 @@ The `requires` list in this document's frontmatter is for validation tooling onl
 ### Validation
 
 - [ ] Repository interface is in `domain/`; implementation is in `data/`
-- [ ] `Flow` observed by callers comes from the local DataSource only (REP-SSOT-01)
-- [ ] Remote DataSource is never directly observed (REP-SSOT-02)
+- [ ] `Flow` observed by callers comes from the local DataSource only (ARCH-PC-REP-SSOT-01)
+- [ ] Remote DataSource is never directly observed (ARCH-PC-REP-SSOT-02)
 - [ ] Tests verify that local is updated after a successful remote write
 - [ ] Tests pass
 
@@ -224,8 +224,8 @@ The `requires` list in this document's frontmatter is for validation tooling onl
 
 ### Validation
 
-- [ ] Single `Scaffold` per screen (VIEW-SCAFFOLD-01)
-- [ ] Top bar claimed with token and released in `onDispose` (VIEW-SCAFFOLD-03)
+- [ ] Single `Scaffold` per screen (ARCH-PC-VIEW-SCAFFOLD-01)
+- [ ] Top bar claimed with token and released in `onDispose` (ARCH-PC-VIEW-SCAFFOLD-03)
 - [ ] No ViewModel construction in Composables — ViewModel injected via Koin
 - [ ] No business logic in Composables
 - [ ] `{Feature}View` is stateless — no ViewModel or UseCase references

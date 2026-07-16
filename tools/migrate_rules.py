@@ -27,6 +27,11 @@ Usage:
 
 Prints a per-file summary (rule count, scope distribution) and rewrites each
 file in place.
+
+Not deleted after the main migration (workflows/archive/rule-embedding-migration.md,
+now complete) because platforms/mobile/kmp.md and platforms/mobile/http-client.md
+were deliberately deferred — see workflows/missing-files.md. Delete this file
+once those two are migrated and nothing else needs it.
 """
 
 import re
