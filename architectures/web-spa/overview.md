@@ -70,17 +70,31 @@ src/
 
 ## Organise by domain, not by file type
 
-**Rule ARCH-WEB-ORG-01 (hard):** Source files MUST be grouped by domain/feature, not
-by file type. `features/users/` (correct) vs `containers/`, `presentational/`,
-`pages/` as separate sibling directories (wrong).
+```rule
+id: ARCH-WEB-ORG-01
+statement: Source files MUST be grouped by domain/feature, not by file type.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-ORG-01 — Source files MUST be grouped by domain/feature, not by file type.
+```
+
+`features/users/` (correct) vs `containers/`, `presentational/`, `pages/` as separate sibling directories (wrong).
 
 Exception: `components/` (shared UI primitives), `hooks/` (shared data hooks),
 `utils/` (shared utilities), and `types/` (shared type definitions) are legitimate
 cross-feature directories because their contents are genuinely cross-cutting.
 
-**Rule ARCH-WEB-ORG-02 (soft):** A component SHOULD live in the feature directory
-of its primary consumer. Only move it to `src/components/` when it is used in two
-or more distinct features. Do not pre-emptively abstract.
+```rule
+id: ARCH-WEB-ORG-02
+statement: A component SHOULD live in the feature directory of its primary consumer.
+type: soft
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-ORG-02 — A component SHOULD live in the feature directory of its primary consumer.
+```
+
+Only move it to `src/components/` when it is used in two or more distinct features. Do not pre-emptively abstract.
 
 ## Layer responsibilities
 
@@ -106,9 +120,16 @@ App.tsx
 Features depend on shared layers; shared layers do not depend on features.
 Hooks contain all external data access; components never call Firebase directly.
 
-**Rule ARCH-WEB-DEP-01 (hard):** Components MUST NOT make direct Firebase or API
-calls. All data fetching lives in custom hooks in `src/hooks/`. Components call
-hooks; hooks call external services.
+```rule
+id: ARCH-WEB-DEP-01
+statement: Components MUST NOT make direct Firebase or API calls.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-DEP-01 — Components MUST NOT make direct Firebase or API calls.
+```
+
+All data fetching lives in custom hooks in `src/hooks/`. Components call hooks; hooks call external services.
 
 ## Execution order for a new feature
 

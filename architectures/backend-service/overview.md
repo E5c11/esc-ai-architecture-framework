@@ -56,12 +56,27 @@ See `PAT-DATA-ACCESS` for the full naming disambiguation across ecosystems.
 Dependencies flow inward only: Controller → Service → DataSource → Entity.
 Outer layers may depend on inner layers; inner layers must never depend on outer layers.
 
-**Rule ARCH-BE-DEP-01 (hard):** A DataSource or Entity class MUST NOT import from
-the service or controller package. The entity does not know about DTOs, HTTP status
-codes, or service concerns.
+```rule
+id: ARCH-BE-DEP-01
+statement: A DataSource or Entity class MUST NOT import from the service or controller package.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-BE-DEP-01 — A DataSource or Entity class MUST NOT import from the service or controller package.
+```
 
-**Rule ARCH-BE-DEP-02 (hard):** A Service MUST NOT import `org.springframework.web.*`
-or `org.springframework.http.*`. Services must not know they are called over HTTP.
+The entity does not know about DTOs, HTTP status codes, or service concerns.
+
+```rule
+id: ARCH-BE-DEP-02
+statement: A Service MUST NOT import `org.springframework.web.*` or `org.springframework.http.*`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-BE-DEP-02 — A Service MUST NOT import `org.springframework.web.*` or `org.springframework.http.*`.
+```
+
+Services must not know they are called over HTTP.
 
 ## Module structure
 
@@ -74,12 +89,27 @@ self-contained and owns its slice of the layer stack: entity, DataSource, servic
 :{domain}        — entity, DataSource, service, controller, DTOs
 ```
 
-**Rule ARCH-BE-MOD-01 (hard):** Domain modules MUST depend on `:core:*` modules only.
+```rule
+id: ARCH-BE-MOD-01
+statement: Domain modules MUST depend on `:core:*` modules only.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-BE-MOD-01 — Domain modules MUST depend on `:core:*` modules only.
+```
+
 Domain modules MUST NOT depend on other domain modules.
 
-**Rule ARCH-BE-MOD-02 (hard):** API path constants (version prefix, domain paths)
-MUST live in `:core:api`, not inline in controller annotations. See `PLAT-BE-SPRING`
-for the path constants pattern.
+```rule
+id: ARCH-BE-MOD-02
+statement: API path constants (version prefix, domain paths) MUST live in `:core:api`, not inline in controller annotations.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-BE-MOD-02 — API path constants (version prefix, domain paths) MUST live in `:core:api`, not inline in controller annotations.
+```
+
+See `PLAT-BE-SPRING` for the path constants pattern.
 
 ## Execution order for a new feature
 
@@ -103,9 +133,16 @@ All time-dependent logic uses an injected `TimeProvider` abstraction rather than
 calling `Instant.now()` or `System.currentTimeMillis()` directly. This makes
 service logic deterministic in tests.
 
-**Rule ARCH-BE-TIME-01 (hard):** Services MUST inject and use a `TimeProvider`
-for any operation that reads or produces a timestamp. Direct calls to `Instant.now()`
-or `System.currentTimeMillis()` inside a service method are a violation.
+```rule
+id: ARCH-BE-TIME-01
+statement: Services MUST inject and use a `TimeProvider` for any operation that reads or produces a timestamp.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates ARCH-BE-TIME-01 — Services MUST inject and use a `TimeProvider` for any operation that reads or produces a timestamp.
+```
+
+Direct calls to `Instant.now()` or `System.currentTimeMillis()` inside a service method are a violation.
 
 See `PLAT-BE-SPRING` for the `TimeProvider` bean declaration and injection pattern.
 

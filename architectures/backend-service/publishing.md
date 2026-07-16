@@ -29,7 +29,14 @@ from another row. Three categories are explicitly out of scope:
 
 ## Rules
 
-**Rule PUB-SHAPE-01 (hard):** Every table in scope MUST carry:
+```rule
+id: PUB-SHAPE-01
+statement: Every table in scope MUST carry:
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PUB-SHAPE-01 — Every table in scope MUST carry:
+```
 
 ```sql
 is_published  BOOLEAN     NOT NULL DEFAULT false
@@ -47,11 +54,16 @@ write-once marker.
 > Fix: `published_at` updates on every publish action; nothing about a prior publish
 > prevents a later one.
 
-**Rule PUB-READ-01 (hard):** Every app-facing read query (list and by-ID) against a table
-in scope MUST filter `WHERE is_published = true`, unconditionally — no endpoint parameter
-to opt out, no "show everything" default. An admin/internal-only read path that needs to
-see unpublished rows too is a distinct, separately-authenticated concern, not a query flag
-on the public endpoint.
+```rule
+id: PUB-READ-01
+statement: Every app-facing read query (list and by-ID) against a table in scope MUST filter `WHERE is_published = true`, unconditionally — no endpoint parameter to opt out, no "show everything" default.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PUB-READ-01 — Every app-facing read query (list and by-ID) against a table in scope MUST filter `WHERE is_published = true`, unconditionally — no endpoint parameter to opt out, no "show everything" default.
+```
+
+An admin/internal-only read path that needs to see unpublished rows too is a distinct, separately-authenticated concern, not a query flag on the public endpoint.
 
 ```kotlin
 fun findByIsPublishedTrue(pageable: Pageable): Page<T>          // paginated case
@@ -63,14 +75,27 @@ fun findByIsPublishedTrueAndUpdatedAtAfter(since: Instant, pageable: Pageable): 
 > Fix: `videoRepository.findByIsPublishedTrue(pageable)`, or the `since`-composed
 > equivalent per `ARCH-BE-PAGINATION`'s `PAG-FILTER-01`.
 
-**Rule PUB-CHILD-01 (hard):** A junction table or a detail/child table with no independent
-meaning apart from its parent row MUST NOT carry its own `is_published`/`published_at`.
-If it is ever queried independently of its parent (uncommon), the query MUST join back to
-the parent and filter on the parent's `is_published`, not maintain a parallel flag.
+```rule
+id: PUB-CHILD-01
+statement: A junction table or a detail/child table with no independent meaning apart from its parent row MUST NOT carry its own `is_published`/`published_at`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PUB-CHILD-01 — A junction table or a detail/child table with no independent meaning apart from its parent row MUST NOT carry its own `is_published`/`published_at`.
+```
 
-**Rule PUB-SCOPE-01 (soft):** Do not add these columns to user-generated or purely-derived
-tables. If a table's rows are written by app users (not an admin/editorial process) or
-computed from other tables, `ARCH-BE-PUBLISHING` does not apply to it.
+If it is ever queried independently of its parent (uncommon), the query MUST join back to the parent and filter on the parent's `is_published`, not maintain a parallel flag.
+
+```rule
+id: PUB-SCOPE-01
+statement: Do not add these columns to user-generated or purely-derived tables.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PUB-SCOPE-01 — Do not add these columns to user-generated or purely-derived tables.
+```
+
+If a table's rows are written by app users (not an admin/editorial process) or computed from other tables, `ARCH-BE-PUBLISHING` does not apply to it.
 
 ## The write/authoring path is intentionally out of scope here
 

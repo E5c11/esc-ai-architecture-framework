@@ -31,32 +31,63 @@ declared once per project.
 
 ## Rules
 
-**Rule ERR-KNOWN-01 (hard):** Known business errors MUST be thrown as
-`ResponseStatusException` from the **service layer**, not the controller.
-Throwing from the service keeps the controller clean and ensures the HTTP
-semantics are set as close as possible to the source of the error.
+```rule
+id: ERR-KNOWN-01
+statement: Known business errors MUST be thrown as `ResponseStatusException` from the **service layer**, not the controller.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ERR-KNOWN-01 — Known business errors MUST be thrown as `ResponseStatusException` from the **service layer**, not the controller.
+```
+
+Throwing from the service keeps the controller clean and ensures the HTTP semantics are set as close as possible to the source of the error.
 
 > Violation: Returning null from the service and letting the controller map it to a 404.
 > Fix: Throw `ResponseStatusException(HttpStatus.NOT_FOUND, "...")` from the service.
 
-**Rule ERR-UNKNOWN-01 (hard):** A `GlobalExceptionHandler` with a catch-all
-`@ExceptionHandler(Exception::class)` MUST exist. Without it, unexpected exceptions
-return a 500 with no logging and an inconsistent body shape.
+```rule
+id: ERR-UNKNOWN-01
+statement: A `GlobalExceptionHandler` with a catch-all `@ExceptionHandler(Exception::class)` MUST exist.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ERR-UNKNOWN-01 — A `GlobalExceptionHandler` with a catch-all `@ExceptionHandler(Exception::class)` MUST exist.
+```
 
-**Rule ERR-RESPONSE-01 (hard):** ALL error responses — both Tier 1 and Tier 2 —
-MUST use the same `ErrorResponse` body shape (`status: Int`, `message: String`).
-Mixed shapes (plain strings, varying field names) prevent the client from handling
-errors uniformly.
+Without it, unexpected exceptions return a 500 with no logging and an inconsistent body shape.
 
-**Rule ERR-SERVICE-01 (hard):** Services MUST NOT catch `ResponseStatusException`
-in a general `catch (e: Exception)` block without re-throwing it. Swallowing a
-`ResponseStatusException` loses the HTTP status the service intentionally set.
-If a service has a general exception handler, add `catch (e: ResponseStatusException) { throw e }`
-before the general handler.
+```rule
+id: ERR-RESPONSE-01
+statement: ALL error responses — both Tier 1 and Tier 2 — MUST use the same `ErrorResponse` body shape (`status: Int`, `message: String`).
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ERR-RESPONSE-01 — ALL error responses — both Tier 1 and Tier 2 — MUST use the same `ErrorResponse` body shape (`status: Int`, `message: String`).
+```
 
-**Rule ERR-LOG-01 (hard):** The `GlobalExceptionHandler` catch-all MUST log the
-exception with the full stack trace before building the error response. Without a
-log entry, production errors are invisible.
+Mixed shapes (plain strings, varying field names) prevent the client from handling errors uniformly.
+
+```rule
+id: ERR-SERVICE-01
+statement: Services MUST NOT catch `ResponseStatusException` in a general `catch (e: Exception)` block without re-throwing it.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ERR-SERVICE-01 — Services MUST NOT catch `ResponseStatusException` in a general `catch (e: Exception)` block without re-throwing it.
+```
+
+Swallowing a `ResponseStatusException` loses the HTTP status the service intentionally set. If a service has a general exception handler, add `catch (e: ResponseStatusException) { throw e }` before the general handler.
+
+```rule
+id: ERR-LOG-01
+statement: The `GlobalExceptionHandler` catch-all MUST log the exception with the full stack trace before building the error response.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ERR-LOG-01 — The `GlobalExceptionHandler` catch-all MUST log the exception with the full stack trace before building the error response.
+```
+
+Without a log entry, production errors are invisible.
 
 ## Known error → HTTP status mapping
 

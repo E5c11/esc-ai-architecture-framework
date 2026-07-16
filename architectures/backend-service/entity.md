@@ -18,18 +18,30 @@ a schema object — its fields mirror table columns. It contains no business log
 
 ## Rules
 
-**Rule ENT-MIGRATION-01 (hard):** Every entity change MUST be paired with a database
-migration in the same commit. JPA is configured to validate the schema on startup
-(`ddl-auto: validate`). An entity that does not match the actual schema causes a
-startup failure. Writing the migration first, then updating the entity, keeps the
-repo deployable at every commit.
+```rule
+id: ENT-MIGRATION-01
+statement: Every entity change MUST be paired with a database migration in the same commit.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ENT-MIGRATION-01 — Every entity change MUST be paired with a database migration in the same commit.
+```
+
+JPA is configured to validate the schema on startup (`ddl-auto: validate`). An entity that does not match the actual schema causes a startup failure. Writing the migration first, then updating the entity, keeps the repo deployable at every commit.
 
 > Violation: Adding a field to an entity without a corresponding migration SQL file.
 > Fix: Write the migration SQL first, then update the entity to match.
 
-**Rule ENT-ID-01 (hard):** Entities MUST use a UUID primary key. Avoid sequential
-integer PKs — they are enumerable in URLs and unsafe to expose. Three generation
-approaches are acceptable:
+```rule
+id: ENT-ID-01
+statement: Entities MUST use a UUID primary key.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ENT-ID-01 — Entities MUST use a UUID primary key.
+```
+
+Avoid sequential integer PKs — they are enumerable in URLs and unsafe to expose. Three generation approaches are acceptable:
 
 1. **Kotlin constructor default (recommended):** `@Id val id: UUID =
    UUID.randomUUID()` with no `@GeneratedValue` annotation. The JVM generates the
@@ -55,38 +67,76 @@ Whichever approach is used, be consistent about it: don't mix option 1 and optio
 2 across entities in the same codebase, since they document the same intent
 two different ways.
 
-**Rule ENT-TIMESTAMP-01 (hard):** Every entity MUST have `createdAt` and `updatedAt`
-timestamp columns. `createdAt` MUST be immutable (`updatable = false`). Both columns
-have `NOT NULL DEFAULT now()` in the migration. Audit timestamps are required
-for debugging and analytics.
+```rule
+id: ENT-TIMESTAMP-01
+statement: Every entity MUST have `createdAt` and `updatedAt` timestamp columns.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ENT-TIMESTAMP-01 — Every entity MUST have `createdAt` and `updatedAt` timestamp columns.
+```
 
-**Rule ENT-EQUALS-01 (hard):** Entity `equals` and `hashCode` MUST compare the
-primary key only. Hibernate uses proxy objects; equality based on all fields breaks
-`Set` semantics and dirty checking. Do NOT use a `data class` for entities —
-Kotlin data classes generate all-field `equals`/`hashCode` and `componentN` /
-`copy` methods, all of which break Hibernate's proxy mechanism.
+`createdAt` MUST be immutable (`updatable = false`). Both columns have `NOT NULL DEFAULT now()` in the migration. Audit timestamps are required for debugging and analytics.
 
-**Rule ENT-LOGIC-01 (hard):** Entities MUST NOT contain business logic. Methods that
-compute domain state (`isExpired()`, `applyDiscount()`, etc.) belong in the service.
-An entity class declares fields and implements `equals`/`hashCode` — nothing more.
+```rule
+id: ENT-EQUALS-01
+statement: Entity `equals` and `hashCode` MUST compare the primary key only.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ENT-EQUALS-01 — Entity `equals` and `hashCode` MUST compare the primary key only.
+```
 
-**Rule ENT-OPEN-01 (hard):** Entity classes MUST be open (non-final). Hibernate
-requires non-final classes to create proxies. The `allOpen` Gradle plugin opens
-classes annotated with `@Entity`, `@MappedSuperclass`, and `@Embeddable` at compile
-time. Do not mark entity classes as `final` and do not use `data class`.
+Hibernate uses proxy objects; equality based on all fields breaks `Set` semantics and dirty checking. Do NOT use a `data class` for entities — Kotlin data classes generate all-field `equals`/`hashCode` and `componentN` / `copy` methods, all of which break Hibernate's proxy mechanism.
 
-**Rule ENT-NAMING-01 (soft):** Entity class: `{Domain}Entity`. Table name:
-plural snake_case (`users`, `refresh_tokens`, `subjects`).
+```rule
+id: ENT-LOGIC-01
+statement: Entities MUST NOT contain business logic.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ENT-LOGIC-01 — Entities MUST NOT contain business logic.
+```
+
+Methods that compute domain state (`isExpired()`, `applyDiscount()`, etc.) belong in the service. An entity class declares fields and implements `equals`/`hashCode` — nothing more.
+
+```rule
+id: ENT-OPEN-01
+statement: Entity classes MUST be open (non-final).
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ENT-OPEN-01 — Entity classes MUST be open (non-final).
+```
+
+Hibernate requires non-final classes to create proxies. The `allOpen` Gradle plugin opens classes annotated with `@Entity`, `@MappedSuperclass`, and `@Embeddable` at compile time. Do not mark entity classes as `final` and do not use `data class`.
+
+```rule
+id: ENT-NAMING-01
+statement: Entity class: `{Domain}Entity`.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ENT-NAMING-01 — Entity class: `{Domain}Entity`.
+```
+
+Table name: plural snake_case (`users`, `refresh_tokens`, `subjects`).
 
 > Violation: `@Entity class User`, `@Table(name = "User")`
 > Fix: `@Entity @Table(name = "users") class UserEntity`
 
 ## Relationship fetching
 
-**Rule ENT-FETCH-01 (hard):** `@ManyToOne` and `@OneToOne` associations MUST
-declare `FetchType.LAZY`. Eager fetching silently generates N+1 queries and causes
-unpredictable performance at scale. Load associations explicitly in the service
-when they are needed.
+```rule
+id: ENT-FETCH-01
+statement: `@ManyToOne` and `@OneToOne` associations MUST declare `FetchType.LAZY`.
+type: hard
+scope: performance
+enforced_by: [reviewer]
+violation_message: Violates ENT-FETCH-01 — `@ManyToOne` and `@OneToOne` associations MUST declare `FetchType.LAZY`.
+```
+
+Eager fetching silently generates N+1 queries and causes unpredictable performance at scale. Load associations explicitly in the service when they are needed.
 
 ## Migration-first workflow
 

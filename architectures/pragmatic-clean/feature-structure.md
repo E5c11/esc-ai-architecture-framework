@@ -61,24 +61,68 @@ no `repository/` for single-DataSource features).
 | Exceptions | `{Feature}Exceptions.kt` | `ProfileExceptions.kt` |
 | Mappers | `{Feature}Mappers.kt` | `ProfileMappers.kt` |
 
-**Rule ARCH-PC-FEAT-NAME-01 (hard):** Never use `Impl` suffix for implementations.
+```rule
+id: ARCH-PC-FEAT-NAME-01
+statement: Never use `Impl` suffix for implementations.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-NAME-01 — Never use `Impl` suffix for implementations.
+```
+
 Use `Default` prefix.
 
-**Rule ARCH-PC-FEAT-NAME-02 (hard):** DataSource names put source type first:
-`LocalProfileDataSource`, not `ProfileLocalDataSource`.
+```rule
+id: ARCH-PC-FEAT-NAME-02
+statement: DataSource names put source type first: `LocalProfileDataSource`, not `ProfileLocalDataSource`.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-NAME-02 — DataSource names put source type first: `LocalProfileDataSource`, not `ProfileLocalDataSource`.
+```
 
 ## Placement rules
 
-**Rule ARCH-PC-FEAT-PLACE-01 (hard):** Screen and ViewModel files go directly in
-`ui/`, not in subdirectories.
+```rule
+id: ARCH-PC-FEAT-PLACE-01
+statement: Screen and ViewModel files go directly in `ui/`, not in subdirectories.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-PLACE-01 — Screen and ViewModel files go directly in `ui/`, not in subdirectories.
+```
 
-**Rule ARCH-PC-FEAT-PLACE-02 (hard):** UI state types (State, Event) go in `ui/data/`.
+```rule
+id: ARCH-PC-FEAT-PLACE-02
+statement: UI state types (State, Event) go in `ui/data/`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-PLACE-02 — UI state types (State, Event) go in `ui/data/`.
+```
+
 Domain models go in `data/models/`. They are different things; do not mix them.
 
-**Rule ARCH-PC-FEAT-PLACE-03 (hard):** UseCases go directly in `usecases/`. Group
-in subdirectories only when there are 10+ UseCases and a clear sub-domain grouping exists.
+```rule
+id: ARCH-PC-FEAT-PLACE-03
+statement: UseCases go directly in `usecases/`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-PLACE-03 — UseCases go directly in `usecases/`.
+```
 
-**Rule ARCH-PC-FEAT-PLACE-04 (hard):** Feature-specific exceptions go in `data/errors/`.
+Group in subdirectories only when there are 10+ UseCases and a clear sub-domain grouping exists.
+
+```rule
+id: ARCH-PC-FEAT-PLACE-04
+statement: Feature-specific exceptions go in `data/errors/`.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-PLACE-04 — Feature-specific exceptions go in `data/errors/`.
+```
+
 Never in `core/`.
 
 ## Layer dependency rules
@@ -90,20 +134,66 @@ be imported by lower layers.
 ui/ → usecases/ → data/ → core/
 ```
 
-**Rule ARCH-PC-FEAT-DEP-01 (hard):** Features MUST NOT import from other features.
+```rule
+id: ARCH-PC-FEAT-DEP-01
+statement: Features MUST NOT import from other features.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-DEP-01 — Features MUST NOT import from other features.
+```
+
 Shared types belong in `core/`.
 
-**Rule ARCH-PC-FEAT-DEP-02 (hard):** `ui/` MUST NOT import from `data/` directly.
+```rule
+id: ARCH-PC-FEAT-DEP-02
+statement: `ui/` MUST NOT import from `data/` directly.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-DEP-02 — `ui/` MUST NOT import from `data/` directly.
+```
+
 All data access goes through ViewModels and UseCases.
 
-**Rule ARCH-PC-FEAT-DEP-03 (hard):** `usecases/` MUST NOT import from `ui/`.
+```rule
+id: ARCH-PC-FEAT-DEP-03
+statement: `usecases/` MUST NOT import from `ui/`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-DEP-03 — `usecases/` MUST NOT import from `ui/`.
+```
 
-**Rule ARCH-PC-FEAT-DEP-04 (hard):** `core/` MUST NOT import from any feature.
+```rule
+id: ARCH-PC-FEAT-DEP-04
+statement: `core/` MUST NOT import from any feature.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-DEP-04 — `core/` MUST NOT import from any feature.
+```
 
 ## Anti-patterns
 
-**Rule ARCH-PC-FEAT-ANTI-01 (hard):** No `utils/` or `helpers/` packages inside a
-feature. Either place code in the correct layer directory or move it to `core/`.
+```rule
+id: ARCH-PC-FEAT-ANTI-01
+statement: No `utils/` or `helpers/` packages inside a feature.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-ANTI-01 — No `utils/` or `helpers/` packages inside a feature.
+```
 
-**Rule ARCH-PC-FEAT-ANTI-02 (hard):** No Manager, Helper, or Service god-objects that
-hold multiple unrelated responsibilities. Split into focused UseCases.
+Either place code in the correct layer directory or move it to `core/`.
+
+```rule
+id: ARCH-PC-FEAT-ANTI-02
+statement: No Manager, Helper, or Service god-objects that hold multiple unrelated responsibilities.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-FEAT-ANTI-02 — No Manager, Helper, or Service god-objects that hold multiple unrelated responsibilities.
+```
+
+Split into focused UseCases.
