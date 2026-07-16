@@ -34,10 +34,16 @@ Use a custom hook when the same data-fetching or side-effect logic is needed
 in more than one component, or when the logic is complex enough to warrant its
 own file.
 
-**Rule PLAT-WEB-STATE-HOOK-01 (hard):** Every data-fetching hook MUST return
-the three-field shape `{ data, loading, error }`. The consumer (container component)
-guards all three states before rendering. Never return only `data` without `loading`
-and `error` — the container cannot safely guard without them.
+```rule
+id: PLAT-WEB-STATE-HOOK-01
+statement: Every data-fetching hook MUST return the three-field shape `{ data, loading, error }`.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STATE-HOOK-01 — Every data-fetching hook MUST return the three-field shape `{ data, loading, error }`.
+```
+
+The consumer (container component) guards all three states before rendering. Never return only `data` without `loading` and `error` — the container cannot safely guard without them.
 
 ```typescript
 // src/hooks/useItems.ts
@@ -55,9 +61,16 @@ export const useItems = (): { items: Item[]; loading: boolean; error: string | n
 };
 ```
 
-**Rule PLAT-WEB-STATE-HOOK-02 (hard):** Custom hooks MUST live in `src/hooks/`.
-Data-fetching logic MUST NOT be embedded inside component function bodies.
-Components call hooks; hooks own the fetching logic.
+```rule
+id: PLAT-WEB-STATE-HOOK-02
+statement: Custom hooks MUST live in `src/hooks/`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STATE-HOOK-02 — Custom hooks MUST live in `src/hooks/`.
+```
+
+Data-fetching logic MUST NOT be embedded inside component function bodies. Components call hooks; hooks own the fetching logic.
 
 ### Tier 3: React Context — global or cross-tree shared state
 
@@ -90,15 +103,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 export const useAuth = () => useContext(AuthContext);
 ```
 
-**Rule PLAT-WEB-STATE-CTX-01 (soft):** Do not use Redux or Zustand unless the
-project grows beyond what Context + hooks can reasonably handle. Global state
-managers add serialisation and devtool overhead that is not justified for
-dashboard or website scale.
+```rule
+id: PLAT-WEB-STATE-CTX-01
+statement: Do not use Redux or Zustand unless the project grows beyond what Context + hooks can reasonably handle.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STATE-CTX-01 — Do not use Redux or Zustand unless the project grows beyond what Context + hooks can reasonably handle.
+```
 
-**Rule PLAT-WEB-STATE-CTX-02 (hard):** Auth state MUST be owned by `AuthContext`.
-All components that need the current user call `useAuth()`. Never call
-`onAuthStateChanged` directly inside a component — it creates multiple listeners
-and the subscription is not cleaned up on unmount.
+Global state managers add serialisation and devtool overhead that is not justified for dashboard or website scale.
+
+```rule
+id: PLAT-WEB-STATE-CTX-02
+statement: Auth state MUST be owned by `AuthContext`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STATE-CTX-02 — Auth state MUST be owned by `AuthContext`.
+```
+
+All components that need the current user call `useAuth()`. Never call `onAuthStateChanged` directly inside a component — it creates multiple listeners and the subscription is not cleaned up on unmount.
 
 ## Routing
 
@@ -135,9 +160,16 @@ Always include a catch-all `path="*"` that redirects to the home route.
 </BrowserRouter>
 ```
 
-**Rule PLAT-WEB-ROUTE-GUARD-01 (hard):** Every protected route MUST be wrapped
-in an `AuthGuard`. The guard reads auth state from `AuthContext` and redirects
-to the login route if the user is unauthenticated.
+```rule
+id: PLAT-WEB-ROUTE-GUARD-01
+statement: Every protected route MUST be wrapped in an `AuthGuard`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-ROUTE-GUARD-01 — Every protected route MUST be wrapped in an `AuthGuard`.
+```
+
+The guard reads auth state from `AuthContext` and redirects to the login route if the user is unauthenticated.
 
 ```typescript
 // src/auth/AuthGuard.tsx

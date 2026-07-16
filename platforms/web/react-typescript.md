@@ -26,18 +26,40 @@ Extends: `ARCH-WEB`, `ARCH-WEB-COMPONENTS`
 }
 ```
 
-**Rule PLAT-WEB-TS-STRICT-01 (hard):** TypeScript MUST run with `strict: true`,
-`noUnusedLocals: true`, and `noUnusedParameters: true`. The build MUST pass
-`tsc -b` with zero errors before every deploy.
+```rule
+id: PLAT-WEB-TS-STRICT-01
+statement: TypeScript MUST run with `strict: true`, `noUnusedLocals: true`, and `noUnusedParameters: true`.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-TS-STRICT-01 — TypeScript MUST run with `strict: true`, `noUnusedLocals: true`, and `noUnusedParameters: true`.
+```
 
-**Rule PLAT-WEB-TS-ANY-01 (hard):** `any` is forbidden. Use `unknown` at genuine
-unknown boundaries and narrow it. If a third-party library forces `any`, isolate
-it behind a typed wrapper function and annotate the wrapper with an explicit type.
+The build MUST pass `tsc -b` with zero errors before every deploy.
+
+```rule
+id: PLAT-WEB-TS-ANY-01
+statement: `any` is forbidden.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-TS-ANY-01 — `any` is forbidden.
+```
+
+Use `unknown` at genuine unknown boundaries and narrow it. If a third-party library forces `any`, isolate it behind a typed wrapper function and annotate the wrapper with an explicit type.
 
 ## Props interfaces
 
-**Rule PLAT-WEB-TS-PROPS-01 (hard):** Every component MUST declare an explicit
-props interface. Never rely on implicit prop inference.
+```rule
+id: PLAT-WEB-TS-PROPS-01
+statement: Every component MUST declare an explicit props interface.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-TS-PROPS-01 — Every component MUST declare an explicit props interface.
+```
+
+Never rely on implicit prop inference.
 
 ```typescript
 // ✅
@@ -51,17 +73,38 @@ const Card: React.FC<CardProps> = ({ title, onPress }) => ...
 const Card = ({ title, onPress }) => ...
 ```
 
-**Rule PLAT-WEB-TS-PROPS-02 (soft):** Props interfaces SHOULD be defined inline
-at the top of the component file. Only extract to a shared `.ts` file when the
-exact same interface is imported by two or more components.
+```rule
+id: PLAT-WEB-TS-PROPS-02
+statement: Props interfaces SHOULD be defined inline at the top of the component file.
+type: soft
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-TS-PROPS-02 — Props interfaces SHOULD be defined inline at the top of the component file.
+```
+
+Only extract to a shared `.ts` file when the exact same interface is imported by two or more components.
 
 ## Type declarations
 
-**Rule PLAT-WEB-TS-TYPES-01 (soft):** Prefer `interface` over `type` for object
-shapes. Use `type` for unions, mapped types, and utility types.
+```rule
+id: PLAT-WEB-TS-TYPES-01
+statement: Prefer `interface` over `type` for object shapes.
+type: soft
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-TS-TYPES-01 — Prefer `interface` over `type` for object shapes.
+```
 
-**Rule PLAT-WEB-TS-CONST-01 (soft):** Route constants and enum-like values SHOULD
-use `as const`:
+Use `type` for unions, mapped types, and utility types.
+
+```rule
+id: PLAT-WEB-TS-CONST-01
+statement: Route constants and enum-like values SHOULD use `as const`:
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-TS-CONST-01 — Route constants and enum-like values SHOULD use `as const`:
+```
 
 ```typescript
 export const ROUTES = {
@@ -73,8 +116,16 @@ export const ROUTES = {
 
 ## Hook return types
 
-**Rule PLAT-WEB-TS-HOOKS-01 (hard):** Data-fetching hooks MUST declare an explicit
-return type. The standard shape for Firestore/async data hooks is:
+```rule
+id: PLAT-WEB-TS-HOOKS-01
+statement: Data-fetching hooks MUST declare an explicit return type.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-TS-HOOKS-01 — Data-fetching hooks MUST declare an explicit return type.
+```
+
+The standard shape for Firestore/async data hooks is:
 
 ```typescript
 { data: T[]; loading: boolean; error: string | null }
@@ -85,9 +136,16 @@ and harder to enforce from callers.
 
 ## useEffect cleanup
 
-**Rule PLAT-WEB-TS-CLEANUP-01 (hard):** Every `useEffect` that starts a subscription
-or listener MUST return the cleanup/unsubscribe function. Failing to return cleanup
-causes memory leaks and stale listeners after the component unmounts.
+```rule
+id: PLAT-WEB-TS-CLEANUP-01
+statement: Every `useEffect` that starts a subscription or listener MUST return the cleanup/unsubscribe function.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-TS-CLEANUP-01 — Every `useEffect` that starts a subscription or listener MUST return the cleanup/unsubscribe function.
+```
+
+Failing to return cleanup causes memory leaks and stale listeners after the component unmounts.
 
 ```typescript
 useEffect(() => {
@@ -109,14 +167,26 @@ Firestore returns `DocumentData` (untyped). Cast explicitly when mapping documen
 snap.docs.map(d => ({ id: d.id, ...d.data() } as UserDoc))
 ```
 
-**Rule PLAT-WEB-TS-FIRESTORE-01 (hard):** All Firestore document interfaces MUST
-be declared in `src/types/firestore.ts`. Never define document types inline inside
-a hook or component file. This makes the Firestore schema discoverable and
-consistent across the codebase.
+```rule
+id: PLAT-WEB-TS-FIRESTORE-01
+statement: All Firestore document interfaces MUST be declared in `src/types/firestore.ts`.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-TS-FIRESTORE-01 — All Firestore document interfaces MUST be declared in `src/types/firestore.ts`.
+```
+
+Never define document types inline inside a hook or component file. This makes the Firestore schema discoverable and consistent across the codebase.
 
 ## Anonymous components
 
-**Rule PLAT-WEB-REACT-ANON-01 (soft):** Avoid inline anonymous components in JSX.
-If a sub-component becomes complex, extract it to a named constant or its own file.
-Anonymous components defeat React's reconciliation — they remount on every parent
-render instead of diffing.
+```rule
+id: PLAT-WEB-REACT-ANON-01
+statement: Avoid inline anonymous components in JSX.
+type: soft
+scope: naming
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-REACT-ANON-01 — Avoid inline anonymous components in JSX.
+```
+
+If a sub-component becomes complex, extract it to a named constant or its own file. Anonymous components defeat React's reconciliation — they remount on every parent render instead of diffing.

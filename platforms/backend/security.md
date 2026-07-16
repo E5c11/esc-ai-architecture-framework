@@ -68,10 +68,16 @@ userService.getProfile(userId)
 fun getProfile(userId: UUID): UserProfileResponse { ... }
 ```
 
-**Rule PLAT-BE-SEC-SVC-01 (hard):** Services MUST NOT inject or call
-`SecurityContextHolder.getContext()`. Accessing the security context in a service
-couples business logic to HTTP request state and makes service methods impossible
-to test in isolation.
+```rule
+id: PLAT-BE-SEC-SVC-01
+statement: Services MUST NOT inject or call `SecurityContextHolder.getContext()`.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates PLAT-BE-SEC-SVC-01 — Services MUST NOT inject or call `SecurityContextHolder.getContext()`.
+```
+
+Accessing the security context in a service couples business logic to HTTP request state and makes service methods impossible to test in isolation.
 
 ### Fallback — background tasks only
 

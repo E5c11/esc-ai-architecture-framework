@@ -53,13 +53,27 @@ export const spacing = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
 export const radius  = { sm: 4, md: 8, lg: 12, xl: 16 };
 ```
 
-**Rule PLAT-WEB-STYLE-TOKEN-01 (hard):** Components MUST import colour values from
-semantic aliases (`colors.textPrimary`) — never raw hex values (`'#F5F0E8'`). Raw
-values scattered across component files make theme changes require a global search.
+```rule
+id: PLAT-WEB-STYLE-TOKEN-01
+statement: Components MUST import colour values from semantic aliases (`colors.textPrimary`) — never raw hex values (`'#F5F0E8'`).
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STYLE-TOKEN-01 — Components MUST import colour values from semantic aliases (`colors.textPrimary`) — never raw hex values (`'#F5F0E8'`).
+```
 
-**Rule PLAT-WEB-STYLE-TOKEN-02 (hard):** Spacing and border-radius values MUST use
-the tokens from `theme.ts`. No magic numbers. If a required value is not in the
-theme, add it there first.
+Raw values scattered across component files make theme changes require a global search.
+
+```rule
+id: PLAT-WEB-STYLE-TOKEN-02
+statement: Spacing and border-radius values MUST use the tokens from `theme.ts`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STYLE-TOKEN-02 — Spacing and border-radius values MUST use the tokens from `theme.ts`.
+```
+
+No magic numbers. If a required value is not in the theme, add it there first.
 
 ## Layer 2: `src/styles/commonStyles.ts` — Shared style objects
 
@@ -93,11 +107,25 @@ export const primaryButton: React.CSSProperties = {
 };
 ```
 
-**Rule PLAT-WEB-STYLE-COMMON-01 (soft):** When the same style object appears in two
-or more component files, move it to `commonStyles.ts`. Do not duplicate style objects
-across files.
+```rule
+id: PLAT-WEB-STYLE-COMMON-01
+statement: When the same style object appears in two or more component files, move it to `commonStyles.ts`.
+type: soft
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STYLE-COMMON-01 — When the same style object appears in two or more component files, move it to `commonStyles.ts`.
+```
 
-**Rule PLAT-WEB-STYLE-COMMON-02 (soft):** Extend shared styles using object spread:
+Do not duplicate style objects across files.
+
+```rule
+id: PLAT-WEB-STYLE-COMMON-02
+statement: Extend shared styles using object spread:
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STYLE-COMMON-02 — Extend shared styles using object spread:
+```
 
 ```typescript
 const containerStyle: React.CSSProperties = {
@@ -137,13 +165,27 @@ const nameStyle: React.CSSProperties = {
 };
 ```
 
-**Rule PLAT-WEB-STYLE-SCOPE-01 (hard):** Component style constants MUST be defined
-after the component function — never inside the function body. Constants inside the
-function body are recreated on every render, defeating object identity and causing
-avoidable re-renders.
+```rule
+id: PLAT-WEB-STYLE-SCOPE-01
+statement: Component style constants MUST be defined after the component function — never inside the function body.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STYLE-SCOPE-01 — Component style constants MUST be defined after the component function — never inside the function body.
+```
 
-**Rule PLAT-WEB-STYLE-SCOPE-02 (soft):** Component-scoped styles SHOULD NOT be
-exported. If a style needs to be shared, it belongs in `commonStyles.ts`.
+Constants inside the function body are recreated on every render, defeating object identity and causing avoidable re-renders.
+
+```rule
+id: PLAT-WEB-STYLE-SCOPE-02
+statement: Component-scoped styles SHOULD NOT be exported.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STYLE-SCOPE-02 — Component-scoped styles SHOULD NOT be exported.
+```
+
+If a style needs to be shared, it belongs in `commonStyles.ts`.
 
 ## CSS classes (`index.css`)
 
@@ -160,11 +202,24 @@ Use CSS classes only for things `React.CSSProperties` cannot express:
 }
 ```
 
-**Rule PLAT-WEB-STYLE-CSS-01 (hard):** CSS class files MUST NOT contain component
-visual styling (colours, typography, component-specific spacing). Those belong in
-the three-layer TypeScript system. CSS classes are a last resort for things the
-inline system cannot express.
+```rule
+id: PLAT-WEB-STYLE-CSS-01
+statement: CSS class files MUST NOT contain component visual styling (colours, typography, component-specific spacing).
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STYLE-CSS-01 — CSS class files MUST NOT contain component visual styling (colours, typography, component-specific spacing).
+```
 
-**Rule PLAT-WEB-STYLE-FOCUS-01 (hard):** Never remove the browser focus ring with
-`outline: none` without providing a replacement visible focus indicator. Removing
-the focus ring without a replacement breaks keyboard navigation.
+Those belong in the three-layer TypeScript system. CSS classes are a last resort for things the inline system cannot express.
+
+```rule
+id: PLAT-WEB-STYLE-FOCUS-01
+statement: Never remove the browser focus ring with `outline: none` without providing a replacement visible focus indicator.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-STYLE-FOCUS-01 — Never remove the browser focus ring with `outline: none` without providing a replacement visible focus indicator.
+```
+
+Removing the focus ring without a replacement breaks keyboard navigation.

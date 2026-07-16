@@ -19,10 +19,16 @@ below are low-effort and must be the default, not an afterthought.
 
 ## Semantic HTML
 
-**Rule PLAT-WEB-A11Y-SEMANTIC-01 (hard):** Use the HTML element that describes
-the content. The browser provides keyboard handling, focus management, and screen
-reader announcements automatically for semantic elements. `<div onClick>` provides
-none of that for free.
+```rule
+id: PLAT-WEB-A11Y-SEMANTIC-01
+statement: Use the HTML element that describes the content.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-A11Y-SEMANTIC-01 — Use the HTML element that describes the content.
+```
+
+The browser provides keyboard handling, focus management, and screen reader announcements automatically for semantic elements. `<div onClick>` provides none of that for free.
 
 | Use | Not | For |
 |---|---|---|
@@ -35,7 +41,15 @@ none of that for free.
 
 ## Images
 
-**Rule PLAT-WEB-A11Y-ALT-01 (hard):** Every `<img>` MUST have an `alt` attribute.
+```rule
+id: PLAT-WEB-A11Y-ALT-01
+statement: Every `<img>` MUST have an `alt` attribute.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-A11Y-ALT-01 — Every `<img>` MUST have an `alt` attribute.
+```
+
 Missing `alt` is a hard accessibility failure.
 
 - Meaningful image: `alt="Description of what the image shows"`
@@ -48,9 +62,16 @@ Missing `alt` is a hard accessibility failure.
 
 ## Icon-only interactive elements
 
-**Rule PLAT-WEB-A11Y-ARIA-01 (hard):** Any interactive element with no visible
-text label MUST have `aria-label`. Without it, screen readers announce only the
-element type ("button") with no context.
+```rule
+id: PLAT-WEB-A11Y-ARIA-01
+statement: Any interactive element with no visible text label MUST have `aria-label`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-A11Y-ARIA-01 — Any interactive element with no visible text label MUST have `aria-label`.
+```
+
+Without it, screen readers announce only the element type ("button") with no context.
 
 ```tsx
 <button aria-label="Close menu">✕</button>
@@ -62,9 +83,16 @@ element type ("button") with no context.
 
 ## Heading hierarchy
 
-**Rule PLAT-WEB-A11Y-HEADING-01 (hard):** Each page MUST have exactly one `<h1>`
-(the page title). Heading levels must not skip (`<h1>` → `<h3>` without an
-intervening `<h2>` is wrong). Use `<h2>` for sections, `<h3>` for sub-sections.
+```rule
+id: PLAT-WEB-A11Y-HEADING-01
+statement: Each page MUST have exactly one `<h1>` (the page title).
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-A11Y-HEADING-01 — Each page MUST have exactly one `<h1>` (the page title).
+```
+
+Heading levels must not skip (`<h1>` → `<h3>` without an intervening `<h2>` is wrong). Use `<h2>` for sections, `<h3>` for sub-sections.
 
 ```tsx
 <h1>Page Title</h1>
@@ -75,17 +103,29 @@ intervening `<h2>` is wrong). Use `<h2>` for sections, `<h3>` for sub-sections.
 
 ## Focus management
 
-**Rule PLAT-WEB-A11Y-FOCUS-01 (hard):** Never remove the browser focus ring with
-`outline: none` without providing a visible replacement focus indicator. The focus
-ring is the only visible signal for keyboard users about which element is active.
-If the default ring clashes with the design, replace it with a custom `outline`
-or `box-shadow` — do not simply remove it.
+```rule
+id: PLAT-WEB-A11Y-FOCUS-01
+statement: Never remove the browser focus ring with `outline: none` without providing a visible replacement focus indicator.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-A11Y-FOCUS-01 — Never remove the browser focus ring with `outline: none` without providing a visible replacement focus indicator.
+```
+
+The focus ring is the only visible signal for keyboard users about which element is active. If the default ring clashes with the design, replace it with a custom `outline` or `box-shadow` — do not simply remove it.
 
 ## Loading and error guards
 
-**Rule PLAT-WEB-A11Y-GUARD-01 (hard):** Containers MUST handle `loading` and
-`error` states before rendering data components. Rendering a component whose data
-may still be `undefined` causes both a visual flash and a potential crash.
+```rule
+id: PLAT-WEB-A11Y-GUARD-01
+statement: Containers MUST handle `loading` and `error` states before rendering data components.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-A11Y-GUARD-01 — Containers MUST handle `loading` and `error` states before rendering data components.
+```
+
+Rendering a component whose data may still be `undefined` causes both a visual flash and a potential crash.
 
 ```tsx
 if (loading) return <LoadingSpinner />;
@@ -97,9 +137,15 @@ See also `ARCH-WEB-COMPONENTS` rule ARCH-WEB-CP-01.
 
 ## Error boundaries
 
-**Rule PLAT-WEB-A11Y-EB-01 (hard):** Every page-level route MUST be wrapped in
-an `ErrorBoundary`. A runtime error in one component without a boundary crashes
-the entire page including the navigation. With a boundary, only the broken page
-shows an error; the rest of the app keeps working.
+```rule
+id: PLAT-WEB-A11Y-EB-01
+statement: Every page-level route MUST be wrapped in an `ErrorBoundary`.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-A11Y-EB-01 — Every page-level route MUST be wrapped in an `ErrorBoundary`.
+```
+
+A runtime error in one component without a boundary crashes the entire page including the navigation. With a boundary, only the broken page shows an error; the rest of the app keeps working.
 
 See `ARCH-WEB-COMPONENTS` for the `ErrorBoundary` implementation.

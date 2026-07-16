@@ -29,16 +29,27 @@ actual build configuration, not hypothetical.
 Gradle's `api`/`implementation` distinction controls whether a dependency's types are
 exposed to *your* consumers' compile classpath, or stay purely internal to your module.
 
-**Rule PLAT-LIB-KMP-VIS-01 (hard):** If a type from dependency X appears in any public
-function signature, constructor parameter, or public property type of your module, X MUST
-be declared `api`, not `implementation`. Otherwise consumers get an "unresolved reference"
-on a type they never explicitly depended on, with no clear reason why.
+```rule
+id: PLAT-LIB-KMP-VIS-01
+statement: If a type from dependency X appears in any public function signature, constructor parameter, or public property type of your module, X MUST be declared `api`, not `implementation`.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates PLAT-LIB-KMP-VIS-01 — If a type from dependency X appears in any public function signature, constructor parameter, or public property type of your module, X MUST be declared `api`, not `implementation`.
+```
 
-**Rule PLAT-LIB-KMP-VIS-02 (hard):** If a dependency is used only internally — never
-appearing in a public signature — declare it `implementation`. This keeps it out of
-consumers' transitive compile classpath, so upgrading it doesn't force a rebuild of every
-downstream consumer and doesn't leak an implementation choice as an accidental public
-contract.
+Otherwise consumers get an "unresolved reference" on a type they never explicitly depended on, with no clear reason why.
+
+```rule
+id: PLAT-LIB-KMP-VIS-02
+statement: If a dependency is used only internally — never appearing in a public signature — declare it `implementation`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-LIB-KMP-VIS-02 — If a dependency is used only internally — never appearing in a public signature — declare it `implementation`.
+```
+
+This keeps it out of consumers' transitive compile classpath, so upgrading it doesn't force a rebuild of every downstream consumer and doesn't leak an implementation choice as an accidental public contract.
 
 **Worked example (`arrow-http`):** `http-ktor`'s `build.gradle.kts` declares:
 
@@ -68,10 +79,14 @@ Ktor usage (see that file's comment on why it needs the PATCH-bypass workaround)
 legitimate, deliberate choice: keep the common path (DI, never touching `HttpClient`
 directly) free of an implicit Ktor coupling, and let the uncommon path opt in explicitly.
 
-**Rule PLAT-LIB-KMP-VIS-03 (soft):** When a visibility choice is intentionally
-non-obvious (like the example above), leave a comment explaining why — the next person
-reading the build file (including a future version of yourself) will otherwise "fix" it
-into a `NoSuchMethodError` for someone's existing manual-setup code.
+```rule
+id: PLAT-LIB-KMP-VIS-03
+statement: When a visibility choice is intentionally non-obvious (like the example above), leave a comment explaining why — the next person reading the build file (including a future version of yourself) will otherwise "fix" it into a `NoSuchMethodError` for someone's existing manual-setup code.
+type: soft
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates PLAT-LIB-KMP-VIS-03 — When a visibility choice is intentionally non-obvious (like the example above), leave a comment explaining why — the next person reading the build file (including a future version of yourself) will otherwise "fix" it into a `NoSuchMethodError` for someone's existing manual-setup code.
+```
 
 ## Maven Central publishing
 
@@ -97,26 +112,40 @@ mavenPublishing {
 }
 ```
 
-**Rule PLAT-LIB-KMP-VER-01 (hard):** `version` is declared per-module (each module's own
-`build.gradle.kts`), not centralized in one place — but every module in the same logical
-release MUST be bumped together, even ones with no code change, if they're expected to be
-consumed as a matched set. Publishing `http-ktor:1.2.0` against `http-core:1.1.1` (unbumped)
-works technically but signals to consumers that nothing in `http-core` changed, which is only
-true if that's actually the case — verify, don't assume, before skipping a module's bump.
+```rule
+id: PLAT-LIB-KMP-VER-01
+statement: `version` is declared per-module (each module's own `build.gradle.kts`), not centralized in one place — but every module in the same logical release MUST be bumped together, even ones with no code change, if they're expected to be consumed as a matched set.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-LIB-KMP-VER-01 — `version` is declared per-module (each module's own `build.gradle.kts`), not centralized in one place — but every module in the same logical release MUST be bumped together, even ones with no code change, if they're expected to be consumed as a matched set.
+```
 
-**Rule PLAT-LIB-KMP-PUB-01 (hard):** `signAllPublications()` requires a GPG signing key and
-Sonatype credentials that are local to the publishing machine, never committed to the repo.
-The actual `publishAndReleaseToMavenCentral` (or equivalent) task execution is a manual,
-credentialed step — not something an agent or CI-without-secrets should run unprompted. See
-`CORE-API-STABILITY` for what should already be true (version bumped correctly, public
-surface reviewed) before this step is reached.
+Publishing `http-ktor:1.2.0` against `http-core:1.1.1` (unbumped) works technically but signals to consumers that nothing in `http-core` changed, which is only true if that's actually the case — verify, don't assume, before skipping a module's bump.
+
+```rule
+id: PLAT-LIB-KMP-PUB-01
+statement: `signAllPublications()` requires a GPG signing key and Sonatype credentials that are local to the publishing machine, never committed to the repo.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-LIB-KMP-PUB-01 — `signAllPublications()` requires a GPG signing key and Sonatype credentials that are local to the publishing machine, never committed to the repo.
+```
+
+The actual `publishAndReleaseToMavenCentral` (or equivalent) task execution is a manual, credentialed step — not something an agent or CI-without-secrets should run unprompted. See `CORE-API-STABILITY` for what should already be true (version bumped correctly, public surface reviewed) before this step is reached.
 
 ## Testing across every published target
 
-**Rule PLAT-LIB-KMP-TEST-01 (hard):** `commonTest` runs across every declared target by
-default — adding a new target (e.g. a `js` target, see `PLAT-LIB-JS-EXPORT`) means the
-existing test suite needs to be confirmed green on that target too, not just compiled. A
-target that compiles but has never actually run its test suite is unverified, not supported.
+```rule
+id: PLAT-LIB-KMP-TEST-01
+statement: `commonTest` runs across every declared target by default — adding a new target (e.g. a `js` target, see `PLAT-LIB-JS-EXPORT`) means the existing test suite needs to be confirmed green on that target too, not just compiled.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates PLAT-LIB-KMP-TEST-01 — `commonTest` runs across every declared target by default — adding a new target (e.g. a `js` target, see `PLAT-LIB-JS-EXPORT`) means the existing test suite needs to be confirmed green on that target too, not just compiled.
+```
+
+A target that compiles but has never actually run its test suite is unverified, not supported.
 
 ## Validation Checklist
 
