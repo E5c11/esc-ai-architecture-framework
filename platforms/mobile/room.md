@@ -22,51 +22,112 @@ SQLite boundary — it maps SQL results to Kotlin types.
 An entity maps directly to a database table. It carries only persistence concerns —
 no business logic, no computed properties that require other entities.
 
-**Rule PLAT-MOB-ROOM-ENT-01 (hard):** Entity classes MUST be annotated with
-`@Entity`. They are persistence types — they MUST NOT be used as domain models
-or passed across architecture layer boundaries.
+```rule
+id: PLAT-MOB-ROOM-ENT-01
+statement: Entity classes MUST be annotated with `@Entity`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-ROOM-ENT-01 — Entity classes MUST be annotated with `@Entity`.
+```
 
-**Rule PLAT-MOB-ROOM-ENT-02 (hard):** Entity field names that differ from the
-database column name MUST use `@ColumnInfo(name = "...")`. Never rely on implicit
-name matching across schema migrations.
+They are persistence types — they MUST NOT be used as domain models or passed across architecture layer boundaries.
+
+```rule
+id: PLAT-MOB-ROOM-ENT-02
+statement: Entity field names that differ from the database column name MUST use `@ColumnInfo(name = "...")`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-ROOM-ENT-02 — Entity field names that differ from the database column name MUST use `@ColumnInfo(name = "...")`.
+```
+
+Never rely on implicit name matching across schema migrations.
 
 ## DAOs
 
 A DAO declares the operations the data layer exposes for one entity or one related
 group of entities.
 
-**Rule PLAT-MOB-ROOM-DAO-01 (hard):** DAO interfaces MUST be annotated with `@Dao`.
+```rule
+id: PLAT-MOB-ROOM-DAO-01
+statement: DAO interfaces MUST be annotated with `@Dao`.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-ROOM-DAO-01 — DAO interfaces MUST be annotated with `@Dao`.
+```
 
-**Rule PLAT-MOB-ROOM-DAO-02 (hard):** Query methods that return live data MUST
-return `Flow<T>` so callers observe updates. One-shot reads and writes MUST use
-`suspend fun`.
+```rule
+id: PLAT-MOB-ROOM-DAO-02
+statement: Query methods that return live data MUST return `Flow<T>` so callers observe updates.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-ROOM-DAO-02 — Query methods that return live data MUST return `Flow<T>` so callers observe updates.
+```
 
-**Rule PLAT-MOB-ROOM-DAO-03 (hard):** DAOs MUST return entity types or primitive
-types — never domain models. Mapping from entity to domain is the DataSource's
-responsibility.
+One-shot reads and writes MUST use `suspend fun`.
 
-**Rule PLAT-MOB-ROOM-DAO-04 (hard):** `@Transaction` MUST be applied to any
-DAO method that performs multiple database operations that must succeed or fail
-together.
+```rule
+id: PLAT-MOB-ROOM-DAO-03
+statement: DAOs MUST return entity types or primitive types — never domain models.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-ROOM-DAO-03 — DAOs MUST return entity types or primitive types — never domain models.
+```
+
+Mapping from entity to domain is the DataSource's responsibility.
+
+```rule
+id: PLAT-MOB-ROOM-DAO-04
+statement: `@Transaction` MUST be applied to any DAO method that performs multiple database operations that must succeed or fail together.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-ROOM-DAO-04 — `@Transaction` MUST be applied to any DAO method that performs multiple database operations that must succeed or fail together.
+```
 
 ## Database class
 
-**Rule PLAT-MOB-ROOM-DB-01 (hard):** The `@Database` class MUST be declared as
-a `single` in Koin (see `PLAT-MOB-KOIN`). Room databases are expensive to
-construct and must not be re-created per injection.
+```rule
+id: PLAT-MOB-ROOM-DB-01
+statement: The `@Database` class MUST be declared as a `single` in Koin (see `PLAT-MOB-KOIN`).
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-ROOM-DB-01 — The `@Database` class MUST be declared as a `single` in Koin (see `PLAT-MOB-KOIN`).
+```
 
-**Rule PLAT-MOB-ROOM-DB-02 (hard):** Schema version MUST be incremented on every
-migration. `fallbackToDestructiveMigration()` is only acceptable in development;
-production builds MUST provide explicit `Migration` objects.
+Room databases are expensive to construct and must not be re-created per injection.
+
+```rule
+id: PLAT-MOB-ROOM-DB-02
+statement: Schema version MUST be incremented on every migration.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-ROOM-DB-02 — Schema version MUST be incremented on every migration.
+```
+
+`fallbackToDestructiveMigration()` is only acceptable in development; production builds MUST provide explicit `Migration` objects.
 
 ## DataSource responsibility
 
 A DataSource wraps a DAO. It maps entity types to domain types and translates
 Room-specific exceptions into domain exceptions.
 
-**Rule PLAT-MOB-ROOM-DS-01 (hard):** DataSources MUST translate `SQLiteException`
-and Room-specific errors into domain exceptions before propagating. Raw Room
-exceptions MUST NOT cross the DataSource boundary.
+```rule
+id: PLAT-MOB-ROOM-DS-01
+statement: DataSources MUST translate `SQLiteException` and Room-specific errors into domain exceptions before propagating.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-ROOM-DS-01 — DataSources MUST translate `SQLiteException` and Room-specific errors into domain exceptions before propagating.
+```
+
+Raw Room exceptions MUST NOT cross the DataSource boundary.
 
 ## Violations
 

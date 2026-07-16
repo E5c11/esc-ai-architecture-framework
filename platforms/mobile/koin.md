@@ -22,14 +22,32 @@ for each architectural style.
 
 Each feature owns a dedicated module function in a `di/` package within the feature.
 
-**Rule PLAT-MOB-KOIN-MOD-01 (hard):** Each feature MUST have a dedicated module
-function in a `di/` package inside its feature directory.
+```rule
+id: PLAT-MOB-KOIN-MOD-01
+statement: Each feature MUST have a dedicated module function in a `di/` package inside its feature directory.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-MOD-01 — Each feature MUST have a dedicated module function in a `di/` package inside its feature directory.
+```
 
-**Rule PLAT-MOB-KOIN-MOD-02 (hard):** Module functions MUST use lowercase with
-a `Module` suffix: `fun profileModule()`, `fun bookingModule()`.
+```rule
+id: PLAT-MOB-KOIN-MOD-02
+statement: Module functions MUST use lowercase with a `Module` suffix: `fun profileModule()`, `fun bookingModule()`.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-MOD-02 — Module functions MUST use lowercase with a `Module` suffix: `fun profileModule()`, `fun bookingModule()`.
+```
 
-**Rule PLAT-MOB-KOIN-MOD-03 (hard):** All modules MUST be registered in `initKoin()`
-in this order: core modules → feature modules → platform module last.
+```rule
+id: PLAT-MOB-KOIN-MOD-03
+statement: All modules MUST be registered in `initKoin()` in this order: core modules → feature modules → platform module last.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-MOD-03 — All modules MUST be registered in `initKoin()` in this order: core modules → feature modules → platform module last.
+```
 
 ## Preferred shorthand syntax
 
@@ -40,52 +58,111 @@ Use the `Of` shorthands when a class has only injectable constructor parameters.
 | `factory { MyClass(get(), get()) }` | `factoryOf(::MyClass)` |
 | `viewModel { MyViewModel(get()) }` | `viewModelOf(::MyViewModel)` |
 
-**Rule PLAT-MOB-KOIN-SYN-01 (soft):** Use `factoryOf()` and `viewModelOf()` for
-classes whose entire constructor is injectable. Fall back to the block form only
-when custom logic is required inside the block.
+```rule
+id: PLAT-MOB-KOIN-SYN-01
+statement: Use `factoryOf()` and `viewModelOf()` for classes whose entire constructor is injectable.
+type: soft
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-SYN-01 — Use `factoryOf()` and `viewModelOf()` for classes whose entire constructor is injectable.
+```
+
+Fall back to the block form only when custom logic is required inside the block.
 
 ## Singleton resources
 
 Heavy or stateful resources are declared `single{}` so they are created once and shared.
 
-**Rule PLAT-MOB-KOIN-SINGLE-01 (hard):** Room DAOs MUST be declared as `single`.
-**Rule PLAT-MOB-KOIN-SINGLE-02 (hard):** `DataStore<Preferences>` instances MUST
-be declared as `single`.
-**Rule PLAT-MOB-KOIN-SINGLE-03 (hard):** Firebase SDK instances MUST be declared
-as `single`. Firebase objects are expensive to construct and are designed to be shared.
+```rule
+id: PLAT-MOB-KOIN-SINGLE-01
+statement: Room DAOs MUST be declared as `single`. **Rule PLAT-MOB-KOIN-SINGLE-02 (hard):** `DataStore<Preferences>` instances MUST be declared as `single`. **Rule PLAT-MOB-KOIN-SINGLE-03 (hard):** Firebase SDK instances MUST be declared as `single`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-SINGLE-01 — Room DAOs MUST be declared as `single`. **Rule PLAT-MOB-KOIN-SINGLE-02 (hard):** `DataStore<Preferences>` instances MUST be declared as `single`. **Rule PLAT-MOB-KOIN-SINGLE-03 (hard):** Firebase SDK instances MUST be declared as `single`.
+```
+
+Firebase objects are expensive to construct and are designed to be shared.
 
 ## Named qualifiers
 
 When multiple implementations of the same interface are registered, named qualifiers
 distinguish them.
 
-**Rule PLAT-MOB-KOIN-QUAL-01 (hard):** Named qualifiers MUST use constants from a
-shared `DIQualifiers` object. Never use string literals as qualifier values.
+```rule
+id: PLAT-MOB-KOIN-QUAL-01
+statement: Named qualifiers MUST use constants from a shared `DIQualifiers` object.
+type: hard
+scope: naming
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-QUAL-01 — Named qualifiers MUST use constants from a shared `DIQualifiers` object.
+```
 
-**Rule PLAT-MOB-KOIN-QUAL-02 (hard):** All qualifier constants MUST be defined in
-the `DIQualifiers` object and MUST use `UPPER_SNAKE_CASE`.
+Never use string literals as qualifier values.
 
-**Rule PLAT-MOB-KOIN-QUAL-03 (hard):** Any two registrations of the same raw type
-MUST use named qualifiers — including generic types where type parameters are erased
-at the JVM level (e.g. `UseCase<A>` and `UseCase<B>` are both `UseCase` at runtime).
-Without qualifiers, the last-registered wins and causes a `ClassCastException` at
-the injection site, not a compile error.
+```rule
+id: PLAT-MOB-KOIN-QUAL-02
+statement: All qualifier constants MUST be defined in the `DIQualifiers` object and MUST use `UPPER_SNAKE_CASE`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-QUAL-02 — All qualifier constants MUST be defined in the `DIQualifiers` object and MUST use `UPPER_SNAKE_CASE`.
+```
+
+```rule
+id: PLAT-MOB-KOIN-QUAL-03
+statement: Any two registrations of the same raw type MUST use named qualifiers — including generic types where type parameters are erased at the JVM level (e.g.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-QUAL-03 — Any two registrations of the same raw type MUST use named qualifiers — including generic types where type parameters are erased at the JVM level (e.g.
+```
+
+`UseCase<A>` and `UseCase<B>` are both `UseCase` at runtime). Without qualifiers, the last-registered wins and causes a `ClassCastException` at the injection site, not a compile error.
 
 ## Injection
 
-**Rule PLAT-MOB-KOIN-INJ-01 (hard):** Use `get()` and `get(named(...))` to resolve
-dependencies inside module blocks. Never construct dependencies directly with `::` or `new`.
+```rule
+id: PLAT-MOB-KOIN-INJ-01
+statement: Use `get()` and `get(named(...))` to resolve dependencies inside module blocks.
+type: hard
+scope: naming
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-INJ-01 — Use `get()` and `get(named(...))` to resolve dependencies inside module blocks.
+```
+
+Never construct dependencies directly with `::` or `new`.
 
 ## Module organisation
 
-**Rule PLAT-MOB-KOIN-ORG-01 (soft):** Module blocks SHOULD be organised by scope
-with section comments: ViewModels, UseCases, Repositories, DataSources, etc.
+```rule
+id: PLAT-MOB-KOIN-ORG-01
+statement: Module blocks SHOULD be organised by scope with section comments: ViewModels, UseCases, Repositories, DataSources, etc.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-ORG-01 — Module blocks SHOULD be organised by scope with section comments: ViewModels, UseCases, Repositories, DataSources, etc.
+```
 
-**Rule PLAT-MOB-KOIN-ORG-02 (hard):** Features SHOULD depend on core modules,
-not on other feature modules. Cross-feature dependencies signal a missing shared
-abstraction in core.
+```rule
+id: PLAT-MOB-KOIN-ORG-02
+statement: Features SHOULD depend on core modules, not on other feature modules.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-ORG-02 — Features SHOULD depend on core modules, not on other feature modules.
+```
 
-**Rule PLAT-MOB-KOIN-ORG-03 (hard):** Circular module dependencies MUST NOT exist.
+Cross-feature dependencies signal a missing shared abstraction in core.
+
+```rule
+id: PLAT-MOB-KOIN-ORG-03
+statement: Circular module dependencies MUST NOT exist.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KOIN-ORG-03 — Circular module dependencies MUST NOT exist.
+```
 
 ## New feature module setup
 

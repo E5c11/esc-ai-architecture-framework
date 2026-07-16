@@ -19,7 +19,15 @@ All icons are centralized in a singleton object (e.g. `AppIcons`). This provides
 - Easy replacement of icons across the app
 - Consistent naming
 
-**Rule DS-ICON-01 (hard):** NEVER use Material Icons directly in components.
+```rule
+id: DS-ICON-01
+statement: NEVER use Material Icons directly in components.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates DS-ICON-01 — NEVER use Material Icons directly in components.
+```
+
 Always access icons through the centralized `AppIcons` object.
 
 ---
@@ -41,13 +49,23 @@ object AppIcons {
 }
 ```
 
-**Rule DS-ICON-02 (hard):** New icons MUST be added to the `AppIcons` object, not
-used inline as `Icons.Filled.X` at the call site.
+```rule
+id: DS-ICON-02
+statement: New icons MUST be added to the `AppIcons` object, not used inline as `Icons.Filled.X` at the call site.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates DS-ICON-02 — New icons MUST be added to the `AppIcons` object, not used inline as `Icons.Filled.X` at the call site.
+```
 
-**Rule DS-ICON-03 (soft):** Choose the appropriate icon variant:
-- **Filled:** Primary actions, selected states
-- **Outlined:** Secondary actions, unselected states
-- **AutoMirrored:** Directional icons (arrows) that must flip in RTL layouts
+```rule
+id: DS-ICON-03
+statement: Choose the appropriate icon variant: - **Filled:** Primary actions, selected states - **Outlined:** Secondary actions, unselected states - **AutoMirrored:** Directional icons (arrows) that must flip in RTL layouts
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates DS-ICON-03 — Choose the appropriate icon variant: - **Filled:** Primary actions, selected states - **Outlined:** Secondary actions, unselected states - **AutoMirrored:** Directional icons (arrows) that must flip in RTL layouts
+```
 
 **Import rule:** Import only the specific icon symbols used — no wildcard imports.
 
@@ -106,7 +124,14 @@ Icon(
 
 ## Icon Sizes
 
-**Rule DS-ICON-04 (hard):** Always use `IconSizes` constants — never hardcode dp values.
+```rule
+id: DS-ICON-04
+statement: Always use `IconSizes` constants — never hardcode dp values.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates DS-ICON-04 — Always use `IconSizes` constants — never hardcode dp values.
+```
 
 | Constant | Value | Usage |
 |----------|-------|-------|

@@ -89,9 +89,16 @@ fun huaweiAndroidModule() = module {
 }
 ```
 
-**Rule PLAT-MOB-HUAWEI-DI-01 (hard):** Always bind to the interface — never to the
-concrete class. `single<ConcreteClass>` does not override the earlier `single<Interface>`
-binding and will cause a duplicate registration or silent miss.
+```rule
+id: PLAT-MOB-HUAWEI-DI-01
+statement: Always bind to the interface — never to the concrete class.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-HUAWEI-DI-01 — Always bind to the interface — never to the concrete class.
+```
+
+`single<ConcreteClass>` does not override the earlier `single<Interface>` binding and will cause a duplicate registration or silent miss.
 
 ---
 

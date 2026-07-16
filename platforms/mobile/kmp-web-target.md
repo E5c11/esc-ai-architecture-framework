@@ -30,9 +30,16 @@ tags: [kmp, wasmjs, web, compose-multiplatform, noop, source-sets, keyvaluestora
 
 ### Golden rule
 
-**Rule PLAT-MOB-KMP-WEB-SS-01 (hard):** `commonMain` is the home for ALL business logic.
-No use cases, repositories, or domain models live in `wasmJsMain`. `wasmJsMain` is a thin
-wiring layer only.
+```rule
+id: PLAT-MOB-KMP-WEB-SS-01
+statement: `commonMain` is the home for ALL business logic.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KMP-WEB-SS-01 — `commonMain` is the home for ALL business logic.
+```
+
+No use cases, repositories, or domain models live in `wasmJsMain`. `wasmJsMain` is a thin wiring layer only.
 
 ### Source set hierarchy for Firebase REST
 
@@ -43,9 +50,16 @@ commonMain           ← interfaces (Firebase*Api)
          └── wasmJsMain    ← localStorage KeyValueStorage wiring
 ```
 
-**Rule PLAT-MOB-KMP-WEB-SS-02 (hard):** NEVER add Android imports to `restMain`. The
-`restMain` source set must compile for both Android and wasmJs. Anything importing
-`android.*` or `SharedPreferences` directly does NOT belong in `restMain`.
+```rule
+id: PLAT-MOB-KMP-WEB-SS-02
+statement: NEVER add Android imports to `restMain`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KMP-WEB-SS-02 — NEVER add Android imports to `restMain`.
+```
+
+The `restMain` source set must compile for both Android and wasmJs. Anything importing `android.*` or `SharedPreferences` directly does NOT belong in `restMain`.
 
 ### What lives where
 
@@ -94,8 +108,16 @@ REST auth API — it is NOT registered as a Koin binding itself.
 
 ## UUID Rule
 
-**Rule PLAT-MOB-KMP-WEB-UUID-01 (hard):** NEVER use `java.util.UUID`. It is JVM-only
-and will not compile for wasmJs.
+```rule
+id: PLAT-MOB-KMP-WEB-UUID-01
+statement: NEVER use `java.util.UUID`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KMP-WEB-UUID-01 — NEVER use `java.util.UUID`.
+```
+
+It is JVM-only and will not compile for wasmJs.
 
 ```kotlin
 // ❌ Wrong
@@ -151,8 +173,14 @@ fun webNoOpModule() = module {
 }
 ```
 
-**Rule PLAT-MOB-KMP-WEB-NOOP-01 (hard):** Every `androidMain`-only Koin registration
-MUST have a corresponding `wasmJsMain` NoOp so Koin can resolve all bindings on web.
+```rule
+id: PLAT-MOB-KMP-WEB-NOOP-01
+statement: Every `androidMain`-only Koin registration MUST have a corresponding `wasmJsMain` NoOp so Koin can resolve all bindings on web.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-KMP-WEB-NOOP-01 — Every `androidMain`-only Koin registration MUST have a corresponding `wasmJsMain` NoOp so Koin can resolve all bindings on web.
+```
 
 ---
 

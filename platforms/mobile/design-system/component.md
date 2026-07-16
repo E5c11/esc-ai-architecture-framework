@@ -13,10 +13,16 @@ tags: [design-system, compose, component, m3, material3, preview, accessibility,
 
 ## Critical Rule: Design System is the Only M3 Import Location
 
-**Rule PLAT-MOB-DS-M3-01 (hard):** The design system module is the ONLY place where
-Material 3 components are imported and used directly. Feature modules MUST NOT import
-from `androidx.compose.material3` (except for `MaterialTheme` token access). All
-Material 3 components are wrapped here with themed defaults.
+```rule
+id: PLAT-MOB-DS-M3-01
+statement: The design system module is the ONLY place where Material 3 components are imported and used directly.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-DS-M3-01 — The design system module is the ONLY place where Material 3 components are imported and used directly.
+```
+
+Feature modules MUST NOT import from `androidx.compose.material3` (except for `MaterialTheme` token access). All Material 3 components are wrapped here with themed defaults.
 
 This ensures:
 - Consistent styling across the app
