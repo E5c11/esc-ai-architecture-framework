@@ -24,7 +24,8 @@ hierarchy determines what each target can see and use.
 | `commonMain` | All business logic, architecture layers, domain models. No platform APIs. |
 | `androidMain` | Android-specific implementations: Context-dependent code, Android SDKs |
 | `iosMain` | iOS-specific implementations: UIKit bridges, iOS SDKs |
-| `wasmJsMain` | Web-specific implementations: browser APIs, JS interop |
+| `wasmJsMain` | Web-specific implementations: browser APIs, JS interop (WebAssembly output) |
+| `jsMain` | Web-specific implementations targeting plain Kotlin/JS output (not WebAssembly) — uncommon for an app target today (this framework's projects use `wasmJs`), but relevant for a published library that needs to reach npm/TypeScript consumers directly; see `PLAT-LIB-JS-EXPORT` |
 | `commonTest` | All unit tests that do not require a platform runtime |
 
 **Rule PLAT-MOB-KMP-SS-01 (hard):** Business logic, UseCases, Repositories, DataSources,

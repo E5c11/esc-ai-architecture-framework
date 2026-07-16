@@ -15,5 +15,6 @@ If it only applies within a specific architecture, it belongs in `architectures/
 - Naming philosophy
 - Testing philosophy
 - Documentation standards
+- Public API stability (semver, breaking-change discipline, deprecation)
 
 ## Document ID prefix: `CORE-`

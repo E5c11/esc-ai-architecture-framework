@@ -15,8 +15,15 @@
 #   ---
 
 schema:
-  version: "1.0"
+  version: "1.1"
   type: document-metadata
+  changelog:
+    "1.1": >
+      Added `library` to the `platform` enum — publishing a versioned package other
+      repos depend on (semver, binary compatibility, consumers you don't control) is
+      a distinct concern from building a deployable mobile/backend/web app, even when
+      the implementation technology overlaps (e.g. a KMP library vs a KMP app). See
+      `platforms/library/README.md`.
 
 fields:
 
@@ -51,10 +58,12 @@ fields:
   platform:
     type: array
     required: true
-    values: [mobile, backend, web, build, all]
+    values: [mobile, backend, web, library, build, all]
     description: >
       Which platforms this document applies to.
       Use [all] for platform-agnostic documents.
+      `library` = publishing a versioned package for external consumption (Maven/npm/etc.),
+      as distinct from `mobile`/`backend`/`web` which are deployable end-user targets.
 
   architecture:
     type: array
