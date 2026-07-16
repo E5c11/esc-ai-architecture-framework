@@ -39,9 +39,27 @@ The theme system is built on Material 3 and provides:
 | Border / divider | `MaterialTheme.colorScheme.outline` |
 | Disabled element | `MaterialTheme.colorScheme.onSurface.copy(alpha = Alpha.disabled)` |
 
-**Rule DS-THEME-01 (hard):** Use `MaterialTheme.colorScheme` for all color access. Never hardcode hex or `Color(0xFF...)` literals in components.
+```rule
+id: DS-THEME-01
+statement: Use `MaterialTheme.colorScheme` for all color access.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates DS-THEME-01 — Use `MaterialTheme.colorScheme` for all color access.
+```
 
-**Rule DS-THEME-02 (hard):** Brand-specific colors that are not covered by M3 semantic roles MUST be defined in the design system's `Colour.kt` file and mapped into `ColorScheme` or an `AppColours` extension. Never define brand colors inline.
+Never hardcode hex or `Color(0xFF...)` literals in components.
+
+```rule
+id: DS-THEME-02
+statement: Brand-specific colors that are not covered by M3 semantic roles MUST be defined in the design system's `Colour.kt` file and mapped into `ColorScheme` or an `AppColours` extension.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates DS-THEME-02 — Brand-specific colors that are not covered by M3 semantic roles MUST be defined in the design system's `Colour.kt` file and mapped into `ColorScheme` or an `AppColours` extension.
+```
+
+Never define brand colors inline.
 
 ### Alpha constants
 
@@ -54,13 +72,27 @@ object Alpha {
 }
 ```
 
-**Rule DS-THEME-08 (hard):** Use `Alpha` constants — never hardcode transparency values.
+```rule
+id: DS-THEME-08
+statement: Use `Alpha` constants — never hardcode transparency values.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates DS-THEME-08 — Use `Alpha` constants — never hardcode transparency values.
+```
 
 ---
 
 ## Typography
 
-**Rule DS-THEME-03 (hard):** Use `MaterialTheme.typography` — never hardcode `fontSize`, `fontWeight`, or `lineHeight` in components.
+```rule
+id: DS-THEME-03
+statement: Use `MaterialTheme.typography` — never hardcode `fontSize`, `fontWeight`, or `lineHeight` in components.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates DS-THEME-03 — Use `MaterialTheme.typography` — never hardcode `fontSize`, `fontWeight`, or `lineHeight` in components.
+```
 
 | Need | Use |
 |------|-----|
@@ -82,7 +114,14 @@ MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
 
 ## Spacing
 
-**Rule DS-THEME-04 (hard):** Use `Spacing` constants — never hardcode dp values in padding or spacer sizes.
+```rule
+id: DS-THEME-04
+statement: Use `Spacing` constants — never hardcode dp values in padding or spacer sizes.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates DS-THEME-04 — Use `Spacing` constants — never hardcode dp values in padding or spacer sizes.
+```
 
 ```kotlin
 object Spacing {
@@ -116,7 +155,14 @@ Column(modifier = Modifier.padding(16.dp)) {
 
 ## Dimension Constants
 
-**Rule DS-THEME-05 (hard):** Use dimension constants for corners, elevations, and layout sizes.
+```rule
+id: DS-THEME-05
+statement: Use dimension constants for corners, elevations, and layout sizes.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates DS-THEME-05 — Use dimension constants for corners, elevations, and layout sizes.
+```
 
 ```kotlin
 object Corners {
@@ -145,7 +191,14 @@ object Layout {
 
 ## Light and Dark Theme Support
 
-**Rule DS-THEME-06 (hard):** All components MUST support both light and dark themes without hardcoded theme-specific values.
+```rule
+id: DS-THEME-06
+statement: All components MUST support both light and dark themes without hardcoded theme-specific values.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates DS-THEME-06 — All components MUST support both light and dark themes without hardcoded theme-specific values.
+```
 
 ```kotlin
 // ✅ Correct — adapts automatically
@@ -163,7 +216,14 @@ Always create a dark-mode preview alongside the default preview (see `PLAT-MOB-D
 
 ## Component Parameters Default to Theme Values
 
-**Rule DS-THEME-07 (soft):** Customization parameters MUST default to theme values, not hardcoded colors.
+```rule
+id: DS-THEME-07
+statement: Customization parameters MUST default to theme values, not hardcoded colors.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates DS-THEME-07 — Customization parameters MUST default to theme values, not hardcoded colors.
+```
 
 ```kotlin
 @Composable
@@ -188,7 +248,14 @@ Add to theme files when a value is used in 3+ places or is part of a design spec
 | Spacing, sizes, corners, elevations | `theme/Dimens.kt` |
 | ColorScheme mapping | `theme/Theme.kt` |
 
-**Rule DS-THEME-10 (hard):** New constants MUST go in theme files — never define them in component files.
+```rule
+id: DS-THEME-10
+statement: New constants MUST go in theme files — never define them in component files.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates DS-THEME-10 — New constants MUST go in theme files — never define them in component files.
+```
 
 ---
 

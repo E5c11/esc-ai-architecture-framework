@@ -99,9 +99,16 @@ class MyNotification(param: String) : ScheduledNotification(
 The "brain" of the notification system. Lives in `commonMain`. Returns a list of
 `ScheduledNotification` instances that are due right now.
 
-**Rule PLAT-MOB-NOTIF-CLOCK-01 (hard):** The use case MUST NOT call
-`System.currentTimeMillis()` directly. All time access goes through `ClockProvider`
-so tests can control the clock without mocking.
+```rule
+id: PLAT-MOB-NOTIF-CLOCK-01
+statement: The use case MUST NOT call `System.currentTimeMillis()` directly.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-NOTIF-CLOCK-01 — The use case MUST NOT call `System.currentTimeMillis()` directly.
+```
+
+All time access goes through `ClockProvider` so tests can control the clock without mocking.
 
 ```kotlin
 interface ClockProvider {
@@ -119,9 +126,16 @@ class FakeClockProvider(private val fixedTimeMillis: Long) : ClockProvider {
 }
 ```
 
-**Rule PLAT-MOB-NOTIF-DELIVERY-01 (hard):** `GetPendingNotificationsUseCase` MUST
-return *what* to show. It MUST NOT call `NotificationManager` or interact with
-WorkManager. Those responsibilities belong in the platform worker.
+```rule
+id: PLAT-MOB-NOTIF-DELIVERY-01
+statement: `GetPendingNotificationsUseCase` MUST return *what* to show.
+type: hard
+scope: return-type
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-NOTIF-DELIVERY-01 — `GetPendingNotificationsUseCase` MUST return *what* to show.
+```
+
+It MUST NOT call `NotificationManager` or interact with WorkManager. Those responsibilities belong in the platform worker.
 
 **Prioritization rule (example):** If high-priority notification types are due
 simultaneously with low-priority ones, enforce priority inside the use case — not

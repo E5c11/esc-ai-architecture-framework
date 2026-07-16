@@ -34,8 +34,16 @@ private companion object {
 }
 ```
 
-**Rule PLAT-MOB-DS-KEY-01 (hard):** All DataStore keys MUST be declared as typed
-`preferencesKey<T>()` constants. Never use raw strings at the call site.
+```rule
+id: PLAT-MOB-DS-KEY-01
+statement: All DataStore keys MUST be declared as typed `preferencesKey<T>()` constants.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-DS-KEY-01 — All DataStore keys MUST be declared as typed `preferencesKey<T>()` constants.
+```
+
+Never use raw strings at the call site.
 
 ---
 
@@ -137,9 +145,16 @@ class FakeDataStore(
 - `edit {}` calls `updateData` internally — no extra stubbing needed
 - Each test gets a clean `FakeDataStore` — JUnit4 creates a new class instance per test method
 
-**Rule PLAT-MOB-DS-FAKE-01 (hard):** Each Gradle module that tests a DataStore-backed class
-MUST have its own copy of `FakeDataStore` in its `commonTest` source set. KMP test code
-cannot be shared across module boundaries.
+```rule
+id: PLAT-MOB-DS-FAKE-01
+statement: Each Gradle module that tests a DataStore-backed class MUST have its own copy of `FakeDataStore` in its `commonTest` source set.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-DS-FAKE-01 — Each Gradle module that tests a DataStore-backed class MUST have its own copy of `FakeDataStore` in its `commonTest` source set.
+```
+
+KMP test code cannot be shared across module boundaries.
 
 ---
 
