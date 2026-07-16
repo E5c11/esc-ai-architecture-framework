@@ -5,8 +5,8 @@ layer: platform
 platform: [mobile]
 architecture: [pragmatic-clean]
 requires: [ARCH-PC-USECASE, ARCH-PC-DI, PLAT-MOB-KOIN, PLAT-MOB-DATASTORE]
-related: [PLAT-MOB-KMP, PLAT-MOB-KMP-WEB]
-tags: [notifications, workmanager, scheduler, clockprovider, channels, kmp, background]
+related: [PLAT-MOB-KMP, PLAT-MOB-KMP-WEB, PLAT-MOB-KMP-IOS, PLAT-MOB-IOS-INTEROP]
+tags: [notifications, workmanager, scheduler, clockprovider, channels, kmp, background, ios]
 ---
 
 # Notifications (WorkManager / Background Scheduling)
@@ -40,7 +40,10 @@ androidMain (Android-specific)
 - *Which categories are enabled* → user preference synced to persistent store
 - *Ephemeral deduplication state* → `NotificationPreferences` (DataStore, device-local)
 
-iOS would implement `NotificationScheduler` using `BGAppRefreshTask` without touching any common logic.
+iOS keeps the same common decision logic but uses separate Apple mechanisms for notification
+delivery and optional background refresh. Local notification requests are scheduled with
+`UNUserNotificationCenter`; remote push uses APNs capability/registration. Background app
+refresh is best-effort and must not be treated as an exact periodic scheduler.
 
 ---
 
@@ -63,6 +66,21 @@ interface NotificationScheduler {
 Browsers do not expose persistent background scheduling APIs. Register a
 `NoOpNotificationScheduler` in the web Koin module so Koin can resolve
 `NotificationScheduler` on the web target. See `PLAT-MOB-KMP-WEB`.
+
+**iOS:**
+
+- Request/inspect notification authorization through `UNUserNotificationCenter`.
+- Map not-determined, provisional, authorized, denied and other supported states explicitly.
+- Use stable identifiers for local requests so rescheduling replaces rather than duplicates.
+- Add push entitlements and APNs registration only when remote push is in product scope.
+- Use background refresh only for best-effort content refresh; delivery must not depend on an
+  exact background execution time.
+
+**Rule PLAT-MOB-NOTIF-IOS-01 (hard):** iOS local notification scheduling MUST use the
+notification-center request API; background refresh MUST NOT be presented as exact delivery.
+
+**Rule PLAT-MOB-NOTIF-IOS-02 (hard):** Notification permission, push registration and
+background refresh are separate capabilities and MUST have separate configuration/state.
 
 ---
 
@@ -235,6 +253,8 @@ After adding a new platform:
 - [ ] New `NotificationScheduler` implementation in platform source set
 - [ ] Bound as `single<NotificationScheduler>` in platform DI module
 - [ ] No commonMain code changed
+- [ ] Permission states, entitlements and delivery mechanism match the platform capability
+- [ ] iOS stable identifier replacement/cancellation and denied behavior are tested
 
 ---
 

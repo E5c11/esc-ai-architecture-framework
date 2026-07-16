@@ -4,9 +4,9 @@ type: principle
 layer: core
 platform: [all]
 architecture: [all]
-requires: []
-related: [CORE-COUPLING, CORE-ERROR, CORE-NAMING]
-tags: [api, semver, versioning, breaking-change, compatibility, deprecation, public-surface]
+requires: [CORE-COUPLING]
+related: [CORE-ERROR, CORE-NAMING, PLAT-LIB-KMP]
+tags: [api, semver, versioning, breaking-change, compatibility, binary-compatibility, deprecation, public-surface, library]
 ---
 
 # Public API Stability

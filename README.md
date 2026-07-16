@@ -19,7 +19,8 @@ esc-ai-framework/
 ├── platforms/               # Technology-specific implementation guides
 │   ├── mobile/              # Kotlin / KMP / Compose / Koin
 │   ├── backend/             # Kotlin / Spring Boot / JPA
-│   └── web/                 # TypeScript / React / Next.js
+│   ├── web/                 # TypeScript / React / Next.js
+│   └── library/             # Published KMP packaging and export
 ├── build/                   # Gradle build system patterns (cross-platform)
 ├── quality-gates/           # Testing philosophy and coverage standards
 ├── feature-orchestrators/   # Step-by-step implementation plans

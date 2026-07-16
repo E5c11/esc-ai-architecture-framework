@@ -4,8 +4,8 @@ type: guide
 layer: platform
 platform: [mobile]
 architecture: [pragmatic-clean]
-requires: [ARCH-PC-DATASOURCE, CORE-DI, PLAT-MOB-KOTLIN]
-related: [ARCH-PC-ERROR-FLOW, ARCH-PC-ERR-CLASSES, PAT-OUTCOME, PLAT-LIB-KMP]
+requires: [ARCH-PC-DATASOURCE, ARCH-PC-ERR-CLASSES, CORE-DI, PLAT-MOB-KOTLIN]
+related: [ARCH-PC-ERROR-FLOW, PAT-OUTCOME, PLAT-LIB-KMP, PLAT-MOB-KMP-IOS]
 tags: [http, ktor, api-client, rest, serialization, auth-header, retry, timeout, interceptor, header-provider]
 ---
 
@@ -16,6 +16,9 @@ tags: [http, ktor, api-client, rest, serialization, auth-header, retry, timeout,
 The mobile platform calls a backend (Spring Boot or otherwise) over HTTP from every KMP
 target — Android, iOS, and web (`wasmJs`, see `PLAT-MOB-KMP`). This document covers the
 mobile-side HTTP client only — not the backend server (that's `platforms/backend/`).
+
+The HTTP client is infrastructure behind DataSource interfaces — Ktor or an owned wrapper
+such as `arrow-http` may implement transport policy, but it never becomes a domain API.
 
 This guide describes the shape of an HTTP client layer for `commonMain`, not a specific
 library mandate. The reference example throughout is `arrow-http`
@@ -50,6 +53,28 @@ interface HttpRequestExecutor {
     // ... put, patch, delete
 }
 ```
+
+Keep request/response DTOs, serialization and provider-neutral client policy in common or
+a deliberate shared REST source set. Engine dependencies remain platform-specific:
+
+| Target | Engine responsibility |
+|---|---|
+| Android/JVM | Android/JVM-compatible engine selected by the project |
+| iOS | Ktor Darwin engine in `iosMain` |
+| wasmJs | Browser-compatible Ktor engine |
+
+```rule
+id: PLAT-MOB-HTTP-ENGINE-01
+statement: Every configured target MUST provide exactly one compatible engine.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-HTTP-ENGINE-01 — Every configured target MUST provide exactly one compatible engine.
+```
+
+A transitive engine must still be proven by a target compile/link test — a target that
+resolves an engine dependency but never actually constructs a client on that target is
+unverified, not supported (see `PLAT-MOB-HTTP-TEST-03` below).
 
 ## Client configuration
 
@@ -87,13 +112,16 @@ data class HttpRequestConfig(
 
 ## Authentication and token refresh
 
+Attach credentials through an injected header/token provider. Refresh coordination belongs
+to a client plugin or `AuthRefresher`, not individual DataSources.
+
 ```rule
 id: PLAT-MOB-HTTP-AUTH-01
-statement: Auth token attachment is a provider the executor calls, not logic duplicated in every DataSource:
+statement: Auth token attachment is a provider the executor calls, not logic duplicated in every DataSource.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates PLAT-MOB-HTTP-AUTH-01 — Auth token attachment is a provider the executor calls, not logic duplicated in every DataSource:
+violation_message: Violates PLAT-MOB-HTTP-AUTH-01 — Auth token attachment is a provider the executor calls, not logic duplicated in every DataSource; DataSources MUST NOT read secure storage or implement token refresh directly.
 ```
 
 ```kotlin
@@ -111,11 +139,11 @@ refresh logic across every call site that needs auth.
 
 ```rule
 id: PLAT-MOB-HTTP-AUTH-02
-statement: Token refresh-on-expiry is a policy/interceptor the executor runs transparently — not something the calling DataSource retries manually:
+statement: Token refresh-on-expiry is a policy/interceptor the executor runs transparently — not something the calling DataSource retries manually.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates PLAT-MOB-HTTP-AUTH-02 — Token refresh-on-expiry is a policy/interceptor the executor runs transparently — not something the calling DataSource retries manually:
+violation_message: Violates PLAT-MOB-HTTP-AUTH-02 — Token refresh-on-expiry is a policy/interceptor the executor runs transparently; only one refresh may run for concurrent unauthorized responses, and a refreshed request may be replayed at most once.
 ```
 
 ```kotlin
@@ -135,7 +163,10 @@ class AuthPolicy(
 A DataSource that receives a response from the executor should never see a stale-token 401 —
 by the time the executor returns, either the refresh succeeded and the retried call's result
 is returned, or the refresh failed and the DataSource sees the resulting `AuthException`
-(mapped per the error rules below) exactly once.
+(mapped per the error rules below) exactly once. Concurrent requests that all hit a 401
+at once must coalesce onto a single in-flight refresh — each does not trigger its own
+refresh — and refresh failure maps to unauthorized/session-expired rather than an infinite
+retry loop.
 
 ## Retry strategy
 
@@ -145,10 +176,11 @@ statement: Retry policy operates on the *category* of failure, not the call site
 type: hard
 scope: error-handling
 enforced_by: [reviewer]
-violation_message: Violates PLAT-MOB-HTTP-RETRY-01 — Retry policy operates on the *category* of failure, not the call site.
+violation_message: Violates PLAT-MOB-HTTP-RETRY-01 — Retry policy operates on the *category* of failure, not the call site; retry only idempotent operations, or writes with an explicit idempotency mechanism.
 ```
 
-Transient/network failures are retryable; 4xx client errors generally are not (retrying a 400 or 404 wastes a round-trip on a request that will never succeed unmodified).
+Transient/network failures are retryable; 4xx client errors generally are not (retrying a 400 or 404 wastes a round-trip on a request that will never succeed unmodified). Never
+automatically retry authentication, validation, permission, or ordinary 4xx failures.
 
 ```kotlin
 class RetryPolicy(
@@ -177,7 +209,7 @@ statement: HTTP-layer failures map to a typed exception hierarchy at the client 
 type: hard
 scope: error-handling
 enforced_by: [reviewer]
-violation_message: Violates PLAT-MOB-HTTP-ERR-01 — HTTP-layer failures map to a typed exception hierarchy at the client layer itself — not left as raw platform exceptions (a Ktor `ConnectTimeoutException`, an OkHttp `IOException`) for the DataSource to catch and interpret.
+violation_message: Violates PLAT-MOB-HTTP-ERR-01 — HTTP and Ktor exceptions MUST NOT escape the DataSource boundary; raw platform exceptions must already be mapped by the time execution reaches it.
 ```
 
 This is `CORE-ERROR`'s "map low-level technical errors... at the layer boundary closest to where they originate" applied to the HTTP boundary specifically:
@@ -201,6 +233,19 @@ violation_message: Violates PLAT-MOB-HTTP-ERR-02 — The HTTP client layer's exc
 ```
 
 The DataSource is where `HttpStatusException(404)` becomes `DataNotFoundException` or similar; the HTTP client itself should not know about domain concepts. This is consistent with `CORE-ERROR`'s category table — the HTTP client throwing a typed technical exception is correct; letting that same exception type propagate past the DataSource boundary unmapped is not.
+
+```rule
+id: PLAT-MOB-HTTP-CANCEL-01
+statement: Coroutine cancellation MUST be rethrown before broad exception mapping.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-HTTP-CANCEL-01 — Coroutine cancellation MUST be rethrown before broad exception mapping.
+```
+
+A broad `catch (e: Exception)` around HTTP-layer error mapping swallows
+`CancellationException` unless it's checked and rethrown first — silently breaking
+structured concurrency (a cancelled parent scope no longer actually cancels its children).
 
 ## KMP source-set placement
 
@@ -233,15 +278,27 @@ enforced_by: [reviewer]
 violation_message: Violates PLAT-MOB-HTTP-SS-02 — Browser-specific Fetch API quirks (e.g. gzip responses keeping a pre-decompression `Content-Length` header, which trips a strict length check on some HTTP clients) belong in the `wasmJsMain`/`jsMain` client factory as a documented workaround with an explanation of *why*, not silently patched — a future reader needs to know it's a browser behaviour, not a bug in the abstraction.
 ```
 
+```rule
+id: PLAT-MOB-HTTP-SS-03
+statement: Platform engine classes and platform credential APIs MUST NOT appear in common client policy or DataSource interfaces.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-HTTP-SS-03 — Platform engine classes and platform credential APIs MUST NOT appear in common client policy or DataSource interfaces.
+```
+
+The inverse of `PLAT-MOB-HTTP-SS-01`: not only must the executor interface and business
+logic live in `commonMain`, nothing platform-specific may leak back into it either.
+
 ## DI registration
 
 ```rule
 id: PLAT-MOB-HTTP-DI-01
-statement: The configured executor is registered as a Koin `single`, constructed once at app start with its `HeaderProvider`, `AuthRefresher`, and policy list — not constructed ad hoc inside a DataSource:
+statement: The configured executor is registered as a Koin `single`, constructed once at app start with its `HeaderProvider`, `AuthRefresher`, and policy list — not constructed ad hoc inside a DataSource.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates PLAT-MOB-HTTP-DI-01 — The configured executor is registered as a Koin `single`, constructed once at app start with its `HeaderProvider`, `AuthRefresher`, and policy list — not constructed ad hoc inside a DataSource:
+violation_message: Violates PLAT-MOB-HTTP-DI-01 — the executor MUST be a Koin `single` injected into DataSources; DataSources must not construct clients per request.
 ```
 
 ```kotlin
@@ -292,20 +349,38 @@ enforced_by: [reviewer]
 violation_message: Violates PLAT-MOB-HTTP-TEST-02 — If the executor implementation itself needs testing (e.g. confirming `KtorHttpRequestExecutor.patchJson` issues an actual `HttpMethod.Patch`), that's a different, narrower test — use Ktor's `MockEngine` at that layer, not the fake.
 ```
 
-The fake is for consumers of the executor; `MockEngine` is for testing the executor itself.
+```rule
+id: PLAT-MOB-HTTP-TEST-03
+statement: Platform smoke tests MUST construct the real engine on each target — common-only tests cannot prove Darwin/browser engine availability.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-HTTP-TEST-03 — Platform smoke tests MUST construct the real engine on each target; common-only tests cannot prove Darwin/browser engine availability.
+```
+
+The fake is for consumers of the executor; `MockEngine` is for testing the executor's own
+request-building logic; a platform smoke test is for proving the real engine actually links
+and connects on that target.
 
 ## Validation Checklist
 
 Before committing any change to the HTTP client layer:
 - [ ] No Ktor (or other concrete client) type appears in a `commonMain` DataSource's own
       public API — only the executor interface
+- [ ] Every configured target provides exactly one compatible engine, proven by a
+      compile/link test (iOS especially — client construction/linking is tested, not
+      just assumed)
 - [ ] Auth token attachment goes through `HeaderProvider`, never a DataSource reading a
-      token store directly
-- [ ] Token refresh is a policy on the executor, not manual retry logic in a DataSource
+      token store or secure storage directly
+- [ ] Token refresh is a policy on the executor, not manual retry logic in a DataSource;
+      concurrent 401s trigger one refresh and at most one replay per request
 - [ ] Every HTTP failure surfaces as a typed `HttpException` subtype, not a raw platform
       exception, by the time it reaches the DataSource
+- [ ] `CancellationException` is rethrown before broad exception mapping catches it
 - [ ] The DataSource — not the HTTP client — is what translates `HttpException` into the
       app's own domain error vocabulary (`PAT-OUTCOME` / `ARCH-PC-ERR-CLASSES`)
-- [ ] DataSource tests use a fake executor; only the executor implementation's own tests use
-      a client-level mock (`MockEngine` or equivalent)
+- [ ] Non-idempotent writes are not retried without an explicit idempotency mechanism
+- [ ] Tokens and secrets are absent from logs
+- [ ] DataSource tests use a fake executor; the executor implementation's own tests use a
+      client-level mock (`MockEngine`); platform smoke tests cover the real engine per target
 - [ ] Any browser-specific client workaround is commented with *why*, not left unexplained

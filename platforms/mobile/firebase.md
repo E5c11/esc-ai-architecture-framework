@@ -5,8 +5,8 @@ layer: platform
 platform: [mobile]
 architecture: [all]
 requires: [PAT-DATA-ACCESS, PLAT-MOB-KMP, PLAT-MOB-KOTLIN]
-related: [PLAT-MOB-KOIN, PLAT-MOB-ROOM]
-tags: [firebase, firestore, auth, cloud, sdk, rest, android]
+related: [PLAT-MOB-KOIN, PLAT-MOB-ROOM, PLAT-MOB-HTTP, PLAT-MOB-SECURE-STORAGE]
+tags: [firebase, firestore, auth, cloud, sdk, rest, android, ios]
 ---
 
 # Firebase KMP SDK
@@ -14,9 +14,22 @@ tags: [firebase, firestore, auth, cloud, sdk, rest, android]
 ## Overview
 
 Firebase provides cloud storage (Firestore), authentication, and other services.
-In KMP, the Android target uses the native Firebase SDK; the wasmJs target uses
-a REST-based implementation. Both expose the same interface — the DataSource layer
-abstracts which implementation is active.
+KMP applications can use native Firebase SDK bindings or a provider-neutral REST layer.
+The DataSource layer abstracts the selected implementation so common callers do not change.
+
+## iOS strategy decision
+
+Choose one iOS strategy before implementation:
+
+1. Reuse a pure Kotlin REST implementation with Darwin HTTP and secure token storage; or
+2. integrate supported Firebase Apple SDK bindings and Apple configuration.
+
+Record the choice, supported Firebase products, source-set graph, authentication behavior
+and test environment. Do not mix native and REST implementations for the same interface
+without explicit qualifiers and ownership.
+
+**Rule PLAT-MOB-FB-IOS-01 (hard):** A project MUST document whether each Firebase
+capability uses REST or the native Apple SDK before wiring iOS DI.
 
 ## Source set strategy
 
@@ -29,18 +42,26 @@ enforced_by: [reviewer]
 violation_message: Violates PLAT-MOB-FB-SS-01 — Firebase SDK imports (`com.google.firebase.*`, `dev.gitlive.firebase.*`) MUST NOT appear in `commonMain`.
 ```
 
-All Firebase code lives in `androidMain` or, for the REST layer, in a dedicated source set (`restMain` or `wasmJsMain`).
+All Firebase code lives in its platform source set (`androidMain`/`iosMain`) or, for the
+REST layer, in a dedicated provider-neutral source set such as `restMain`.
 
 ```rule
 id: PLAT-MOB-FB-SS-02
-statement: The `restMain` source set (web Firebase implementation) MUST NOT import any `android.*` packages.
+statement: A `restMain` source set shared by web, Huawei or iOS MUST be pure Kotlin/HTTP and MUST NOT import Android, browser or Apple platform APIs.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates PLAT-MOB-FB-SS-02 — The `restMain` source set (web Firebase implementation) MUST NOT import any `android.*` packages.
+violation_message: Violates PLAT-MOB-FB-SS-02 — A `restMain` source set shared by web, Huawei or iOS MUST be pure Kotlin/HTTP and MUST NOT import Android, browser or Apple platform APIs.
 ```
 
-It must be purely Kotlin/HTTP.
+```rule
+id: PLAT-MOB-FB-SS-03
+statement: Custom REST source-set edges MUST be explicit and verified for every consuming target.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-MOB-FB-SS-03 — Custom REST source-set edges MUST be explicit and verified for every consuming target. Do not silence hierarchy warnings without proving the intended sources compile into each target.
+```
 
 ## DataSource boundary
 
@@ -117,6 +138,26 @@ enforced_by: [reviewer]
 violation_message: Violates PLAT-MOB-FB-DI-02 — The web target (`wasmJsMain`) MUST register a `webFirebaseModule` that provides REST-based implementations for all Firebase interfaces used by `commonMain` code.
 ```
 
+**Rule PLAT-MOB-FB-DI-03 (hard):** iOS MUST register exactly one implementation for
+every Firebase-facing common interface. REST bindings should be assembled from shared REST
+modules; native bindings remain in `iosMain`.
+
+## Apple configuration and credentials
+
+Native SDK integration requires environment-specific Apple configuration, URL schemes and
+callback handling. REST integration requires environment endpoints/keys plus Keychain-backed
+session tokens. Public client configuration may be packaged with the app; server secrets and
+administrative credentials must never be embedded.
+
+## Validation checklist
+
+- [ ] REST/native choice and supported products are recorded.
+- [ ] No provider SDK type crosses the DataSource boundary.
+- [ ] REST source set compiles for every intended target, including iOS when selected.
+- [ ] iOS DI resolves exactly one implementation for every common interface.
+- [ ] Auth change/refresh/sign-out behavior is tested without exposing credentials.
+- [ ] Environment configuration contains no server secret.
+
 ## Violations
 
 - `FirebaseFirestore.getInstance()` called inside a UseCase
@@ -124,3 +165,4 @@ violation_message: Violates PLAT-MOB-FB-DI-02 — The web target (`wasmJsMain`) 
 - `FirebaseException` propagated to a ViewModel
 - Collection path `"users"` hardcoded inline in a query instead of a named constant
 - Firebase SDK imported in `commonMain`
+- REST code labelled web-only while also being wired to a Native target

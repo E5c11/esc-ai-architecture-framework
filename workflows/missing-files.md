@@ -1,7 +1,7 @@
 # Missing Framework Documents
 
-Stubs exist for all entries marked as pending. Each stub contains an outline of what the
-document must cover. Write the full content before removing the entry from this list.
+Entries state whether a stub already exists or a file still needs to be created. Complete
+and validate the document before moving it to a completed section.
 
 ---
 
@@ -38,14 +38,6 @@ Files to create:
 **Status: stub.** Open question: confirm split with `ARCH-PC-VIEW` (which owns Scaffold rules).
 Resolve before writing.
 
-### Exception class definitions — `architectures/pragmatic-clean/exception-classes.md` (ARCH-PC-ERR-CLASSES)
-**Status: stub.** Blocker: determine whether the base exception type comes from:
-(a) project-defined KMP common code, (b) Arrow error types, or (c) a custom
-`arrow-errors` library owned by the project author. The implementation guide depends
-on this answer.
-
----
-
 ## Low priority
 
 ### App-level ViewModel — `architectures/pragmatic-clean/app-viewmodel.md` (ARCH-PC-APP-VM)
@@ -53,13 +45,6 @@ on this answer.
 
 ### Skeleton loading — `platforms/mobile/skeleton-loading.md` (PLAT-MOB-SKELETON)
 **Status: stub.**
-
-### Koin feature module setup — `platforms/mobile/koin.md` (PLAT-MOB-KOIN)
-**Status: partial.** TODO section added to the existing document. The feature module
-setup phase (factory registrations, viewModel block, module includes) needs to be
-expanded into a full guide.
-
----
 
 ## Completed (migrated from AMPM agents/instructions)
 
@@ -94,6 +79,25 @@ implementation existing to write it from.
 | `PLAT-LIB-KMP` | `platforms/library/kmp-packaging.md` | `api`/`implementation` visibility, Maven Central publishing, worked example from `arrow-http`'s real build config |
 | `PLAT-MOB-HTTP` | `platforms/mobile/http-client.md` | Previously a stub — written for real using `arrow-http` (`HeaderProvider`/`AuthRefresher`/`RetryPolicy`/`HttpException` hierarchy) as the reference implementation |
 | `PLAT-LIB-JS-EXPORT` | `platforms/library/js-npm-export.md` | Written for real from `arrow-http` 1.2.0's Phase 2 spike: verified Gradle DSL, per-type `@JsExport` results (including the hard `suspend fun` export blocker), the critical finding that `@JsExport` breaks non-`js` targets if placed in `commonMain`, the `webMain`/default-hierarchy-template conflict, and two Kotlin Gradle plugin bugs (KT-69996 and a `rootPackageJson` collision) that only surface with `js`+`wasmJs` together |
+
+---
+
+## Completed (KMP iOS platform coverage, 2026-07-15)
+
+| Doc ID | File | Notes |
+|--------|------|-------|
+| `ARCH-PC-ERR-CLASSES` | `architectures/pragmatic-clean/exception-classes.md` | Portable typed errors, provider-boundary mapping, cancellation and presentation metadata |
+| `PLAT-MOB-KMP-IOS` | `platforms/mobile/kmp-ios.md` | Apple target graph, source sets, framework/Xcode bootstrap, NoOp policy and validation ladder |
+| `PLAT-MOB-SECURE-STORAGE` | `platforms/mobile/secure-storage.md` | Keychain/keystore boundary, accessibility, deletion and tests |
+| `PLAT-MOB-IOS-INTEROP` | `platforms/mobile/ios-interop.md` | UIKit lifecycle, permissions, system actions, photos, rating and orientation |
+| `PLAT-MOB-IOS-AUTH` | `platforms/mobile/ios-auth.md` | OAuth callbacks/state, cancellation and secure sessions |
+| `PLAT-MOB-IOS-BILLING` | `platforms/mobile/ios-billing.md` | StoreKit outcomes, transaction lifecycle and verified entitlements |
+| `BUILD-APPLE-CI` | `build/apple-ci.md` | macOS compile/link/Xcode ladder and protected signing |
+| `QG-MOB-NATIVE` | `quality-gates/mobile-native-tests.md` | Native/simulator integration layers, isolation and coverage limits |
+| `ORCH-MOB-IOS` | `feature-orchestrators/mobile/ios-port.md` | Phase-by-phase published-dependency-to-archive port workflow |
+
+Existing Koin, Room, Firebase, DataStore, notifications, images, build and profile/lookup
+documents were expanded for Apple/Native behavior in the same change.
 
 ---
 

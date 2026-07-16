@@ -1,12 +1,12 @@
 ---
 id: PLAT-LIB-KMP
-type: platform
+type: guide
 layer: platform
 platform: [library]
 architecture: [all]
-requires: [CORE-API-STABILITY, PLAT-MOB-KMP]
-related: [PLAT-LIB-JS-EXPORT]
-tags: [kmp, kotlin-multiplatform, publishing, maven-central, api-visibility, gradle, versioning]
+requires: [CORE-API-STABILITY, PLAT-MOB-KMP, BUILD-VERSION-CATALOG]
+related: [PLAT-LIB-JS-EXPORT, PLAT-MOB-KMP-IOS]
+tags: [kmp, kotlin-multiplatform, publishing, maven-central, api-visibility, gradle, versioning, variants, klib, apple]
 ---
 
 # Publishing a Kotlin Multiplatform Library
@@ -147,6 +147,84 @@ violation_message: Violates PLAT-LIB-KMP-TEST-01 — `commonTest` runs across ev
 
 A target that compiles but has never actually run its test suite is unverified, not supported.
 
+## Target and publication set
+
+The root multiplatform publication is metadata that points to target publications.
+It is not a substitute for them.
+
+```rule
+id: PLAT-LIB-KMP-TARGET-01
+statement: Every platform claimed as supported MUST have an explicit Kotlin target and a published target artifact.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-LIB-KMP-TARGET-01 — Every platform claimed as supported MUST have an explicit Kotlin target and a published target artifact.
+```
+
+```rule
+id: PLAT-LIB-KMP-APPLE-01
+statement: Apple Silicon device and simulator support requires both `iosArm64()` and `iosSimulatorArm64()`.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-LIB-KMP-APPLE-01 — Apple Silicon device and simulator support requires both `iosArm64()` and `iosSimulatorArm64()`.
+```
+
+Add `iosX64()` only when Intel simulator support is an explicit product requirement.
+
+```rule
+id: PLAT-LIB-KMP-COORD-01
+statement: Root Gradle metadata MUST reference the exact artifact IDs produced by target publications.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-LIB-KMP-COORD-01 — Root Gradle metadata MUST reference the exact artifact IDs produced by target publications.
+```
+
+Renaming the root artifact without checking target coordinates is prohibited.
+
+```rule
+id: PLAT-LIB-KMP-ATOMIC-01
+statement: Root metadata, POMs, target modules, KLIBs, sources and required checksums/signatures MUST be staged and released as one version.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-LIB-KMP-ATOMIC-01 — Root metadata, POMs, target modules, KLIBs, sources and required checksums/signatures MUST be staged and released as one version.
+```
+
+Never promote a root publication whose advertised target artifact is missing. Maven
+Central releases are immutable. Correct a broken release with a new version; do not
+attempt to replace an existing coordinate.
+
+## External consumer fixture
+
+Maintain a separate fixture build that depends only on the staged/published coordinates.
+For each supported target it must:
+
+1. resolve the root module and target variant;
+2. compile code that exercises representative public API;
+3. link where the host supports linking;
+4. fail if repositories fall back to JitPack, local publications or project substitution.
+
+For Apple libraries, compile both Apple targets on macOS and link at least the simulator
+target. When the library wraps Ktor, instantiate the client so engine wiring is tested,
+not merely metadata resolution.
+
+```rule
+id: PLAT-LIB-KMP-FIXTURE-01
+statement: Publication verification MUST run against the staged repository from a clean external build before release promotion.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates PLAT-LIB-KMP-FIXTURE-01 — Publication verification MUST run against the staged repository from a clean external build before release promotion.
+```
+
+## Linux and macOS responsibilities
+
+Keep the target model consistent on every host. Linux can configure Apple targets and
+build common metadata, but Apple KLIB compilation/linking and Xcode integration are
+validated on macOS. Do not require developers to comment targets in and out.
+
 ## Validation Checklist
 
 Before publishing any version bump:
@@ -155,3 +233,10 @@ Before publishing any version bump:
 - [ ] `CORE-API-STABILITY`'s rules applied to every public surface change since the last release
 - [ ] `commonTest` passes on every declared target, including any newly added this release
 - [ ] Publishing (signing, Sonatype credentials) is a manual, confirmed step — never automated without explicit sign-off
+- [ ] Supported targets and target artifacts match; Apple device and Apple Silicon
+      simulator variants both exist when iOS is supported
+- [ ] Root `.module` coordinates match uploaded target artifact IDs exactly, and no
+      advertised artifact returns missing/unauthorized during clean resolution
+- [ ] External consumer fixture compiles representative API for every supported target;
+      Apple simulator link passes on macOS
+- [ ] Release uses a new immutable version

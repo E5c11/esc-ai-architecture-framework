@@ -153,6 +153,13 @@ Coverage shows which lines were executed during tests. It does not measure:
 A 100% coverage number with trivial tests is worse than 75% coverage with
 thorough behavioural tests. Coverage is a floor, not a goal.
 
+Kover reports commonly measure JVM executions and may not represent Kotlin/Native simulator
+tests. Keep the aggregate JVM gate, but report Native test execution separately and do not
+describe platform adapters as covered unless the tool actually records them.
+
+**Rule BUILD-COV-NATIVE-01 (hard):** Coverage reporting MUST disclose when Native code is
+outside the measured engine and MUST pair that limitation with explicit Native behavioral tests.
+
 ## Violations
 
 - Module with testable business logic missing a coverage verification rule
@@ -160,3 +167,4 @@ thorough behavioural tests. Coverage is a floor, not a goal.
 - Lowering a module threshold to make the build pass
 - Standard exclusions missing from a module, including generated code in the denominator
 - Coverage gate not running in CI
+- Claiming Native adapter coverage from a JVM-only coverage report
