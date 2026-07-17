@@ -20,6 +20,40 @@ converted to a proper ```rule block (deciding `type`/`scope` per item) — real
 authorship, not a mechanical fix. `platforms/mobile/design-system/images.md`
 has the same issue for `DS-IMAGE-03/04/05`.
 
+### Next.js platform docs, quality gate, and orchestrators — `ARCH-WEB-CONTENT`/`ARCH-WEB-APP` follow-ups
+Registered while authoring `workflows/active/nextjs-web-architectures.md`
+(architecture docs only — platform docs, orchestrators, and the testing gate
+were deliberately out of scope there). Needed before either architecture is
+usable end-to-end:
+
+- `platforms/web/design-system/` doc set (`PLAT-WEB-DS-THEME` in `theme.md`,
+  `PLAT-WEB-DS-COMPONENT` in `component.md`, `PLAT-WEB-DS-ICONS` in
+  `icons.md`) — mirrors `platforms/mobile/design-system/`'s structure, shared
+  by both `web-content` and `web-app` since both use Tailwind. Supersedes the
+  single-doc `PLAT-WEB-NEXT-STYLE` sketched earlier. Owns the
+  Tailwind-specific token rule (no arbitrary `bg-[#hex]`/`p-[px]` values —
+  tokens from `tailwind.config.ts` only), which doesn't belong in either
+  architecture doc since it names a specific technology.
+- `PLAT-WEB-NEXT` (`platforms/web/nextjs.md`) — shared Next.js App Router
+  fundamentals common to both architectures.
+- `PLAT-WEB-NEXT-CONTENT` (`platforms/web/nextjs-content.md`) + its deploy doc
+  `PLAT-WEB-NEXT-CONTENT-DEPLOY` (`platforms/web/nextjs-content-deploy.md`).
+- `PLAT-WEB-NEXT-APP` (`platforms/web/nextjs-app.md`) + its deploy doc
+  `PLAT-WEB-NEXT-APP-DEPLOY` (`platforms/web/nextjs-app-deploy.md`) — the
+  former should restate, not repeat as a new rule, the
+  thrown-Server-Action-error-stripped-in-production fact flagged by
+  `ARCH-WEB-APP-ERR-UNKNOWN-01`.
+- `PLAT-WEB-HTTP` (`platforms/web/http-client.md`) — REST client conventions
+  for the Route Handler/Server Action boundary.
+- `PLAT-WEB-FORMS` (`platforms/web/forms.md`) — react-hook-form + zod
+  conventions, composing with `ARCH-WEB-APP-ERR-CLASSES`'s `validation` error
+  shape.
+- `QG-WEB-TESTING` (`quality-gates/web-testing.md`).
+- `ORCH-WEB-CONTENT` (`feature-orchestrators/web/content-feature.md`),
+  `ORCH-WEB-APP` (`feature-orchestrators/web/app-feature.md`).
+- `PROFILE_DOC_MAP` web entries in `tools/lookup.py` — currently zero web
+  entries at all.
+
 ### Layer-specific unit test guides
 No actionable test guides exist for any architecture layer. The framework has
 philosophy (`CORE-TESTING`, `QG-TESTING`) but nothing that tells an agent how

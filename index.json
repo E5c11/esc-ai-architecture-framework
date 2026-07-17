@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-16T22:53:22.450224+00:00",
-  "count": 78,
+  "generated": "2026-07-17T08:23:07.742883+00:00",
+  "count": 81,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -593,6 +593,64 @@
       "status": ""
     },
     {
+      "id": "ARCH-WEB-APP",
+      "type": "overview",
+      "layer": "architectures",
+      "path": "architectures/web-app/overview.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "CORE-COUPLING",
+        "CORE-NAMING",
+        "PAT-DATA-ACCESS",
+        "PAT-OUTCOME",
+        "PAT-OBSERVER"
+      ],
+      "related": [
+        "ARCH-PC"
+      ],
+      "tags": [
+        "web",
+        "nextjs",
+        "server-actions",
+        "route-handlers",
+        "server-components",
+        "client-components",
+        "layers"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-WEB-APP-ERR-CLASSES",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/web-app/error-classes.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "PAT-OUTCOME",
+        "CORE-ERROR"
+      ],
+      "related": [
+        "ARCH-PC-ERR-CLASSES"
+      ],
+      "tags": [
+        "error-handling",
+        "outcome",
+        "typed-errors",
+        "server-actions",
+        "route-handlers",
+        "zod",
+        "react-hook-form"
+      ],
+      "status": ""
+    },
+    {
       "id": "ARCH-WEB-COMPONENTS",
       "type": "rules",
       "layer": "architectures",
@@ -619,6 +677,36 @@
         "state-guards",
         "props",
         "composition"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-WEB-CONTENT",
+      "type": "overview",
+      "layer": "architectures",
+      "path": "architectures/web-content/overview.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-content",
+      "requires": [
+        "CORE-COUPLING",
+        "CORE-NAMING",
+        "PAT-DATA-ACCESS"
+      ],
+      "related": [
+        "ARCH-WEB",
+        "ARCH-WEB-COMPONENTS"
+      ],
+      "tags": [
+        "web",
+        "nextjs",
+        "content",
+        "ssg",
+        "isr",
+        "server-components",
+        "seo",
+        "json-ld"
       ],
       "status": ""
     },

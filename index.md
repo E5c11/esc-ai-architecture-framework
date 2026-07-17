@@ -1,6 +1,6 @@
 # Framework Document Index
 
-*Generated 2026-07-16 — 78 documents*
+*Generated 2026-07-17 — 81 documents*
 
 ## core/
 
@@ -46,7 +46,10 @@
 | `ARCH-PC-VIEW` | guide | `architectures/pragmatic-clean/view.md` |  |
 | `ARCH-PC-VIEWMODEL` | guide | `architectures/pragmatic-clean/viewmodel.md` |  |
 | `ARCH-WEB` | overview | `architectures/web-spa/overview.md` |  |
+| `ARCH-WEB-APP` | overview | `architectures/web-app/overview.md` |  |
+| `ARCH-WEB-APP-ERR-CLASSES` | guide | `architectures/web-app/error-classes.md` |  |
 | `ARCH-WEB-COMPONENTS` | rules | `architectures/web-spa/components.md` |  |
+| `ARCH-WEB-CONTENT` | overview | `architectures/web-content/overview.md` |  |
 
 ## platforms/
 
