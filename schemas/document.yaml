@@ -15,9 +15,15 @@
 #   ---
 
 schema:
-  version: "1.1"
+  version: "1.2"
   type: document-metadata
   changelog:
+    "1.2": >
+      Added `web-content` and `web-app` to the `architecture` enum — two real forks
+      from `web-spa` for the Next.js Server/Client Component boundary: `web-content`
+      (SSG/ISR-first marketing/content sites) and `web-app` (server-capable
+      interactive apps with a held external-call boundary). See
+      `architectures/web-content/overview.md` and `architectures/web-app/overview.md`.
     "1.1": >
       Added `library` to the `platform` enum — publishing a versioned package other
       repos depend on (semver, binary compatibility, consumers you don't control) is
@@ -70,7 +76,7 @@ fields:
   architecture:
     type: array
     required: true
-    values: [pragmatic-clean, backend-service, web-spa, vertical-slice, hexagonal, all]
+    values: [pragmatic-clean, backend-service, web-spa, web-content, web-app, vertical-slice, hexagonal, all]
     description: >
       Which architectures this document applies to.
       Use [all] for architecture-agnostic documents.

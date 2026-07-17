@@ -76,7 +76,8 @@ ALLOWED_META_LAYERS = {
 }
 ALLOWED_PLATFORMS = {"mobile", "backend", "web", "library", "build", "all"}
 ALLOWED_ARCHITECTURES = {
-    "pragmatic-clean", "backend-service", "web-spa", "vertical-slice", "hexagonal", "all"
+    "pragmatic-clean", "backend-service", "web-spa", "web-content", "web-app",
+    "vertical-slice", "hexagonal", "all"
 }
 ALLOWED_STATUSES = {"", "active", "stub", "deprecated"}
 

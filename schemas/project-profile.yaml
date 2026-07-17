@@ -58,6 +58,9 @@ fields:
     values:
       - pragmatic-clean   # Clean Architecture layers without full abstraction overhead
       - backend-service   # Controller → Service → DataSource
+      - web-spa           # Client-side SPA, React + TypeScript
+      - web-content       # SSG/ISR-first marketing/content sites, Next.js
+      - web-app           # Server-capable interactive apps, Next.js
       - vertical-slice    # Feature-first, no shared layers
       - hexagonal         # Ports and adapters
     description: >
