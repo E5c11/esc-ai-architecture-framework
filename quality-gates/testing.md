@@ -5,7 +5,7 @@ layer: quality-gates
 platform: [all]
 architecture: [all]
 requires: [CORE-TESTING, CORE-COUPLING]
-related: [QG-REVIEW, BUILD-COVERAGE, BUILD-STATIC-ANALYSIS]
+related: [QG-REVIEW, BUILD-COVERAGE, BUILD-STATIC-ANALYSIS, QG-WEB-TESTING]
 tags: [testing, unit-tests, integration, mocking, coverage, philosophy]
 ---
 
@@ -181,4 +181,4 @@ See `BUILD-COVERAGE` for threshold values and standard exclusions.
 
 - **Mobile (Kotlin/KMP):** Kover for coverage; Mokkery or Mockk for mocking; `@Test` with JUnit4/5
 - **Backend (Spring Boot):** `@ExtendWith(MockKExtension::class)` for service tests; `@WebMvcTest` for controller slice tests; `@DataJpaTest` for DataSource tests
-- **Web (React/TypeScript):** Vitest + React Testing Library for component tests; MSW for API mocking
+- **Web (React/TypeScript):** Vitest + React Testing Library for component tests; MSW for API mocking — see `QG-WEB-TESTING` for the full pattern, including Server Action, Provider-boundary, and middleware-gated auth testing
