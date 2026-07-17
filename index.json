@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-17T08:23:07.742883+00:00",
-  "count": 81,
+  "generated": "2026-07-17T10:42:36.674101+00:00",
+  "count": 91,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -1195,6 +1195,42 @@
       "status": ""
     },
     {
+      "id": "ORCH-WEB-APP",
+      "type": "orchestrator",
+      "layer": "feature-orchestrators",
+      "path": "feature-orchestrators/web/app-feature.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "CORE-COUPLING",
+        "CORE-NAMING",
+        "CORE-TESTING",
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-ERR-CLASSES",
+        "PLAT-WEB-NEXT",
+        "PLAT-WEB-NEXT-APP",
+        "PLAT-WEB-HTTP",
+        "PLAT-WEB-FORMS",
+        "PLAT-WEB-DS-THEME",
+        "QG-WEB-TESTING"
+      ],
+      "related": [
+        "QG-REVIEW",
+        "ORCH-WEB-FEAT"
+      ],
+      "tags": [
+        "web",
+        "feature",
+        "nextjs",
+        "server-actions",
+        "route-handlers",
+        "orchestrator"
+      ],
+      "status": ""
+    },
+    {
       "id": "ORCH-WEB-FEAT",
       "type": "orchestrator",
       "layer": "feature-orchestrators",
@@ -2155,6 +2191,86 @@
       "status": ""
     },
     {
+      "id": "PLAT-WEB-DS-COMPONENT",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/design-system/component.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "CORE-COUPLING",
+        "PLAT-WEB-DS-THEME"
+      ],
+      "related": [
+        "PLAT-WEB-DS-ICONS",
+        "PLAT-WEB-NEXT"
+      ],
+      "tags": [
+        "design-system",
+        "component",
+        "shared-components",
+        "server-components",
+        "client-components",
+        "tailwind"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-WEB-DS-ICONS",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/design-system/icons.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "CORE-COUPLING",
+        "PLAT-WEB-DS-THEME"
+      ],
+      "related": [
+        "PLAT-WEB-DS-COMPONENT"
+      ],
+      "tags": [
+        "design-system",
+        "icons",
+        "centralized-module",
+        "lucide-react",
+        "accessibility"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-WEB-DS-THEME",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/design-system/theme.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "CORE-COUPLING"
+      ],
+      "related": [
+        "PLAT-WEB-DS-COMPONENT",
+        "PLAT-WEB-DS-ICONS"
+      ],
+      "tags": [
+        "design-system",
+        "theme",
+        "tailwind",
+        "tokens",
+        "colors",
+        "spacing",
+        "typography",
+        "dark-mode"
+      ],
+      "status": ""
+    },
+    {
       "id": "PLAT-WEB-FIREBASE",
       "type": "guide",
       "layer": "platforms",
@@ -2179,6 +2295,147 @@
         "hooks",
         "environment-variables",
         "real-time"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-WEB-FORMS",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/forms.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP-ERR-CLASSES"
+      ],
+      "related": [
+        "PLAT-WEB-HTTP"
+      ],
+      "tags": [
+        "forms",
+        "react-hook-form",
+        "zod",
+        "validation",
+        "ssot",
+        "field-errors",
+        "discriminated-union"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-WEB-HTTP",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/http-client.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-ERR-CLASSES",
+        "CORE-DI"
+      ],
+      "related": [
+        "PLAT-WEB-NEXT-APP",
+        "QG-WEB-TESTING"
+      ],
+      "tags": [
+        "http",
+        "fetch",
+        "rest",
+        "executor",
+        "header-provider",
+        "retry",
+        "typed-errors",
+        "testing",
+        "msw"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-WEB-NEXT",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/nextjs.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "CORE-COUPLING"
+      ],
+      "related": [
+        "ARCH-WEB-APP",
+        "ARCH-WEB-CONTENT"
+      ],
+      "tags": [
+        "nextjs",
+        "app-router",
+        "routing",
+        "layouts",
+        "server-components",
+        "client-components",
+        "middleware",
+        "env-vars"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-WEB-NEXT-APP",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/nextjs-app.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "PLAT-WEB-NEXT",
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-ERR-CLASSES"
+      ],
+      "related": [
+        "PLAT-WEB-HTTP",
+        "PLAT-WEB-NEXT-APP-DEPLOY",
+        "QG-WEB-TESTING"
+      ],
+      "tags": [
+        "nextjs",
+        "server-actions",
+        "route-handlers",
+        "revalidation",
+        "outcome",
+        "error-digest"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-WEB-NEXT-APP-DEPLOY",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/nextjs-app-deploy.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "PLAT-WEB-NEXT-APP"
+      ],
+      "related": [
+        "PLAT-WEB-DEPLOY"
+      ],
+      "tags": [
+        "deploy",
+        "docker",
+        "cloud-run",
+        "standalone",
+        "domain-mapping",
+        "tls",
+        "build",
+        "connection-pool"
       ],
       "status": ""
     },
@@ -2338,7 +2595,8 @@
       "related": [
         "QG-REVIEW",
         "BUILD-COVERAGE",
-        "BUILD-STATIC-ANALYSIS"
+        "BUILD-STATIC-ANALYSIS",
+        "QG-WEB-TESTING"
       ],
       "tags": [
         "testing",
@@ -2347,6 +2605,34 @@
         "mocking",
         "coverage",
         "philosophy"
+      ],
+      "status": ""
+    },
+    {
+      "id": "QG-WEB-TESTING",
+      "type": "guide",
+      "layer": "quality-gates",
+      "path": "quality-gates/web-testing.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "all",
+      "requires": [
+        "QG-TESTING",
+        "CORE-TESTING"
+      ],
+      "related": [
+        "PLAT-WEB-HTTP",
+        "PLAT-WEB-FORMS"
+      ],
+      "tags": [
+        "testing",
+        "vitest",
+        "react-testing-library",
+        "msw",
+        "server-actions",
+        "middleware",
+        "e2e"
       ],
       "status": ""
     }

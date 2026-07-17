@@ -20,39 +20,21 @@ converted to a proper ```rule block (deciding `type`/`scope` per item) — real
 authorship, not a mechanical fix. `platforms/mobile/design-system/images.md`
 has the same issue for `DS-IMAGE-03/04/05`.
 
-### Next.js platform docs, quality gate, and orchestrators — `ARCH-WEB-CONTENT`/`ARCH-WEB-APP` follow-ups
-Registered while authoring `workflows/active/nextjs-web-architectures.md`
-(architecture docs only — platform docs, orchestrators, and the testing gate
-were deliberately out of scope there). Needed before either architecture is
-usable end-to-end:
+### `PLAT-WEB-NEXT-CONTENT` + deploy doc, `ORCH-WEB-CONTENT` — `web-content` still has no consuming project
+Registered while authoring `workflows/active/web-platform-docs.md`, which
+closed the rest of the "Next.js platform docs, quality gate, and
+orchestrators" gap (`PLAT-WEB-NEXT`, `PLAT-WEB-NEXT-APP` + deploy doc,
+`PLAT-WEB-HTTP`, `PLAT-WEB-FORMS`, the `platforms/web/design-system/` set,
+`QG-WEB-TESTING`, `ORCH-WEB-APP`, and the web `PROFILE_DOC_MAP` entries — see
+"Completed" below). Explicitly re-registered, not authored, for the same
+reason `content-dashboard.md` §8 deferred its own AMPM CRUD-lifecycle doc: no
+project consumes `web-content` today (unlike `web-app`, which
+`ampm-backend`'s content dashboard uses right now), so writing these now
+risks documenting a guess instead of a real usage pattern. Still needed:
 
-- `platforms/web/design-system/` doc set (`PLAT-WEB-DS-THEME` in `theme.md`,
-  `PLAT-WEB-DS-COMPONENT` in `component.md`, `PLAT-WEB-DS-ICONS` in
-  `icons.md`) — mirrors `platforms/mobile/design-system/`'s structure, shared
-  by both `web-content` and `web-app` since both use Tailwind. Supersedes the
-  single-doc `PLAT-WEB-NEXT-STYLE` sketched earlier. Owns the
-  Tailwind-specific token rule (no arbitrary `bg-[#hex]`/`p-[px]` values —
-  tokens from `tailwind.config.ts` only), which doesn't belong in either
-  architecture doc since it names a specific technology.
-- `PLAT-WEB-NEXT` (`platforms/web/nextjs.md`) — shared Next.js App Router
-  fundamentals common to both architectures.
-- `PLAT-WEB-NEXT-CONTENT` (`platforms/web/nextjs-content.md`) + its deploy doc
-  `PLAT-WEB-NEXT-CONTENT-DEPLOY` (`platforms/web/nextjs-content-deploy.md`).
-- `PLAT-WEB-NEXT-APP` (`platforms/web/nextjs-app.md`) + its deploy doc
-  `PLAT-WEB-NEXT-APP-DEPLOY` (`platforms/web/nextjs-app-deploy.md`) — the
-  former should restate, not repeat as a new rule, the
-  thrown-Server-Action-error-stripped-in-production fact flagged by
-  `ARCH-WEB-APP-ERR-UNKNOWN-01`.
-- `PLAT-WEB-HTTP` (`platforms/web/http-client.md`) — REST client conventions
-  for the Route Handler/Server Action boundary.
-- `PLAT-WEB-FORMS` (`platforms/web/forms.md`) — react-hook-form + zod
-  conventions, composing with `ARCH-WEB-APP-ERR-CLASSES`'s `validation` error
-  shape.
-- `QG-WEB-TESTING` (`quality-gates/web-testing.md`).
-- `ORCH-WEB-CONTENT` (`feature-orchestrators/web/content-feature.md`),
-  `ORCH-WEB-APP` (`feature-orchestrators/web/app-feature.md`).
-- `PROFILE_DOC_MAP` web entries in `tools/lookup.py` — currently zero web
-  entries at all.
+- `PLAT-WEB-NEXT-CONTENT` (`platforms/web/nextjs-content.md`) + its deploy
+  doc `PLAT-WEB-NEXT-CONTENT-DEPLOY` (`platforms/web/nextjs-content-deploy.md`).
+- `ORCH-WEB-CONTENT` (`feature-orchestrators/web/content-feature.md`).
 
 ### Layer-specific unit test guides
 No actionable test guides exist for any architecture layer. The framework has
@@ -79,6 +61,36 @@ Resolve before writing.
 
 ### Skeleton loading — `platforms/mobile/skeleton-loading.md` (PLAT-MOB-SKELETON)
 **Status: stub.**
+
+## Completed (Next.js platform docs, quality gate, and ORCH-WEB-APP, 2026-07-17)
+
+Closed the `web-app`-blocking part of the gap registered while authoring
+`workflows/archive/nextjs-web-architectures.md` — driven by `ampm-backend`'s
+`plan/content-dashboard.md` §3 naming `PLAT-WEB-HTTP`, `PLAT-WEB-FORMS`, and
+`PLAT-WEB-NEXT-APP` specifically as blocking its data-fetching/mutation layer
+and question-authoring forms. `PLAT-WEB-NEXT-CONTENT` + deploy doc and
+`ORCH-WEB-CONTENT` were re-registered above rather than authored — no
+project consumes `web-content` yet.
+
+| Doc ID | File | Notes |
+|--------|------|-------|
+| `PLAT-WEB-NEXT` | `platforms/web/nextjs.md` | App Router routing/layouts, Server/Client boundary, env var convention, `middleware.ts` — shared by `web-app` and `web-content` |
+| `PLAT-WEB-NEXT-APP` | `platforms/web/nextjs-app.md` | Return-not-throw Server Action pattern, `revalidatePath`/`revalidateTag`, Route Handler vs. Server Action guidance |
+| `PLAT-WEB-NEXT-APP-DEPLOY` | `platforms/web/nextjs-app-deploy.md` | Docker `standalone` build, Cloud Run domain mapping/TLS, connection-pool sizing on a scale-to-zero host |
+| `PLAT-WEB-HTTP` | `platforms/web/http-client.md` | `fetch`-based executor, header provider, retry policy, typed error mapping, DI registration, fake/MSW testing split |
+| `PLAT-WEB-FORMS` | `platforms/web/forms.md` | One zod schema per discriminated content variant, client/server schema reuse, `fieldErrors` → `setError` mapping |
+| `PLAT-WEB-DS-THEME` | `platforms/web/design-system/theme.md` | `tailwind.config.ts` tokens, dark mode via class strategy |
+| `PLAT-WEB-DS-COMPONENT` | `platforms/web/design-system/component.md` | `components/ui/` promotion threshold, Server-vs-Client default for shared components |
+| `PLAT-WEB-DS-ICONS` | `platforms/web/design-system/icons.md` | Centralized icon module, sizing/accessibility |
+| `QG-WEB-TESTING` | `quality-gates/web-testing.md` | Vitest/RTL baseline, Server Action testing, MSW at the Provider boundary, middleware-gated auth E2E |
+| `ORCH-WEB-APP` | `feature-orchestrators/web/app-feature.md` | Seven-phase orchestrator mirroring `ORCH-WEB-FEAT`'s shape for `ARCH-WEB-APP`'s layers |
+
+`schemas/project-profile.yaml` bumped to `1.1` (`frameworks.forms` field);
+`tools/lookup.py`'s `PROFILE_DOC_MAP` gained its first web entries
+(`fetch`/`axios` → `PLAT-WEB-HTTP`, `next` → `PLAT-WEB-NEXT`,
+`react-hook-form` → `PLAT-WEB-FORMS`). `PLAT-WEB-A11Y` was deliberately left
+`web-spa`-only rather than broadened — see `ORCH-WEB-APP`'s closing note for
+why its container-guard/`ErrorBoundary` rules don't transfer to `web-app`.
 
 ## Completed (migrated from AMPM agents/instructions)
 

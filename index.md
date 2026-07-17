@@ -1,6 +1,6 @@
 # Framework Document Index
 
-*Generated 2026-07-17 — 81 documents*
+*Generated 2026-07-17 — 91 documents*
 
 ## core/
 
@@ -84,7 +84,15 @@
 | `PLAT-MOB-SKELETON` | guide | `platforms/mobile/skeleton-loading.md` | ⚠ stub |
 | `PLAT-WEB-A11Y` | rules | `platforms/web/accessibility.md` |  |
 | `PLAT-WEB-DEPLOY` | guide | `platforms/web/deploy.md` |  |
+| `PLAT-WEB-DS-COMPONENT` | guide | `platforms/web/design-system/component.md` |  |
+| `PLAT-WEB-DS-ICONS` | guide | `platforms/web/design-system/icons.md` |  |
+| `PLAT-WEB-DS-THEME` | guide | `platforms/web/design-system/theme.md` |  |
 | `PLAT-WEB-FIREBASE` | guide | `platforms/web/firebase.md` |  |
+| `PLAT-WEB-FORMS` | guide | `platforms/web/forms.md` |  |
+| `PLAT-WEB-HTTP` | guide | `platforms/web/http-client.md` |  |
+| `PLAT-WEB-NEXT` | guide | `platforms/web/nextjs.md` |  |
+| `PLAT-WEB-NEXT-APP` | guide | `platforms/web/nextjs-app.md` |  |
+| `PLAT-WEB-NEXT-APP-DEPLOY` | guide | `platforms/web/nextjs-app-deploy.md` |  |
 | `PLAT-WEB-REACT` | guide | `platforms/web/react-typescript.md` |  |
 | `PLAT-WEB-STATE` | guide | `platforms/web/state.md` |  |
 | `PLAT-WEB-STYLING` | guide | `platforms/web/styling.md` |  |
@@ -107,6 +115,7 @@
 | `QG-MOB-NATIVE` | guide | `quality-gates/mobile-native-tests.md` |  |
 | `QG-REVIEW` | guide | `quality-gates/review.md` |  |
 | `QG-TESTING` | guide | `quality-gates/testing.md` |  |
+| `QG-WEB-TESTING` | guide | `quality-gates/web-testing.md` |  |
 
 ## feature-orchestrators/
 
@@ -116,4 +125,5 @@
 | `ORCH-BE-ENDPOINT` | orchestrator | `feature-orchestrators/backend/backend-endpoint.md` |  |
 | `ORCH-MOB-FEAT` | orchestrator | `feature-orchestrators/mobile/mobile-feature.md` |  |
 | `ORCH-MOB-IOS` | orchestrator | `feature-orchestrators/mobile/ios-port.md` |  |
+| `ORCH-WEB-APP` | orchestrator | `feature-orchestrators/web/app-feature.md` |  |
 | `ORCH-WEB-FEAT` | orchestrator | `feature-orchestrators/web/web-feature.md` |  |
