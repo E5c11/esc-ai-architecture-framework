@@ -473,3 +473,43 @@ yet" rationale stated in this doc's header, so the next session doesn't
 have to re-derive why they're still open.
 
 Regenerate `index.json`/`index.md` with `python tools/index.py` and commit.
+
+## Outcome
+
+All nine phases completed and committed; `python tools/validate.py` passes
+clean (only the pre-existing 23 WARN-only mobile design-system citations
+remain, unchanged from baseline). Notes for the record:
+
+- Frontmatter `related` fields that would have pointed forward to a
+  doc created in a later phase were trimmed at commit time and backfilled
+  once that doc existed (e.g. `PLAT-WEB-NEXT-APP`'s `related` picked up
+  `PLAT-WEB-HTTP` in Phase 3 and `QG-WEB-TESTING` in Phase 6) — `requires`/
+  `related` are validated as hard broken-reference failures, unlike a body
+  citation, which only WARNs until the target exists. This wasn't spelled
+  out in the phase text but follows from `tools/validate.py`'s own check
+  behavior.
+- `PLAT-WEB-HTTP` gained a `PLAT-WEB-HTTP-DI-01` rule not explicitly named
+  in Phase 3's text — added for parity with `PLAT-MOB-HTTP-DI-01`'s DI
+  registration rule, since the phase's own `requires: [..., CORE-DI]` and
+  "DI registration" content pointer implied one was expected; it documents
+  the module-level-singleton pattern this doc's construction example already
+  needed anyway (no DI framework equivalent to Koin exists for Next.js
+  server code).
+- The `PLAT-WEB-A11Y` judgment call (Phase 7's open question) was resolved
+  as: don't broaden the doc's `architecture` field. Five of its seven rules
+  (semantic HTML, alt, aria-label, headings, focus) are architecture-agnostic
+  and are cited directly from `ORCH-WEB-APP` Phase 5; its remaining two
+  (`PLAT-WEB-A11Y-GUARD-01`, `PLAT-WEB-A11Y-EB-01`) are tied to `web-spa`'s
+  manual container/`ErrorBoundary` model, which `web-app` doesn't use —
+  Next.js's own `loading.tsx`/`error.tsx` conventions serve that role
+  instead. Broadening the doc wholesale would have made those two rules
+  read as applying when they don't; no new `web-app`-specific a11y doc was
+  needed to make this citation work.
+- `ORCH-WEB-APP` followed `ORCH-WEB-FEAT`'s Goal/Read/Steps/Validation phase
+  format (the sibling convention inside `feature-orchestrators/web/`) rather
+  than the newer Required-framework-docs/Code-paths/Assumes/Produces header
+  block `schemas/feature-orchestrator.yaml` recommends for new orchestrators
+  and `ORCH-MOB-IOS` already uses — a judgment call for consistency within
+  the `web/` orchestrator family over cross-platform format uniformity,
+  the same kind of call the prior `nextjs-web-architectures` workflow made
+  for `type: overview` vs. `type: architecture`.
