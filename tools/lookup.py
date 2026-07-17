@@ -70,6 +70,8 @@ PROFILE_DOC_MAP: dict[str, dict[str, list[str]]] = {
         "ktor":     ["PLAT-MOB-HTTP"],
         "http":     ["PLAT-MOB-HTTP"],
         "retrofit": ["PLAT-MOB-HTTP"],
+        "fetch":    ["PLAT-WEB-HTTP"],
+        "axios":    ["PLAT-WEB-HTTP"],
     },
     "cloud": {
         "firebase": ["PLAT-MOB-FIREBASE"],
@@ -91,6 +93,12 @@ PROFILE_DOC_MAP: dict[str, dict[str, list[str]]] = {
     },
     "billing": {
         "storekit": ["PLAT-MOB-IOS-BILLING"],
+    },
+    "ui": {
+        "next": ["PLAT-WEB-NEXT"],
+    },
+    "forms": {
+        "react-hook-form": ["PLAT-WEB-FORMS"],
     },
 }
 

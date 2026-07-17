@@ -22,8 +22,14 @@
 #     convention-plugins: true
 
 schema:
-  version: "1.0"
+  version: "1.1"
   type: project-profile
+  changelog:
+    "1.1": >
+      Added `frameworks.forms` — a web-app project's form state/validation
+      library (react-hook-form, formik) is a framework choice PROFILE_DOC_MAP
+      needs to select PLAT-WEB-FORMS from, the same way `frameworks.network`
+      already selects PLAT-MOB-HTTP/PLAT-WEB-HTTP. See `platforms/web/forms.md`.
 
 fields:
 
@@ -104,6 +110,9 @@ fields:
       notifications:
         type: string
         description: "Notification strategy. Examples: multiplatform, workmanager, none"
+      forms:
+        type: string
+        description: "Form state/validation library. Examples: react-hook-form, formik, none"
 
   build:
     type: object
