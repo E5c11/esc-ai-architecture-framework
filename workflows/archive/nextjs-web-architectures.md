@@ -245,3 +245,28 @@ in Phase 4), `PLAT-WEB-HTTP`, `PLAT-WEB-FORMS`, `QG-WEB-TESTING`, orchestrators
 `ORCH-WEB-CONTENT`/`ORCH-WEB-APP`, and `PROFILE_DOC_MAP` web entries in
 `tools/lookup.py` (currently zero web entries at all). Regenerate
 `index.json`/`index.md` with `python tools/index.py` and commit.
+
+## Outcome
+
+All six phases completed and committed; `python tools/validate.py` passes
+clean (only the pre-existing 23 WARN-only mobile design-system citations
+remain, unchanged from baseline). Notes for the record:
+
+- `tools/validate.py`'s `ALLOWED_ARCHITECTURES` set (a hardcoded mirror of
+  `schemas/document.yaml`'s enum, same pattern already established when
+  `library` was added to the platform enum) needed the same two values added
+  in Phase 1, alongside the two schema files — not explicitly named in the
+  phase text but required for the Phase 2–4 docs to pass metadata validation.
+- Both new `overview.md` docs used `type: overview` (matching sibling
+  `ARCH-WEB`) rather than `type: architecture` (matching cited `ARCH-PC`) —
+  a judgment call for internal consistency within the `web` platform family
+  over cross-platform mirroring.
+- `ARCH-WEB-CONTENT-SEO-01` (per-route `generateMetadata`/JSON-LD ownership)
+  was authored fresh this session as a full rule block — the workflow
+  described it in prose as "a hard requirement" but didn't supply exact
+  rule text the way it did for the other rules in Phases 2–4.
+- Phase 6's gap entries split `PLAT-WEB-NEXT` (shared App Router
+  fundamentals) from `PLAT-WEB-NEXT-CONTENT`/`PLAT-WEB-NEXT-APP`
+  (architecture-specific) — the workflow text named the family but not this
+  base/specific split; inferred from Phase 4's citation of
+  `platforms/web/nextjs-app.md` as the `PLAT-WEB-NEXT-APP` file.
