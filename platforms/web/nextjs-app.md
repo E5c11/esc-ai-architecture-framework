@@ -5,7 +5,7 @@ layer: platforms
 platform: [web]
 architecture: [web-app]
 requires: [PLAT-WEB-NEXT, ARCH-WEB-APP, ARCH-WEB-APP-ERR-CLASSES]
-related: [PLAT-WEB-NEXT-APP-DEPLOY]
+related: [PLAT-WEB-HTTP, PLAT-WEB-NEXT-APP-DEPLOY]
 tags: [nextjs, server-actions, route-handlers, revalidation, outcome, error-digest]
 ---
 
