@@ -22,8 +22,10 @@ obvious, repository-local home consistent with the other two repos.
       describe a *consuming* project's own workflow policy file, not this repo's —
       left as generic guidance for now; revisit once `.esc-ai/workflows/` is the
       established convention for consuming repositories too (Phase 5).
-- [ ] Define a versioned framework descriptor (`esc-framework.yaml` at this repo's
+- [x] Define a versioned framework descriptor (`esc-framework.yaml` at this repo's
       root) for the execution framework's compatible-major-version check.
+      `major_version: 1`, conforming to `esc-ai-execution-framework`'s
+      `schemas/framework-descriptor.schema.yaml`.
 - [ ] No other structural change expected here — `index.json`/`tools/lookup.py`
       already provide what `esc-ai-execution-framework`'s new architecture-document
       lookup needs; it's consumed as a stable data contract, not a code dependency.

@@ -1,0 +1,5 @@
+schema_version: 1
+framework:
+  id: esc-ai-architecture-framework
+  major_version: 1
+  description: Engineering principles, patterns, architecture styles, platform guidance, quality rules, feature playbooks, and the Gap Protocol.
