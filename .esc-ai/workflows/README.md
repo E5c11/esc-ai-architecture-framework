@@ -2,7 +2,7 @@
 
 This directory tracks the ESC AI Architecture Framework's own build and extension work —
 not a consuming project's implementation phases. If you're looking for how to
-*use* this framework in a downstream project, see [`INSTRUCTIONS.md`](../INSTRUCTIONS.md)
+*use* this framework in a downstream project, see [`INSTRUCTIONS.md`](../../INSTRUCTIONS.md)
 at the repo root; it's the canonical, comprehensive usage guide and nothing
 here duplicates it.
 
@@ -15,7 +15,7 @@ here duplicates it.
 
 ## Gap Protocol
 
-Governed by [`INSTRUCTIONS.md`](../INSTRUCTIONS.md)'s Gap Protocol section —
+Governed by [`INSTRUCTIONS.md`](../../INSTRUCTIONS.md)'s Gap Protocol section —
 not restated here, to avoid the drift risk of two copies. When a task
 surfaces a genuine framework gap, register it in `missing-files.md`.
 

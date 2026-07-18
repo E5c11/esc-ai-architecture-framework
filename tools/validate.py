@@ -394,7 +394,8 @@ def check_rule_citations(documents: list[dict], rules: list[dict]) -> list[str]:
     WARN-only for now (caller must not fold these into the exit code): the
     citation syntax in the wild hasn't been confirmed clean across the full
     corpus yet. Promote to a real failure once a pass across the fully
-    migrated repo comes back empty — see workflows/active/rule-embedding-migration.md.
+    migrated repo comes back empty — see
+    .esc-ai/workflows/archive/rule-embedding-migration.md.
     """
     known_rule_ids = {rule["id"] for rule in rules if rule.get("id")}
     known_doc_ids = {doc["id"] for doc in documents if doc["id"]}

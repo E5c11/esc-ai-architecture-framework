@@ -14,13 +14,14 @@ obvious, repository-local home consistent with the other two repos.
 - [x] Internal title and reference migration to `esc-ai-architecture-framework`
       (`README.md`, `INSTRUCTIONS.md`, `CLAUDE.md`, `tools/index.py`,
       `tools/validate.py`, `workflows/README.md`, `workflows/missing-files.md`).
-- [ ] Rename `workflows/` -> `.esc-ai/workflows/` in this repo. Update
-      `workflows/README.md` and `tools/validate.py`'s reference to
-      `workflows/active/rule-embedding-migration.md`.
+- [x] Rename `workflows/` -> `.esc-ai/workflows/` in this repo. Updated
+      `.esc-ai/workflows/README.md`'s `INSTRUCTIONS.md` links (one directory
+      deeper now) and `tools/validate.py`'s stale reference (which also had a
+      pre-existing active/archive mismatch — the cited file is in `archive/`).
       `INSTRUCTIONS.md`'s mentions of `workflows/README.md` (lines ~107, ~149, ~168)
       describe a *consuming* project's own workflow policy file, not this repo's —
-      leave those as generic guidance for now; revisit once `.esc-ai/workflows/` is
-      the established convention for consuming repositories too (Phase 5).
+      left as generic guidance for now; revisit once `.esc-ai/workflows/` is the
+      established convention for consuming repositories too (Phase 5).
 - [ ] Define a versioned framework descriptor (`esc-framework.yaml` at this repo's
       root) for the execution framework's compatible-major-version check.
 - [ ] No other structural change expected here — `index.json`/`tools/lookup.py`
