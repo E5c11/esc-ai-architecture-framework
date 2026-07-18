@@ -463,7 +463,7 @@ def check_generated_indexes(root: Path, documents: list[dict]) -> list[str]:
 # ---------------------------------------------------------------------------
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate ESC AI Framework documents.")
+    parser = argparse.ArgumentParser(description="Validate ESC AI Architecture Framework documents.")
     parser.add_argument(
         "--root",
         default=".",

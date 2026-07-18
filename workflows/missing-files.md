@@ -94,7 +94,8 @@ why its container-guard/`ErrorBoundary` rules don't transfer to `web-app`.
 
 ## Completed (migrated from AMPM agents/instructions)
 
-These were created during the AMPM → esc-ai-framework migration. They are generic enough
+These were created during the AMPM → esc-ai-framework (now esc-ai-architecture-framework)
+migration. They are generic enough
 to reuse across projects and now live in `platforms/mobile/`.
 
 | Doc ID | File | Notes |

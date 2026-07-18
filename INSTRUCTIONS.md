@@ -1,4 +1,4 @@
-# ESC AI Engineering Framework — Instructions
+# ESC AI Architecture Framework — Instructions
 
 ## What This Is
 

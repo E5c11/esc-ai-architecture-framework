@@ -1,4 +1,4 @@
-# ESC AI Engineering Framework
+# ESC AI Architecture Framework
 
 See [`INSTRUCTIONS.md`](./INSTRUCTIONS.md) for how to use this framework.
 

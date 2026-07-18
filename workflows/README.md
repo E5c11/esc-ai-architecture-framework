@@ -1,6 +1,6 @@
 # Workflows — Framework Maintenance
 
-This directory tracks the ESC AI Framework's own build and extension work —
+This directory tracks the ESC AI Architecture Framework's own build and extension work —
 not a consuming project's implementation phases. If you're looking for how to
 *use* this framework in a downstream project, see [`INSTRUCTIONS.md`](../INSTRUCTIONS.md)
 at the repo root; it's the canonical, comprehensive usage guide and nothing

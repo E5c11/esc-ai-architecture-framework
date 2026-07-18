@@ -1,4 +1,4 @@
-# ESC AI Engineering Framework
+# ESC AI Architecture Framework
 
 Provider-agnostic AI engineering framework for deterministic software delivery.
 
@@ -9,7 +9,7 @@ The AI model is an interchangeable execution engine. This framework is the knowl
 ## Structure
 
 ```
-esc-ai-framework/
+esc-ai-architecture-framework/
 │
 ├── core/                    # Platform-agnostic engineering principles
 ├── patterns/                # Reusable design patterns (technology-neutral)

@@ -179,7 +179,7 @@ def write_markdown_index(documents: list[dict], out_path: Path) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Generate ESC AI Framework document index.")
+    parser = argparse.ArgumentParser(description="Generate ESC AI Architecture Framework document index.")
     parser.add_argument("--root", default=".", help="Framework repo root (default: .)")
     parser.add_argument("--out",  default=".", help="Output directory for index files (default: .)")
     args = parser.parse_args()
