@@ -1,5 +1,5 @@
 # Escape AI — Phase 1: Framework Composition Protocol
-**Status:** In progress
+**Status:** Complete
 **Plan:** see `esc-ai-orchestrator/plan/cohesive-system-integration-and-onboarding.md`
 (Phase 0 + Phase 1) for full rationale; this tracks only this repo's share.
 
@@ -26,6 +26,6 @@ obvious, repository-local home consistent with the other two repos.
       root) for the execution framework's compatible-major-version check.
       `major_version: 1`, conforming to `esc-ai-execution-framework`'s
       `schemas/framework-descriptor.schema.yaml`.
-- [ ] No other structural change expected here — `index.json`/`tools/lookup.py`
-      already provide what `esc-ai-execution-framework`'s new architecture-document
-      lookup needs; it's consumed as a stable data contract, not a code dependency.
+- [x] No other structural change needed here — confirmed: `esc_exec/architecture_lookup.py`
+      reads this repo's `index.json` directly as plain JSON, with no code dependency
+      between the two repos.
