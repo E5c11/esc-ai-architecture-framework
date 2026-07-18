@@ -1,0 +1,80 @@
+{
+  "frameworks": {
+    "auth": {
+      "firebase": [
+        "PLAT-MOB-IOS-AUTH"
+      ],
+      "oauth": [
+        "PLAT-MOB-IOS-AUTH"
+      ]
+    },
+    "billing": {
+      "storekit": [
+        "PLAT-MOB-IOS-BILLING"
+      ]
+    },
+    "cloud": {
+      "firebase": [
+        "PLAT-MOB-FIREBASE"
+      ]
+    },
+    "database": {
+      "room": [
+        "PLAT-MOB-ROOM"
+      ]
+    },
+    "forms": {
+      "react-hook-form": [
+        "PLAT-WEB-FORMS"
+      ]
+    },
+    "network": {
+      "axios": [
+        "PLAT-WEB-HTTP"
+      ],
+      "fetch": [
+        "PLAT-WEB-HTTP"
+      ],
+      "http": [
+        "PLAT-MOB-HTTP"
+      ],
+      "ktor": [
+        "PLAT-MOB-HTTP"
+      ],
+      "retrofit": [
+        "PLAT-MOB-HTTP"
+      ]
+    },
+    "notifications": {
+      "multiplatform": [
+        "PLAT-MOB-NOTIF"
+      ],
+      "workmanager": [
+        "PLAT-MOB-NOTIF"
+      ]
+    },
+    "secure-storage": {
+      "keychain": [
+        "PLAT-MOB-SECURE-STORAGE"
+      ],
+      "platform": [
+        "PLAT-MOB-SECURE-STORAGE"
+      ]
+    },
+    "storage": {
+      "datastore": [
+        "PLAT-MOB-DATASTORE"
+      ]
+    },
+    "ui": {
+      "next": [
+        "PLAT-WEB-NEXT"
+      ]
+    }
+  },
+  "targets": {
+    "ios": [
+      "PLAT-MOB-KMP-IOS"
+    ]
+  }
+}

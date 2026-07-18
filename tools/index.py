@@ -38,6 +38,8 @@ from pathlib import Path
 import re
 from collections import defaultdict
 
+from lookup import PROFILE_DOC_MAP, TARGET_DOC_MAP
+
 LAYER_DIRS = [
     "core",
     "patterns",
@@ -178,6 +180,12 @@ def write_markdown_index(documents: list[dict], out_path: Path) -> None:
     print(f"Written: {out_path}")
 
 
+def write_profile_doc_map(out_path: Path) -> None:
+    data = {"frameworks": PROFILE_DOC_MAP, "targets": TARGET_DOC_MAP}
+    out_path.write_text(json.dumps(data, indent=2, sort_keys=True), encoding="utf-8")
+    print(f"Written: {out_path}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate ESC AI Architecture Framework document index.")
     parser.add_argument("--root", default=".", help="Framework repo root (default: .)")
@@ -193,6 +201,7 @@ def main() -> int:
 
     write_json_index(documents,    out_dir / "index.json")
     write_markdown_index(documents, out_dir / "index.md")
+    write_profile_doc_map(out_dir / "profile-doc-map.json")
 
     return 0
 
