@@ -15,7 +15,10 @@ esc-ai-architecture-framework/
 ├── patterns/                # Reusable design patterns (technology-neutral)
 ├── architectures/           # Architectural styles and layer contracts
 │   ├── pragmatic-clean/
-│   └── backend-service/
+│   ├── backend-service/
+│   ├── web-app/
+│   ├── web-content/
+│   └── web-spa/
 ├── platforms/               # Technology-specific implementation guides
 │   ├── mobile/              # Kotlin / KMP / Compose / Koin
 │   ├── backend/             # Kotlin / Spring Boot / JPA
@@ -45,11 +48,11 @@ project's own internal framework extension both lack coverage for a scenario.
 | Phase | Status | Description |
 |-------|--------|-------------|
 | 1 | In progress | Framework skeleton, schemas, conventions |
-| 2 | Planned | Core principles |
-| 3 | Planned | Mobile platform extraction |
-| 4 | Planned | Pragmatic Clean Architecture |
-| 5 | Planned | Build system patterns |
-| 6 | Planned | Backend platform extraction |
-| 7 | Planned | Web platform extraction |
-| 8 | Planned | Quality gates and CI validation |
+| 2 | In progress | Core principles |
+| 3 | In progress | Mobile platform extraction |
+| 4 | In progress | Pragmatic Clean Architecture |
+| 5 | In progress | Build system patterns |
+| 6 | In progress | Backend platform extraction |
+| 7 | In progress | Web platform extraction |
+| 8 | In progress | Quality gates and CI validation |
 | 9 | Planned | Retrieval index and RAG |
