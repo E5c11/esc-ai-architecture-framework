@@ -7,6 +7,7 @@ architecture: [all]
 requires: []
 related: [CORE-COUPLING, PAT-DATA-ACCESS]
 tags: [dependency-inversion, abstraction, interfaces, testability, composition]
+status: active
 ---
 
 # Dependency Inversion

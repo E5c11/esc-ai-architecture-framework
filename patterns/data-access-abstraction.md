@@ -7,6 +7,7 @@ architecture: [all]
 requires: [CORE-DI]
 related: [CORE-SSOT, PAT-OUTCOME, PAT-OBSERVER]
 tags: [data-access, abstraction, repository, datasource, interface, storage]
+status: active
 ---
 
 # Data-Access Abstraction

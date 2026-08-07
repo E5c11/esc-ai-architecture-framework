@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [ARCH-PC-DATASOURCE, ARCH-PC-ERR-CLASSES, CORE-DI, PLAT-MOB-KOTLIN]
 related: [ARCH-PC-ERROR-FLOW, PAT-OUTCOME, PLAT-LIB-KMP, PLAT-MOB-KMP-IOS]
 tags: [http, ktor, api-client, rest, serialization, auth-header, retry, timeout, interceptor, header-provider]
+status: active
 ---
 
 # HTTP Client Layer (Mobile → Backend)

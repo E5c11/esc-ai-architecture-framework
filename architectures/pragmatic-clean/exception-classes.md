@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [ARCH-PC-ERROR-FLOW, CORE-ERROR]
 related: [PAT-OUTCOME, PLAT-MOB-KOTLIN]
 tags: [error-handling, exceptions, domain-exceptions, error-severity, error-presentation, actionable-errors]
+status: active
 ---
 
 # Typed Exception Classes

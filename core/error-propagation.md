@@ -7,6 +7,7 @@ architecture: [all]
 requires: []
 related: [PAT-OUTCOME, CORE-COUPLING]
 tags: [error-handling, propagation, exceptions, boundaries, observability]
+status: active
 ---
 
 # Error Propagation
@@ -34,6 +35,24 @@ swallowed error is a future mystery bug.
 - Internal errors carry enough context for a developer to diagnose the failure
 - Every catch block either: resolves the error with a meaningful fallback, translates
   and rethrows as a domain error, or logs and rethrows — never catches and discards
+
+## Deliberate degraded-mode fallback is not swallowing
+
+A catch block that falls back to a cached value, an empty collection, or a
+previous state is **not** a violation of this principle when that fallback is
+the documented, intended behaviour for a supplementary or best-effort data
+source — e.g. a mobile client on unreliable connectivity choosing to render a
+content hierarchy without live analytics overlay rather than block the whole
+screen on one non-critical fetch, or one of several independently-synced
+per-resource updates failing without blocking the others. This is still
+propagation: the fallback is a conscious design decision, encoded and
+comment-documented at the point it happens, not an accidental swallow that
+hides a bug. What makes it a violation is the *absence* of that reasoning —
+the same code, undocumented and covering for infrastructure that should have
+been fixed instead, is exactly the "future mystery bug" this principle warns
+against. When in doubt: can a future reader tell from the code and its
+comments whether the empty/cached result was intentional? If yes, it's a
+degraded-mode fallback. If a reader has to guess, it's a violation.
 
 ## Error categories
 

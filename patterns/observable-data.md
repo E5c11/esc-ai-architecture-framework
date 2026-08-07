@@ -7,6 +7,7 @@ architecture: [all]
 requires: [CORE-SSOT]
 related: [PAT-DATA-ACCESS, PAT-OUTCOME]
 tags: [observer, reactive, streams, push, subscription, real-time]
+status: active
 ---
 
 # Observable Data

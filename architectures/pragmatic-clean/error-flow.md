@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [ARCH-PC, CORE-ERROR, ARCH-PC-DATASOURCE, ARCH-PC-USECASE, ARCH-PC-VIEWMODEL, ARCH-PC-VIEW]
 related: [PAT-OUTCOME]
 tags: [error-handling, exceptions, propagation, actionable, ui-metadata, layers]
+status: active
 ---
 
 # End-to-End Error Flow

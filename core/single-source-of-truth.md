@@ -7,6 +7,7 @@ architecture: [all]
 requires: []
 related: [PAT-DATA-ACCESS, PAT-OBSERVER]
 tags: [ssot, single-source-of-truth, consistency, state, synchronisation]
+status: active
 ---
 
 # Single Source of Truth

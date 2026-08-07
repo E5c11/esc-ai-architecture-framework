@@ -7,6 +7,7 @@ architecture: [all]
 requires: [PLAT-MOB-KOTLIN]
 related: [PLAT-MOB-KMP]
 tags: [compose, jetpack-compose, ui, state-hoisting, slot-api, theming, skeleton]
+status: active
 ---
 
 # Jetpack Compose / Compose Multiplatform

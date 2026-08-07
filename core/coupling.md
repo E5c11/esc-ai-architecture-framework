@@ -7,6 +7,7 @@ architecture: [all]
 requires: []
 related: [CORE-DI, CORE-NAMING]
 tags: [coupling, cohesion, separation-of-concerns, single-responsibility]
+status: active
 ---
 
 # Low Coupling / High Cohesion

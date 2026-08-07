@@ -7,6 +7,7 @@ architecture: [all]
 requires: [PAT-DATA-ACCESS, PLAT-MOB-KMP, PLAT-MOB-KOTLIN]
 related: [PLAT-MOB-KOIN, PLAT-MOB-ROOM, PLAT-MOB-HTTP, PLAT-MOB-SECURE-STORAGE]
 tags: [firebase, firestore, auth, cloud, sdk, rest, android, ios]
+status: active
 ---
 
 # Firebase KMP SDK

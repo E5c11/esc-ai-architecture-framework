@@ -7,6 +7,7 @@ architecture: [all]
 requires: [PAT-OBSERVER, PAT-OUTCOME]
 related: [PLAT-MOB-KOIN, PLAT-MOB-COMPOSE]
 tags: [kotlin, coroutines, flow, stateflow, sharedflow, suspend, dispatchers]
+status: active
 ---
 
 # Kotlin Coroutines and Flow

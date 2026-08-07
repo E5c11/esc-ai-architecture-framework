@@ -7,6 +7,7 @@ architecture: [all]
 requires: [CORE-DI, PLAT-MOB-KMP]
 related: [PLAT-MOB-KOTLIN, PLAT-MOB-KMP-IOS]
 tags: [koin, dependency-injection, modules, qualifiers, scopes, factory, single]
+status: active
 ---
 
 # Koin — Dependency Injection Tooling

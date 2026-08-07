@@ -7,6 +7,7 @@ architecture: [all]
 requires: [PAT-DATA-ACCESS, PLAT-MOB-KOTLIN]
 related: [PLAT-MOB-KOIN, PLAT-MOB-FIREBASE, PLAT-MOB-KMP-IOS]
 tags: [room, sqlite, dao, entity, local-database, android, ios, kmp]
+status: active
 ---
 
 # Room — Local Database

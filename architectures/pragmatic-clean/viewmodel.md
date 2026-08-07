@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [ARCH-PC, PLAT-MOB-KOTLIN, PLAT-MOB-KOIN]
 related: [ARCH-PC-USECASE, ARCH-PC-VIEW, ARCH-PC-ERROR-FLOW, ARCH-PC-DI]
 tags: [viewmodel, state, events, presentation, formatting, stateflow, sharedflow]
+status: active
 ---
 
 # ViewModel Layer

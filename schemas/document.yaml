@@ -106,4 +106,18 @@ fields:
     type: enum
     required: false
     values: [active, stub, deprecated]
-    description: Lifecycle state. Omit for active documents; stub triggers the Gap Protocol.
+    description: >
+      Lifecycle state. A document is considered reviewed and safe to gate
+      dispatch on ONLY when this is explicitly `active` — the coverage
+      checker (esc-ai-execution-framework's stub_documents()) is a whitelist,
+      not a blacklist: omitted/empty is treated identically to `stub`
+      (unreviewed, blocks the architecture-coverage hard-stop), never as an
+      implicit `active`. This is deliberate, not an oversight: documents
+      scaffolded by Tier-1 auto-suggestion have no status field until a
+      maintainer reviews them, and are syntactically indistinguishable from
+      a hand-authored, intentionally-unmarked document if omission were ever
+      treated as active — which would let every auto-scaffolded, never-
+      reviewed document silently pass the one gate that exists specifically
+      to catch that case. Write `status: active` explicitly once a document
+      has actually been reviewed against the real codebase it governs, not
+      merely generated.

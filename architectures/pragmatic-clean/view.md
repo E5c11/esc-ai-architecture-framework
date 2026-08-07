@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [ARCH-PC, ARCH-PC-VIEWMODEL, PLAT-MOB-COMPOSE]
 related: [ARCH-PC-ERROR-FLOW]
 tags: [view, screen, compose, stateless, scaffold, state-hoisting]
+status: active
 ---
 
 # View Layer
@@ -167,7 +168,7 @@ There is no hard line count — extract when the block obscures the surrounding 
 id: ARCH-PC-VIEW-PREVIEW-01
 statement: Every component MUST have at least one `@Preview` function using realistic sample data, wrapped in the app's theme.
 type: hard
-scope: error-handling
+scope: behavior
 enforced_by: [reviewer]
 violation_message: Violates ARCH-PC-VIEW-PREVIEW-01 — Every component MUST have at least one `@Preview` function using realistic sample data, wrapped in the app's theme.
 ```

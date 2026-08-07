@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-27T21:23:36.684348+00:00",
+  "generated": "2026-08-07T15:08:15.136905+00:00",
   "count": 91,
   "documents": [
     {
@@ -270,7 +270,7 @@
         "layers",
         "mvvm"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PC-APP-VM",
@@ -328,7 +328,7 @@
         "exceptions",
         "abstraction"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PC-DI",
@@ -386,7 +386,7 @@
         "error-presentation",
         "actionable-errors"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PC-ERROR-FLOW",
@@ -416,7 +416,7 @@
         "ui-metadata",
         "layers"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PC-FEATURE",
@@ -502,7 +502,7 @@
         "flow",
         "suspend"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PC-VIEW",
@@ -529,7 +529,7 @@
         "scaffold",
         "state-hoisting"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PC-VIEWMODEL",
@@ -560,7 +560,7 @@
         "stateflow",
         "sharedflow"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-WEB",
@@ -920,7 +920,7 @@
         "separation-of-concerns",
         "single-responsibility"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "CORE-DI",
@@ -943,7 +943,7 @@
         "testability",
         "composition"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "CORE-ERROR",
@@ -966,7 +966,7 @@
         "boundaries",
         "observability"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "CORE-NAMING",
@@ -1011,7 +1011,7 @@
         "state",
         "synchronisation"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "CORE-TESTING",
@@ -1290,7 +1290,7 @@
         "interface",
         "storage"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PAT-OBSERVER",
@@ -1316,7 +1316,7 @@
         "subscription",
         "real-time"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PAT-OUTCOME",
@@ -1342,7 +1342,7 @@
         "typed-errors",
         "railway"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-BE-JPA",
@@ -1515,7 +1515,7 @@
         "theming",
         "skeleton"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-DATASTORE",
@@ -1689,7 +1689,7 @@
         "android",
         "ios"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-HTTP",
@@ -1724,7 +1724,7 @@
         "interceptor",
         "header-provider"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-HUAWEI",
@@ -1869,7 +1869,7 @@
         "ios",
         "android"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-KMP-IOS",
@@ -1959,7 +1959,7 @@
         "factory",
         "single"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-KOTLIN",
@@ -1987,7 +1987,7 @@
         "suspend",
         "dispatchers"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-NAV",
@@ -2077,7 +2077,7 @@
         "ios",
         "kmp"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-SECURE-STORAGE",

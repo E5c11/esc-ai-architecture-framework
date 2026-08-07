@@ -7,6 +7,7 @@ architecture: [all]
 requires: [CORE-ERROR]
 related: [PAT-DATA-ACCESS, CORE-ERROR]
 tags: [result-type, outcome, either, error-handling, typed-errors, railway]
+status: active
 ---
 
 # Result Type

@@ -7,6 +7,7 @@ architecture: [all]
 requires: [CORE-DI]
 related: [PLAT-MOB-KOIN, PLAT-MOB-KOTLIN, PLAT-MOB-KMP-IOS, PLAT-MOB-KMP-WEB]
 tags: [kmp, kotlin-multiplatform, source-sets, expect-actual, wasm, ios, android]
+status: active
 ---
 
 # Kotlin Multiplatform — Source Set Structure
@@ -32,7 +33,7 @@ hierarchy determines what each target can see and use.
 id: PLAT-MOB-KMP-SS-01
 statement: Business logic, UseCases, Repositories, DataSources, and ViewModels MUST live in `commonMain`.
 type: hard
-scope: error-handling
+scope: structure
 enforced_by: [reviewer]
 violation_message: Violates PLAT-MOB-KMP-SS-01 — Business logic, UseCases, Repositories, DataSources, and ViewModels MUST live in `commonMain`.
 ```

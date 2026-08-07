@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [ARCH-PC, PAT-OUTCOME, PAT-OBSERVER, PLAT-MOB-KOTLIN]
 related: [ARCH-PC-REPOSITORY, ARCH-PC-VIEWMODEL, ARCH-PC-ERROR-FLOW, ARCH-PC-DI]
 tags: [usecase, orchestrator, business-logic, outcome, flow, suspend]
+status: active
 ---
 
 # UseCase Layer
@@ -165,8 +166,26 @@ A raw `.catch { emit(Outcome.Success(...)) }` compiles, passes tests, and passes
 
 ## Side-effects that must not block the result
 
-When a UseCase must return a result immediately while non-critical persistence
-(logging, analytics, profile updates) happens in parallel:
+When a UseCase must return a result immediately while a side-effect that
+nothing else depends on (logging, analytics) happens in parallel:
+
+**Before treating any side-effect as fire-and-forget-eligible, name what
+depends on it completing.** "Profile updates" is not a safe blanket example —
+whether one is fire-and-forget-safe depends entirely on whether another part
+of the app reads that same data shortly after. A login flow's post-login
+profile sync is a documented real incident of getting this wrong: it was
+launched fire-and-forget on an application-level scope on the reasoning that
+"profile updates are non-critical," but the Home screen loaded immediately
+after login and read the very data that sync was still writing, producing a
+live, user-visible "profile not found" failure. The fix was to await it, not
+to fix its scope/supervision — because it was never actually a candidate for
+this section: the caller (Home) had a hard dependency on its result. Apply
+this test before reaching for fire-and-forget: if you can name a screen, a
+UseCase, or a ViewModel that will read this data within the same user flow,
+it is not eligible — await it instead, per `ARCH-PC-UC-RETURN-01`'s "never
+break the chain" reasoning extended to sequencing. Only genuinely
+nothing-reads-this-soon side effects (analytics events, non-blocking logging,
+telemetry) belong here.
 
 ```rule
 id: ARCH-PC-UC-BG-01
