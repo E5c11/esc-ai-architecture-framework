@@ -7,6 +7,7 @@ architecture: backend-service
 requires: [ARCH-BE, ARCH-BE-SERVICE, ARCH-BE-CONTROLLER]
 related: [ARCH-BE-ENTITY, ARCH-BE-ERROR, PLAT-BE-SPRING, PLAT-BE-JPA]
 tags: [pagination, list-endpoints, offset, page, dto-boundary, ordering]
+status: active
 ---
 
 # Pagination

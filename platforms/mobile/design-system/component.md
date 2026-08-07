@@ -7,6 +7,7 @@ architecture: [all]
 requires: [PLAT-MOB-COMPOSE, PLAT-MOB-DS-THEME, PLAT-MOB-DS-ICONS]
 related: [ARCH-PC-VIEW, PLAT-MOB-DS-IMAGES]
 tags: [design-system, compose, component, m3, material3, preview, accessibility, kmp]
+status: active
 ---
 
 # Design System — Adding a New Component

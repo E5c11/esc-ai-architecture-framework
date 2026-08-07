@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [PLAT-MOB-KMP-IOS, ARCH-PC-DATASOURCE, ARCH-PC-VIEW]
 related: [PLAT-MOB-IOS-AUTH, PLAT-MOB-IOS-BILLING, PLAT-MOB-NOTIF]
 tags: [ios, uikit, foundation, interop, permissions, lifecycle, sharing]
+status: active
 ---
 
 # iOS Native Interop and Platform Adapters

@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [PLAT-MOB-IOS-INTEROP, PLAT-MOB-SECURE-STORAGE, ARCH-PC-DATASOURCE]
 related: [PLAT-MOB-FIREBASE, PLAT-MOB-HTTP]
 tags: [ios, auth, oauth, callback, url-scheme, session]
+status: active
 ---
 
 # iOS Authentication Integration

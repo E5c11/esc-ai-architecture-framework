@@ -7,6 +7,7 @@ architecture: web-spa
 requires: [ARCH-WEB]
 related: [PLAT-WEB-REACT, PLAT-WEB-A11Y]
 tags: [styling, css-properties, theme, design-tokens, inline-styles, common-styles]
+status: active
 ---
 
 # Styling System

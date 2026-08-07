@@ -7,6 +7,7 @@ architecture: [all]
 requires: []
 related: [CORE-DI, CORE-COUPLING]
 tags: [testing, behaviour, unit-tests, mocking, fakes, coverage]
+status: active
 ---
 
 # Testing Philosophy

@@ -7,6 +7,7 @@ architecture: web-spa
 requires: [ARCH-WEB, ARCH-WEB-COMPONENTS]
 related: [PLAT-WEB-STYLING, PLAT-WEB-STATE, PLAT-WEB-FIREBASE]
 tags: [react, typescript, strict, props, hooks, cleanup, as-const]
+status: active
 ---
 
 # React + TypeScript Platform Guide

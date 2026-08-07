@@ -7,6 +7,7 @@ architecture: [all]
 requires: [BUILD-PROJECT-STRUCTURE]
 related: [BUILD-CONVENTION-PLUGINS]
 tags: [gradle, version-catalog, libs-versions-toml, dependencies, versions]
+status: active
 ---
 
 # Version Catalog

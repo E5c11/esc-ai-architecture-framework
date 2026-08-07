@@ -7,6 +7,7 @@ architecture: [all]
 requires: [PLAT-MOB-COMPOSE]
 related: [PLAT-MOB-DS-COMPONENT, PLAT-MOB-DS-ICONS]
 tags: [design-system, theme, material3, colors, typography, spacing, dimensions, compose]
+status: active
 ---
 
 # Design System — Theme System

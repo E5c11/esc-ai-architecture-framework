@@ -7,6 +7,7 @@ architecture: [all]
 requires: [PLAT-MOB-COMPOSE, PLAT-MOB-DS-THEME, PLAT-MOB-KMP-WEB]
 related: [PLAT-MOB-DS-COMPONENT]
 tags: [design-system, images, coil, async-image, placeholder, kmp, accessibility]
+status: active
 ---
 
 # Design System — Image Components

@@ -7,6 +7,7 @@ architecture: backend-service
 requires: [ARCH-BE, ARCH-BE-CONTROLLER, ARCH-BE-SERVICE]
 related: [PLAT-BE-SPRING]
 tags: [security, jwt, authentication, spring-security, authentication-principal, stateless, refresh-token, token-rotation]
+status: active
 ---
 
 # Spring Security / JWT Platform Guide

@@ -22,6 +22,7 @@ requires:
   - QG-MOB-NATIVE
 related: [ORCH-MOB-FEAT, QG-REVIEW]
 tags: [mobile, kmp, ios, apple, port, xcode, release]
+status: active
 ---
 
 # Port an Existing KMP Application to iOS

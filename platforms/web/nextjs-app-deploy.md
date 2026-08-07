@@ -7,6 +7,7 @@ architecture: [web-app]
 requires: [PLAT-WEB-NEXT-APP]
 related: [PLAT-WEB-DEPLOY]
 tags: [deploy, docker, cloud-run, standalone, domain-mapping, tls, build, connection-pool]
+status: active
 ---
 
 # Build and Deploy — Next.js `web-app` on Docker/Cloud Run

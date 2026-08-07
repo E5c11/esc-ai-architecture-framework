@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [PLAT-MOB-KMP, PLAT-MOB-KOIN]
 related: [PLAT-MOB-ROOM, ARCH-PC-DATASOURCE, PLAT-MOB-SECURE-STORAGE]
 tags: [datastore, preferences, kmp, testing, fakeDataStore, coroutines, flow]
+status: active
 ---
 
 # DataStore<Preferences>

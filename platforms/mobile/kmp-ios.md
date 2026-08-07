@@ -7,6 +7,7 @@ architecture: [all]
 requires: [PLAT-MOB-KMP, PLAT-MOB-KOIN, BUILD-CONVENTION-PLUGINS]
 related: [BUILD-APPLE-CI, PLAT-MOB-IOS-INTEROP, QG-MOB-NATIVE]
 tags: [kmp, ios, apple, kotlin-native, xcode, framework, source-sets]
+status: active
 ---
 
 # Kotlin Multiplatform — iOS Target and Application Integration

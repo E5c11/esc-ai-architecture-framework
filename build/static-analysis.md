@@ -7,6 +7,7 @@ architecture: [all]
 requires: [BUILD-CONVENTION-PLUGINS]
 related: [BUILD-COVERAGE, QG-TESTING]
 tags: [detekt, static-analysis, linting, code-quality, baseline]
+status: active
 ---
 
 # Static Analysis — Detekt

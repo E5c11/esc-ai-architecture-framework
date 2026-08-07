@@ -7,6 +7,7 @@ architecture: [web-app, web-content]
 requires: [CORE-COUPLING, PLAT-WEB-DS-THEME]
 related: [PLAT-WEB-DS-COMPONENT]
 tags: [design-system, icons, centralized-module, lucide-react, accessibility]
+status: active
 ---
 
 # Design System — Icons

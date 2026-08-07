@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [ARCH-PC]
 related: [ARCH-PC-DI, ARCH-PC-DATASOURCE]
 tags: [feature, module, structure, naming, file-placement, directories]
+status: active
 ---
 
 # Feature Module Structure

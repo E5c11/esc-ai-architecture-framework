@@ -7,6 +7,7 @@ architecture: [all]
 requires: [PLAT-MOB-KMP, ARCH-PC-DATASOURCE]
 related: [PLAT-MOB-DATASTORE, PLAT-MOB-IOS-AUTH, PLAT-MOB-HTTP]
 tags: [security, keychain, credentials, tokens, storage, ios]
+status: active
 ---
 
 # Secure Credential Storage

@@ -7,6 +7,7 @@ architecture: [all]
 requires: [BUILD-CONVENTION-PLUGINS, BUILD-PROJECT-STRUCTURE, PLAT-MOB-KMP-IOS]
 related: [BUILD-STATIC-ANALYSIS, BUILD-COVERAGE, QG-MOB-NATIVE]
 tags: [ci, macos, ios, xcodebuild, kotlin-native, signing]
+status: active
 ---
 
 # Apple Build and CI

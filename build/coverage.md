@@ -7,6 +7,7 @@ architecture: [all]
 requires: [BUILD-CONVENTION-PLUGINS, BUILD-PROJECT-STRUCTURE]
 related: [BUILD-STATIC-ANALYSIS, QG-TESTING]
 tags: [coverage, kover, jacoco, thresholds, exclusions, quality-gate]
+status: active
 ---
 
 # Code Coverage

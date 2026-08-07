@@ -7,6 +7,7 @@ architecture: backend-service
 requires: [ARCH-BE-ENTITY, ARCH-BE-DATASOURCE]
 related: [PLAT-BE-SPRING, PLAT-BE-SECURITY]
 tags: [jpa, hibernate, flyway, postgresql, entity, migrations, allopen, uuid, timestamps]
+status: active
 ---
 
 # JPA / Flyway Platform Guide

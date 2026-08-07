@@ -7,6 +7,7 @@ architecture: web-spa
 requires: [ARCH-WEB, ARCH-WEB-COMPONENTS]
 related: [PLAT-WEB-REACT, PLAT-WEB-STYLING]
 tags: [accessibility, a11y, semantic-html, aria, alt-text, headings, keyboard, focus]
+status: active
 ---
 
 # Accessibility

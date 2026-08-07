@@ -7,6 +7,7 @@ architecture: [all]
 requires: [CORE-DI, CORE-COUPLING, CORE-ERROR, CORE-NAMING, CORE-SSOT]
 related: [QG-TESTING, BUILD-COVERAGE, BUILD-STATIC-ANALYSIS]
 tags: [review, checklist, pre-merge, code-review, enforcement]
+status: active
 ---
 
 # Code Review Checklist

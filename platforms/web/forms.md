@@ -7,6 +7,7 @@ architecture: [web-app]
 requires: [ARCH-WEB-APP-ERR-CLASSES]
 related: [PLAT-WEB-HTTP]
 tags: [forms, react-hook-form, zod, validation, ssot, field-errors, discriminated-union]
+status: active
 ---
 
 # Forms — `react-hook-form` + `zod`

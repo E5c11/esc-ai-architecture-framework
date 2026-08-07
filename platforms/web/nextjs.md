@@ -7,6 +7,7 @@ architecture: [web-app, web-content]
 requires: [CORE-COUPLING]
 related: [ARCH-WEB-APP, ARCH-WEB-CONTENT]
 tags: [nextjs, app-router, routing, layouts, server-components, client-components, middleware, env-vars]
+status: active
 ---
 
 # Next.js App Router Fundamentals

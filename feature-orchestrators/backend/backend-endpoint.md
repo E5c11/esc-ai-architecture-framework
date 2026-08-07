@@ -23,6 +23,7 @@ requires:
   - QG-TESTING
 related: [QG-REVIEW]
 tags: [backend, endpoint, spring-boot, jpa, rest, end-to-end]
+status: active
 ---
 
 # Implement Backend REST Endpoint (Backend-Service)

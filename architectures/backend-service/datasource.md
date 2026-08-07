@@ -7,6 +7,7 @@ architecture: backend-service
 requires: [ARCH-BE, PAT-DATA-ACCESS, CORE-DI]
 related: [ARCH-BE-SERVICE, ARCH-BE-ENTITY, PLAT-BE-JPA]
 tags: [datasource, repository, jpa, data-access, store]
+status: active
 ---
 
 # DataSource Layer

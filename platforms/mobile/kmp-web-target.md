@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [PLAT-MOB-KMP, PLAT-MOB-KOIN, PLAT-MOB-FIREBASE]
 related: [PLAT-MOB-HUAWEI, PLAT-MOB-DS-IMAGES, PLAT-MOB-NOTIF]
 tags: [kmp, wasmjs, web, compose-multiplatform, noop, source-sets, keyvaluestorage, uuid, rest]
+status: active
 ---
 
 # KMP Web Target (wasmJs / Compose Multiplatform)

@@ -7,6 +7,7 @@ architecture: [all]
 requires: [QG-TESTING, CORE-TESTING]
 related: [PLAT-WEB-HTTP, PLAT-WEB-FORMS]
 tags: [testing, vitest, react-testing-library, msw, server-actions, middleware, e2e]
+status: active
 ---
 
 # Web Testing

@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [PLAT-MOB-KOIN, PLAT-MOB-KMP]
 related: [PLAT-MOB-KMP-WEB, ARCH-PC-DI]
 tags: [huawei, appgallery, hms, gms, flavor, build-variant, di-override, rest, koin]
+status: active
 ---
 
 # Huawei AppGallery Build Flavor

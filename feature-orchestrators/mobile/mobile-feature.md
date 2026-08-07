@@ -30,6 +30,7 @@ requires:
   - PLAT-MOB-COMPOSE
 related: [QG-REVIEW, QG-TESTING]
 tags: [mobile, feature, pragmatic-clean, kmp, scaffold, end-to-end]
+status: active
 ---
 
 # Implement Mobile Feature (Pragmatic Clean)

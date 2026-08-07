@@ -7,6 +7,7 @@ architecture: backend-service
 requires: [ARCH-BE, CORE-ERROR]
 related: [ARCH-BE-SERVICE, ARCH-BE-CONTROLLER, PLAT-BE-SPRING]
 tags: [error-handling, exceptions, http-status, global-exception-handler, two-tier]
+status: active
 ---
 
 # Error Flow

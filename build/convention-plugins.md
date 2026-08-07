@@ -7,6 +7,7 @@ architecture: [all]
 requires: []
 related: [BUILD-PROJECT-STRUCTURE, BUILD-VERSION-CATALOG, BUILD-STATIC-ANALYSIS]
 tags: [gradle, convention-plugins, build-logic, plugins, composability]
+status: active
 ---
 
 # Convention Plugins

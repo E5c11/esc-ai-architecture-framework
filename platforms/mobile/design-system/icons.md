@@ -7,6 +7,7 @@ architecture: [all]
 requires: [PLAT-MOB-COMPOSE, PLAT-MOB-DS-THEME]
 related: [PLAT-MOB-DS-COMPONENT]
 tags: [design-system, icons, imagevector, svg, compose, accessibility, kmp]
+status: active
 ---
 
 # Design System — Icons

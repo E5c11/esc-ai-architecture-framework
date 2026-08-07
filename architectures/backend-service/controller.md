@@ -7,6 +7,7 @@ architecture: backend-service
 requires: [ARCH-BE, CORE-COUPLING]
 related: [ARCH-BE-SERVICE, ARCH-BE-ERROR, PLAT-BE-SPRING]
 tags: [controller, http, rest, boundary, thin-controller]
+status: active
 ---
 
 # Controller Layer

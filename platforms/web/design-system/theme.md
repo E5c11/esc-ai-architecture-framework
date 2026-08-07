@@ -7,6 +7,7 @@ architecture: [web-app, web-content]
 requires: [CORE-COUPLING]
 related: [PLAT-WEB-DS-COMPONENT, PLAT-WEB-DS-ICONS]
 tags: [design-system, theme, tailwind, tokens, colors, spacing, typography, dark-mode]
+status: active
 ---
 
 # Design System — Theme System

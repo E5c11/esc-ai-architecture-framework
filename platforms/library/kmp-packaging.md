@@ -7,6 +7,7 @@ architecture: [all]
 requires: [CORE-API-STABILITY, PLAT-MOB-KMP, BUILD-VERSION-CATALOG]
 related: [PLAT-LIB-JS-EXPORT, PLAT-MOB-KMP-IOS]
 tags: [kmp, kotlin-multiplatform, publishing, maven-central, api-visibility, gradle, versioning, variants, klib, apple]
+status: active
 ---
 
 # Publishing a Kotlin Multiplatform Library

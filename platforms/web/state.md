@@ -7,6 +7,7 @@ architecture: web-spa
 requires: [ARCH-WEB, ARCH-WEB-COMPONENTS]
 related: [PLAT-WEB-REACT, PLAT-WEB-FIREBASE]
 tags: [state, use-state, custom-hooks, context, react-router, routing, auth-guard]
+status: active
 ---
 
 # State Management and Routing

@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [PLAT-MOB-IOS-INTEROP, ARCH-PC-DATASOURCE, ARCH-PC-REPOSITORY, ARCH-PC-USECASE]
 related: [PLAT-MOB-SECURE-STORAGE]
 tags: [ios, storekit, billing, subscriptions, entitlements, restore]
+status: active
 ---
 
 # StoreKit Billing and Entitlements

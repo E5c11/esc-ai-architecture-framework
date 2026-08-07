@@ -7,6 +7,7 @@ architecture: [web-app]
 requires: [ARCH-WEB-APP, ARCH-WEB-APP-ERR-CLASSES, CORE-DI]
 related: [PLAT-WEB-NEXT-APP, QG-WEB-TESTING]
 tags: [http, fetch, rest, executor, header-provider, retry, typed-errors, testing, msw]
+status: active
 ---
 
 # HTTP Client Layer (`web-app` → Backend)

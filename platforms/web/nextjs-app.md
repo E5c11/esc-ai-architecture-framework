@@ -7,6 +7,7 @@ architecture: [web-app]
 requires: [PLAT-WEB-NEXT, ARCH-WEB-APP, ARCH-WEB-APP-ERR-CLASSES]
 related: [PLAT-WEB-HTTP, PLAT-WEB-NEXT-APP-DEPLOY, QG-WEB-TESTING]
 tags: [nextjs, server-actions, route-handlers, revalidation, outcome, error-digest]
+status: active
 ---
 
 # Next.js for `web-app`: Server Actions, Route Handlers, Revalidation

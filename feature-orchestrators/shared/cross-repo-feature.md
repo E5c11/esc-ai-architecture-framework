@@ -11,6 +11,7 @@ requires:
   - CORE-NAMING
 related: [ORCH-BE-ENDPOINT, ORCH-MOB-FEAT, ORCH-WEB-FEAT, QG-REVIEW]
 tags: [cross-platform, cross-repo, backend, mobile, web, contract, orchestration]
+status: active
 ---
 
 # Implement a Cross-Repo Feature (Backend + Mobile [+ Web])

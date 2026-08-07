@@ -7,6 +7,7 @@ architecture: backend-service
 requires: [ARCH-BE, ARCH-BE-CONTROLLER, ARCH-BE-SERVICE, ARCH-BE-ERROR]
 related: [PLAT-BE-JPA, PLAT-BE-SECURITY]
 tags: [spring-boot, annotations, rest-controller, service, path-constants, constructor-injection, time-provider]
+status: active
 ---
 
 # Spring Boot Platform Guide

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-07T15:08:15.136905+00:00",
+  "generated": "2026-08-07T15:30:46.703713+00:00",
   "count": 91,
   "documents": [
     {
@@ -36,7 +36,7 @@
         "layers",
         "rest-api"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-BE-CONTROLLER",
@@ -63,7 +63,7 @@
         "boundary",
         "thin-controller"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-BE-DATASOURCE",
@@ -91,7 +91,7 @@
         "data-access",
         "store"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-BE-ENTITY",
@@ -118,7 +118,7 @@
         "flyway",
         "database"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-BE-ERROR",
@@ -145,7 +145,7 @@
         "global-exception-handler",
         "two-tier"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-BE-PAGINATION",
@@ -175,7 +175,7 @@
         "dto-boundary",
         "ordering"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-BE-PUBLISHING",
@@ -203,7 +203,7 @@
         "admin-content",
         "visibility"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-BE-SERVICE",
@@ -235,7 +235,7 @@
         "refresh-token",
         "rotation"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PC",
@@ -359,7 +359,7 @@
         "viewmodel",
         "modules"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PC-ERR-CLASSES",
@@ -442,7 +442,7 @@
         "file-placement",
         "directories"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PC-REPOSITORY",
@@ -471,7 +471,7 @@
         "cache",
         "multi-source"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PC-USECASE",
@@ -590,7 +590,7 @@
         "folder-structure",
         "feature-folders"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-WEB-APP",
@@ -620,7 +620,7 @@
         "client-components",
         "layers"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-WEB-APP-ERR-CLASSES",
@@ -648,7 +648,7 @@
         "zod",
         "react-hook-form"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-WEB-COMPONENTS",
@@ -678,7 +678,7 @@
         "props",
         "composition"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-WEB-CONTENT",
@@ -708,7 +708,7 @@
         "seo",
         "json-ld"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "BUILD-APPLE-CI",
@@ -738,7 +738,7 @@
         "kotlin-native",
         "signing"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "BUILD-CONVENTION-PLUGINS",
@@ -763,7 +763,7 @@
         "plugins",
         "composability"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "BUILD-COVERAGE",
@@ -791,7 +791,7 @@
         "exclusions",
         "quality-gate"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "BUILD-PROJECT-STRUCTURE",
@@ -817,7 +817,7 @@
         "modules",
         "typesafe-accessors"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "BUILD-STATIC-ANALYSIS",
@@ -843,7 +843,7 @@
         "code-quality",
         "baseline"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "BUILD-VERSION-CATALOG",
@@ -868,7 +868,7 @@
         "dependencies",
         "versions"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "CORE-API-STABILITY",
@@ -898,7 +898,7 @@
         "public-surface",
         "library"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "CORE-COUPLING",
@@ -988,7 +988,7 @@
         "conventions",
         "intent"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "CORE-SSOT",
@@ -1035,7 +1035,7 @@
         "fakes",
         "coverage"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ORCH-ALL-CROSS-REPO",
@@ -1066,7 +1066,7 @@
         "contract",
         "orchestration"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ORCH-BE-ENDPOINT",
@@ -1105,7 +1105,7 @@
         "rest",
         "end-to-end"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ORCH-MOB-FEAT",
@@ -1152,7 +1152,7 @@
         "scaffold",
         "end-to-end"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ORCH-MOB-IOS",
@@ -1192,7 +1192,7 @@
         "xcode",
         "release"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ORCH-WEB-APP",
@@ -1228,7 +1228,7 @@
         "route-handlers",
         "orchestrator"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ORCH-WEB-FEAT",
@@ -1263,7 +1263,7 @@
         "firebase",
         "dashboard"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PAT-DATA-ACCESS",
@@ -1372,7 +1372,7 @@
         "uuid",
         "timestamps"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-BE-SECURITY",
@@ -1401,7 +1401,7 @@
         "refresh-token",
         "token-rotation"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-BE-SPRING",
@@ -1431,7 +1431,7 @@
         "constructor-injection",
         "time-provider"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-LIB-JS-EXPORT",
@@ -1489,7 +1489,7 @@
         "klib",
         "apple"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-COMPOSE",
@@ -1544,7 +1544,7 @@
         "coroutines",
         "flow"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-DS-COMPONENT",
@@ -1574,7 +1574,7 @@
         "accessibility",
         "kmp"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-DS-ICONS",
@@ -1601,7 +1601,7 @@
         "accessibility",
         "kmp"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-DS-IMAGES",
@@ -1629,7 +1629,7 @@
         "kmp",
         "accessibility"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-DS-THEME",
@@ -1657,7 +1657,7 @@
         "dimensions",
         "compose"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-FIREBASE",
@@ -1754,7 +1754,7 @@
         "rest",
         "koin"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-IOS-AUTH",
@@ -1782,7 +1782,7 @@
         "url-scheme",
         "session"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-IOS-BILLING",
@@ -1810,7 +1810,7 @@
         "entitlements",
         "restore"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-IOS-INTEROP",
@@ -1840,7 +1840,7 @@
         "lifecycle",
         "sharing"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-KMP",
@@ -1899,7 +1899,7 @@
         "framework",
         "source-sets"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-KMP-WEB",
@@ -1931,7 +1931,7 @@
         "uuid",
         "rest"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-KOIN",
@@ -2047,7 +2047,7 @@
         "background",
         "ios"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-ROOM",
@@ -2105,7 +2105,7 @@
         "storage",
         "ios"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-MOB-SKELETON",
@@ -2161,7 +2161,7 @@
         "keyboard",
         "focus"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-DEPLOY",
@@ -2188,7 +2188,7 @@
         "sitemap",
         "robots"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-DS-COMPONENT",
@@ -2215,7 +2215,7 @@
         "client-components",
         "tailwind"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-DS-ICONS",
@@ -2240,7 +2240,7 @@
         "lucide-react",
         "accessibility"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-DS-THEME",
@@ -2268,7 +2268,7 @@
         "typography",
         "dark-mode"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-FIREBASE",
@@ -2296,7 +2296,7 @@
         "environment-variables",
         "real-time"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-FORMS",
@@ -2322,7 +2322,7 @@
         "field-errors",
         "discriminated-union"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-HTTP",
@@ -2353,7 +2353,7 @@
         "testing",
         "msw"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-NEXT",
@@ -2381,7 +2381,7 @@
         "middleware",
         "env-vars"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-NEXT-APP",
@@ -2410,7 +2410,7 @@
         "outcome",
         "error-digest"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-NEXT-APP-DEPLOY",
@@ -2437,7 +2437,7 @@
         "build",
         "connection-pool"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-REACT",
@@ -2466,7 +2466,7 @@
         "cleanup",
         "as-const"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-STATE",
@@ -2494,7 +2494,7 @@
         "routing",
         "auth-guard"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "PLAT-WEB-STYLING",
@@ -2520,7 +2520,7 @@
         "inline-styles",
         "common-styles"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "QG-MOB-NATIVE",
@@ -2547,7 +2547,7 @@
         "xcode",
         "integration"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "QG-REVIEW",
@@ -2577,7 +2577,7 @@
         "code-review",
         "enforcement"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "QG-TESTING",
@@ -2606,7 +2606,7 @@
         "coverage",
         "philosophy"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "QG-WEB-TESTING",
@@ -2634,7 +2634,7 @@
         "middleware",
         "e2e"
       ],
-      "status": ""
+      "status": "active"
     }
   ]
 }

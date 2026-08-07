@@ -7,6 +7,7 @@ architecture: [web-app, web-content]
 requires: [CORE-COUPLING, PLAT-WEB-DS-THEME]
 related: [PLAT-WEB-DS-ICONS, PLAT-WEB-NEXT]
 tags: [design-system, component, shared-components, server-components, client-components, tailwind]
+status: active
 ---
 
 # Design System — Shared Components

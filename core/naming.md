@@ -7,6 +7,7 @@ architecture: [all]
 requires: []
 related: [CORE-COUPLING]
 tags: [naming, readability, domain-language, conventions, intent]
+status: active
 ---
 
 # Naming Philosophy

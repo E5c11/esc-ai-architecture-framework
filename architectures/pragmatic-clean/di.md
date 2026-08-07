@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [ARCH-PC, PLAT-MOB-KOIN, CORE-DI]
 related: [ARCH-PC-DATASOURCE, ARCH-PC-USECASE, ARCH-PC-VIEWMODEL]
 tags: [di, dependency-injection, koin, scope, factory, single, viewmodel, modules]
+status: active
 ---
 
 # Dependency Injection — Scope Rules

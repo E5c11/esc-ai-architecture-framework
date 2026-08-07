@@ -7,6 +7,7 @@ architecture: [all]
 requires: [BUILD-CONVENTION-PLUGINS]
 related: [BUILD-VERSION-CATALOG]
 tags: [gradle, multi-module, settings, project-structure, modules, typesafe-accessors]
+status: active
 ---
 
 # Multi-Module Project Structure

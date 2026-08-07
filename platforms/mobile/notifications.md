@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [ARCH-PC-USECASE, ARCH-PC-DI, PLAT-MOB-KOIN, PLAT-MOB-DATASTORE]
 related: [PLAT-MOB-KMP, PLAT-MOB-KMP-WEB, PLAT-MOB-KMP-IOS, PLAT-MOB-IOS-INTEROP]
 tags: [notifications, workmanager, scheduler, clockprovider, channels, kmp, background, ios]
+status: active
 ---
 
 # Notifications (WorkManager / Background Scheduling)

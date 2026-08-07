@@ -7,6 +7,7 @@ architecture: backend-service
 requires: [ARCH-BE, ARCH-BE-ENTITY, ARCH-BE-SERVICE]
 related: [ARCH-BE-CONTROLLER, ARCH-BE-PAGINATION, PLAT-BE-JPA]
 tags: [publishing, content-lifecycle, draft, admin-content, visibility]
+status: active
 ---
 
 # Content Publishing (Draft/Published Visibility)

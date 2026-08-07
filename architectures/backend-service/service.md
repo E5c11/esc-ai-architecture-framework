@@ -7,6 +7,7 @@ architecture: backend-service
 requires: [ARCH-BE, CORE-DI, CORE-ERROR]
 related: [ARCH-BE-CONTROLLER, ARCH-BE-DATASOURCE, ARCH-BE-ERROR, PLAT-BE-SPRING]
 tags: [service, business-logic, transactions, time-provider, dto, token, refresh-token, rotation]
+status: active
 ---
 
 # Service Layer

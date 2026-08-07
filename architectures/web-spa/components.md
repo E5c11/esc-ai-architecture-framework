@@ -7,6 +7,7 @@ architecture: web-spa
 requires: [ARCH-WEB, CORE-COUPLING, CORE-DI]
 related: [PLAT-WEB-REACT, PLAT-WEB-STATE, PLAT-WEB-A11Y]
 tags: [components, container, presentation, error-boundary, state-guards, props, composition]
+status: active
 ---
 
 # Component Architecture

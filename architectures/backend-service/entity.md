@@ -7,6 +7,7 @@ architecture: backend-service
 requires: [ARCH-BE, CORE-NAMING]
 related: [ARCH-BE-DATASOURCE, PLAT-BE-JPA]
 tags: [entity, jpa, schema, migration, flyway, database]
+status: active
 ---
 
 # Entity Layer

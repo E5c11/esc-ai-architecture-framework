@@ -7,6 +7,7 @@ architecture: [all]
 requires: [QG-TESTING, PLAT-MOB-KMP-IOS]
 related: [BUILD-APPLE-CI, BUILD-COVERAGE]
 tags: [testing, kotlin-native, ios, simulator, xcode, integration]
+status: active
 ---
 
 # Mobile Native and iOS Testing

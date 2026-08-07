@@ -7,6 +7,7 @@ architecture: [web-content]
 requires: [CORE-COUPLING, CORE-NAMING, PAT-DATA-ACCESS]
 related: [ARCH-WEB, ARCH-WEB-COMPONENTS]
 tags: [web, nextjs, content, ssg, isr, server-components, seo, json-ld]
+status: active
 ---
 
 # Web Content Architecture

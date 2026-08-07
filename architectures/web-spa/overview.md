@@ -7,6 +7,7 @@ architecture: web-spa
 requires: [CORE-COUPLING, CORE-NAMING, PAT-DATA-ACCESS]
 related: [ARCH-WEB-COMPONENTS, PLAT-WEB-REACT, PLAT-WEB-STATE, PLAT-WEB-FIREBASE]
 tags: [web, react, spa, architecture, folder-structure, feature-folders]
+status: active
 ---
 
 # Web SPA Architecture

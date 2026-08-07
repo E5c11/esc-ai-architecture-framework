@@ -7,6 +7,7 @@ architecture: web-spa
 requires: [ARCH-WEB, PLAT-WEB-REACT]
 related: [PLAT-WEB-FIREBASE]
 tags: [deploy, build, vite, firebase-hosting, tsc, sitemap, robots]
+status: active
 ---
 
 # Build and Deploy

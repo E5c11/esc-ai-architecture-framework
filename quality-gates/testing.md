@@ -7,6 +7,7 @@ architecture: [all]
 requires: [CORE-TESTING, CORE-COUPLING]
 related: [QG-REVIEW, BUILD-COVERAGE, BUILD-STATIC-ANALYSIS, QG-WEB-TESTING]
 tags: [testing, unit-tests, integration, mocking, coverage, philosophy]
+status: active
 ---
 
 # Testing Philosophy

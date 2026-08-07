@@ -7,6 +7,7 @@ architecture: [pragmatic-clean]
 requires: [ARCH-PC, ARCH-PC-DATASOURCE, CORE-SSOT, PAT-DATA-ACCESS]
 related: [ARCH-PC-USECASE, ARCH-PC-ERROR-FLOW, ARCH-PC-DI]
 tags: [repository, ssot, coordination, cache, multi-source]
+status: active
 ---
 
 # Repository Layer

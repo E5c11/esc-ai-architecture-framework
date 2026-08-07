@@ -7,6 +7,7 @@ architecture: [web-app]
 requires: [CORE-COUPLING, CORE-NAMING, PAT-DATA-ACCESS, PAT-OUTCOME, PAT-OBSERVER]
 related: [ARCH-PC]
 tags: [web, nextjs, server-actions, route-handlers, server-components, client-components, layers]
+status: active
 ---
 
 # Web App Architecture

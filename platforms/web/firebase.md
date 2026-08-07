@@ -7,6 +7,7 @@ architecture: web-spa
 requires: [ARCH-WEB, PLAT-WEB-REACT, PLAT-WEB-STATE]
 related: [PLAT-WEB-DEPLOY]
 tags: [firebase, firestore, auth, on-snapshot, hooks, environment-variables, real-time]
+status: active
 ---
 
 # Firebase Integration Guide

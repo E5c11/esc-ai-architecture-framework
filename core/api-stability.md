@@ -7,6 +7,7 @@ architecture: [all]
 requires: [CORE-COUPLING]
 related: [CORE-ERROR, CORE-NAMING, PLAT-LIB-KMP]
 tags: [api, semver, versioning, breaking-change, compatibility, binary-compatibility, deprecation, public-surface, library]
+status: active
 ---
 
 # Public API Stability

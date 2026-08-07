@@ -7,6 +7,7 @@ architecture: [web-app]
 requires: [ARCH-WEB-APP, PAT-OUTCOME, CORE-ERROR]
 related: [ARCH-PC-ERR-CLASSES]
 tags: [error-handling, outcome, typed-errors, server-actions, route-handlers, zod, react-hook-form]
+status: active
 ---
 
 # Typed Error Classes
