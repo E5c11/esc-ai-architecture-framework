@@ -157,3 +157,4 @@ These were identified during the gap analysis as project-specific. They live in
 |--------|------|-------|
 | `AMPM-SUBJ-STRUCT` | `ampm-ai-framework/subject/subject-module-structure.md` | Subject-first architecture, `:feature:{subject}` naming, data-driven nav |
 | `AMPM-TIER-CAP` | `ampm-ai-framework/tier/tier-capabilities.md` | SubscriptionTier, AppFeature, TierCapabilities, sealed state pattern |
+| `AMPM-SYNC-OFFLINE-QUEUE` | `ampm-ai-framework/sync/offline-retry-queue.md` | **Stub, 2026-08-10.** Offline retry queue for idempotent event submission (Pattern B tables: `user_answers`/`video_sessions`/`user_sessions`/`video_completions`) — stable idempotency key reuse on retry (not fresh-per-call), retry trigger, architectural placement. Surfaced scoping `ampm-kmp`'s event-submission reconciliation work; confirmed neither this framework nor the AMPM extension covered it before this stub |
