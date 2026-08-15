@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-08T08:24:48.412195+00:00",
-  "count": 91,
+  "generated": "2026-08-15T20:57:05.149055+00:00",
+  "count": 92,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -261,7 +261,8 @@
         "ARCH-PC-VIEWMODEL",
         "ARCH-PC-VIEW",
         "ARCH-PC-DI",
-        "ARCH-PC-ERROR-FLOW"
+        "ARCH-PC-ERROR-FLOW",
+        "ARCH-PC-COMPOSITION"
       ],
       "tags": [
         "pragmatic-clean",
@@ -288,7 +289,8 @@
       ],
       "related": [
         "PLAT-MOB-NAV",
-        "PLAT-MOB-COMPOSE"
+        "PLAT-MOB-COMPOSE",
+        "ARCH-PC-COMPOSITION"
       ],
       "tags": [
         "viewmodel",
@@ -301,6 +303,37 @@
         "global-state"
       ],
       "status": "stub"
+    },
+    {
+      "id": "ARCH-PC-COMPOSITION",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/pragmatic-clean/composition-root.md",
+      "platform": [
+        "mobile"
+      ],
+      "architecture": "pragmatic-clean",
+      "requires": [
+        "ARCH-PC",
+        "ARCH-PC-FEATURE"
+      ],
+      "related": [
+        "ARCH-PC-VIEW",
+        "ARCH-PC-APP-VM",
+        "ARCH-PC-DI",
+        "PLAT-MOB-NAV"
+      ],
+      "tags": [
+        "composition-root",
+        "cross-feature",
+        "module-boundary",
+        "coupling",
+        "common-module-trap",
+        "design-system",
+        "app-module",
+        "premature-abstraction"
+      ],
+      "status": "active"
     },
     {
       "id": "ARCH-PC-DATASOURCE",
@@ -432,7 +465,8 @@
       ],
       "related": [
         "ARCH-PC-DI",
-        "ARCH-PC-DATASOURCE"
+        "ARCH-PC-DATASOURCE",
+        "ARCH-PC-COMPOSITION"
       ],
       "tags": [
         "feature",
@@ -2004,7 +2038,8 @@
         "PLAT-MOB-KOIN"
       ],
       "related": [
-        "ARCH-PC-FEATURE"
+        "ARCH-PC-FEATURE",
+        "ARCH-PC-COMPOSITION"
       ],
       "tags": [
         "navigation",

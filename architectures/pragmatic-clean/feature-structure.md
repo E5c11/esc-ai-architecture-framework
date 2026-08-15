@@ -5,7 +5,7 @@ layer: architecture
 platform: [mobile]
 architecture: [pragmatic-clean]
 requires: [ARCH-PC]
-related: [ARCH-PC-DI, ARCH-PC-DATASOURCE]
+related: [ARCH-PC-DI, ARCH-PC-DATASOURCE, ARCH-PC-COMPOSITION]
 tags: [feature, module, structure, naming, file-placement, directories]
 status: active
 ---
@@ -144,7 +144,10 @@ enforced_by: [reviewer]
 violation_message: Violates ARCH-PC-FEAT-DEP-01 — Features MUST NOT import from other features.
 ```
 
-Shared types belong in `core/`.
+Shared types belong in `core/`. When a screen needs to *compose* another feature's UI or
+state rather than share a generic type, see `ARCH-PC-COMPOSITION` — `core/` is not a
+default answer for that case, and routing around this rule via `core/` or a design-system
+module without following that doc's rules is itself a violation.
 
 ```rule
 id: ARCH-PC-FEAT-DEP-02

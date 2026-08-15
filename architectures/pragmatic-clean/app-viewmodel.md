@@ -5,7 +5,7 @@ layer: architecture
 platform: [mobile]
 architecture: [pragmatic-clean]
 requires: [ARCH-PC-VIEWMODEL, ARCH-PC-VIEW, PLAT-MOB-KOIN]
-related: [PLAT-MOB-NAV, PLAT-MOB-COMPOSE]
+related: [PLAT-MOB-NAV, PLAT-MOB-COMPOSE, ARCH-PC-COMPOSITION]
 tags: [viewmodel, app-viewmodel, scaffold, app-state, top-bar, bottom-bar, snackbar, global-state]
 status: stub
 ---

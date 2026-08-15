@@ -1,6 +1,6 @@
 # Framework Document Index
 
-*Generated 2026-08-08 — 91 documents*
+*Generated 2026-08-15 — 92 documents*
 
 ## core/
 
@@ -36,6 +36,7 @@
 | `ARCH-BE-SERVICE` | rules | `architectures/backend-service/service.md` |  |
 | `ARCH-PC` | architecture | `architectures/pragmatic-clean/overview.md` |  |
 | `ARCH-PC-APP-VM` | guide | `architectures/pragmatic-clean/app-viewmodel.md` | ⚠ stub |
+| `ARCH-PC-COMPOSITION` | guide | `architectures/pragmatic-clean/composition-root.md` |  |
 | `ARCH-PC-DATASOURCE` | guide | `architectures/pragmatic-clean/datasource.md` |  |
 | `ARCH-PC-DI` | guide | `architectures/pragmatic-clean/di.md` |  |
 | `ARCH-PC-ERR-CLASSES` | guide | `architectures/pragmatic-clean/exception-classes.md` |  |

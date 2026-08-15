@@ -5,7 +5,7 @@ layer: architecture
 platform: [mobile]
 architecture: [pragmatic-clean]
 requires: [CORE-DI, CORE-COUPLING, CORE-SSOT, PAT-DATA-ACCESS, PAT-OUTCOME, PAT-OBSERVER]
-related: [ARCH-PC-DATASOURCE, ARCH-PC-REPOSITORY, ARCH-PC-USECASE, ARCH-PC-VIEWMODEL, ARCH-PC-VIEW, ARCH-PC-DI, ARCH-PC-ERROR-FLOW]
+related: [ARCH-PC-DATASOURCE, ARCH-PC-REPOSITORY, ARCH-PC-USECASE, ARCH-PC-VIEWMODEL, ARCH-PC-VIEW, ARCH-PC-DI, ARCH-PC-ERROR-FLOW, ARCH-PC-COMPOSITION]
 tags: [pragmatic-clean, clean-architecture, kmp, layers, mvvm]
 status: active
 ---

@@ -5,7 +5,7 @@ layer: platform
 platform: [mobile]
 architecture: [pragmatic-clean]
 requires: [ARCH-PC-VIEW, PLAT-MOB-COMPOSE, PLAT-MOB-KOIN]
-related: [ARCH-PC-FEATURE]
+related: [ARCH-PC-FEATURE, ARCH-PC-COMPOSITION]
 tags: [navigation, compose-navigation, navgraph, navhost, deeplink, back-stack]
 status: stub
 ---
