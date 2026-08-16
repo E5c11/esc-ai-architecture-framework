@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-15T20:57:55.605505+00:00",
+  "generated": "2026-08-16T14:21:42.724508+00:00",
   "count": 92,
   "documents": [
     {
@@ -331,7 +331,9 @@
         "common-module-trap",
         "design-system",
         "app-module",
-        "premature-abstraction"
+        "premature-abstraction",
+        "data-payload-slot",
+        "duplicate-fetch"
       ],
       "status": "active"
     },
