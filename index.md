@@ -1,6 +1,6 @@
 # Framework Document Index
 
-*Generated 2026-08-16 — 92 documents*
+*Generated 2026-08-16 — 93 documents*
 
 ## core/
 
@@ -18,6 +18,7 @@
 
 | ID | Type | Path | Status |
 |---|---|---|---|
+| `PAT-ANALYTICS-EVENTS` | pattern | `patterns/analytics-events.md` |  |
 | `PAT-DATA-ACCESS` | pattern | `patterns/data-access-abstraction.md` |  |
 | `PAT-OBSERVER` | pattern | `patterns/observable-data.md` |  |
 | `PAT-OUTCOME` | pattern | `patterns/result-type.md` |  |

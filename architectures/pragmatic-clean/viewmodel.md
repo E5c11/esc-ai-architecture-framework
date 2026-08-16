@@ -4,7 +4,7 @@ type: guide
 layer: architecture
 platform: [mobile]
 architecture: [pragmatic-clean]
-requires: [ARCH-PC, PLAT-MOB-KOTLIN, PLAT-MOB-KOIN]
+requires: [ARCH-PC, PLAT-MOB-KOTLIN, PLAT-MOB-KOIN, PAT-ANALYTICS-EVENTS]
 related: [ARCH-PC-USECASE, ARCH-PC-VIEW, ARCH-PC-ERROR-FLOW, ARCH-PC-DI]
 tags: [viewmodel, state, events, presentation, formatting, stateflow, sharedflow]
 status: active
@@ -163,6 +163,24 @@ type: soft
 scope: error-handling
 enforced_by: [reviewer]
 violation_message: Violates ARCH-PC-VM-ERROR-02 — ViewModels SHOULD expose a `retry()` function and a `clearError()` function when the underlying operation is retryable.
+```
+
+## Analytics
+
+An analytics/telemetry tracker is a dependency like any other cross-cutting
+service: injected via constructor at the ViewModel (or Orchestrator), never
+resolved inside a View/component. See `PAT-ANALYTICS-EVENTS` for the full
+placement rule and the required project-level tracking-philosophy
+declaration — this is the concrete, Koin/Compose expression of that pattern,
+not a separate rule.
+
+```rule
+id: ARCH-PC-VM-ANALYTICS-01
+statement: A ViewModel that fires analytics events MUST receive its tracker via constructor injection, and MUST fire the event inline at the point the corresponding state change or user action is already being handled — not via a separate event stream a View subscribes to just to log it.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates ARCH-PC-VM-ANALYTICS-01 — analytics event not fired from the ViewModel method that owns the corresponding state change/action, or the tracker is not constructor-injected.
 ```
 
 ## Job management

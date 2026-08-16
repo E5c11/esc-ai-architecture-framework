@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-16T14:21:42.724508+00:00",
-  "count": 92,
+  "generated": "2026-08-16T17:05:09.671760+00:00",
+  "count": 93,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -555,7 +555,8 @@
         "PLAT-MOB-COMPOSE"
       ],
       "related": [
-        "ARCH-PC-ERROR-FLOW"
+        "ARCH-PC-ERROR-FLOW",
+        "PAT-ANALYTICS-EVENTS"
       ],
       "tags": [
         "view",
@@ -579,7 +580,8 @@
       "requires": [
         "ARCH-PC",
         "PLAT-MOB-KOTLIN",
-        "PLAT-MOB-KOIN"
+        "PLAT-MOB-KOIN",
+        "PAT-ANALYTICS-EVENTS"
       ],
       "related": [
         "ARCH-PC-USECASE",
@@ -1298,6 +1300,31 @@
         "typescript",
         "firebase",
         "dashboard"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "PAT-ANALYTICS-EVENTS",
+      "type": "pattern",
+      "layer": "patterns",
+      "path": "patterns/analytics-events.md",
+      "platform": [
+        "mobile",
+        "web"
+      ],
+      "architecture": "all",
+      "requires": [],
+      "related": [
+        "ARCH-PC-VIEWMODEL",
+        "ARCH-PC-VIEW"
+      ],
+      "tags": [
+        "analytics",
+        "telemetry",
+        "tracking",
+        "events",
+        "instrumentation",
+        "philosophy"
       ],
       "status": "active"
     },

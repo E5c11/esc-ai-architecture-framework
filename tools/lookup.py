@@ -100,6 +100,20 @@ PROFILE_DOC_MAP: dict[str, dict[str, list[str]]] = {
     "forms": {
         "react-hook-form": ["PLAT-WEB-FORMS"],
     },
+    # Values are a tracking philosophy, not a library, so unlike every other
+    # entry above the value itself doesn't imply a platform -- all resolve to
+    # the same platform-agnostic pattern doc. See PAT-ANALYTICS-EVENTS: a
+    # pragmatic-clean mobile component already receives it automatically via
+    # ARCH-PC-VIEWMODEL's own requires chain; this entry is what lets a
+    # project explicitly declare *which* philosophy it follows, and is the
+    # only path to the doc for architectures without an equivalent
+    # requires-chain anchor yet (e.g. web-app).
+    "analytics": {
+        "comprehensive": ["PAT-ANALYTICS-EVENTS"],
+        "deliberate": ["PAT-ANALYTICS-EVENTS"],
+        "funnel-critical-only": ["PAT-ANALYTICS-EVENTS"],
+        "none": [],
+    },
 }
 
 TARGET_DOC_MAP: dict[str, list[str]] = {

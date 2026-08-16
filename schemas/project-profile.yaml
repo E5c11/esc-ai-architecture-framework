@@ -22,9 +22,16 @@
 #     convention-plugins: true
 
 schema:
-  version: "1.1"
+  version: "1.2"
   type: project-profile
   changelog:
+    "1.2": >
+      Added `frameworks.analytics` — a required-once-declared tracking
+      philosophy (comprehensive / deliberate / funnel-critical-only / none),
+      not a library choice, so unlike every other `frameworks.*` key its
+      value alone doesn't imply a platform (see PROFILE_DOC_MAP's comment in
+      `tools/lookup.py`). Frontend-only (mobile/web) — a backend/library
+      project omits it. See `patterns/analytics-events.md`.
     "1.1": >
       Added `frameworks.forms` — a web-app project's form state/validation
       library (react-hook-form, formik) is a framework choice PROFILE_DOC_MAP
@@ -113,6 +120,12 @@ fields:
       forms:
         type: string
         description: "Form state/validation library. Examples: react-hook-form, formik, none"
+      analytics:
+        type: string
+        description: >
+          Tracking philosophy, not a library — mobile/web only, omit for backend/library
+          projects. Values: comprehensive, deliberate, funnel-critical-only, none.
+          See patterns/analytics-events.md.
 
   build:
     type: object

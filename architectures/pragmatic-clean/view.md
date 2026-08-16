@@ -5,7 +5,7 @@ layer: architecture
 platform: [mobile]
 architecture: [pragmatic-clean]
 requires: [ARCH-PC, ARCH-PC-VIEWMODEL, PLAT-MOB-COMPOSE]
-related: [ARCH-PC-ERROR-FLOW]
+related: [ARCH-PC-ERROR-FLOW, PAT-ANALYTICS-EVENTS]
 tags: [view, screen, compose, stateless, scaffold, state-hoisting]
 status: active
 ---
@@ -151,7 +151,7 @@ enforced_by: [reviewer]
 violation_message: Violates ARCH-PC-VIEW-COMPONENT-01 — A component MUST NOT call `koinInject()`, construct a ViewModel, or read from any DI container — including for cross-cutting concerns like an analytics tracker.
 ```
 
-Surface the action as a callback parameter and let the caller (Screen, or the composable that already holds the dependency) perform the side effect. This is `ARCH-PC-VIEW-STATE-01` restated explicitly for nested components, because in practice it is the rule most often missed once a component lives a few call-sites away from the Screen.
+Surface the action as a callback parameter and let the caller (Screen, or the composable that already holds the dependency) perform the side effect. This is `ARCH-PC-VIEW-STATE-01` restated explicitly for nested components, because in practice it is the rule most often missed once a component lives a few call-sites away from the Screen. The analytics-tracker example above is this rule's most common real violation, not just an illustration — see `PAT-ANALYTICS-EVENTS` for the full placement rule and the required project-level tracking-philosophy declaration.
 
 ```rule
 id: ARCH-PC-VIEW-COMPONENT-02

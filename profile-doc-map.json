@@ -1,5 +1,17 @@
 {
   "frameworks": {
+    "analytics": {
+      "comprehensive": [
+        "PAT-ANALYTICS-EVENTS"
+      ],
+      "deliberate": [
+        "PAT-ANALYTICS-EVENTS"
+      ],
+      "funnel-critical-only": [
+        "PAT-ANALYTICS-EVENTS"
+      ],
+      "none": []
+    },
     "auth": {
       "firebase": [
         "PLAT-MOB-IOS-AUTH"
