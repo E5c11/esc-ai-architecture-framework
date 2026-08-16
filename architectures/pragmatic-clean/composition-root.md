@@ -6,7 +6,7 @@ platform: [mobile]
 architecture: [pragmatic-clean]
 requires: [ARCH-PC, ARCH-PC-FEATURE]
 related: [ARCH-PC-VIEW, ARCH-PC-APP-VM, ARCH-PC-DI, PLAT-MOB-NAV]
-tags: [composition-root, cross-feature, module-boundary, coupling, common-module-trap, design-system, app-module, premature-abstraction]
+tags: [composition-root, cross-feature, module-boundary, coupling, common-module-trap, design-system, app-module, premature-abstraction, data-payload-slot, duplicate-fetch]
 status: active
 ---
 
@@ -55,6 +55,56 @@ Feature B's own DI-registered ViewModel, renders Feature B's own composable, and
 result into Feature A's slot. Feature A never imports anything from Feature B. Each
 feature's data-fetching and business logic stay exactly where they already are, in that
 feature's own ViewModel — the composition root is wiring, not a place to move logic to.
+
+## Data payloads through slots
+
+`ARCH-PC-COMP-ROOT-01`/`02` stop a feature from importing another feature's *composable*. They
+don't, on their own, stop a subtler version of the same coupling: a slot whose parameter is typed
+against another feature's *domain model* — `@Composable (data: List<ForeignType>) -> Unit` instead
+of `@Composable () -> Unit`. The composable import is gone, but the consuming feature's ViewModel
+still has to fetch and hold `ForeignType` to supply it, so the coupling didn't disappear — it moved
+from an import statement into a parameter list, the same shape as the two traps below.
+
+```rule
+id: ARCH-PC-COMP-ROOT-03
+statement: A slot whose purpose is to render another feature's UI using that feature's own data MUST be zero-argument, or callback-only with primitive-typed callback parameters. The composition root MUST resolve the owning feature's own DI-registered ViewModel internally and pass the fully-rendered composable into the slot — it MUST NOT fetch that feature's data in the consuming feature and hand it to the slot as a typed parameter.
+type: hard
+scope: structure
+enforced_by: [planner, reviewer]
+violation_message: Violates ARCH-PC-COMP-ROOT-03 — a slot parameter is typed against another feature's domain model instead of being resolved fully at the composition root.
+```
+
+*Violation signal:* a slot parameter's type names another feature's domain model, or a callback
+parameter passes that model instead of a primitive identifier.
+
+Forcing this everywhere without checking the specifics creates real regressions instead of removing
+them, which is what the carve-out below is for.
+
+```rule
+id: ARCH-PC-COMP-ROOT-04
+statement: ARCH-PC-COMP-ROOT-03 does not require relocating a data fetch when — (a) the consuming feature's own state genuinely needs a value derived from that data for its own logic unrelated to rendering the slot: extract only that derived primitive at the composition root, don't relocate the fetch; (b) the deviation from the owning feature's general-purpose fetch is trivial to express as a parameter to the owning feature's own use case (a limit, a sort order): decorate via parameter there, don't write a wrapper living in the consuming feature; or (c) relocating would turn one existing subscription into two independently-resolved ones against the same uncached data source: keep the single fetch and map its result to both shapes instead of resolving twice.
+type: soft
+scope: structure
+enforced_by: [planner, reviewer]
+violation_message: Violates ARCH-PC-COMP-ROOT-04 — evaluate before forcing ARCH-PC-COMP-ROOT-03: check whether relocating actually removes coupling or just adds a duplicate, uncached fetch.
+```
+
+Worked example: a home screen shows a "recently viewed" section owned by a profile feature, and a
+promotional banner owned by a marketing feature.
+
+- The recently-viewed list is pure passthrough — home reads nothing from it beyond what the section
+  itself renders, and the owning feature already has (or can trivially gain, via a parameter) a
+  general-purpose fetch for the same data. `ARCH-PC-COMP-ROOT-03` applies in full: relocate the
+  fetch to the owning feature, collapse the slot to zero-argument, resolved by its own ViewModel.
+- The banner's fetch already lives in the owning feature and is injected into home via DI — no
+  relocation needed. But home's own screen drives a shared page-timer off the banner's duration —
+  that's carve-out (a): extract `durationMs` as a primitive at the composition root, and leave the
+  fetch where it already is.
+- Before applying either, check whether the owning feature's fetch is a cheap, cached read or an
+  expensive one re-run on every collection (a cold flow hitting network/aggregation with no
+  `shareIn`/cache layer in front of it). If it's the latter and a second independent screen would
+  now trigger a second, independent instance of it, that's carve-out (c) — don't split the
+  subscription; keep the one fetch and map its result to both shapes.
 
 ## Two traps: routing around the rule instead of following it
 
@@ -146,6 +196,7 @@ around a promotion that never came is not.
 | Situation | Where it goes |
 |---|---|
 | Feature A's screen needs to render Feature B's UI/data | Composition root composes both; Feature A exposes a slot, never imports Feature B |
+| A slot renders Feature B's UI using Feature B's own data | Composition root resolves Feature B's own ViewModel and passes the rendered result into a zero-argument slot — not a data parameter typed on Feature B's domain model (`ARCH-PC-COMP-ROOT-03`), unless `ARCH-PC-COMP-ROOT-04`'s carve-out applies |
 | A dialog/component conceptually spans two features (e.g. wires one feature's ViewModel into another's screen) | Composition root owns it, or it moves fully into whichever feature conceptually owns the interaction, with the other feature exposing a narrow public contract — never both features' internals mixed inside a third feature |
 | Code has zero feature-specific domain meaning and 2+ real consumers today | Shared/core module — but see `ARCH-PC-COMP-CORE-01`: it must not carry any feature's domain type in, even transitively |
 | Code has feature-specific domain meaning but only one real consumer today | Stays in the owning feature, named and packaged as that feature's concern (`ARCH-PC-COMP-PROMOTE-01`) — not "common" |
