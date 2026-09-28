@@ -56,3 +56,8 @@ project's own internal framework extension both lack coverage for a scenario.
 | 7 | In progress | Web platform extraction |
 | 8 | In progress | Quality gates and CI validation |
 | 9 | Planned | Retrieval index and RAG |
+
+## License
+
+Licensed under the [Apache License, Version 2.0](./LICENSE). Maintained by Emmanuel
+Conradie / Black Arrows Consulting.
