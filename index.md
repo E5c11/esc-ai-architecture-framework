@@ -1,6 +1,6 @@
 # Framework Document Index
 
-*Generated 2026-08-16 — 93 documents*
+*Generated 2026-09-28 — 93 documents*
 
 ## core/
 
