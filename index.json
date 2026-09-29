@@ -1,6 +1,6 @@
 {
-  "generated": "2026-09-28T19:45:07.932354+00:00",
-  "count": 93,
+  "generated": "2026-09-29T18:20:52.783162+00:00",
+  "count": 120,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -599,6 +599,412 @@
         "sharedflow"
       ],
       "status": "active"
+    },
+    {
+      "id": "ARCH-PY",
+      "type": "overview",
+      "layer": "architectures",
+      "path": "architectures/python-app/overview.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "CORE-DI",
+        "CORE-ERROR",
+        "CORE-NAMING",
+        "CORE-COUPLING",
+        "CORE-SSOT",
+        "CORE-TESTING",
+        "PAT-DATA-ACCESS",
+        "PAT-OUTCOME"
+      ],
+      "related": [
+        "ARCH-PY-ENTRYPOINT",
+        "ARCH-PY-USECASE",
+        "ARCH-PY-DOMAIN",
+        "ARCH-PY-DATASOURCE",
+        "ARCH-PY-GATEWAY",
+        "ARCH-PY-COMPOSITION",
+        "ARCH-PY-ERROR",
+        "ARCH-PY-POLICY",
+        "ARCH-PY-OBSERVABILITY",
+        "ARCH-PY-CONCURRENCY",
+        "ARCH-PY-MODULES",
+        "PLAT-PY",
+        "PLAT-PY-IMPORT-LINTER"
+      ],
+      "tags": [
+        "python",
+        "architecture",
+        "layers",
+        "practical-clean",
+        "cli",
+        "mcp",
+        "service",
+        "control-plane"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ARCH-PY-COMPOSITION",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/python-app/composition.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "CORE-DI"
+      ],
+      "related": [
+        "ARCH-PY-USECASE",
+        "ARCH-PY-DATASOURCE",
+        "ARCH-PY-GATEWAY",
+        "ARCH-PY-ENTRYPOINT",
+        "PLAT-PY-DI"
+      ],
+      "tags": [
+        "composition-root",
+        "di",
+        "wiring",
+        "configuration",
+        "settings",
+        "entry-point"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-PY-CONCURRENCY",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/python-app/concurrency.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "CORE-COUPLING"
+      ],
+      "related": [
+        "ARCH-PY-GATEWAY",
+        "ARCH-PY-USECASE",
+        "ARCH-PY-ENTRYPOINT",
+        "ARCH-PY-COMPOSITION",
+        "PLAT-PY-SUBPROCESS"
+      ],
+      "tags": [
+        "concurrency",
+        "async",
+        "asyncio",
+        "threads",
+        "processes",
+        "scheduler",
+        "cancellation",
+        "sync-by-default"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-PY-DATASOURCE",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/python-app/datasource.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "PAT-DATA-ACCESS",
+        "CORE-SSOT"
+      ],
+      "related": [
+        "ARCH-PY-USECASE",
+        "ARCH-PY-GATEWAY",
+        "ARCH-PY-ERROR",
+        "PLAT-PY-PERSISTENCE"
+      ],
+      "tags": [
+        "datasource",
+        "persistence",
+        "sqlite",
+        "repository",
+        "store",
+        "ssot",
+        "migrations",
+        "files"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-PY-DOMAIN",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/python-app/domain.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "CORE-SSOT",
+        "CORE-NAMING"
+      ],
+      "related": [
+        "ARCH-PY-USECASE",
+        "ARCH-PY-POLICY",
+        "ARCH-PY-ERROR",
+        "PLAT-PY-TYPING"
+      ],
+      "tags": [
+        "domain",
+        "entity",
+        "value-object",
+        "pure",
+        "dataclass",
+        "clock",
+        "rule-table"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-PY-ENTRYPOINT",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/python-app/entrypoint.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "CORE-COUPLING"
+      ],
+      "related": [
+        "ARCH-PY-USECASE",
+        "ARCH-PY-ERROR",
+        "ARCH-PY-POLICY",
+        "CORE-API-STABILITY",
+        "PLAT-PY-CLI",
+        "PLAT-PY-MCP",
+        "PLAT-PY-HTTP"
+      ],
+      "tags": [
+        "entrypoint",
+        "cli",
+        "mcp",
+        "http",
+        "boundary",
+        "thin",
+        "rendering",
+        "delivery-surface"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ARCH-PY-ERROR",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/python-app/error-flow.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "CORE-ERROR",
+        "PAT-OUTCOME"
+      ],
+      "related": [
+        "ARCH-PY-ENTRYPOINT",
+        "ARCH-PY-USECASE",
+        "ARCH-PY-DATASOURCE",
+        "ARCH-PY-GATEWAY",
+        "ARCH-PY-OBSERVABILITY",
+        "PLAT-PY-TYPING"
+      ],
+      "tags": [
+        "error-handling",
+        "exceptions",
+        "outcome",
+        "result",
+        "exit-codes",
+        "two-tier",
+        "boundaries"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-PY-GATEWAY",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/python-app/gateway.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "CORE-COUPLING",
+        "CORE-ERROR"
+      ],
+      "related": [
+        "ARCH-PY-USECASE",
+        "ARCH-PY-DATASOURCE",
+        "ARCH-PY-ERROR",
+        "ARCH-PY-CONCURRENCY",
+        "ARCH-PY-OBSERVABILITY",
+        "PLAT-PY-SUBPROCESS"
+      ],
+      "tags": [
+        "gateway",
+        "adapter",
+        "provider",
+        "subprocess",
+        "git",
+        "http-client",
+        "external-system",
+        "timeout"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-PY-MODULES",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/python-app/modules.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "CORE-COUPLING",
+        "CORE-NAMING",
+        "CORE-API-STABILITY"
+      ],
+      "related": [
+        "ARCH-PY-ENTRYPOINT",
+        "ARCH-PY-USECASE",
+        "PLAT-PY-IMPORT-LINTER",
+        "PLAT-PY-PACKAGING",
+        "ORCH-PY-MODULARISE"
+      ],
+      "tags": [
+        "modules",
+        "cohesion",
+        "size",
+        "splitting",
+        "public-api",
+        "packages",
+        "growth",
+        "monolith"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ARCH-PY-OBSERVABILITY",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/python-app/observability.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "CORE-ERROR"
+      ],
+      "related": [
+        "ARCH-PY-POLICY",
+        "ARCH-PY-GATEWAY",
+        "ARCH-PY-ERROR",
+        "ARCH-PY-COMPOSITION",
+        "PLAT-PY"
+      ],
+      "tags": [
+        "logging",
+        "telemetry",
+        "audit",
+        "privacy",
+        "opt-in",
+        "observability",
+        "events",
+        "redaction"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-PY-POLICY",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/python-app/policy.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "CORE-DI",
+        "CORE-COUPLING"
+      ],
+      "related": [
+        "ARCH-PY-USECASE",
+        "ARCH-PY-ENTRYPOINT",
+        "ARCH-PY-DOMAIN",
+        "ARCH-PY-OBSERVABILITY",
+        "ARCH-PY-COMPOSITION"
+      ],
+      "tags": [
+        "policy",
+        "strategy",
+        "preferences",
+        "roles",
+        "autonomy",
+        "interaction",
+        "trust",
+        "evidence",
+        "seams"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ARCH-PY-USECASE",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/python-app/usecase.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "CORE-DI",
+        "PAT-DATA-ACCESS"
+      ],
+      "related": [
+        "ARCH-PY-DOMAIN",
+        "ARCH-PY-DATASOURCE",
+        "ARCH-PY-GATEWAY",
+        "ARCH-PY-ERROR",
+        "ARCH-PY-ENTRYPOINT",
+        "ARCH-PY-COMPOSITION",
+        "PLAT-PY-DI"
+      ],
+      "tags": [
+        "use-case",
+        "application",
+        "ports",
+        "protocol",
+        "unit-of-work",
+        "orchestration",
+        "stages"
+      ],
+      "status": ""
     },
     {
       "id": "ARCH-WEB",
@@ -1231,6 +1637,169 @@
         "release"
       ],
       "status": "active"
+    },
+    {
+      "id": "ORCH-PY-ADAPTER",
+      "type": "orchestrator",
+      "layer": "feature-orchestrators",
+      "path": "feature-orchestrators/python/python-adapter.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "CORE-DI",
+        "CORE-ERROR",
+        "CORE-TESTING",
+        "ARCH-PY",
+        "ARCH-PY-GATEWAY",
+        "ARCH-PY-USECASE",
+        "ARCH-PY-ERROR",
+        "ARCH-PY-COMPOSITION",
+        "ARCH-PY-OBSERVABILITY",
+        "PLAT-PY",
+        "PLAT-PY-SUBPROCESS",
+        "PLAT-PY-TESTING",
+        "QG-TESTING"
+      ],
+      "related": [
+        "ORCH-PY-USECASE",
+        "PLAT-PY-DI",
+        "PLAT-PY-IMPORT-LINTER",
+        "QG-REVIEW"
+      ],
+      "tags": [
+        "python",
+        "adapter",
+        "gateway",
+        "provider",
+        "subprocess",
+        "capabilities"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ORCH-PY-ENTRYPOINT",
+      "type": "orchestrator",
+      "layer": "feature-orchestrators",
+      "path": "feature-orchestrators/python/python-entrypoint.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "CORE-API-STABILITY",
+        "CORE-TESTING",
+        "ARCH-PY",
+        "ARCH-PY-ENTRYPOINT",
+        "ARCH-PY-ERROR",
+        "ARCH-PY-POLICY",
+        "ARCH-PY-COMPOSITION",
+        "PLAT-PY",
+        "PLAT-PY-CLI",
+        "PLAT-PY-MCP",
+        "PLAT-PY-HTTP",
+        "PLAT-PY-TESTING",
+        "QG-TESTING"
+      ],
+      "related": [
+        "ORCH-PY-USECASE",
+        "PLAT-PY-IMPORT-LINTER",
+        "PLAT-PY-PACKAGING",
+        "QG-REVIEW"
+      ],
+      "tags": [
+        "python",
+        "entrypoint",
+        "cli",
+        "mcp",
+        "http",
+        "surface",
+        "front-door"
+      ],
+      "status": ""
+    },
+    {
+      "id": "ORCH-PY-MODULARISE",
+      "type": "orchestrator",
+      "layer": "feature-orchestrators",
+      "path": "feature-orchestrators/python/python-modularise.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "CORE-COUPLING",
+        "CORE-TESTING",
+        "ARCH-PY",
+        "ARCH-PY-MODULES",
+        "ARCH-PY-ENTRYPOINT",
+        "ARCH-PY-USECASE",
+        "ARCH-PY-DOMAIN",
+        "ARCH-PY-COMPOSITION",
+        "PLAT-PY",
+        "PLAT-PY-IMPORT-LINTER",
+        "PLAT-PY-TESTING",
+        "QG-TESTING"
+      ],
+      "related": [
+        "ORCH-PY-USECASE",
+        "ORCH-PY-ENTRYPOINT",
+        "CORE-API-STABILITY",
+        "QG-REVIEW"
+      ],
+      "tags": [
+        "python",
+        "refactor",
+        "modularise",
+        "split",
+        "monolith",
+        "characterization"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ORCH-PY-USECASE",
+      "type": "orchestrator",
+      "layer": "feature-orchestrators",
+      "path": "feature-orchestrators/python/python-usecase.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "CORE-DI",
+        "CORE-ERROR",
+        "CORE-TESTING",
+        "PAT-DATA-ACCESS",
+        "ARCH-PY",
+        "ARCH-PY-DOMAIN",
+        "ARCH-PY-USECASE",
+        "ARCH-PY-DATASOURCE",
+        "ARCH-PY-GATEWAY",
+        "ARCH-PY-COMPOSITION",
+        "ARCH-PY-ERROR",
+        "PLAT-PY",
+        "PLAT-PY-TYPING",
+        "PLAT-PY-DI",
+        "PLAT-PY-TESTING",
+        "QG-TESTING"
+      ],
+      "related": [
+        "ORCH-PY-ENTRYPOINT",
+        "ORCH-PY-ADAPTER",
+        "PLAT-PY-PERSISTENCE",
+        "PLAT-PY-IMPORT-LINTER",
+        "QG-REVIEW"
+      ],
+      "tags": [
+        "python",
+        "use-case",
+        "end-to-end",
+        "layers",
+        "scaffold"
+      ],
+      "status": ""
     },
     {
       "id": "ORCH-WEB-APP",
@@ -2197,6 +2766,365 @@
         "ui-state"
       ],
       "status": "stub"
+    },
+    {
+      "id": "PLAT-PY",
+      "type": "platform",
+      "layer": "platforms",
+      "path": "platforms/python/README.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "CORE-NAMING"
+      ],
+      "related": [
+        "PLAT-PY-TYPING",
+        "PLAT-PY-DI",
+        "PLAT-PY-IMPORT-LINTER",
+        "PLAT-PY-TESTING",
+        "PLAT-PY-CLI",
+        "PLAT-PY-MCP",
+        "PLAT-PY-HTTP",
+        "PLAT-PY-PERSISTENCE",
+        "PLAT-PY-SUBPROCESS",
+        "PLAT-PY-PACKAGING",
+        "ARCH-PY-OBSERVABILITY"
+      ],
+      "tags": [
+        "python",
+        "pyproject",
+        "uv",
+        "ruff",
+        "venv",
+        "tooling",
+        "baseline"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "PLAT-PY-CLI",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/python/cli.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "ARCH-PY-ENTRYPOINT",
+        "PLAT-PY"
+      ],
+      "related": [
+        "ARCH-PY-ERROR",
+        "ARCH-PY-POLICY",
+        "PLAT-PY-PACKAGING",
+        "PLAT-PY-TESTING",
+        "CORE-API-STABILITY"
+      ],
+      "tags": [
+        "cli",
+        "argparse",
+        "click",
+        "typer",
+        "subcommands",
+        "stdout",
+        "stderr",
+        "exit-codes",
+        "help",
+        "intent-verbs"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-PY-DI",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/python/di.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "ARCH-PY-COMPOSITION",
+        "CORE-DI",
+        "PLAT-PY-TYPING"
+      ],
+      "related": [
+        "ARCH-PY-USECASE",
+        "PLAT-PY-TESTING"
+      ],
+      "tags": [
+        "dependency-injection",
+        "protocol",
+        "constructor-injection",
+        "composition-root",
+        "fakes",
+        "no-container"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-PY-HTTP",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/python/http.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "ARCH-PY-ENTRYPOINT",
+        "PLAT-PY",
+        "PLAT-PY-TYPING"
+      ],
+      "related": [
+        "ARCH-PY-ERROR",
+        "ARCH-PY-COMPOSITION",
+        "ARCH-PY-CONCURRENCY",
+        "PLAT-PY-TESTING",
+        "ARCH-BE-ERROR"
+      ],
+      "tags": [
+        "http",
+        "fastapi",
+        "rest",
+        "api",
+        "router",
+        "pydantic",
+        "error-envelope",
+        "openapi"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-PY-IMPORT-LINTER",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/python/import-linter.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "PLAT-PY"
+      ],
+      "related": [
+        "ARCH-PY-MODULES",
+        "ARCH-PY-COMPOSITION",
+        "PLAT-PY-TESTING"
+      ],
+      "tags": [
+        "import-linter",
+        "ruff",
+        "layers",
+        "enforcement",
+        "ci",
+        "contracts",
+        "fitness-function"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "PLAT-PY-MCP",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/python/mcp.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "ARCH-PY-ENTRYPOINT",
+        "PLAT-PY",
+        "PLAT-PY-TYPING"
+      ],
+      "related": [
+        "ARCH-PY-ERROR",
+        "ARCH-PY-POLICY",
+        "ARCH-PY-CONCURRENCY",
+        "ARCH-PY-OBSERVABILITY",
+        "PLAT-PY-CLI"
+      ],
+      "tags": [
+        "mcp",
+        "model-context-protocol",
+        "tools",
+        "server",
+        "stdio",
+        "schema",
+        "tool-error"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-PY-PACKAGING",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/python/packaging.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "PLAT-PY",
+        "CORE-API-STABILITY"
+      ],
+      "related": [
+        "ARCH-PY-MODULES",
+        "PLAT-PY-CLI",
+        "PLAT-PY-TESTING"
+      ],
+      "tags": [
+        "packaging",
+        "pyproject",
+        "pep-621",
+        "entry-points",
+        "console-scripts",
+        "semver",
+        "pypi",
+        "src-layout",
+        "library"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-PY-PERSISTENCE",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/python/persistence.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "ARCH-PY-DATASOURCE",
+        "PLAT-PY"
+      ],
+      "related": [
+        "ARCH-PY-CONCURRENCY",
+        "ARCH-PY-ERROR",
+        "PLAT-PY-TESTING",
+        "PAT-DATA-ACCESS"
+      ],
+      "tags": [
+        "sqlite",
+        "sqlite3",
+        "persistence",
+        "migrations",
+        "transactions",
+        "sqlalchemy",
+        "wal",
+        "row-mapping"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-PY-SUBPROCESS",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/python/subprocess.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "ARCH-PY-GATEWAY",
+        "PLAT-PY"
+      ],
+      "related": [
+        "ARCH-PY-CONCURRENCY",
+        "ARCH-PY-OBSERVABILITY",
+        "PLAT-PY-TESTING"
+      ],
+      "tags": [
+        "subprocess",
+        "process",
+        "git",
+        "timeout",
+        "shell",
+        "exit-code",
+        "worktree",
+        "environment"
+      ],
+      "status": ""
+    },
+    {
+      "id": "PLAT-PY-TESTING",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/python/testing.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "PLAT-PY",
+        "CORE-TESTING",
+        "QG-TESTING"
+      ],
+      "related": [
+        "PLAT-PY-DI",
+        "ARCH-PY-USECASE",
+        "ARCH-PY-DATASOURCE",
+        "ARCH-PY-GATEWAY",
+        "PLAT-PY-IMPORT-LINTER",
+        "QG-REVIEW"
+      ],
+      "tags": [
+        "pytest",
+        "testing",
+        "fakes",
+        "tmp_path",
+        "coverage",
+        "fixtures",
+        "characterization",
+        "parametrize"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "PLAT-PY-TYPING",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/python/typing.md",
+      "platform": [
+        "python"
+      ],
+      "architecture": "python-app",
+      "requires": [
+        "ARCH-PY",
+        "PLAT-PY"
+      ],
+      "related": [
+        "ARCH-PY-DOMAIN",
+        "ARCH-PY-USECASE",
+        "ARCH-PY-ERROR",
+        "PLAT-PY-DI"
+      ],
+      "tags": [
+        "typing",
+        "mypy",
+        "pyright",
+        "protocol",
+        "dataclass",
+        "typeddict",
+        "pydantic",
+        "literal",
+        "enum"
+      ],
+      "status": ""
     },
     {
       "id": "PLAT-WEB-A11Y",

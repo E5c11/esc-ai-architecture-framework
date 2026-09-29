@@ -74,9 +74,9 @@ ALLOWED_META_LAYERS = {
     "core", "pattern", "architecture", "architectures", "platform", "platforms", "build",
     "quality", "quality-gates", "orchestrator", "feature-orchestrators",
 }
-ALLOWED_PLATFORMS = {"mobile", "backend", "web", "library", "build", "all"}
+ALLOWED_PLATFORMS = {"mobile", "backend", "web", "python", "library", "build", "all"}
 ALLOWED_ARCHITECTURES = {
-    "pragmatic-clean", "backend-service", "web-spa", "web-content", "web-app",
+    "pragmatic-clean", "backend-service", "python-app", "web-spa", "web-content", "web-app",
     "vertical-slice", "hexagonal", "all"
 }
 ALLOWED_STATUSES = {"", "active", "stub", "deprecated"}

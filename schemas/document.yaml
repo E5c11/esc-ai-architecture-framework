@@ -15,9 +15,17 @@
 #   ---
 
 schema:
-  version: "1.2"
+  version: "1.3"
   type: document-metadata
   changelog:
+    "1.3": >
+      Added `python` to the `platform` enum and `python-app` to the `architecture` enum —
+      Practical Clean expressed for Python programs with one or more delivery surfaces
+      (CLI, MCP server, HTTP API, worker). Python is a distinct platform because none of
+      the existing ones (`mobile`, `backend`, `web`, `library`) describe a Python
+      toolchain, and `python-app` is a distinct architecture because `pragmatic-clean`
+      is KMP/mobile-shaped and `backend-service` is Kotlin/Spring-shaped. See
+      `architectures/python-app/overview.md` and `platforms/python/README.md`.
     "1.2": >
       Added `web-content` and `web-app` to the `architecture` enum — two real forks
       from `web-spa` for the Next.js Server/Client Component boundary: `web-content`
@@ -66,7 +74,7 @@ fields:
   platform:
     type: array
     required: true
-    values: [mobile, backend, web, library, build, all]
+    values: [mobile, backend, web, python, library, build, all]
     description: >
       Which platforms this document applies to.
       Use [all] for platform-agnostic documents.
@@ -76,7 +84,7 @@ fields:
   architecture:
     type: array
     required: true
-    values: [pragmatic-clean, backend-service, web-spa, web-content, web-app, vertical-slice, hexagonal, all]
+    values: [pragmatic-clean, backend-service, python-app, web-spa, web-content, web-app, vertical-slice, hexagonal, all]
     description: >
       Which architectures this document applies to.
       Use [all] for architecture-agnostic documents.

@@ -33,11 +33,28 @@
     "database": {
       "room": [
         "PLAT-MOB-ROOM"
+      ],
+      "sqlalchemy": [
+        "PLAT-PY-PERSISTENCE"
+      ],
+      "sqlite": [
+        "PLAT-PY-PERSISTENCE"
       ]
     },
     "forms": {
       "react-hook-form": [
         "PLAT-WEB-FORMS"
+      ]
+    },
+    "interface": {
+      "cli": [
+        "PLAT-PY-CLI"
+      ],
+      "http": [
+        "PLAT-PY-HTTP"
+      ],
+      "mcp": [
+        "PLAT-PY-MCP"
       ]
     },
     "network": {

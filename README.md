@@ -16,6 +16,7 @@ esc-ai-architecture-framework/
 ├── architectures/           # Architectural styles and layer contracts
 │   ├── pragmatic-clean/
 │   ├── backend-service/
+│   ├── python-app/
 │   ├── web-app/
 │   ├── web-content/
 │   └── web-spa/
@@ -23,6 +24,7 @@ esc-ai-architecture-framework/
 │   ├── mobile/              # Kotlin / KMP / Compose / Koin
 │   ├── backend/             # Kotlin / Spring Boot / JPA
 │   ├── web/                 # TypeScript / React / Next.js
+│   ├── python/              # Python 3.12+ / import-linter / pytest / MCP / FastAPI
 │   └── library/             # Published KMP packaging and export
 ├── build/                   # Gradle build system patterns (cross-platform)
 ├── quality-gates/           # Testing philosophy and coverage standards

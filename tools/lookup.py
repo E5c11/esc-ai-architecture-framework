@@ -64,7 +64,17 @@ LAYER_ORDER = {
 # Maps project profile frameworks fields to additional doc IDs.
 PROFILE_DOC_MAP: dict[str, dict[str, list[str]]] = {
     "database": {
-        "room":     ["PLAT-MOB-ROOM"],
+        "room":       ["PLAT-MOB-ROOM"],
+        "sqlite":     ["PLAT-PY-PERSISTENCE"],
+        "sqlalchemy": ["PLAT-PY-PERSISTENCE"],
+    },
+    # Python delivery surfaces (see architectures/python-app): which surface(s) a
+    # project exposes selects the matching platform guide. A project may declare
+    # only one value here; list additional surfaces via the orchestrator's requires.
+    "interface": {
+        "cli":  ["PLAT-PY-CLI"],
+        "mcp":  ["PLAT-PY-MCP"],
+        "http": ["PLAT-PY-HTTP"],
     },
     "network": {
         "ktor":     ["PLAT-MOB-HTTP"],

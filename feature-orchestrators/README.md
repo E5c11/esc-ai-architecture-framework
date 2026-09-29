@@ -15,6 +15,7 @@ feature-orchestrators/
 ├── mobile/       # platform: [mobile]
 ├── backend/      # platform: [backend]
 ├── web/          # platform: [web]
+├── python/       # platform: [python]
 └── shared/       # platform: [all] — orchestrators that span 2+ repos/platforms
 ```
 

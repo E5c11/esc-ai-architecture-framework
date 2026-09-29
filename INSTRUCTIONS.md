@@ -74,13 +74,13 @@ Examples: data-access abstraction, error propagation, observer.
 Specific architectural styles. Each architecture composes patterns and principles
 into a concrete layer structure with explicit contracts between layers.
 
-Examples: `pragmatic-clean/`, `backend-service/`.
+Examples: `pragmatic-clean/`, `backend-service/`, `python-app/`.
 
 ### `platforms/`
 Technology-specific implementation guides that extend architecture rules.
 A platform document always references the architecture it extends.
 
-Examples: `mobile/` (Kotlin/KMP/Compose), `backend/` (Spring Boot/JPA), `web/` (TypeScript/React).
+Examples: `mobile/` (Kotlin/KMP/Compose), `backend/` (Spring Boot/JPA), `web/` (TypeScript/React), `python/` (Python 3.12+, import-linter, pytest).
 
 ### `build/`
 Build system patterns that span platforms. Any JVM/Kotlin project may apply these

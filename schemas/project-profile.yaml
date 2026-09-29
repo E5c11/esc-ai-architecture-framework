@@ -22,9 +22,16 @@
 #     convention-plugins: true
 
 schema:
-  version: "1.2"
+  version: "1.3"
   type: project-profile
   changelog:
+    "1.3": >
+      Added `python` to `platform`, `python-app` to `architecture`, and
+      `frameworks.interface` (cli / mcp / http) -- a Python program's delivery
+      surface is the choice PROFILE_DOC_MAP needs to select PLAT-PY-CLI /
+      PLAT-PY-MCP / PLAT-PY-HTTP from, the same way `frameworks.network` selects
+      the HTTP client guide. Also added `sqlite` / `sqlalchemy` values to
+      `frameworks.database` (-> PLAT-PY-PERSISTENCE). See platforms/python/README.md.
     "1.2": >
       Added `frameworks.analytics` — a required-once-declared tracking
       philosophy (comprehensive / deliberate / funnel-critical-only / none),
@@ -48,7 +55,7 @@ fields:
   platform:
     type: enum
     required: true
-    values: [mobile, backend, web]
+    values: [mobile, backend, web, python]
     description: >
       Primary platform. Determines which platforms/{name}/ layer is loaded.
 
@@ -71,6 +78,7 @@ fields:
     values:
       - pragmatic-clean   # Clean Architecture layers without full abstraction overhead
       - backend-service   # Controller → Service → DataSource
+      - python-app        # Practical Clean for Python: Entrypoints → Application → Domain ← Infrastructure
       - web-spa           # Client-side SPA, React + TypeScript
       - web-content       # SSG/ISR-first marketing/content sites, Next.js
       - web-app           # Server-capable interactive apps, Next.js
@@ -98,7 +106,12 @@ fields:
         description: "Network layer. Examples: ktor, retrofit, axios, spring-web"
       database:
         type: string
-        description: "Local database. Examples: room, jpa, firebase, none"
+        description: "Local database. Examples: room, jpa, firebase, sqlite, sqlalchemy, none"
+      interface:
+        type: string
+        description: >
+          Python delivery surface (python-app only). Values: cli, mcp, http.
+          Selects the matching PLAT-PY-* guide; omit for non-Python projects.
       cloud:
         type: string
         description: "Cloud/backend provider. Examples: firebase, gcp, aws, none"

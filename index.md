@@ -1,6 +1,6 @@
 # Framework Document Index
 
-*Generated 2026-09-28 — 93 documents*
+*Generated 2026-09-29 — 120 documents*
 
 ## core/
 
@@ -47,6 +47,18 @@
 | `ARCH-PC-USECASE` | guide | `architectures/pragmatic-clean/usecase.md` |  |
 | `ARCH-PC-VIEW` | guide | `architectures/pragmatic-clean/view.md` |  |
 | `ARCH-PC-VIEWMODEL` | guide | `architectures/pragmatic-clean/viewmodel.md` |  |
+| `ARCH-PY` | overview | `architectures/python-app/overview.md` |  |
+| `ARCH-PY-COMPOSITION` | rules | `architectures/python-app/composition.md` |  |
+| `ARCH-PY-CONCURRENCY` | rules | `architectures/python-app/concurrency.md` |  |
+| `ARCH-PY-DATASOURCE` | rules | `architectures/python-app/datasource.md` |  |
+| `ARCH-PY-DOMAIN` | rules | `architectures/python-app/domain.md` |  |
+| `ARCH-PY-ENTRYPOINT` | rules | `architectures/python-app/entrypoint.md` |  |
+| `ARCH-PY-ERROR` | rules | `architectures/python-app/error-flow.md` |  |
+| `ARCH-PY-GATEWAY` | rules | `architectures/python-app/gateway.md` |  |
+| `ARCH-PY-MODULES` | rules | `architectures/python-app/modules.md` |  |
+| `ARCH-PY-OBSERVABILITY` | rules | `architectures/python-app/observability.md` |  |
+| `ARCH-PY-POLICY` | rules | `architectures/python-app/policy.md` |  |
+| `ARCH-PY-USECASE` | rules | `architectures/python-app/usecase.md` |  |
 | `ARCH-WEB` | overview | `architectures/web-spa/overview.md` |  |
 | `ARCH-WEB-APP` | overview | `architectures/web-app/overview.md` |  |
 | `ARCH-WEB-APP-ERR-CLASSES` | guide | `architectures/web-app/error-classes.md` |  |
@@ -84,6 +96,17 @@
 | `PLAT-MOB-ROOM` | platform | `platforms/mobile/room.md` |  |
 | `PLAT-MOB-SECURE-STORAGE` | guide | `platforms/mobile/secure-storage.md` |  |
 | `PLAT-MOB-SKELETON` | guide | `platforms/mobile/skeleton-loading.md` | ⚠ stub |
+| `PLAT-PY` | platform | `platforms/python/README.md` |  |
+| `PLAT-PY-CLI` | guide | `platforms/python/cli.md` |  |
+| `PLAT-PY-DI` | guide | `platforms/python/di.md` |  |
+| `PLAT-PY-HTTP` | guide | `platforms/python/http.md` |  |
+| `PLAT-PY-IMPORT-LINTER` | guide | `platforms/python/import-linter.md` |  |
+| `PLAT-PY-MCP` | guide | `platforms/python/mcp.md` |  |
+| `PLAT-PY-PACKAGING` | guide | `platforms/python/packaging.md` |  |
+| `PLAT-PY-PERSISTENCE` | guide | `platforms/python/persistence.md` |  |
+| `PLAT-PY-SUBPROCESS` | guide | `platforms/python/subprocess.md` |  |
+| `PLAT-PY-TESTING` | guide | `platforms/python/testing.md` |  |
+| `PLAT-PY-TYPING` | guide | `platforms/python/typing.md` |  |
 | `PLAT-WEB-A11Y` | rules | `platforms/web/accessibility.md` |  |
 | `PLAT-WEB-DEPLOY` | guide | `platforms/web/deploy.md` |  |
 | `PLAT-WEB-DS-COMPONENT` | guide | `platforms/web/design-system/component.md` |  |
@@ -127,5 +150,9 @@
 | `ORCH-BE-ENDPOINT` | orchestrator | `feature-orchestrators/backend/backend-endpoint.md` |  |
 | `ORCH-MOB-FEAT` | orchestrator | `feature-orchestrators/mobile/mobile-feature.md` |  |
 | `ORCH-MOB-IOS` | orchestrator | `feature-orchestrators/mobile/ios-port.md` |  |
+| `ORCH-PY-ADAPTER` | orchestrator | `feature-orchestrators/python/python-adapter.md` |  |
+| `ORCH-PY-ENTRYPOINT` | orchestrator | `feature-orchestrators/python/python-entrypoint.md` |  |
+| `ORCH-PY-MODULARISE` | orchestrator | `feature-orchestrators/python/python-modularise.md` |  |
+| `ORCH-PY-USECASE` | orchestrator | `feature-orchestrators/python/python-usecase.md` |  |
 | `ORCH-WEB-APP` | orchestrator | `feature-orchestrators/web/app-feature.md` |  |
 | `ORCH-WEB-FEAT` | orchestrator | `feature-orchestrators/web/web-feature.md` |  |

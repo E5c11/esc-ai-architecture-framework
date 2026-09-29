@@ -12,6 +12,7 @@ redefines architecture rules — it only adds platform-specific expression of th
 platforms/
 ├── mobile/      # Kotlin / KMP / Compose / Koin / Coroutines
 ├── backend/     # Kotlin / Spring Boot / JPA / Spring Security
+├── python/      # Python 3.12+ / import-linter / pytest / MCP SDK / FastAPI / sqlite3
 ├── web/         # TypeScript / React / Next.js
 └── library/     # Independently published KMP libraries and exports
 ```
@@ -19,4 +20,4 @@ platforms/
 ## Document ID prefix: `PLAT-`
 
 Subdirectory convention: `PLAT-{PLATFORM_CODE}-{DOCUMENT}`
-Examples: `PLAT-MOB-KOIN`, `PLAT-BE-JPA`, `PLAT-WEB-HOOKS`
+Examples: `PLAT-MOB-KOIN`, `PLAT-BE-JPA`, `PLAT-WEB-HOOKS`, `PLAT-PY-TESTING`

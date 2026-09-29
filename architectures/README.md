@@ -14,7 +14,8 @@ Each subdirectory is one architecture. It defines:
 ```
 architectures/
 ├── pragmatic-clean/     # Clean Architecture layers without full abstraction overhead
-└── backend-service/     # Controller → Service → DataSource
+├── backend-service/     # Controller → Service → DataSource
+└── python-app/          # Practical Clean for Python: Entrypoints → Application → Domain ← Infrastructure
 ```
 
 ## Relationship to patterns/
@@ -29,4 +30,4 @@ implements that pattern as a DataSource layer.
 ## Document ID prefix: `ARCH-`
 
 Subdirectory convention: `ARCH-{ARCH_CODE}-{DOCUMENT}`
-Examples: `ARCH-PC-DATASOURCE`, `ARCH-BE-SERVICE`
+Examples: `ARCH-PC-DATASOURCE`, `ARCH-BE-SERVICE`, `ARCH-PY-USECASE`
