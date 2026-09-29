@@ -156,6 +156,41 @@ violation_message: Violates PYUC-STAGE-04 — A stage with no implementation yet
 A pending stage silently counted as green is worse than a missing one: it looks like
 assurance and provides none.
 
+## Capture gates: recording knowledge the program cannot check
+
+Some gates cannot decide from an observable result because what they guard is *knowledge* someone supplies: a
+root cause for a bug, a scope boundary, a rationale. `PYUC-STAGE-02` (decide from an observable result) cannot
+apply, and pretending it does produces a gate that only looks strict. A **capture gate** is honest about what it
+can do: it makes sure the knowledge was recorded, in a usable form, *before* the work it guides begins.
+
+```rule
+id: PYUC-STAGE-05
+statement: A gate that records supplied knowledge (a capture gate) MUST check that it is present and well-formed, MUST reject the ways it is captured in name only (missing, empty, no supporting evidence, or a restatement of the request), MUST say in its help and documentation that it does not check the knowledge is true, and MUST leave truth to a later gate that decides from an observable result.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PYUC-STAGE-05 — A gate that records supplied knowledge (a capture gate) MUST check that it is present and well-formed, MUST reject the ways it is captured in name only (missing, empty, no supporting evidence, or a restatement of the request), MUST say in its help and documentation that it does not check the knowledge is true, and MUST leave truth to a later gate that decides from an observable result.
+```
+
+Example: a `fix` procedure's `root_cause` stage requires a statement and evidence and rejects a statement that
+only restates the problem report, but it cannot know the cause is right; the `verify` stage that runs the real
+tests against the fix is what tests the cause.
+
+```rule
+id: PYUC-STAGE-06
+statement: A stage that must hold at execution time MUST be enforced against the persisted artifact execution reads, not only where that artifact is created; the artifact MUST record which procedure it belongs to.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PYUC-STAGE-06 — A stage that must hold at execution time MUST be enforced against the persisted artifact execution reads, not only where that artifact is created; the artifact MUST record which procedure it belongs to.
+```
+
+A gate that runs only when a plan is generated is bypassed by editing the plan file, and it cannot run at all if
+the plan file does not say which procedure it belongs to. (In one real case the work type reached only a
+human-readable README, so execution could not tell a `fix` from a `feature`.) Persist the procedure identity in
+the artifact, make the artifact's own validator enforce the stage, and put the captured knowledge where the
+agent will actually read it -- a fact stored but never shown to the agent is decoration.
+
 ## Testing
 
 Use cases are tested against **fakes of their ports** (in-memory, deterministic), not
