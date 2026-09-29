@@ -7,6 +7,7 @@ architecture: python-app
 requires: [ARCH-PY, CORE-DI]
 related: [ARCH-PY-USECASE, ARCH-PY-DATASOURCE, ARCH-PY-GATEWAY, ARCH-PY-ENTRYPOINT, PLAT-PY-DI]
 tags: [composition-root, di, wiring, configuration, settings, entry-point]
+status: active
 ---
 # Composition Root
 
@@ -86,11 +87,11 @@ dangerous. Read-only module constants (rule tables, compiled regexes) are fine.
 
 ```rule
 id: PYCOMP-CHOICE-01
-statement: Choosing between interchangeable implementations (which provider, which store) MUST be done in the composition root from configuration, and MUST fail with a clear configuration error if the choice is unknown.
+statement: Choosing between interchangeable implementations (which provider, which store) MUST be done in the composition root from configuration, and MUST fail with a clear configuration error if the choice is unknown, unless a generic fallback implementation is declared and documented as the default.
 type: hard
 scope: di
 enforced_by: [reviewer]
-violation_message: Violates PYCOMP-CHOICE-01 — Choosing between interchangeable implementations (which provider, which store) MUST be done in the composition root from configuration, and MUST fail with a clear configuration error if the choice is unknown.
+violation_message: Violates PYCOMP-CHOICE-01 — Choosing between interchangeable implementations (which provider, which store) MUST be done in the composition root from configuration, and MUST fail with a clear configuration error if the choice is unknown, unless a generic fallback implementation is declared and documented as the default.
 ```
 
 ```rule
@@ -101,6 +102,43 @@ scope: performance
 enforced_by: [reviewer]
 violation_message: Violates PYCOMP-LAZY-01 — Expensive or optional dependencies (provider SDKs, heavy libraries) SHOULD be imported inside the factory that needs them, so commands that never use them start fast and do not fail when they are absent.
 ```
+
+## When the app can only be built after the arguments are parsed
+
+A command-line program often needs its own options (`--db`, `--registry`) to decide how to build the app, so
+`build_app(settings)` cannot run before parsing. Do not make the entrypoint import the composition root to
+get around that. Give the entrypoint an **app factory** instead: `run(argv, app_factory)` parses, calls
+`app_factory(options)`, dispatches. The console-script target (the program's `__main__`) is the only code that
+knows both sides and passes the real factory:
+
+```python
+# entrypoints/cli/main.py -- imports no infrastructure and no composition
+def run(argv, app_factory): ...
+
+# escape_ai_cli.py (console-script target) -- allowed to import composition
+def main(argv=None) -> int:
+    return run(argv, build_app)
+```
+
+## Operations that must build infrastructure per call
+
+Some operations create a fresh collaborator each time they run -- a scheduler for one task, a connection, a
+disposable worktree -- so it cannot be built once at startup. The operation still must not construct it: give
+the `App` a **factory** for it (a `Callable` typed by a port) and have the operation take that factory as a
+parameter.
+
+```rule
+id: PYCOMP-FACTORY-01
+statement: An operation that needs a fresh piece of infrastructure per call MUST receive a factory for it (declared as a port, supplied by the composition root); it MUST NOT import and construct the concrete class.
+type: hard
+scope: di
+enforced_by: [ci, reviewer]
+violation_message: Violates PYCOMP-FACTORY-01 — An operation that needs a fresh piece of infrastructure per call MUST receive a factory for it (declared as a port, supplied by the composition root); it MUST NOT import and construct the concrete class.
+```
+
+The `App` may also expose the operation as a bound method (`app.execute_task(...)`) that forwards the composed
+factories, so entrypoints do not thread them through by hand. Keep `App` a frozen dataclass declared in the
+application layer, so entrypoints can type against it without importing the composition root.
 
 ## Multiple surfaces, one root
 

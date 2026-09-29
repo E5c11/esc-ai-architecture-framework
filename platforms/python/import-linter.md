@@ -101,16 +101,22 @@ design: they are the one place allowed to import everything (`PYCOMP-ROOT-02`). 
 `mypackage.composition`:
 
 ```ini
-[importlinter:contract:only-main-composes]
-name = Only __main__ imports the composition root
+[importlinter:contract:only-the-composition-root-builds-infrastructure]
+name = Only the composition root touches infrastructure
 type = forbidden
 source_modules =
     mypackage.domain
     mypackage.application
-    mypackage.infrastructure
     mypackage.entrypoints
-forbidden_modules = mypackage.composition
+forbidden_modules =
+    mypackage.infrastructure
+    mypackage.composition
 ```
+
+Because contracts are transitive by default, this also fails when an entrypoint reaches infrastructure *through*
+a helper, which is the case that actually happens (a use case imports a class only for a type annotation; a
+module you thought was pure imports the store). It is the contract that forces the App/factory pattern
+(`ARCH-PY-COMPOSITION`).
 
 ## ruff: finer-grained bans and style rules
 

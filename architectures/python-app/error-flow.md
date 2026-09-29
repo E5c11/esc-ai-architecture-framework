@@ -7,6 +7,7 @@ architecture: python-app
 requires: [ARCH-PY, CORE-ERROR, PAT-OUTCOME]
 related: [ARCH-PY-ENTRYPOINT, ARCH-PY-USECASE, ARCH-PY-DATASOURCE, ARCH-PY-GATEWAY, ARCH-PY-OBSERVABILITY, PLAT-PY-TYPING]
 tags: [error-handling, exceptions, outcome, result, exit-codes, two-tier, boundaries]
+status: active
 ---
 # Error Flow
 
@@ -95,6 +96,65 @@ type: hard
 scope: error-handling
 enforced_by: [reviewer]
 violation_message: Violates PYERR-TRANSLATE-01 — Each delivery surface MUST have one translation function mapping outcome values and `AppError` subclasses to its exit status or protocol error, plus one top-level handler for unexpected errors that logs the traceback and returns a generic failure.
+```
+
+## Translating a library dependency's exceptions
+
+A sibling library (the engine, an SDK) reports its expected failures as built-in exceptions --
+`KeyError`, `FileNotFoundError`, `ValueError`, `OSError`. Left alone they reach an entrypoint
+indistinguishable from a bug. Translate them **once, at the application boundary**, with a decorator on the
+application operations rather than a `try`/`except` in every caller:
+
+```python
+def translates_engine_errors(function):
+    @functools.wraps(function)
+    def wrapper(*args, **kwargs):
+        try:
+            return function(*args, **kwargs)
+        except AppError:
+            raise
+        except KeyError as exc:                       # str(KeyError("m")) is the repr "'m'": use the message
+            raise NotFoundError(str(exc.args[0])) from exc
+        except FileNotFoundError as exc:
+            raise NotFoundError(str(exc)) from exc
+        except (ValueError, OSError) as exc:
+            raise InvalidInputError(str(exc)) from exc
+    return wrapper
+```
+
+After this, an entrypoint sees either a known `AppError` or a genuine unexpected error, so its handler can catch
+`AppError` and let everything else reach the top-level handler. A bare `KeyError` arriving at an entrypoint is a
+bug, not "invalid input".
+
+```rule
+id: PYERR-LIBRARY-01
+statement: Exceptions from a library dependency that represent expected failures MUST be translated to `AppError` at the application boundary (a decorator or a wrapper), chained with `raise ... from`; entrypoints MUST NOT catch the library's raw exception types.
+type: hard
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates PYERR-LIBRARY-01 — Exceptions from a library dependency that represent expected failures MUST be translated to `AppError` at the application boundary (a decorator or a wrapper), chained with `raise ... from`; entrypoints MUST NOT catch the library's raw exception types.
+```
+
+## Interactive loops and the translation function
+
+An interactive flow (a menu that loops back after each action) is a second mode of the same surface. It MAY
+catch `AppError` to report the message inline and continue, using the same message text; it MUST NOT catch
+anything broader, and the top-level handler still covers a bug inside a flow.
+
+## Messages and hints
+
+Give an error a one-line message and, where useful, a separate `hint` (for example "did you mean: ...?") that the
+surface renders on its own line. A message SHOULD NOT name a command of one particular surface ("run `tool
+subcommand` first"); a use case is invoked from several surfaces, so carry the next step as data and let each
+surface phrase it.
+
+```rule
+id: PYERR-SURFACE-01
+statement: An error message raised below the entrypoint layer SHOULD NOT name a command, flag, or menu item of one delivery surface; a surface-specific next step SHOULD be carried as structured data and phrased by the surface.
+type: soft
+scope: error-handling
+enforced_by: [reviewer]
+violation_message: Violates PYERR-SURFACE-01 — An error message raised below the entrypoint layer SHOULD NOT name a command, flag, or menu item of one delivery surface; a surface-specific next step SHOULD be carried as structured data and phrased by the surface.
 ```
 
 ## Exit status contract (CLI)

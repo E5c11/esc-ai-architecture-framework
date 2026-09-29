@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-29T18:21:19.820590+00:00",
+  "generated": "2026-09-29T18:37:05.205783+00:00",
   "count": 120,
   "documents": [
     {
@@ -674,7 +674,7 @@
         "settings",
         "entry-point"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PY-CONCURRENCY",
@@ -836,7 +836,7 @@
         "two-tier",
         "boundaries"
       ],
-      "status": ""
+      "status": "active"
     },
     {
       "id": "ARCH-PY-GATEWAY",
