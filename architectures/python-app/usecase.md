@@ -191,6 +191,66 @@ human-readable README, so execution could not tell a `fix` from a `feature`.) Pe
 the artifact, make the artifact's own validator enforce the stage, and put the captured knowledge where the
 agent will actually read it -- a fact stored but never shown to the agent is decoration.
 
+## Gates that verify, and work that promises not to change anything
+
+Three failure modes were found by building the `plan`, `investigate`, `refactor` and `document` procedures, each of
+which looked fine in review and was wrong in a way only a real run showed.
+
+```rule
+id: PYUC-STAGE-07
+statement: A gate that verifies a change MUST run against the tree the change was made in, decided from the run's own record of where it edited, not against a default location.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PYUC-STAGE-07 — A gate that verifies a change MUST run against the tree the change was made in, decided from the run's own record of where it edited, not against a default location.
+```
+
+When an agent edits a disposable copy (a git worktree, a container, a temporary directory) its changes are *not* in the
+live checkout. Running the gates there tests the code as it was before the agent started: a change that breaks the
+build is reported as passing and one that fixes it as failing. This inversion existed in a real system and was
+invisible because both outcomes look plausible. Make the location explicit (the run records where it edited; the
+verifier reads that record), build the verification *plan* from the trusted checkout so the agent cannot rewrite its
+own gates, and write logs to a location independent of where the commands run.
+
+```rule
+id: PYUC-STAGE-08
+statement: A gate that can pass when nothing was checked MUST fail closed wherever the claim depends on its checks having run; "no check ran" MUST NOT be reported as "all checks passed".
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PYUC-STAGE-08 — A gate that can pass when nothing was checked MUST fail closed wherever the claim depends on its checks having run; "no check ran" MUST NOT be reported as "all checks passed".
+```
+
+`all(check.passed for check in checks)` is true for an empty list. A verification plan whose gates are all skipped
+reported `passed`, so a refactor with no tests "verified" having proved nothing. Where a procedure's whole point is a
+claim the checks back (behaviour is unchanged), require at least one check that actually ran and passed, before
+spending the expensive step, and refuse a baseline that is already failing.
+
+```rule
+id: PYUC-STAGE-09
+statement: A work type that promises not to change state MUST be enforced by both reducing the capabilities it is granted and an independent before/after comparison of the state it must not change; omitting the stage that would change state is not enforcement.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PYUC-STAGE-09 — A work type that promises not to change state MUST be enforced by both reducing the capabilities it is granted and an independent before/after comparison of the state it must not change; omitting the stage that would change state is not enforcement.
+```
+
+A read-only procedure that merely has no "implement" stage stops nothing: the agent had whatever permissions the global
+default granted. Enforce it twice, at different layers, so a bug in one fails closed in the other: force the granted
+capabilities down at the single place every run passes through (not only in the CLI, which other callers bypass), and
+compare a snapshot of the state before and after the run regardless of adapter or policy. Include content hashes in
+the snapshot, because a status listing cannot show that an already-modified file was modified again. Report what
+changed and fail; never revert automatically, because a revert is itself a destructive edit. Also make the expected
+outcome a success: "nothing changed" is the correct result of read-only work, not a warning.
+
+## Pointing at things: reference checks
+
+A check that documentation points at things that exist is cheap and useful, but only if it does not cry wolf. Treat a
+token as a path claim only when it is unmistakable (an explicit link target, or a span whose last segment has a file
+extension or whose first segment is a real top-level entry), and skip code blocks, URLs, hostnames, globs and
+placeholders. State plainly, in the tool's own help and report, that it proves references *resolve*, not that the
+prose is *true* (`PYUC-STAGE-05`).
+
 ## Testing
 
 Use cases are tested against **fakes of their ports** (in-memory, deterministic), not
