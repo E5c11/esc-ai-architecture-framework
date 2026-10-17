@@ -13,6 +13,8 @@ requires:
   - ARCH-WEB-APP-ERR-CLASSES
   - PLAT-WEB-NEXT
   - PLAT-WEB-NEXT-APP
+  - PLAT-WEB-REACT
+  - PLAT-WEB-STATE
   - PLAT-WEB-HTTP
   - PLAT-WEB-FORMS
   - PLAT-WEB-DS-THEME
@@ -126,7 +128,9 @@ Read: `ARCH-WEB-APP-ERR-CLASSES`, `ARCH-WEB-APP`
 
 **Goal:** Client-side state formatting and `Outcome` exposure.
 
-Read: `ARCH-WEB-APP`
+Read: `ARCH-WEB-APP`, `PLAT-WEB-REACT` (explicit return type, effect cleanup),
+`PLAT-WEB-STATE` (state tiers; its hook shape and location rules are
+`web-spa` only, so `ARCH-WEB-APP` governs here)
 
 ### Steps
 
@@ -151,8 +155,9 @@ Read: `ARCH-WEB-APP`
 **Goal:** Interactive rendering; user events wired; the form (if this
 feature mutates data) is functional.
 
-Read: `PLAT-WEB-NEXT`, `PLAT-WEB-DS-COMPONENT`, `PLAT-WEB-FORMS` (mutation
-features only)
+Read: `PLAT-WEB-NEXT`, `PLAT-WEB-REACT` (props interfaces, no anonymous
+components), `PLAT-WEB-DS-COMPONENT`, `PLAT-WEB-FORMS` (mutation features
+only)
 
 ### Steps
 

@@ -3,16 +3,33 @@ id: PLAT-WEB-REACT
 type: guide
 layer: platforms
 platform: [web]
-architecture: web-spa
-requires: [ARCH-WEB, ARCH-WEB-COMPONENTS]
-related: [PLAT-WEB-STYLING, PLAT-WEB-STATE, PLAT-WEB-FIREBASE]
+architecture: [web-spa, web-app]
+requires: [CORE-COUPLING, CORE-NAMING]
+related: [ARCH-WEB, ARCH-WEB-COMPONENTS, ARCH-WEB-APP, PLAT-WEB-STYLING, PLAT-WEB-STATE, PLAT-WEB-FIREBASE]
 tags: [react, typescript, strict, props, hooks, cleanup, as-const]
 status: active
 ---
 
 # React + TypeScript Platform Guide
 
-Extends: `ARCH-WEB`, `ARCH-WEB-COMPONENTS`
+Extends: `ARCH-WEB`, `ARCH-WEB-COMPONENTS` (`web-spa`); applies to `ARCH-WEB-APP` as well
+
+## Scope
+
+This guide serves both `web-spa` and `web-app`. The TypeScript and React rules
+are architecture-agnostic, with the exceptions below, which are `web-spa` only
+because they name a Vite or Firestore convention. `requires` deliberately lists
+no architecture overview, so a `web-app` lookup does not load the SPA's
+container/presentation and `AuthGuard` model.
+
+| Rule | Applies to | Note |
+|---|---|---|
+| `PLAT-WEB-TS-STRICT-01`, `-ANY-01`, `-PROPS-01`, `-PROPS-02`, `-TYPES-01`, `-CONST-01`, `-HOOKS-01`, `-CLEANUP-01`, `PLAT-WEB-REACT-ANON-01` | `web-spa`, `web-app` | Agnostic |
+| `PLAT-WEB-TS-FIRESTORE-01` | `web-spa` | Names `src/types/firestore.ts`. A `web-app` places provider types with its DataSource; see `ARCH-WEB-APP` |
+
+For `web-app`, `PLAT-WEB-TS-HOOKS-01`'s `{ data, loading, error }` example is
+one valid explicit shape; `ARCH-WEB-APP` requires the hook to expose an
+`Outcome`-typed state (`PAT-OUTCOME`), which is an explicit return type too.
 
 ## TypeScript config
 
@@ -36,7 +53,9 @@ enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-TS-STRICT-01 — TypeScript MUST run with `strict: true`, `noUnusedLocals: true`, and `noUnusedParameters: true`.
 ```
 
-The build MUST pass `tsc -b` with zero errors before every deploy.
+The build MUST pass `tsc -b` with zero errors before every deploy. A `web-app`
+meets this through `next build`'s own type-check step
+(`PLAT-WEB-NEXT-APP-DEPLOY-BUILD-01`).
 
 ```rule
 id: PLAT-WEB-TS-ANY-01
@@ -161,6 +180,8 @@ useEffect(() => {
 ```
 
 ## Firestore type casting
+
+*(`web-spa`. A `web-app` maps provider documents in its DataSource layer.)*
 
 Firestore returns `DocumentData` (untyped). Cast explicitly when mapping documents:
 

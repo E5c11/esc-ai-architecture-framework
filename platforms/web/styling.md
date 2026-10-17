@@ -12,6 +12,11 @@ status: active
 
 # Styling System
 
+**Scope: `web-spa`.** This guide describes the SPA's inline
+`React.CSSProperties` approach. `web-app` and `web-content` style with Tailwind
+tokens (`PLAT-WEB-DS-THEME`) and do not follow this guide; the two approaches
+are not alternatives for the same project.
+
 Extends: `ARCH-WEB`
 
 ## Approach

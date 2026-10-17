@@ -3,16 +3,33 @@ id: PLAT-WEB-STATE
 type: guide
 layer: platforms
 platform: [web]
-architecture: web-spa
-requires: [ARCH-WEB, ARCH-WEB-COMPONENTS]
-related: [PLAT-WEB-REACT, PLAT-WEB-FIREBASE]
+architecture: [web-spa, web-app]
+requires: [CORE-COUPLING, CORE-NAMING]
+related: [ARCH-WEB, ARCH-WEB-COMPONENTS, ARCH-WEB-APP, PLAT-WEB-REACT, PLAT-WEB-FIREBASE, PLAT-WEB-NEXT]
 tags: [state, use-state, custom-hooks, context, react-router, routing, auth-guard]
 status: active
 ---
 
 # State Management and Routing
 
-Extends: `ARCH-WEB`, `ARCH-WEB-COMPONENTS`
+Extends: `ARCH-WEB`, `ARCH-WEB-COMPONENTS` (`web-spa`); the state tiers apply to `ARCH-WEB-APP` as well
+
+## Scope
+
+The three state tiers and the Context rules apply to `web-spa` and `web-app`.
+The hook-shape, hook-location and routing rules describe the SPA's
+`react-router-dom` model and are `web-spa` only; `web-app` has its own
+equivalents in `ARCH-WEB-APP` and `PLAT-WEB-NEXT`. `requires` deliberately lists
+no architecture overview, so a `web-app` lookup does not load the SPA model.
+
+| Rule or section | Applies to | In `web-app` |
+|---|---|---|
+| Tier 1 (`useState`), Tier 3 (Context) | `web-spa`, `web-app` | Same |
+| `PLAT-WEB-STATE-CTX-01` | `web-spa`, `web-app` | Same |
+| `PLAT-WEB-STATE-CTX-02` | `web-spa`, `web-app` | Applies wherever auth state exists in the client. Where a server runtime enforces auth in `middleware.ts` (`PLAT-WEB-NEXT-MW-01`), `AuthContext` only mirrors the result for display and is never the access boundary |
+| `PLAT-WEB-STATE-HOOK-01` | `web-spa` | A `web-app` hook exposes `Outcome`-typed state (`PAT-OUTCOME`), per `ARCH-WEB-APP` |
+| `PLAT-WEB-STATE-HOOK-02` | `web-spa` | A `web-app` hook lives in `features/{feature}/hooks/` (`ARCH-WEB-APP`'s feature folder structure) |
+| Routing, `PLAT-WEB-ROUTE-GUARD-01`, SEO meta tags | `web-spa` | File-based routing and `middleware.ts` (`PLAT-WEB-NEXT`) |
 
 ## State management tiers
 
@@ -30,6 +47,8 @@ const [isOpen, setIsOpen]   = useState(false);
 ```
 
 ### Tier 2: Custom hook — reusable or side-effect-bearing logic
+
+*(The shape and location rules below are `web-spa`; see Scope.)*
 
 Use a custom hook when the same data-fetching or side-effect logic is needed
 in more than one component, or when the logic is complex enough to warrant its
@@ -127,6 +146,8 @@ violation_message: Violates PLAT-WEB-STATE-CTX-02 — Auth state MUST be owned b
 All components that need the current user call `useAuth()`. Never call `onAuthStateChanged` directly inside a component — it creates multiple listeners and the subscription is not cleaned up on unmount.
 
 ## Routing
+
+*(`web-spa` only. A `web-app` uses file-based routing; see `PLAT-WEB-NEXT`.)*
 
 Use `react-router-dom` v6+. Route structure lives in `App.tsx`.
 
