@@ -22,9 +22,16 @@
 #     convention-plugins: true
 
 schema:
-  version: "1.3"
+  version: "1.4"
   type: project-profile
   changelog:
+    "1.4": >
+      Added `frameworks.runtime` (`server` / `static-export`) — a `web-app` project's
+      runtime decides where its DataSource executes (a Server Action or Route Handler
+      on a held server, or the browser under Next.js `output: 'export'`) and which
+      Next.js features are available, so the variant platform docs are selected by it
+      rather than by a second architecture value. Web-app only; omit elsewhere.
+      See architectures/web-app/overview.md.
     "1.3": >
       Added `python` to `platform`, `python-app` to `architecture`, and
       `frameworks.interface` (cli / mcp / http) -- a Python program's delivery
@@ -133,6 +140,13 @@ fields:
       forms:
         type: string
         description: "Form state/validation library. Examples: react-hook-form, formik, none"
+      runtime:
+        type: string
+        description: >
+          Web-app runtime (web-app only). Values: server, static-export. `server` runs
+          its DataSource in a Server Action or Route Handler; `static-export` runs it in
+          the browser (Next.js `output: 'export'`). Required for a web-app project;
+          omit for every other architecture. See ARCH-WEB-APP-RUNTIME-01.
       analytics:
         type: string
         description: >
