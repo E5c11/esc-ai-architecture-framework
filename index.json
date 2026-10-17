@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-17T20:27:18.863685+00:00",
-  "count": 123,
+  "generated": "2026-10-17T20:40:23.858138+00:00",
+  "count": 125,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -1059,7 +1059,9 @@
         "ARCH-WEB-APP-ERR-CLASSES",
         "ARCH-WEB-APP-DATASOURCE",
         "ARCH-WEB-APP-REPOSITORY",
-        "ARCH-WEB-APP-DOMAIN"
+        "ARCH-WEB-APP-DOMAIN",
+        "ARCH-WEB-APP-USECASE",
+        "ARCH-WEB-APP-HOOK"
       ],
       "tags": [
         "web",
@@ -1177,6 +1179,42 @@
       "status": "active"
     },
     {
+      "id": "ARCH-WEB-APP-HOOK",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/web-app/hook.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-USECASE",
+        "ARCH-WEB-APP-ERR-CLASSES",
+        "PAT-OUTCOME",
+        "PAT-OBSERVER",
+        "PLAT-WEB-REACT"
+      ],
+      "related": [
+        "ARCH-WEB-APP-DATASOURCE",
+        "ARCH-PC-VIEWMODEL",
+        "PLAT-WEB-STATE",
+        "PAT-ANALYTICS-EVENTS",
+        "QG-WEB-TESTING"
+      ],
+      "tags": [
+        "hook",
+        "viewmodel",
+        "presentation",
+        "view-state",
+        "formatting",
+        "race",
+        "subscription",
+        "client-component"
+      ],
+      "status": "active"
+    },
+    {
       "id": "ARCH-WEB-APP-REPOSITORY",
       "type": "guide",
       "layer": "architectures",
@@ -1202,6 +1240,41 @@
         "coordination",
         "cache",
         "multi-source"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ARCH-WEB-APP-USECASE",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/web-app/usecase.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-DATASOURCE",
+        "ARCH-WEB-APP-DOMAIN",
+        "PAT-OUTCOME",
+        "PAT-OBSERVER",
+        "CORE-DI",
+        "CORE-TESTING"
+      ],
+      "related": [
+        "ARCH-WEB-APP-REPOSITORY",
+        "ARCH-WEB-APP-ERR-CLASSES",
+        "ARCH-PC-USECASE",
+        "ARCH-PY-USECASE"
+      ],
+      "tags": [
+        "usecase",
+        "orchestrator",
+        "business-logic",
+        "outcome",
+        "side-effects",
+        "idempotence",
+        "testing"
       ],
       "status": "active"
     },

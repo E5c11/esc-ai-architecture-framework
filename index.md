@@ -1,6 +1,6 @@
 # Framework Document Index
 
-*Generated 2026-10-17 — 123 documents*
+*Generated 2026-10-17 — 125 documents*
 
 ## core/
 
@@ -64,7 +64,9 @@
 | `ARCH-WEB-APP-DATASOURCE` | guide | `architectures/web-app/datasource.md` |  |
 | `ARCH-WEB-APP-DOMAIN` | rules | `architectures/web-app/domain.md` |  |
 | `ARCH-WEB-APP-ERR-CLASSES` | guide | `architectures/web-app/error-classes.md` |  |
+| `ARCH-WEB-APP-HOOK` | guide | `architectures/web-app/hook.md` |  |
 | `ARCH-WEB-APP-REPOSITORY` | guide | `architectures/web-app/repository.md` |  |
+| `ARCH-WEB-APP-USECASE` | guide | `architectures/web-app/usecase.md` |  |
 | `ARCH-WEB-COMPONENTS` | rules | `architectures/web-spa/components.md` |  |
 | `ARCH-WEB-CONTENT` | overview | `architectures/web-content/overview.md` |  |
 
