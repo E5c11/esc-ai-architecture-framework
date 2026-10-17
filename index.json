@@ -1,6 +1,6 @@
 {
-  "generated": "2026-09-29T19:47:36.289732+00:00",
-  "count": 120,
+  "generated": "2026-10-17T20:27:18.863685+00:00",
+  "count": 123,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -1048,21 +1048,101 @@
       "requires": [
         "CORE-COUPLING",
         "CORE-NAMING",
+        "CORE-DI",
+        "CORE-SSOT",
         "PAT-DATA-ACCESS",
         "PAT-OUTCOME",
         "PAT-OBSERVER"
       ],
       "related": [
-        "ARCH-PC"
+        "ARCH-PC",
+        "ARCH-WEB-APP-ERR-CLASSES",
+        "ARCH-WEB-APP-DATASOURCE",
+        "ARCH-WEB-APP-REPOSITORY",
+        "ARCH-WEB-APP-DOMAIN"
       ],
       "tags": [
         "web",
         "nextjs",
+        "layers",
+        "pragmatic-clean",
+        "datasource",
+        "usecase",
+        "hook",
+        "dependency-direction",
         "server-actions",
-        "route-handlers",
-        "server-components",
-        "client-components",
-        "layers"
+        "static-export",
+        "firebase"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ARCH-WEB-APP-DATASOURCE",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/web-app/datasource.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-ERR-CLASSES",
+        "PAT-DATA-ACCESS",
+        "PAT-OUTCOME",
+        "PAT-OBSERVER",
+        "CORE-NAMING"
+      ],
+      "related": [
+        "ARCH-WEB-APP-REPOSITORY",
+        "ARCH-WEB-APP-DOMAIN",
+        "ARCH-PC-DATASOURCE",
+        "PLAT-WEB-HTTP",
+        "PLAT-WEB-FORMS"
+      ],
+      "tags": [
+        "datasource",
+        "provider",
+        "mapping",
+        "parsing",
+        "outcome",
+        "subscription",
+        "firestore",
+        "rest",
+        "postgres",
+        "fake"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ARCH-WEB-APP-DOMAIN",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/web-app/domain.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "CORE-SSOT",
+        "CORE-NAMING"
+      ],
+      "related": [
+        "ARCH-WEB-APP-DATASOURCE",
+        "ARCH-WEB-APP-REPOSITORY",
+        "ARCH-PY-DOMAIN"
+      ],
+      "tags": [
+        "domain",
+        "entity",
+        "value-object",
+        "pure",
+        "immutable",
+        "rule-table",
+        "aggregation",
+        "pipeline",
+        "determinism"
       ],
       "status": "active"
     },
@@ -1087,10 +1167,41 @@
         "error-handling",
         "outcome",
         "typed-errors",
+        "datasource",
         "server-actions",
         "route-handlers",
+        "static-export",
         "zod",
         "react-hook-form"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ARCH-WEB-APP-REPOSITORY",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/web-app/repository.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-DATASOURCE",
+        "CORE-SSOT",
+        "PAT-DATA-ACCESS",
+        "PAT-OUTCOME"
+      ],
+      "related": [
+        "ARCH-WEB-APP-DOMAIN",
+        "ARCH-PC-REPOSITORY"
+      ],
+      "tags": [
+        "repository",
+        "ssot",
+        "coordination",
+        "cache",
+        "multi-source"
       ],
       "status": "active"
     },
@@ -1818,6 +1929,8 @@
         "ARCH-WEB-APP-ERR-CLASSES",
         "PLAT-WEB-NEXT",
         "PLAT-WEB-NEXT-APP",
+        "PLAT-WEB-REACT",
+        "PLAT-WEB-STATE",
         "PLAT-WEB-HTTP",
         "PLAT-WEB-FORMS",
         "PLAT-WEB-DS-THEME",
@@ -3441,10 +3554,13 @@
       ],
       "architecture": "web-spa",
       "requires": [
-        "ARCH-WEB",
-        "ARCH-WEB-COMPONENTS"
+        "CORE-COUPLING",
+        "CORE-NAMING"
       ],
       "related": [
+        "ARCH-WEB",
+        "ARCH-WEB-COMPONENTS",
+        "ARCH-WEB-APP",
         "PLAT-WEB-STYLING",
         "PLAT-WEB-STATE",
         "PLAT-WEB-FIREBASE"
@@ -3470,12 +3586,16 @@
       ],
       "architecture": "web-spa",
       "requires": [
-        "ARCH-WEB",
-        "ARCH-WEB-COMPONENTS"
+        "CORE-COUPLING",
+        "CORE-NAMING"
       ],
       "related": [
+        "ARCH-WEB",
+        "ARCH-WEB-COMPONENTS",
+        "ARCH-WEB-APP",
         "PLAT-WEB-REACT",
-        "PLAT-WEB-FIREBASE"
+        "PLAT-WEB-FIREBASE",
+        "PLAT-WEB-NEXT"
       ],
       "tags": [
         "state",

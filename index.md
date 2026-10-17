@@ -1,6 +1,6 @@
 # Framework Document Index
 
-*Generated 2026-09-29 — 120 documents*
+*Generated 2026-10-17 — 123 documents*
 
 ## core/
 
@@ -61,7 +61,10 @@
 | `ARCH-PY-USECASE` | rules | `architectures/python-app/usecase.md` |  |
 | `ARCH-WEB` | overview | `architectures/web-spa/overview.md` |  |
 | `ARCH-WEB-APP` | overview | `architectures/web-app/overview.md` |  |
+| `ARCH-WEB-APP-DATASOURCE` | guide | `architectures/web-app/datasource.md` |  |
+| `ARCH-WEB-APP-DOMAIN` | rules | `architectures/web-app/domain.md` |  |
 | `ARCH-WEB-APP-ERR-CLASSES` | guide | `architectures/web-app/error-classes.md` |  |
+| `ARCH-WEB-APP-REPOSITORY` | guide | `architectures/web-app/repository.md` |  |
 | `ARCH-WEB-COMPONENTS` | rules | `architectures/web-spa/components.md` |  |
 | `ARCH-WEB-CONTENT` | overview | `architectures/web-content/overview.md` |  |
 
