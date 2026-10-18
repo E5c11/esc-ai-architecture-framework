@@ -140,12 +140,14 @@ its effect (`PLAT-WEB-TS-CLEANUP-01`).
 
 ```rule
 id: ARCH-WEB-APP-DS-BOUND-01
-statement: A list read or subscription MUST declare a limit or an explicit "all", and an unbounded subscription on a collection that grows MUST NOT be used.
-type: soft
+statement: Where a collection grows with users or content, a list read MUST have a limit and a unique order (the document id as the tie-break), or be served from a server-side aggregate, and a client MUST NOT read a whole growing collection to compute figures.
+type: hard
 scope: performance
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DS-BOUND-01 — A list read or subscription MUST declare a limit or an explicit "all", and an unbounded subscription on a collection that grows MUST NOT be used.
+violation_message: Violates ARCH-WEB-APP-DS-BOUND-01 — Where a collection grows with users or content, a list read MUST have a limit and a unique order (the document id as the tie-break), or be served from a server-side aggregate, and a client MUST NOT read a whole growing collection to compute figures.
 ```
+
+A collection that is a fixed taxonomy is bounded and may be read whole. Document-store reads are billed and delivered per document, so a listener or read over an unbounded collection costs more every month it runs. Where users can list a collection, also cap the query in the security rules (`allow list: if request.query.limit <= 100;`); for an admin-only collection that cap is a SHOULD.
 
 Document-store reads are billed and delivered per document. A listener on an
 unbounded collection costs more every month the app runs.
@@ -223,6 +225,19 @@ violation_message: Violates ARCH-WEB-APP-DS-EMPTY-01 — "Not found" for a singl
 Whether an absent record is a failure is the caller's decision: a fresh account
 before its first sync is not an error. Reading a snapshot that should exist and
 does not is. An update or delete of a missing record is `notFound`.
+
+## Schema change
+
+```rule
+id: ARCH-WEB-APP-DS-SCHEMA-01
+statement: A change to a stored document's shape MUST ship with one of: an idempotent backfill with a dry run, a versioned reader that maps the old shape explicitly and whose exclusions are counted and shown, or a recorded decision to discard; a reader that silently defaults a missing field is none of these.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-DS-SCHEMA-01 — A change to a stored document's shape MUST ship with one of: an idempotent backfill with a dry run, a versioned reader that maps the old shape explicitly and whose exclusions are counted and shown, or a recorded decision to discard; a reader that silently defaults a missing field is none of these.
+```
+
+This is the Firestore stand-in for a migration file, since a schemaless store has no tool to force one. Documents SHOULD carry a `schemaVersion`. When old documents cannot be reconstructed, use the versioned reader and show how many were excluded.
 
 ## Error handling
 

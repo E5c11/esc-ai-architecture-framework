@@ -191,18 +191,27 @@ This keeps a user's navigation away from turning into an error banner
 
 ```rule
 id: ARCH-WEB-APP-UC-WRITE-01
-statement: A UseCase that performs more than one write MUST state what happens when a later write fails (compensate, or report exactly which writes succeeded), and MUST NOT assume atomicity unless a DataSource operation provides it (a batch, a transaction, a single callable).
+statement: A UseCase that writes more than one document in one store MUST do so in one atomic operation the DataSource provides (a batch, a transaction, or a single callable), with no exception.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-UC-WRITE-01 — A UseCase that performs more than one write MUST state what happens when a later write fails (compensate, or report exactly which writes succeeded), and MUST NOT assume atomicity unless a DataSource operation provides it (a batch, a transaction, a single callable).
+violation_message: Violates ARCH-WEB-APP-UC-WRITE-01 — A UseCase that writes more than one document in one store MUST do so in one atomic operation the DataSource provides (a batch, a transaction, or a single callable), with no exception.
 ```
 
-Two sequential writes to a provider are not atomic, and the second can fail while the
-first is already visible to other users. Prefer a DataSource operation that does both
-at once (a batch write, a single callable function) over a UseCase that sequences them.
-Where that is not possible, return an outcome that says which writes happened, so the
-UI can show a truthful state and a retry is safe.
+This is `SVC-TX-02`'s failure (a half-applied write) in Firestore terms. Two sequential writes to a provider are not atomic, and the second can fail while the first is already visible to other users.
+
+```rule
+id: ARCH-WEB-APP-UC-WRITE-02
+statement: A write that spans two stores or projects (so no single batch can cover it) MUST be idempotent and ordered: the target is written first under a deterministic id by an upsert, and the marker or source update second, so repeating it after a partial failure cannot duplicate.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-UC-WRITE-02 — A write that spans two stores or projects (so no single batch can cover it) MUST be idempotent and ordered: the target is written first under a deterministic id by an upsert, and the marker or source update second, so repeating it after a partial failure cannot duplicate.
+```
+
+A promotion that does `addDoc` into the target (a new id each call) and then marks the source leaves a duplicate in the target when the marker write fails and the operation is retried. The same operation with `setDoc` under the source's id is safe to repeat.
+
+When a cross-store write does fail part-way, return an outcome that says which writes happened, so the UI can show a truthful state and a retry is safe.
 
 ## Side effects that must not block the result
 

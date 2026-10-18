@@ -51,12 +51,14 @@ nothing above the point where it occurs catches it except a route-level boundary
 
 ```rule
 id: ARCH-WEB-APP-EFLOW-RETURN-01
-statement: An expected failure (a provider error, a validation failure, a denied permission, a missing record that must exist) MUST be returned as an error outcome at every layer, and a thrown error MUST mean a defect.
+statement: An expected failure (a provider error, a validation failure, a denied permission, a missing record that must exist) MUST cross the DataSource and Hook boundaries as a returned error outcome, and a thrown error MUST mean a defect; layers between those two boundaries MAY propagate the outcome or throw internally, provided the UseCase boundary converts back to an outcome.
 type: hard
 scope: error-handling
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-EFLOW-RETURN-01 — An expected failure (a provider error, a validation failure, a denied permission, a missing record that must exist) MUST be returned as an error outcome at every layer, and a thrown error MUST mean a defect.
+violation_message: Violates ARCH-WEB-APP-EFLOW-RETURN-01 — An expected failure (a provider error, a validation failure, a denied permission, a missing record that must exist) MUST cross the DataSource and Hook boundaries as a returned error outcome, and a thrown error MUST mean a defect; layers between those two boundaries MAY propagate the outcome or throw internally, provided the UseCase boundary converts back to an outcome.
 ```
+
+This differs from `ARCH-PC`, where the DataSource throws a typed domain error and the UseCase converts it. The reasons are specific to TypeScript and React, not a preference: a `catch` variable is `unknown` and nothing forces an `instanceof` check, an unawaited rejection is silent, an error thrown in an event handler or effect never reaches a React error boundary, and Next.js strips a thrown Server Action error to an opaque digest in production. The cost is `if (!result.ok) return result` plumbing in the layers between; if the pilot shows that costs more than it saves, relax those layers only.
 
 If an expected failure is thrown, every caller needs a `try`/`catch` it will forget; if
 a defect is returned, the screen shows a polite error for a bug nobody is told about.
