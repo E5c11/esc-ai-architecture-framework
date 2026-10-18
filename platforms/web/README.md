@@ -22,3 +22,12 @@ the tool requires it: CSS for Tailwind 4 configuration, JSON for `firebase.json`
 profile, a Dockerfile, shell commands. A project's configuration files are TypeScript where the tool allows
 (`next.config.ts`, `proxy.ts`, `vitest.config.ts`); where it does not (for example a PostCSS config), the
 document says so.
+
+## Project-set values
+
+A web rule that needs a number says "declare a limit", never the number itself. A project records its values as
+local rules in `.esc-ai/local-architecture/` (status `stub`, so they cannot pass for framework rules) and enforces
+them with its own lint or architecture check. Values a project is expected to declare: maximum module size,
+maximum function length and branch count, the point at which a feature splits into sub-features, the cap on
+categorical chart series, and any read budget (see `ARCH-WEB-APP-DS-AGG-01`). A value that recurs across projects
+is a candidate for a framework default through the normal contribution route.

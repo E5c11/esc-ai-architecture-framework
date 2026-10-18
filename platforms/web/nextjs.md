@@ -41,7 +41,7 @@ enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-NEXT-VERSION-01 — A project MUST record the Next.js, React, Tailwind and Firebase SDK versions it targets in its repository, MUST change them only as a deliberate upgrade step committed on its own, and MUST NOT adopt a new major version's opt-in features (Cache Components, the React Compiler) as a side effect of upgrading.
 ```
 
-An upgrade is a behaviour-preserving change (`ARCH-WEB-APP-MOD-SPLIT-01`'s discipline):
+An upgrade is a behaviour-preserving change (`ARCH-WEB-APP-workflow`'s discipline):
 run the framework's upgrade codemod, get the suite green, commit; adopt a new feature
 afterwards, in its own change. Where a rule in this framework names a version-specific
 file or flag (`proxy.ts`, `cacheComponents`), it says which versions it applies to; on
@@ -207,7 +207,7 @@ JavaScript modules are shared between the server and client graphs, so it is eas
 import server code into the client by accident. Without the marker, an unprefixed
 environment variable becomes an empty string in the browser and the code fails in a
 confusing way; with it, the build fails with a clear message. This is the mechanism
-`ARCH-WEB-APP-DS-SERVER-01` requires of a server DataSource and
+`ARCH-WEB-APP-COMPOSE-SPLIT-01` requires of a server DataSource and
 `ARCH-WEB-APP-COMPOSE-SPLIT-01` of the server graph.
 
 ## Route boundary files

@@ -238,11 +238,11 @@ violation_message: Violates PLAT-WEB-DS-THEME-VIZ-02 — A chart MUST NOT carry 
 
 ```rule
 id: PLAT-WEB-DS-THEME-VIZ-03
-statement: A chart SHOULD show at most eight categorical series; beyond that, the smaller series SHOULD be grouped as "Other" or the chart split, rather than adding colours that cannot be told apart.
+statement: A chart SHOULD cap its categorical series at a project-declared number; beyond it, the smaller series SHOULD be grouped as "Other" or the chart split, rather than adding colours that cannot be told apart.
 type: soft
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-DS-THEME-VIZ-03 — A chart SHOULD show at most eight categorical series; beyond that, the smaller series SHOULD be grouped as "Other" or the chart split, rather than adding colours that cannot be told apart.
+violation_message: Violates PLAT-WEB-DS-THEME-VIZ-03 — A chart SHOULD cap its categorical series at a project-declared number; beyond it, the smaller series SHOULD be grouped as "Other" or the chart split, rather than adding colours that cannot be told apart.
 ```
 
 Red and green carry good and bad by convention, and are the pair most often confused. They

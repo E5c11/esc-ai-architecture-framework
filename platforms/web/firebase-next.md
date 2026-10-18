@@ -165,14 +165,14 @@ enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-NEXT-FB-EMU-01 — Rules tests and DataSource contract tests MUST run against the Firebase emulators in CI, and the composition MUST select the emulator from configuration, never from a code edit.
 ```
 
-The choice of live provider or emulator is `ARCH-WEB-APP-COMPOSE-CHOICE-01`'s: explicit,
+The choice of live provider or emulator is `ARCH-WEB-APP-COMPOSE-CONFIG-01`'s: explicit,
 from configuration, and loud when wrong. A test run must never be able to reach the
 production project.
 
 ## Reading and writing data
 
 The DataSource rules apply unchanged: one interface per provider, schema parsing of every
-document (`ARCH-WEB-APP-DS-PARSE-01`), bounded reads (`ARCH-WEB-APP-DS-BOUND-01`), one
+document (`ARCH-WEB-APP-DS-PARSE-01`), bounded reads (`ARCH-WEB-APP-DS-PAGE-01`), one
 listener per `subscribe…` call (`ARCH-WEB-APP-DS-SUBSCRIBE-01`). Choose the read by how the
 data behaves: `onSnapshot` for data that changes while someone is looking at it,
 `getDoc`/`getDocs` for one-shot reads.
@@ -243,7 +243,7 @@ and is really a configuration error.
 | `unauthenticated` | `unauthorized` | No signed-in caller |
 | `invalid-argument` | `validation` | A callable's input failed its schema; carry the field errors |
 | `not-found` | `notFound` | Only where the record had to exist (`ARCH-WEB-APP-DS-EMPTY-01`) |
-| `unavailable`, `deadline-exceeded` | `offline` | Connectivity or timeout; retry is the user's or a bounded idempotent retry (`ARCH-WEB-APP-EFLOW-RETRY-01`) |
+| `unavailable`, `deadline-exceeded` | `offline` | Connectivity or timeout; retry is the user's or a bounded idempotent retry (`PLAT-WEB-HTTP-RETRY-01`) |
 | `failed-precondition` | `unexpected` | Often a missing index: log with the full cause, never mask |
 | `resource-exhausted` | `unexpected` | A quota; log and surface as unavailable, not as empty data |
 | anything else | `unexpected` | Logged once with the cause (`ARCH-WEB-APP-ERR-UNKNOWN-01`) |
@@ -300,7 +300,7 @@ When Firebase is used from a Server Action or Route Handler, the Admin SDK runs 
 the project's service identity. It bypasses security rules, so the function's own checks
 are the only access control: verify the caller from the session or ID token on every call
 (`PLAT-WEB-NEXT-FB-CALLABLE-01` applies in the same spirit), keep the DataSource
-server-only (`ARCH-WEB-APP-DS-SERVER-01`), and never import the Admin SDK from a module a
+server-only (`ARCH-WEB-APP-COMPOSE-SPLIT-01`), and never import the Admin SDK from a module a
 Client Component can reach.
 
 ## Known platform traps

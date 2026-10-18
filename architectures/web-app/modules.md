@@ -29,11 +29,11 @@ script).
 
 ```rule
 id: ARCH-WEB-APP-MOD-SIZE-01
-statement: A module SHOULD stay under 300 lines and SHOULD NOT exceed 600; a module over 300 lines SHOULD carry a comment naming the single concept it holds, or be split.
+statement: A project SHOULD declare a maximum module size and enforce it with a lint rule; a module over it SHOULD be split or carry a comment naming the single concept it holds.
 type: soft
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-MOD-SIZE-01 — A module SHOULD stay under 300 lines and SHOULD NOT exceed 600; a module over 300 lines SHOULD carry a comment naming the single concept it holds, or be split.
+violation_message: Violates ARCH-WEB-APP-MOD-SIZE-01 — A project SHOULD declare a maximum module size and enforce it with a lint rule; a module over it SHOULD be split or carry a comment naming the single concept it holds.
 ```
 
 ```rule
@@ -47,11 +47,11 @@ violation_message: Violates ARCH-WEB-APP-MOD-COHESION-01 — A module MUST be de
 
 ```rule
 id: ARCH-WEB-APP-MOD-FUNC-01
-statement: A function SHOULD stay under 50 lines and 10 branches, and a function that both computes and performs I/O SHOULD be split into a pure computation and a thin effectful caller.
+statement: A project SHOULD declare a maximum function length and branch count and enforce them with a lint rule, and a function that both computes and performs I/O SHOULD be split into a pure computation and a thin effectful caller.
 type: soft
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-MOD-FUNC-01 — A function SHOULD stay under 50 lines and 10 branches, and a function that both computes and performs I/O SHOULD be split into a pure computation and a thin effectful caller.
+violation_message: Violates ARCH-WEB-APP-MOD-FUNC-01 — A project SHOULD declare a maximum function length and branch count and enforce them with a lint rule, and a function that both computes and performs I/O SHOULD be split into a pure computation and a thin effectful caller.
 ```
 
 The pure half is domain code (`ARCH-WEB-APP-DOMAIN`) and is tested with plain inputs. The

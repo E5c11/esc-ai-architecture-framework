@@ -135,11 +135,11 @@ code into shared.
 
 ```rule
 id: ARCH-WEB-APP-FEAT-SUB-01
-statement: A feature whose layer folders hold more than about ten files each, or whose screens have separate state, SHOULD be split into sub-features, each with the same shape one level deeper.
+statement: A feature whose layer folders have become hard to scan, or whose screens have separate state, SHOULD be split into sub-features, each with the same shape one level deeper; the point at which that happens is the project's to declare.
 type: soft
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-FEAT-SUB-01 — A feature whose layer folders hold more than about ten files each, or whose screens have separate state, SHOULD be split into sub-features, each with the same shape one level deeper.
+violation_message: Violates ARCH-WEB-APP-FEAT-SUB-01 — A feature whose layer folders have become hard to scan, or whose screens have separate state, SHOULD be split into sub-features, each with the same shape one level deeper; the point at which that happens is the project's to declare.
 ```
 
 ```
