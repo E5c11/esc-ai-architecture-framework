@@ -70,7 +70,7 @@ id: ARCH-WEB-APP-EFLOW-SWALLOW-01
 statement: Code MUST NOT catch an error and discard it: every `catch` and `.catch` MUST translate the error into a returned outcome, rethrow it, or (only for a contained side effect) log it, and an empty handler MUST NOT exist.
 type: hard
 scope: error-handling
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-EFLOW-SWALLOW-01 — Code MUST NOT catch an error and discard it: every `catch` and `.catch` MUST translate the error into a returned outcome, rethrow it, or (only for a contained side effect) log it, and an empty handler MUST NOT exist.
 ```

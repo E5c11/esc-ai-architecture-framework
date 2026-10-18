@@ -30,7 +30,7 @@ id: ARCH-WEB-APP-OBS-LOG-01
 statement: Code MUST log through a logger received from the composition and MUST NOT call `console.*` directly; only the composition module chooses the logger, its level and its destination.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-OBS-LOG-01 — Code MUST log through a logger received from the composition and MUST NOT call `console.*` directly; only the composition module chooses the logger, its level and its destination.
 ```

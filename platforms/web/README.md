@@ -31,3 +31,5 @@ them with its own lint or architecture check. Values a project is expected to de
 maximum function length and branch count, the point at which a feature splits into sub-features, the cap on
 categorical chart series, and any read budget (see `ARCH-WEB-APP-DS-AGG-01`). A value that recurs across projects
 is a candidate for a framework default through the normal contribution route.
+
+The lintable limits are read from `.esc-ai/lint-limits.yaml` (`maxModuleLines`, `maxFunctionLines`, `maxComplexity`, optionally `maxComponentFunctionLines`) by `esc-exec architecture lint-config generate`, which writes a TypeScript `eslint.config.ts`. Generation fails when a limit is not declared; the framework sets no default sizes.

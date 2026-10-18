@@ -32,7 +32,7 @@ id: ARCH-WEB-APP-MOD-SIZE-01
 statement: A project SHOULD declare a maximum module size and enforce it with a lint rule; a module over it SHOULD be split or carry a comment naming the single concept it holds.
 type: soft
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-SIZE-01 — A project SHOULD declare a maximum module size and enforce it with a lint rule; a module over it SHOULD be split or carry a comment naming the single concept it holds.
 ```
@@ -52,7 +52,7 @@ id: ARCH-WEB-APP-MOD-FUNC-01
 statement: A project SHOULD declare a maximum function length and branch count and enforce them with a lint rule, and a function that both computes and performs I/O SHOULD be split into a pure computation and a thin effectful caller.
 type: soft
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-FUNC-01 — A project SHOULD declare a maximum function length and branch count and enforce them with a lint rule, and a function that both computes and performs I/O SHOULD be split into a pure computation and a thin effectful caller.
 ```
@@ -67,7 +67,7 @@ id: ARCH-WEB-APP-MOD-API-01
 statement: A package or feature MUST list its public exports explicitly in its `index.ts` (its page or root view and public types, never hooks, DataSources, Repositories, UseCases or mappers), MUST NOT use `export *` in a public surface, and other code MUST import only from that surface.
 type: hard
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-API-01 — A package or feature MUST list its public exports explicitly in its `index.ts` (its page or root view and public types, never hooks, DataSources, Repositories, UseCases or mappers), MUST NOT use `export *` in a public surface, and other code MUST import only from that surface.
 ```
@@ -81,7 +81,7 @@ id: ARCH-WEB-APP-MOD-CYCLE-01
 statement: Import cycles between modules or packages MUST NOT exist; a cycle MUST be resolved by extracting the shared concept into a lower module, not by importing inside a function or by deferring with a dynamic import.
 type: hard
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-CYCLE-01 — Import cycles between modules or packages MUST NOT exist; a cycle MUST be resolved by extracting the shared concept into a lower module, not by importing inside a function or by deferring with a dynamic import.
 ```

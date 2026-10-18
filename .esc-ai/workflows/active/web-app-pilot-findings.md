@@ -69,3 +69,22 @@ Commits `1e99a8e`, `22819f5` in the pilot branch. Tested with 108 tests, 8 of th
 - `COMPOSE-ENV-01` reworded: switching gives consumers the new environment's graph and releases live subscriptions; a graph holding none may be kept.
 - New `COMPOSE-ENV-03`: an operation spanning environments receives each store explicitly and does not depend on the active one.
 - New `FEAT-DATA-01` and a top-level `data/` folder for code shared by DataSources; the `web-app` template gained `web.shared-data-only-for-datasources`. In the pilot one `toAppError` replaced two copies, and the check passes with 0 violations in new code.
+
+---
+
+# Generated lint configuration
+
+`esc-exec architecture lint-config generate` (execution framework) writes a TypeScript `eslint.config.ts` from the lintable rules and the project's `.esc-ai/lint-limits.yaml`. It fails if a required limit is undeclared: the framework holds the mapping, the project holds the numbers. `esc-exec architecture lint-config coverage` lists what is covered and how far.
+
+## Result on the pilot
+- New code (`features`, `composition`, `data`, `shared`): **0 problems** after fixing what the first run found. The old pages: **151** (47 over-long functions, 34 non-null assertions, 30 over-complex functions, 17 floating promises, 11 `any`, 6 over-long modules, 4 `console`, 2 assertions).
+- The first run found 4 real problems in code written to follow the rules: two floating promises in the hooks, a 210-line form component, and a mapper with 16 `??` defaults. All fixed (the form is split into sections; the legacy defaults are one explicit object).
+- `package.json` gained a `lint` script scoped to the new code, so the generated verification profile now includes the lint gate and no longer notes that nothing lints. That scoping is a ratchet: it can widen as pages move.
+
+## Where a rule is only partly lintable (recorded in `COVERAGE`)
+1. `EFLOW-ASSERT-01`: a linter can ban `@ts-ignore`, non-null assertions and `{...} as T`, but not tell a plain `x as T` over unchecked data from a legitimate narrowing (ESLint `assertionStyle: 'never'` flagged 128 sites, most of them fine, including the parsers). Kept partial; the rest stays with a reviewer.
+2. `MOD-FUNC-01`: ESLint's `complexity` counts `??`, so a mapper with many defaults trips it. It was a fair signal here (it pushed the legacy defaults into one object) but is noisy for mapping code.
+3. A JSX component is mostly markup, so one function-length limit flags every component. The generator accepts a separate `maxComponentFunctionLines`; without it the rule is unusable on React.
+4. `MOD-NAME-01` is a folder-name rule, not a lint rule; it belongs in the architecture check (`forbidden-path`), not yet generated.
+
+Marked exercised: `MOD-SIZE-01`, `MOD-FUNC-01`, `MOD-CYCLE-01`, `MOD-API-01`, `EFLOW-SWALLOW-01`, `OBS-LOG-01`.
