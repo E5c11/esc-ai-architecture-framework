@@ -116,3 +116,24 @@ Legacy banners, sections and section items (`portal_items`, `portal_sections`) a
 4. **A test graph builder (`src/test/graph.ts`)** was needed once the graph grew a third feature: two older hook tests each listed every graph member. One helper, tests name only what they care about.
 5. **Duplication to watch, not yet to extract:** the cross-project promote use case now exists twice (notifications, portal items) with the same shape and different stores. Two copies, different types; a third would justify a shared helper (`FEAT-SHARED-01`).
 6. **Environment gotcha, not a rule:** the dashboard signs out any account not in its `VITE_DASHBOARD_EMAILS` allow-list without a message, which looked like a login failure. Vite's dependency re-optimisation also reloads the page mid sign-in the first time.
+
+---
+
+# Slice 4: Promotion items and destinations
+
+The current content model on the Portal page (`promo_items`, `promo_destinations`) as `features/promotions`: domain (grouping by destination, destination validation), two stores with Firestore, fake and contract suites, a `saveDestination` use case, `usePromotions`, and a temporary page adapter. Also extracted `shared/useCases/promoteAcrossProjects`, now used by portal and promotions, and `orThrow` in `shared/outcome`. The page lost its grouping loop and both old hooks; the six record interfaces in `types/firestore.ts` that nothing uses any more were deleted.
+
+## Result
+- 206 tests across the whole suite pass against the real emulator (63 more than before this slice's start, 47 of them new in this slice and the extraction); `tsc` clean, lint 0 problems, architecture check 0 violations in new code.
+- Read verified in Chrome on dev and prod with a temporary admin account (deleted afterwards): destinations, items grouped under each destination in order, and the edit form's prefilled destinations and section. Prod output matches what the old page rendered. No write clicked against a real project.
+
+## Findings
+1. **The extraction rule worked as written.** `FEAT-SHARED-01` says move code to `shared/` when a second consumer needs it. Portal was the second copy and I noted it; promotions was the third, so I extracted, and a behaviour test now lives once. Notifications keeps its own version on purpose: it skips an already-promoted notification and tracks the prod id, which the other two do not.
+2. **A data-loss bug the old code had, found by reading real data.** Promoting an item rewrote its prod copy from a mapped object that dropped the `sourcePortalItemId` field the migration script had put there. The domain now carries that field and a contract test proves an update and a promote keep it. Whether prod ever relied on the loss is unknown; the field is not read by the dashboard.
+3. **`AppError` has no "invalid input" case.** Destination validation (no id, non-positive duration) comes back as `unexpected` with a message, because the union only has failure kinds a store can produce. It works (the component shows the message) but it blurs "the editor typed something wrong" with "something broke". Candidate rule change: a `ViewState`-style `invalid` variant, or validation returned as its own result type. One slice is not enough to decide; notifications' `validateForm` already returns a different shape, so there are now two styles.
+4. **A boundary mapper earns its keep.** Stored destination fields are snake_case (`is_active`, `section_id`) and shared with the mobile apps, so the domain uses camelCase and `promotionMapper.ts` is the only file that knows both. A round-trip test (stored in, stored out) and an emulator test that reads the raw document guard the names the apps depend on.
+5. **Two hooks became one read.** Items and destinations load together and fail together, so the page's separate loading and error states collapsed to one. If the destinations lookup ever needs its own error handling, split it then.
+6. **`saveDestination` uses a merge write.** The old code chose between `updateDoc` and `setDoc` from the page's loaded list, so two editors could race on the choice. One merge write is create-or-update; an emulator test shows it keeps fields it does not know.
+
+## Still not exercised
+Repository, live listeners, `server` runtime, observability, and security-rules tests, as before. Both Portal slices read once; neither needed a Repository.
