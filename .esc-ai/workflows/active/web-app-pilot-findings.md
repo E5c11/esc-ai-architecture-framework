@@ -137,3 +137,44 @@ The current content model on the Portal page (`promo_items`, `promo_destinations
 
 ## Still not exercised
 Repository, live listeners, `server` runtime, observability, and security-rules tests, as before. Both Portal slices read once; neither needed a Repository.
+
+---
+
+# Slice 5: the first `server`-runtime consumer (garage-management-system)
+
+A different repository, on purpose: `/home/emmanuel/WebstormProjects/garage-management-system` is a Next.js app with Server Actions, untrusted form input, no auth and no database (an in-memory store, by design). Worked in a worktree (`../garage-management-system-pilot`, branch `esc-ai/web-app-pilot`), in four commits: characterization tests, the layering refactor, the Next.js 16.2 to 16.3 upgrade (its own step, `PLAT-WEB-NEXT-VERSION-01`), and Cache Components. Declared `frameworks.runtime: server` in `context/project-profile.yaml`.
+
+## Result
+- 60 tests (domain, schemas, store contract, use cases, actions called directly, hooks, composition); `tsc`, lint, the generated architecture lint, `next build` clean; the architecture check passes all 13 rules.
+- The same browser flow (empty submit, valid submit, dashboard, detail, triage save, back to dashboard) gives identical text on the original and the refactor, on dev and on the production build. One difference found and fixed: the original showed each viewer's local time, mine showed UTC, because `HOOK-FORMAT-01` requires an explicit timezone. The workshop must declare it; set to `Africa/Johannesburg` as an assumption for the owner to confirm.
+
+## Defects the original had, found by the work
+1. **Every export of a `'use server'` file is a callable endpoint.** The original's actions file exported six functions (`createFault`, `updateFault`, `listFaults`, `getFault` and the two form handlers). Next registered all six. Verified against the running original: an unauthenticated POST with an action id (taken from the build manifest, so an attacker needs the id to leak) listed customer records and overwrote a customer's name. The refactor registers only the two real entry points.
+2. **Mass assignment.** `updateFault` did `{...existing, ...patch}` on a patch that was typed but never checked, so `id`, `customer_name` and `created_at` were overwritable. Pinned by a characterization test on the old code, then fixed: a strict schema per entry point rejects unknown keys, and the action picks only the form's named fields (a form also carries framework-added hidden fields, so a strict schema on the raw form fails).
+3. **Silently frozen data.** On Next 16.2 (previous model) `/manager` was prerendered static at build, so its data was whatever the build saw. Under Cache Components the same read of an in-process store is still frozen unless the component calls `await connection()`: verified, the page builds as `Static`, and after a successful submission the dashboard still says "No faults waiting for triage". The platform did flag the other route (`params` awaited outside `<Suspense>`) but nothing flagged this one. Verified only for a read that resolves without I/O (an in-memory store); I did not test a real database client.
+4. Smaller: a blank scheduled date was stored as `undefined` against a type of `string | null`; `isTriaged` is inferred from `updated_at !== created_at` (fine in practice, noted in the code).
+
+## Rules exercised (marked `exercised`)
+`COMP-SERVER-01`, `COMPOSE-SPLIT-01` (the server half; the app needs no client graph), `DOM-SERIAL-01`, `UC-STATELESS-01`, `FEAT-ROUTE-01`, `EFLOW-PRESENT-01`, `COMPOSE-FACTORY-01`, `HOOK-NAMING-01`. Platform rules exercised (they carry no marker): `NEXT-APP-THROW-01`, `NEXT-DATA-FETCH-01`, `NEXT-DATA-SUSPENSE-01`, `NEXT-DATA-MODEL-01`, `NEXT-SERVERONLY-01`, `NEXT-BOUNDARY-01`, `NEXT-CLIENT-01`, `NEXT-ASYNC-01`, `NEXT-VERSION-01`, `NEXT-LINT-01`, `FORMS-SSOT-01`.
+
+Left `unproven` on purpose: `UC-NAMING-01` (see 7), `COMP-NAMING-01` (see 8), `COMP-STATE-01` (assumes a client `loading/ready/error` state that the server runtime replaces with Suspense and `error.tsx`), `FEAT-ROUTE-02` (one feature, nothing to compose), `OBS-REDACT-01` (nothing is logged), and the Repository, listener and security-rules rules (no consumer yet).
+
+## Execution framework changes this forced (done, tested: 705 tests)
+- The `web-app` template did not scan the `actions/` layer, so a Server Action importing an SDK or a DataSource implementation was invisible to the SDK and implementation rules. It now does, plus a new `web.actions-below-the-ui`.
+- `InMemory*` was not recognised as a DataSource implementation.
+- New rule type `required-import`, used by `web.server-graph-imports-server-only`; new `web.server-graph-not-in-client-code`. Both proven by tests that plant the violation.
+- The lint generator hard-coded `src/**` and always wrote `eslint.config.ts`. It now detects a project without `src/` and takes `--output`, so it can sit beside a Next project's own config.
+
+## Proposals for the architecture framework (not applied; they change rules)
+1. **New hard rule `PLAT-WEB-NEXT-DATA-DYNAMIC-01`**: a Server Component that reads data which changes between requests but that Next cannot see changing (an in-process store, any read that resolves without I/O) MUST make the read request-time with `await connection()` inside `<Suspense>`, or cache it deliberately; otherwise the build-time value is frozen into the page. Defect 3.
+2. **New hard rule `PLAT-WEB-NEXT-APP-ACTION-01`**: every export of a `'use server'` file is a public endpoint, so it MUST be a deliberate entry point, take its input as `unknown`, validate it with a schema that rejects unknown keys, and check the caller's authority wherever the data is not public; the file MUST NOT export anything else. This is the Server Action counterpart of `PLAT-WEB-NEXT-FB-CALLABLE-01`, which exists only for Firebase callables. Defects 1 and 2. Generic, applies to every `server` project.
+3. **`PLAT-WEB-NEXT-DATA-MODEL-01` is version-specific as written.** It says to set `partialPrefetching`, which exists only from Next.js 16.3 (the installed 16.2.10 does not know it; 16.3.4 does). Reword: "where the targeted Next.js has it".
+4. **`PLAT-WEB-NEXT-APP-REVALIDATE-01` prose.** With Cache Components and uncached request-time reads, removing every `revalidatePath` left the flow correct (verified on a production build, including navigating back to the dashboard). The rule says to invalidate cached results, which is right, but a reader can take it as "always call `revalidatePath`". One clarifying sentence: nothing cached, nothing to invalidate.
+5. **`PLAT-WEB-NEXT-BOUNDARY-01` prose.** A `notFound()` inside the streamed part returns HTTP 200 with the not-found page (a soft 404), because the status line leaves with the static shell. Verified. Harmless for an internal tool, wrong for a public page.
+6. **`PLAT-WEB-FORMS` assumes `react-hook-form`.** This app uses native `<form action>` with `useActionState` and one server-side schema; the validation error shape (`fieldErrors`) carried over unchanged and the rules held. Add a short native-form variant.
+
+## Observations that are not proposals yet
+7. **`UC-NAMING-01` is followed by this consumer and was silently not followed by the Ampm pilot** (`promoteNotification.ts`, `portalUseCases.ts`). Nothing checks it. Either make it checkable (a filename pattern check) or relax it; the two pilots disagree.
+8. **`COMP-NAMING-01` says a feature's shell is `{Feature}Page.tsx`.** A feature with three screens has three shells; I named them per screen (`SubmitFaultPage`, `ManagerDashboardPage`, `FaultDetailPage`). The rule needs a word on multi-screen features.
+9. **The framework is silent on what a Server Action contains and imports.** I decided: a thin host (pick the form's named fields, call the use case, map the `Outcome`), imports no component or hook, never a DataSource implementation; and the server shell passes the action to the client root view as a prop, so client code imports no server module and a hook test needs no module mock. `HOOK-DEPS-01` mentions only a provider context. Worth a short section in `hook.md` or `overview.md`.
+10. **Use cases only for the two writes.** Reads go from the Server Component shell straight to the store interface (`DATA-FETCH-01` allows it). The justification for the write use cases is not the `USECASE-01` threshold but that untrusted input must be validated whichever entry point arrives (a Route Handler tomorrow); putting the schema in the use case gives every entry point the same checks.

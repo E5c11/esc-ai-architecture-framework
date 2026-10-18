@@ -133,7 +133,7 @@ id: ARCH-WEB-APP-EFLOW-PRESENT-01
 statement: The mapping from `AppError` variant to user-facing message and available action MUST live in one exhaustive presentation module shared by the app, and a feature MUST compose it rather than write its own wording for the same variant.
 type: hard
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-EFLOW-PRESENT-01 — The mapping from `AppError` variant to user-facing message and available action MUST live in one exhaustive presentation module shared by the app, and a feature MUST compose it rather than write its own wording for the same variant.
 ```

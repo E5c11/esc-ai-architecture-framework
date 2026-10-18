@@ -63,7 +63,7 @@ id: ARCH-WEB-APP-COMPOSE-FACTORY-01
 statement: The composition module MUST expose a factory (`createApp(config, overrides?)`) that returns the whole graph typed by interfaces, and MUST do no work when imported.
 type: hard
 scope: di
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-FACTORY-01 — The composition module MUST expose a factory (`createApp(config, overrides?)`) that returns the whole graph typed by interfaces, and MUST do no work when imported.
 ```
@@ -200,7 +200,7 @@ id: ARCH-WEB-APP-COMPOSE-SPLIT-01
 statement: In the `server` runtime the server graph and the client graph MUST be separate modules, the server module MUST be unimportable from client code, and a server-only DataSource MUST NOT appear in the client graph.
 type: hard
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-SPLIT-01 — In the `server` runtime the server graph and the client graph MUST be separate modules, the server module MUST be unimportable from client code, and a server-only DataSource MUST NOT appear in the client graph.
 ```

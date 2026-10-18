@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-18T17:36:33.042256+00:00",
+  "generated": "2026-10-18T18:13:14.403244+00:00",
   "count": 136,
   "documents": [
     {
@@ -1156,8 +1156,8 @@
       ],
       "status": "active",
       "rule_evidence": {
-        "exercised": 4,
-        "unproven": 4
+        "exercised": 5,
+        "unproven": 3
       }
     },
     {
@@ -1196,8 +1196,8 @@
       ],
       "status": "active",
       "rule_evidence": {
-        "unproven": 4,
-        "exercised": 5
+        "exercised": 7,
+        "unproven": 2
       }
     },
     {
@@ -1274,8 +1274,8 @@
       ],
       "status": "active",
       "rule_evidence": {
-        "exercised": 3,
-        "unproven": 6
+        "exercised": 4,
+        "unproven": 5
       }
     },
     {
@@ -1350,8 +1350,8 @@
       ],
       "status": "active",
       "rule_evidence": {
-        "exercised": 4,
-        "unproven": 4
+        "exercised": 5,
+        "unproven": 3
       }
     },
     {
@@ -1389,8 +1389,8 @@
       ],
       "status": "active",
       "rule_evidence": {
-        "exercised": 4,
-        "unproven": 5
+        "exercised": 5,
+        "unproven": 4
       }
     },
     {
@@ -1429,8 +1429,8 @@
       ],
       "status": "active",
       "rule_evidence": {
-        "exercised": 7,
-        "unproven": 4
+        "exercised": 8,
+        "unproven": 3
       }
     },
     {
@@ -1616,8 +1616,8 @@
       ],
       "status": "active",
       "rule_evidence": {
-        "exercised": 5,
-        "unproven": 4
+        "exercised": 6,
+        "unproven": 3
       }
     },
     {

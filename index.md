@@ -61,19 +61,19 @@
 | `ARCH-PY-USECASE` | rules | `architectures/python-app/usecase.md` |  |  |
 | `ARCH-WEB` | overview | `architectures/web-spa/overview.md` |  |  |
 | `ARCH-WEB-APP` | overview | `architectures/web-app/overview.md` |  | 12 / 3 |
-| `ARCH-WEB-APP-COMPONENT` | guide | `architectures/web-app/component.md` |  | 4 / 4 |
-| `ARCH-WEB-APP-COMPOSITION` | rules | `architectures/web-app/composition.md` |  | 5 / 4 |
+| `ARCH-WEB-APP-COMPONENT` | guide | `architectures/web-app/component.md` |  | 5 / 3 |
+| `ARCH-WEB-APP-COMPOSITION` | rules | `architectures/web-app/composition.md` |  | 7 / 2 |
 | `ARCH-WEB-APP-DATASOURCE` | guide | `architectures/web-app/datasource.md` |  | 13 / 3 |
-| `ARCH-WEB-APP-DOMAIN` | rules | `architectures/web-app/domain.md` |  | 3 / 6 |
+| `ARCH-WEB-APP-DOMAIN` | rules | `architectures/web-app/domain.md` |  | 4 / 5 |
 | `ARCH-WEB-APP-ERR-CLASSES` | guide | `architectures/web-app/error-classes.md` |  | 3 / 1 |
-| `ARCH-WEB-APP-ERR-FLOW` | guide | `architectures/web-app/error-flow.md` |  | 4 / 4 |
-| `ARCH-WEB-APP-FEATURE-STRUCTURE` | guide | `architectures/web-app/feature-structure.md` |  | 4 / 5 |
-| `ARCH-WEB-APP-HOOK` | guide | `architectures/web-app/hook.md` |  | 7 / 4 |
+| `ARCH-WEB-APP-ERR-FLOW` | guide | `architectures/web-app/error-flow.md` |  | 5 / 3 |
+| `ARCH-WEB-APP-FEATURE-STRUCTURE` | guide | `architectures/web-app/feature-structure.md` |  | 5 / 4 |
+| `ARCH-WEB-APP-HOOK` | guide | `architectures/web-app/hook.md` |  | 8 / 3 |
 | `ARCH-WEB-APP-LAYERS` | overview | `architectures/web-app/layers.md` |  |  |
 | `ARCH-WEB-APP-MODULES` | rules | `architectures/web-app/modules.md` |  | 5 / 3 |
 | `ARCH-WEB-APP-OBS` | rules | `architectures/web-app/observability.md` |  | 1 / 3 |
 | `ARCH-WEB-APP-REPOSITORY` | guide | `architectures/web-app/repository.md` |  | 0 / 3 |
-| `ARCH-WEB-APP-USECASE` | guide | `architectures/web-app/usecase.md` |  | 5 / 4 |
+| `ARCH-WEB-APP-USECASE` | guide | `architectures/web-app/usecase.md` |  | 6 / 3 |
 | `ARCH-WEB-COMPONENTS` | rules | `architectures/web-spa/components.md` |  |  |
 | `ARCH-WEB-CONTENT` | overview | `architectures/web-content/overview.md` |  |  |
 

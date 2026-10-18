@@ -230,7 +230,7 @@ id: ARCH-WEB-APP-HOOK-NAMING-01
 statement: A Hook is named `use{Feature}` or `use{Feature}{Concern}`, lives in `features/{feature}/hooks/`, and has an explicit return type.
 type: hard
 scope: naming
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-NAMING-01 — A Hook is named `use{Feature}` or `use{Feature}{Concern}`, lives in `features/{feature}/hooks/`, and has an explicit return type.
 ```

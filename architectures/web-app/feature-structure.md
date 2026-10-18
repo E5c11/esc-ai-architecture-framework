@@ -83,7 +83,7 @@ id: ARCH-WEB-APP-FEAT-ROUTE-01
 statement: A route file (`page.tsx`, `layout.tsx`) MUST only compose features and route-level boundary files; it MUST NOT contain logic, data fetching of its own, or markup beyond layout.
 type: hard
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-ROUTE-01 — A route file (`page.tsx`, `layout.tsx`) MUST only compose features and route-level boundary files; it MUST NOT contain logic, data fetching of its own, or markup beyond layout.
 ```

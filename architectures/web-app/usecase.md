@@ -107,7 +107,7 @@ id: ARCH-WEB-APP-UC-STATELESS-01
 statement: A UseCase MUST hold no state between calls: no module-level variable, cache, or counter that a call reads or writes.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-UC-STATELESS-01 — A UseCase MUST hold no state between calls: no module-level variable, cache, or counter that a call reads or writes.
 ```

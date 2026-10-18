@@ -125,7 +125,7 @@ id: ARCH-WEB-APP-COMP-SERVER-01
 statement: In the `server` runtime, a Server Component shell MUST contain no hooks, no state, no event handlers and no mutation logic; it obtains initial data through a UseCase or DataSource from the composition root, maps it to presentation props, and renders.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMP-SERVER-01 — In the `server` runtime, a Server Component shell MUST contain no hooks, no state, no event handlers and no mutation logic; it obtains initial data through a UseCase or DataSource from the composition root, maps it to presentation props, and renders.
 ```

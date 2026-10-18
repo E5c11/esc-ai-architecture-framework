@@ -86,7 +86,7 @@ id: ARCH-WEB-APP-DOM-SERIAL-01
 statement: A domain value that can cross the Server/Client Component boundary or be stored MUST be plain serialisable data (strings, numbers, booleans, `null`, arrays and plain objects), and MUST NOT be a class instance, a `Date`, a `Map`, a `Set` or a function.
 type: hard
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-SERIAL-01 — A domain value that can cross the Server/Client Component boundary or be stored MUST be plain serialisable data (strings, numbers, booleans, `null`, arrays and plain objects), and MUST NOT be a class instance, a `Date`, a `Map`, a `Set` or a function.
 ```
