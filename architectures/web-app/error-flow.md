@@ -33,7 +33,7 @@ DataSource                                           (ARCH-WEB-APP-ERR-MAP-01)
 Repository (if present)
   passes the error outcome up unchanged; may fall back to a cache, visibly
         ↓
-UseCase                                              (ARCH-WEB-APP-UC-ERROR-01)
+UseCase                                              (ARCH-WEB-APP-EFLOW-SWALLOW-01)
   passes the error up unchanged unless it adds domain meaning
   never turns an error into an empty success
         ↓
@@ -94,15 +94,6 @@ violation_message: Violates ARCH-WEB-APP-EFLOW-LOG-01 — An unexpected error MU
 
 The same failure logged at four layers is four entries to reconcile and no clearer cause.
 
-```rule
-id: ARCH-WEB-APP-EFLOW-CONTEXT-01
-statement: A known error MUST carry enough to act on (what was attempted and what the user can do next) and MUST NOT carry a secret, a token, personal data, or a raw provider payload.
-type: hard
-scope: error-handling
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-EFLOW-CONTEXT-01 — A known error MUST carry enough to act on (what was attempted and what the user can do next) and MUST NOT carry a secret, a token, personal data, or a raw provider payload.
-```
-
 An error message reaches a screen, a log and an error report. Whatever is in it is in
 all three (`ARCH-WEB-APP-OBS-REDACT-01`).
 
@@ -157,15 +148,6 @@ violation_message: Violates ARCH-WEB-APP-EFLOW-NETWORK-01 — A connectivity fai
 A user on a train is not a bug. Counting it as one buries the real defects.
 
 ## Retry
-
-```rule
-id: ARCH-WEB-APP-EFLOW-RETRY-01
-statement: Automatic retry MUST be limited to idempotent reads and to writes the DataSource marks idempotent, MUST be bounded with backoff, and a non-idempotent write MUST be retried only by an explicit user action.
-type: hard
-scope: behavior
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-EFLOW-RETRY-01 — Automatic retry MUST be limited to idempotent reads and to writes the DataSource marks idempotent, MUST be bounded with backoff, and a non-idempotent write MUST be retried only by an explicit user action.
-```
 
 A retried "create" that succeeded the first time but timed out is a duplicate record.
 Automatic retry lives at the DataSource (the transport), where the idempotence of the

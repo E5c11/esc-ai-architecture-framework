@@ -55,7 +55,7 @@ violation_message: Violates ARCH-WEB-APP-ERR-TYPE-01 — Error types crossing th
 
 ```rule
 id: ARCH-WEB-APP-ERR-MAP-01
-statement: A provider error (REST error response, Postgres error, Firestore or callable-function error) MUST be translated exactly once, at the DataSource that calls the provider (in the `server` runtime, the Server Action or Route Handler or the DataSource module it calls).
+statement: A provider error (REST error response, Postgres error, Firestore or callable-function error) MUST be translated exactly once, at the DataSource that calls the provider (in the `server` runtime, the Server Action or Route Handler or the DataSource module it calls); a value that is already an `AppError` MUST be passed through unchanged, never re-wrapped.
 type: hard
 scope: error-handling
 enforced_by: [reviewer]

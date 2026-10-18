@@ -55,15 +55,6 @@ log.info(`Snapshot built for ${region} with ${rows} rows`);
 log.info('snapshot.built', { region, rows, durationMs });
 ```
 
-```rule
-id: ARCH-WEB-APP-OBS-LOG-03
-statement: Diagnostic logging MUST NOT be the app's user-facing output; anything the user needs to see is state a Hook exposes.
-type: hard
-scope: behavior
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-OBS-LOG-03 — Diagnostic logging MUST NOT be the app's user-facing output; anything the user needs to see is state a Hook exposes.
-```
-
 The once-only rule for logging an error is `ARCH-WEB-APP-EFLOW-LOG-01`.
 
 ## Redaction
@@ -90,15 +81,6 @@ A failure that exists only in a server log is invisible to the person who needs 
 it happened. "The last build ran at 14:02 and failed: column X is missing" on the
 screen is both the audit trail and the support tool.
 
-```rule
-id: ARCH-WEB-APP-OBS-RECORD-02
-statement: An operation record MUST be append-only with a stable, versioned shape, and MUST NOT be rewritten to change what happened.
-type: hard
-scope: behavior
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-OBS-RECORD-02 — An operation record MUST be append-only with a stable, versioned shape, and MUST NOT be rewritten to change what happened.
-```
-
 ## Error reporting and correlation
 
 ```rule
@@ -110,27 +92,9 @@ enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-OBS-REPORT-01 — Defects MUST be reported through an injected reporter that tags the release, deduplicates, and is a no-op in tests and previews, and the reporter MUST receive only redacted data.
 ```
 
-```rule
-id: ARCH-WEB-APP-OBS-CORRELATE-01
-statement: A call to a backend function or API SHOULD carry a correlation id that is logged on both sides, so a failure seen in the browser can be matched to the server log that explains it.
-type: soft
-scope: behavior
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-OBS-CORRELATE-01 — A call to a backend function or API SHOULD carry a correlation id that is logged on both sides, so a failure seen in the browser can be matched to the server log that explains it.
-```
-
 ## Analytics
 
 The philosophy (which events, how many) is `PAT-ANALYTICS-EVENTS`.
-
-```rule
-id: ARCH-WEB-APP-OBS-ANALYTICS-01
-statement: Analytics events MUST be built from an allow-list of non-identifying fields, MUST be sent through one tracker adapter that checks consent, and MUST NOT contain free text, personal data or provider payloads.
-type: hard
-scope: behavior
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-OBS-ANALYTICS-01 — Analytics events MUST be built from an allow-list of non-identifying fields, MUST be sent through one tracker adapter that checks consent, and MUST NOT contain free text, personal data or provider payloads.
-```
 
 Checking consent in the adapter, once, means no call site can forget it. Hooks receive
 the tracker through the composition (`ARCH-WEB-APP-HOOK-ANALYTICS-01`).

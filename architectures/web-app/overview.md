@@ -204,11 +204,11 @@ violation_message: Violates ARCH-WEB-APP-DEP-06 — Concrete DataSources, Reposi
 
 ```rule
 id: ARCH-WEB-APP-DEP-07
-statement: A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code.
+statement: A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code; a feature's `index.ts` MUST export only its page or root view and its public types, never hooks, DataSources, Repositories, UseCases or mappers.
 type: hard
 scope: structure
 enforced_by: [ci, reviewer]
-violation_message: Violates ARCH-WEB-APP-DEP-07 — A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code.
+violation_message: Violates ARCH-WEB-APP-DEP-07 — A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code; a feature's `index.ts` MUST export only its page or root view and its public types, never hooks, DataSources, Repositories, UseCases or mappers.
 ```
 
 ```rule

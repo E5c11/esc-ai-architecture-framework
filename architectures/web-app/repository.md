@@ -50,48 +50,12 @@ features/{feature}/data/
 └── Default{Entity}Repository.ts    Implementation; constructor takes DataSource interfaces
 ```
 
-```rule
-id: ARCH-WEB-APP-REP-INTERFACE-01
-statement: A Repository MUST define an interface, and every consumer MUST depend on the interface, never on the implementation.
-type: hard
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-REP-INTERFACE-01 — A Repository MUST define an interface, and every consumer MUST depend on the interface, never on the implementation.
-```
-
-```rule
-id: ARCH-WEB-APP-REP-NAMING-01
-statement: The interface is named `{Entity}Repository` and the implementation `Default{Entity}Repository`.
-type: hard
-scope: naming
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-REP-NAMING-01 — The interface is named `{Entity}Repository` and the implementation `Default{Entity}Repository`.
-```
-
 ## What a Repository talks to
-
-```rule
-id: ARCH-WEB-APP-REP-DATASOURCE-01
-statement: A Repository MUST call only DataSource interfaces, received through its constructor, and MUST NOT import a provider SDK, call another Repository's implementation, or construct a DataSource.
-type: hard
-scope: di
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-REP-DATASOURCE-01 — A Repository MUST call only DataSource interfaces, received through its constructor, and MUST NOT import a provider SDK, call another Repository's implementation, or construct a DataSource.
-```
 
 The composition module builds the DataSources and the Repository and passes the
 first to the second (`ARCH-WEB-APP-DEP-06`).
 
 ## Return types
-
-```rule
-id: ARCH-WEB-APP-REP-RETURN-01
-statement: Repository methods MUST return `Outcome` of domain values (one-shot) or a subscription delivering `Outcome` of domain values (live), and MUST NOT return DataSource types, loading flags, or resource wrappers.
-type: hard
-scope: return-type
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-REP-RETURN-01 — Repository methods MUST return `Outcome` of domain values (one-shot) or a subscription delivering `Outcome` of domain values (live), and MUST NOT return DataSource types, loading flags, or resource wrappers.
-```
 
 "Loading" is a UI state, owned by the hook. A Repository that exposes `{ data,
 loading, error }` has pushed presentation down a layer.

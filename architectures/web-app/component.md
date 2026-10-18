@@ -112,15 +112,6 @@ it down.
 
 ## The Server/Client boundary
 
-```rule
-id: ARCH-WEB-APP-COMP-BOUNDARY-01
-statement: Props that cross from a Server Component to a Client Component MUST be serialisable presentation shapes, and a Server Component MUST NOT pass a domain object holding a `Date`, `Map`, class instance or function.
-type: hard
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-COMP-BOUNDARY-01 — Props that cross from a Server Component to a Client Component MUST be serialisable presentation shapes, and a Server Component MUST NOT pass a domain object holding a `Date`, `Map`, class instance or function.
-```
-
 The domain is already plain serialisable data (`ARCH-WEB-APP-DOM-SERIAL-01`); this rule
 keeps the boundary honest when a mapping is skipped.
 
@@ -151,15 +142,6 @@ the next build with no error to explain it. Pages are shells; the data arrives i
 browser.
 
 ## Size and extraction
-
-```rule
-id: ARCH-WEB-APP-COMP-LEAN-01
-statement: A component SHOULD stay under about 150 lines, and a block with a clear responsibility of its own (a card, a row, a panel) SHOULD be extracted to its own component; static content (strings, tables, chart definitions) SHOULD live in a content or constants module, not inline.
-type: soft
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-COMP-LEAN-01 — A component SHOULD stay under about 150 lines, and a block with a clear responsibility of its own (a card, a row, a panel) SHOULD be extracted to its own component; static content (strings, tables, chart definitions) SHOULD live in a content or constants module, not inline.
-```
 
 ## Naming
 

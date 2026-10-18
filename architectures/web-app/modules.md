@@ -97,14 +97,7 @@ place where unrelated code goes to avoid a decision.
 
 ## Splitting a module that has grown
 
-```rule
-id: ARCH-WEB-APP-MOD-SPLIT-01
-statement: A module split MUST be done under an unchanged, passing test suite, in behaviour-preserving steps each committed separately, and MUST NOT be combined with a behaviour change.
-type: hard
-scope: behavior
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-MOD-SPLIT-01 — A module split MUST be done under an unchanged, passing test suite, in behaviour-preserving steps each committed separately, and MUST NOT be combined with a behaviour change.
-```
+A module split MUST be done under an unchanged, passing test suite, in behaviour-preserving steps each committed separately, and MUST NOT be combined with a behaviour change. (A refactoring procedure, not an architecture rule.)
 
 The procedure:
 
@@ -114,15 +107,6 @@ The procedure:
    not change; if a test must change, the step was not behaviour-preserving.
 3. Run the suite after each move and commit. A failure points at one small step.
 4. Only then change behaviour, in its own commit.
-
-```rule
-id: ARCH-WEB-APP-MOD-FACADE-01
-statement: A compatibility re-export left in place after a move MUST contain no logic and MUST re-export only from modules at its own layer or below; a re-export that makes a lower module depend on a higher one MUST be replaced by updating the importer.
-type: hard
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-MOD-FACADE-01 — A compatibility re-export left in place after a move MUST contain no logic and MUST re-export only from modules at its own layer or below; a re-export that makes a lower module depend on a higher one MUST be replaced by updating the importer.
-```
 
 A facade keeps an old import path alive while importers move. It is scaffolding, with a
 removal date, and never a place where logic lives.
@@ -141,20 +125,11 @@ functions/                 Cloud Functions. Imports packages; adds I/O around th
 
 ```rule
 id: ARCH-WEB-APP-MOD-PACKAGE-01
-statement: A shared package MUST import nothing from the app or from any package above it, MUST declare its own dependencies, and apps and functions MUST import it only through its public surface; the dependency direction MUST never reverse.
+statement: A shared package MUST import nothing from the app or from any package above it, MUST declare its own dependencies, and apps and functions MUST import it only through its public surface; the dependency direction MUST never reverse; logic used by both the app and another runtime lives once, in such a package, and is never copied.
 type: hard
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-MOD-PACKAGE-01 — A shared package MUST import nothing from the app or from any package above it, MUST declare its own dependencies, and apps and functions MUST import it only through its public surface; the dependency direction MUST never reverse.
-```
-
-```rule
-id: ARCH-WEB-APP-MOD-PACKAGE-02
-statement: Logic used by both the app and another runtime MUST exist once, in a shared package, and MUST NOT be copied; the domain package MUST contain only domain code and import no framework or provider SDK (`ARCH-WEB-APP-DEP-01`).
-type: hard
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-MOD-PACKAGE-02 — Logic used by both the app and another runtime MUST exist once, in a shared package, and MUST NOT be copied; the domain package MUST contain only domain code and import no framework or provider SDK (`ARCH-WEB-APP-DEP-01`).
+violation_message: Violates ARCH-WEB-APP-MOD-PACKAGE-01 — A shared package MUST import nothing from the app or from any package above it, MUST declare its own dependencies, and apps and functions MUST import it only through its public surface; the dependency direction MUST never reverse; logic used by both the app and another runtime lives once, in such a package, and is never copied.
 ```
 
 Two copies of an aggregation drift, and then the dashboard and the rebuilt snapshot

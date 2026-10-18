@@ -153,15 +153,6 @@ An administration tool that can write to production from the same screen that ed
 one unnoticed toggle from a real incident. The indicator belongs to the component layer; the rule
 that the choice lives in the composition is `ARCH-WEB-APP-COMPOSE-ENV-01`.
 
-```rule
-id: ARCH-WEB-APP-COMPOSE-CHOICE-01
-statement: Choosing between interchangeable implementations (the live provider, the emulator, a fake) MUST be done in the composition module from configuration, and an unknown choice MUST fail with a clear configuration error rather than fall back silently.
-type: hard
-scope: di
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-COMPOSE-CHOICE-01 — Choosing between interchangeable implementations (the live provider, the emulator, a fake) MUST be done in the composition module from configuration, and an unknown choice MUST fail with a clear configuration error rather than fall back silently.
-```
-
 A build that quietly falls back to a fake looks healthy and shows invented data. A
 build wired to the production provider from a development machine does worse. The
 choice is explicit and its failure is loud.
@@ -191,15 +182,6 @@ violation_message: Violates ARCH-WEB-APP-COMPOSE-SPLIT-01 — In the `server` ru
 
 In `static-export` there is one graph, the client graph, and no secret in it
 (`ARCH-WEB-APP-RUNTIME-02`).
-
-```rule
-id: ARCH-WEB-APP-COMPOSE-LAZY-01
-statement: A heavy or optional dependency SHOULD be imported inside the factory that needs it, so a route that never uses it does not pay for it in the bundle.
-type: soft
-scope: performance
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-COMPOSE-LAZY-01 — A heavy or optional dependency SHOULD be imported inside the factory that needs it, so a route that never uses it does not pay for it in the bundle.
-```
 
 ## Testing
 

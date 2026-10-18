@@ -99,15 +99,6 @@ decision does not hide in a hook "because the route felt like too many layers".
 
 ## Public surface
 
-```rule
-id: ARCH-WEB-APP-FEAT-PUBLIC-01
-statement: A feature's `index.ts` MUST export only what other code needs (its page or root view and its public types), and MUST NOT export hooks, DataSources, Repositories, UseCases or mappers.
-type: hard
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-FEAT-PUBLIC-01 — A feature's `index.ts` MUST export only what other code needs (its page or root view and its public types), and MUST NOT export hooks, DataSources, Repositories, UseCases or mappers.
-```
-
 The import side is `ARCH-WEB-APP-DEP-07`: other code imports a feature only through
 this file. The export side is this rule: a small surface is what lets a feature's
 insides change freely.

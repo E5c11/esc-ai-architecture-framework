@@ -44,11 +44,11 @@ features/{feature}/data/
 
 ```rule
 id: ARCH-WEB-APP-DS-INTERFACE-01
-statement: Every DataSource MUST define an interface, and every consumer MUST depend on the interface, never on an implementation.
+statement: Every DataSource MUST define an interface, and every consumer MUST depend on the interface, never on an implementation; the same applies to a Repository.
 type: hard
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DS-INTERFACE-01 — Every DataSource MUST define an interface, and every consumer MUST depend on the interface, never on an implementation.
+violation_message: Violates ARCH-WEB-APP-DS-INTERFACE-01 — Every DataSource MUST define an interface, and every consumer MUST depend on the interface, never on an implementation; the same applies to a Repository.
 ```
 
 ```rule
@@ -248,15 +248,6 @@ the unknown-failure rule are owned by `ARCH-WEB-APP-ERR-CLASSES`
 (`ARCH-WEB-APP-ERR-TYPE-01`, `ARCH-WEB-APP-ERR-MAP-01`, `ARCH-WEB-APP-ERR-UNKNOWN-01`,
 `ARCH-WEB-APP-ERR-CANCEL-01`); this layer is where they are applied. It adds:
 
-```rule
-id: ARCH-WEB-APP-DS-ERROR-01
-statement: A DataSource MUST return an error outcome that already carries the union's type, and a value that is already an `AppError` MUST be passed through unchanged, never re-wrapped.
-type: hard
-scope: error-handling
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DS-ERROR-01 — A DataSource MUST return an error outcome that already carries the union's type, and a value that is already an `AppError` MUST be passed through unchanged, never re-wrapped.
-```
-
 Translate in one function per provider, not at every call site:
 
 ```typescript
@@ -282,15 +273,6 @@ Catch order, most specific first: an abort (rethrown unchanged, before any gener
 
 The DataSource runs in a Server Action or Route Handler (or a module they call),
 on a held server.
-
-```rule
-id: ARCH-WEB-APP-DS-SERVER-01
-statement: A DataSource written for the `server` runtime MUST be unimportable from client code (marked server-only), and its credentials MUST be read only in server-side code.
-type: hard
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DS-SERVER-01 — A DataSource written for the `server` runtime MUST be unimportable from client code (marked server-only), and its credentials MUST be read only in server-side code.
-```
 
 The environment-variable rule itself is `PLAT-WEB-NEXT-ENV-01`; this rule is the
 architectural statement that the whole module, not only its variables, stays on

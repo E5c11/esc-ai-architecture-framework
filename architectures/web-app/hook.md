@@ -193,26 +193,8 @@ result, which a plain unsubscribe does not cover for one-shot calls.
 
 ## Where a Hook runs
 
-```rule
-id: ARCH-WEB-APP-HOOK-CLIENT-01
-statement: A Hook MUST be used only from Client Components and MUST NOT be imported by a Server Component.
-type: hard
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-HOOK-CLIENT-01 — A Hook MUST be used only from Client Components and MUST NOT be imported by a Server Component.
-```
-
 The `'use client'` boundary goes on the leaf Component that uses the Hook
 (`PLAT-WEB-NEXT-CLIENT-01`), not on a whole page.
-
-```rule
-id: ARCH-WEB-APP-HOOK-SERVER-01
-statement: In the `server` runtime a Hook MUST reach the server only through a Server Action or Route Handler call that returns an `Outcome`, and MUST NOT import a server-only DataSource.
-type: hard
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-HOOK-SERVER-01 — In the `server` runtime a Hook MUST reach the server only through a Server Action or Route Handler call that returns an `Outcome`, and MUST NOT import a server-only DataSource.
-```
 
 A mutating Server Action revalidates what it changed (`PLAT-WEB-NEXT-APP-REVALIDATE-01`);
 the Hook does not manage server cache state itself.

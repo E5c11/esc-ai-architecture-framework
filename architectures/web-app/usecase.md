@@ -90,29 +90,11 @@ violation_message: Violates ARCH-WEB-APP-UC-ORCH-01 — An Orchestrator MUST con
 If a condition or a calculation appears in an Orchestrator, extract it to a UseCase
 and call that.
 
-```rule
-id: ARCH-WEB-APP-UC-ORCH-02
-statement: An Orchestrator MUST call UseCases and MUST NOT call a Repository or DataSource directly, and a UseCase MUST NOT call another UseCase.
-type: hard
-scope: di
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-UC-ORCH-02 — An Orchestrator MUST call UseCases and MUST NOT call a Repository or DataSource directly, and a UseCase MUST NOT call another UseCase.
-```
-
 Coordination between UseCases is the Orchestrator's job and only its. A UseCase that
 calls a UseCase has hidden an Orchestrator inside itself, and the dependency graph
 between operations stops being visible.
 
 ## Purity of the surroundings
-
-```rule
-id: ARCH-WEB-APP-UC-IO-01
-statement: A UseCase MUST NOT perform presentation I/O (no DOM, router, toast, or console output) and MUST NOT read ambient state (environment, the clock, randomness, `window`, `localStorage`); anything of that kind is a dependency it receives.
-type: hard
-scope: behavior
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-UC-IO-01 — A UseCase MUST NOT perform presentation I/O (no DOM, router, toast, or console output) and MUST NOT read ambient state (environment, the clock, randomness, `window`, `localStorage`); anything of that kind is a dependency it receives.
-```
 
 Time is passed in, as `ARCH-WEB-APP-DOM-CLOCK-01` requires of the domain, so a test
 fixes "today" and a rule about "the last ten days" is checkable.
@@ -143,15 +125,6 @@ violation_message: Violates ARCH-WEB-APP-UC-RETURN-01 — A UseCase MUST return 
 
 "Loading" is a UI state and belongs to the Hook. A UseCase answers, or fails.
 
-```rule
-id: ARCH-WEB-APP-UC-RETURN-02
-statement: A UseCase over data that changes MUST expose a subscription that delivers an `Outcome` per emission and returns an unsubscribe function, applying its transformation to each emission.
-type: hard
-scope: return-type
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-UC-RETURN-02 — A UseCase over data that changes MUST expose a subscription that delivers an `Outcome` per emission and returns an unsubscribe function, applying its transformation to each emission.
-```
-
 A UseCase must not collapse a live source into a single value, which would freeze a
 screen at the first emission, and must not poll to fake one
 (`ARCH-WEB-APP-DS-RETURN-03` applies here too).
@@ -161,28 +134,10 @@ screen at the first emission, and must not poll to fake one
 Provider failures were translated once, in the DataSource
 (`ARCH-WEB-APP-ERR-MAP-01`); a UseCase receives `AppError` values.
 
-```rule
-id: ARCH-WEB-APP-UC-ERROR-01
-statement: A UseCase MUST pass an error outcome up unchanged unless it adds domain meaning, MUST NOT turn an error into a success or an empty value, and MUST let a defect (a programming error thrown inside it) propagate rather than catch and hide it.
-type: hard
-scope: error-handling
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-UC-ERROR-01 — A UseCase MUST pass an error outcome up unchanged unless it adds domain meaning, MUST NOT turn an error into a success or an empty value, and MUST let a defect (a programming error thrown inside it) propagate rather than catch and hide it.
-```
-
 Adding domain meaning is a decision: a `notFound` on "load the latest snapshot" is
 an empty state the UI shows, so the UseCase may turn it into an empty result; the
 same `notFound` on "update this feed" is a failure and passes through. The UseCase
 states the decision in code and a test.
-
-```rule
-id: ARCH-WEB-APP-UC-CANCEL-01
-statement: A UseCase that can run long MUST accept an abort signal and pass it to the DataSources it calls, and an abort MUST be rethrown unchanged and never reported as a failure.
-type: hard
-scope: error-handling
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-UC-CANCEL-01 — A UseCase that can run long MUST accept an abort signal and pass it to the DataSources it calls, and an abort MUST be rethrown unchanged and never reported as a failure.
-```
 
 This keeps a user's navigation away from turning into an error banner
 (`ARCH-WEB-APP-ERR-CANCEL-01`).

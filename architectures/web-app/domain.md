@@ -113,15 +113,6 @@ enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-VOCAB-01 — A closed set of choices (statuses, regions, outcome kinds, severities) MUST be a string-literal union or an `as const` object, and bare strings compared at scattered call sites MUST NOT be used.
 ```
 
-```rule
-id: ARCH-WEB-APP-DOM-TABLE-01
-statement: Behaviour that varies by a closed vocabulary SHOULD be a lookup table keyed by that vocabulary, typed so a missing key is a compile error (`Record<Vocabulary, …>`, or `satisfies`), not an if/else or switch ladder.
-type: soft
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DOM-TABLE-01 — Behaviour that varies by a closed vocabulary SHOULD be a lookup table keyed by that vocabulary, typed so a missing key is a compile error, not an if/else or switch ladder.
-```
-
 (`ARCH-WEB-APP-DOM-TABLE-02` now lives in `QG-WEB-TESTING`.)
 
 A free-text classifier is domain code and is the part most likely to be quietly
