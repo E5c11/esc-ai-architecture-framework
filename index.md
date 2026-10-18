@@ -4,171 +4,171 @@
 
 ## core/
 
-| ID | Type | Path | Status |
-|---|---|---|---|
-| `CORE-API-STABILITY` | principle | `core/api-stability.md` |  |
-| `CORE-COUPLING` | principle | `core/coupling.md` |  |
-| `CORE-DI` | principle | `core/dependency-inversion.md` |  |
-| `CORE-ERROR` | principle | `core/error-propagation.md` |  |
-| `CORE-NAMING` | principle | `core/naming.md` |  |
-| `CORE-SSOT` | principle | `core/single-source-of-truth.md` |  |
-| `CORE-TESTING` | principle | `core/testing.md` |  |
+| ID | Type | Path | Status | Rules exercised / unproven |
+|---|---|---|---|---|
+| `CORE-API-STABILITY` | principle | `core/api-stability.md` |  |  |
+| `CORE-COUPLING` | principle | `core/coupling.md` |  |  |
+| `CORE-DI` | principle | `core/dependency-inversion.md` |  |  |
+| `CORE-ERROR` | principle | `core/error-propagation.md` |  |  |
+| `CORE-NAMING` | principle | `core/naming.md` |  |  |
+| `CORE-SSOT` | principle | `core/single-source-of-truth.md` |  |  |
+| `CORE-TESTING` | principle | `core/testing.md` |  |  |
 
 ## patterns/
 
-| ID | Type | Path | Status |
-|---|---|---|---|
-| `PAT-ANALYTICS-EVENTS` | pattern | `patterns/analytics-events.md` |  |
-| `PAT-DATA-ACCESS` | pattern | `patterns/data-access-abstraction.md` |  |
-| `PAT-OBSERVER` | pattern | `patterns/observable-data.md` |  |
-| `PAT-OUTCOME` | pattern | `patterns/result-type.md` |  |
+| ID | Type | Path | Status | Rules exercised / unproven |
+|---|---|---|---|---|
+| `PAT-ANALYTICS-EVENTS` | pattern | `patterns/analytics-events.md` |  |  |
+| `PAT-DATA-ACCESS` | pattern | `patterns/data-access-abstraction.md` |  |  |
+| `PAT-OBSERVER` | pattern | `patterns/observable-data.md` |  |  |
+| `PAT-OUTCOME` | pattern | `patterns/result-type.md` |  |  |
 
 ## architectures/
 
-| ID | Type | Path | Status |
-|---|---|---|---|
-| `ARCH-BE` | overview | `architectures/backend-service/overview.md` |  |
-| `ARCH-BE-CONTROLLER` | rules | `architectures/backend-service/controller.md` |  |
-| `ARCH-BE-DATASOURCE` | rules | `architectures/backend-service/datasource.md` |  |
-| `ARCH-BE-ENTITY` | rules | `architectures/backend-service/entity.md` |  |
-| `ARCH-BE-ERROR` | rules | `architectures/backend-service/error-flow.md` |  |
-| `ARCH-BE-PAGINATION` | rules | `architectures/backend-service/pagination.md` |  |
-| `ARCH-BE-PUBLISHING` | rules | `architectures/backend-service/publishing.md` |  |
-| `ARCH-BE-SERVICE` | rules | `architectures/backend-service/service.md` |  |
-| `ARCH-PC` | architecture | `architectures/pragmatic-clean/overview.md` |  |
-| `ARCH-PC-APP-VM` | guide | `architectures/pragmatic-clean/app-viewmodel.md` | ⚠ stub |
-| `ARCH-PC-COMPOSITION` | guide | `architectures/pragmatic-clean/composition-root.md` |  |
-| `ARCH-PC-DATASOURCE` | guide | `architectures/pragmatic-clean/datasource.md` |  |
-| `ARCH-PC-DI` | guide | `architectures/pragmatic-clean/di.md` |  |
-| `ARCH-PC-ERR-CLASSES` | guide | `architectures/pragmatic-clean/exception-classes.md` |  |
-| `ARCH-PC-ERROR-FLOW` | guide | `architectures/pragmatic-clean/error-flow.md` |  |
-| `ARCH-PC-FEATURE` | guide | `architectures/pragmatic-clean/feature-structure.md` |  |
-| `ARCH-PC-REPOSITORY` | guide | `architectures/pragmatic-clean/repository.md` |  |
-| `ARCH-PC-USECASE` | guide | `architectures/pragmatic-clean/usecase.md` |  |
-| `ARCH-PC-VIEW` | guide | `architectures/pragmatic-clean/view.md` |  |
-| `ARCH-PC-VIEWMODEL` | guide | `architectures/pragmatic-clean/viewmodel.md` |  |
-| `ARCH-PY` | overview | `architectures/python-app/overview.md` |  |
-| `ARCH-PY-COMPOSITION` | rules | `architectures/python-app/composition.md` |  |
-| `ARCH-PY-CONCURRENCY` | rules | `architectures/python-app/concurrency.md` |  |
-| `ARCH-PY-DATASOURCE` | rules | `architectures/python-app/datasource.md` |  |
-| `ARCH-PY-DOMAIN` | rules | `architectures/python-app/domain.md` |  |
-| `ARCH-PY-ENTRYPOINT` | rules | `architectures/python-app/entrypoint.md` |  |
-| `ARCH-PY-ERROR` | rules | `architectures/python-app/error-flow.md` |  |
-| `ARCH-PY-GATEWAY` | rules | `architectures/python-app/gateway.md` |  |
-| `ARCH-PY-MODULES` | rules | `architectures/python-app/modules.md` |  |
-| `ARCH-PY-OBSERVABILITY` | rules | `architectures/python-app/observability.md` |  |
-| `ARCH-PY-POLICY` | rules | `architectures/python-app/policy.md` |  |
-| `ARCH-PY-USECASE` | rules | `architectures/python-app/usecase.md` |  |
-| `ARCH-WEB` | overview | `architectures/web-spa/overview.md` |  |
-| `ARCH-WEB-APP` | overview | `architectures/web-app/overview.md` |  |
-| `ARCH-WEB-APP-COMPONENT` | guide | `architectures/web-app/component.md` |  |
-| `ARCH-WEB-APP-COMPOSITION` | rules | `architectures/web-app/composition.md` |  |
-| `ARCH-WEB-APP-DATASOURCE` | guide | `architectures/web-app/datasource.md` |  |
-| `ARCH-WEB-APP-DOMAIN` | rules | `architectures/web-app/domain.md` |  |
-| `ARCH-WEB-APP-ERR-CLASSES` | guide | `architectures/web-app/error-classes.md` |  |
-| `ARCH-WEB-APP-ERR-FLOW` | guide | `architectures/web-app/error-flow.md` |  |
-| `ARCH-WEB-APP-FEATURE-STRUCTURE` | guide | `architectures/web-app/feature-structure.md` |  |
-| `ARCH-WEB-APP-HOOK` | guide | `architectures/web-app/hook.md` |  |
-| `ARCH-WEB-APP-LAYERS` | overview | `architectures/web-app/layers.md` |  |
-| `ARCH-WEB-APP-MODULES` | rules | `architectures/web-app/modules.md` |  |
-| `ARCH-WEB-APP-OBS` | rules | `architectures/web-app/observability.md` |  |
-| `ARCH-WEB-APP-REPOSITORY` | guide | `architectures/web-app/repository.md` |  |
-| `ARCH-WEB-APP-USECASE` | guide | `architectures/web-app/usecase.md` |  |
-| `ARCH-WEB-COMPONENTS` | rules | `architectures/web-spa/components.md` |  |
-| `ARCH-WEB-CONTENT` | overview | `architectures/web-content/overview.md` |  |
+| ID | Type | Path | Status | Rules exercised / unproven |
+|---|---|---|---|---|
+| `ARCH-BE` | overview | `architectures/backend-service/overview.md` |  |  |
+| `ARCH-BE-CONTROLLER` | rules | `architectures/backend-service/controller.md` |  |  |
+| `ARCH-BE-DATASOURCE` | rules | `architectures/backend-service/datasource.md` |  |  |
+| `ARCH-BE-ENTITY` | rules | `architectures/backend-service/entity.md` |  |  |
+| `ARCH-BE-ERROR` | rules | `architectures/backend-service/error-flow.md` |  |  |
+| `ARCH-BE-PAGINATION` | rules | `architectures/backend-service/pagination.md` |  |  |
+| `ARCH-BE-PUBLISHING` | rules | `architectures/backend-service/publishing.md` |  |  |
+| `ARCH-BE-SERVICE` | rules | `architectures/backend-service/service.md` |  |  |
+| `ARCH-PC` | architecture | `architectures/pragmatic-clean/overview.md` |  |  |
+| `ARCH-PC-APP-VM` | guide | `architectures/pragmatic-clean/app-viewmodel.md` | ⚠ stub |  |
+| `ARCH-PC-COMPOSITION` | guide | `architectures/pragmatic-clean/composition-root.md` |  |  |
+| `ARCH-PC-DATASOURCE` | guide | `architectures/pragmatic-clean/datasource.md` |  |  |
+| `ARCH-PC-DI` | guide | `architectures/pragmatic-clean/di.md` |  |  |
+| `ARCH-PC-ERR-CLASSES` | guide | `architectures/pragmatic-clean/exception-classes.md` |  |  |
+| `ARCH-PC-ERROR-FLOW` | guide | `architectures/pragmatic-clean/error-flow.md` |  |  |
+| `ARCH-PC-FEATURE` | guide | `architectures/pragmatic-clean/feature-structure.md` |  |  |
+| `ARCH-PC-REPOSITORY` | guide | `architectures/pragmatic-clean/repository.md` |  |  |
+| `ARCH-PC-USECASE` | guide | `architectures/pragmatic-clean/usecase.md` |  |  |
+| `ARCH-PC-VIEW` | guide | `architectures/pragmatic-clean/view.md` |  |  |
+| `ARCH-PC-VIEWMODEL` | guide | `architectures/pragmatic-clean/viewmodel.md` |  |  |
+| `ARCH-PY` | overview | `architectures/python-app/overview.md` |  |  |
+| `ARCH-PY-COMPOSITION` | rules | `architectures/python-app/composition.md` |  |  |
+| `ARCH-PY-CONCURRENCY` | rules | `architectures/python-app/concurrency.md` |  |  |
+| `ARCH-PY-DATASOURCE` | rules | `architectures/python-app/datasource.md` |  |  |
+| `ARCH-PY-DOMAIN` | rules | `architectures/python-app/domain.md` |  |  |
+| `ARCH-PY-ENTRYPOINT` | rules | `architectures/python-app/entrypoint.md` |  |  |
+| `ARCH-PY-ERROR` | rules | `architectures/python-app/error-flow.md` |  |  |
+| `ARCH-PY-GATEWAY` | rules | `architectures/python-app/gateway.md` |  |  |
+| `ARCH-PY-MODULES` | rules | `architectures/python-app/modules.md` |  |  |
+| `ARCH-PY-OBSERVABILITY` | rules | `architectures/python-app/observability.md` |  |  |
+| `ARCH-PY-POLICY` | rules | `architectures/python-app/policy.md` |  |  |
+| `ARCH-PY-USECASE` | rules | `architectures/python-app/usecase.md` |  |  |
+| `ARCH-WEB` | overview | `architectures/web-spa/overview.md` |  |  |
+| `ARCH-WEB-APP` | overview | `architectures/web-app/overview.md` |  | 12 / 3 |
+| `ARCH-WEB-APP-COMPONENT` | guide | `architectures/web-app/component.md` |  | 4 / 4 |
+| `ARCH-WEB-APP-COMPOSITION` | rules | `architectures/web-app/composition.md` |  | 5 / 4 |
+| `ARCH-WEB-APP-DATASOURCE` | guide | `architectures/web-app/datasource.md` |  | 13 / 3 |
+| `ARCH-WEB-APP-DOMAIN` | rules | `architectures/web-app/domain.md` |  | 3 / 6 |
+| `ARCH-WEB-APP-ERR-CLASSES` | guide | `architectures/web-app/error-classes.md` |  | 3 / 1 |
+| `ARCH-WEB-APP-ERR-FLOW` | guide | `architectures/web-app/error-flow.md` |  | 3 / 5 |
+| `ARCH-WEB-APP-FEATURE-STRUCTURE` | guide | `architectures/web-app/feature-structure.md` |  | 4 / 5 |
+| `ARCH-WEB-APP-HOOK` | guide | `architectures/web-app/hook.md` |  | 7 / 4 |
+| `ARCH-WEB-APP-LAYERS` | overview | `architectures/web-app/layers.md` |  |  |
+| `ARCH-WEB-APP-MODULES` | rules | `architectures/web-app/modules.md` |  | 0 / 8 |
+| `ARCH-WEB-APP-OBS` | rules | `architectures/web-app/observability.md` |  | 0 / 4 |
+| `ARCH-WEB-APP-REPOSITORY` | guide | `architectures/web-app/repository.md` |  | 0 / 3 |
+| `ARCH-WEB-APP-USECASE` | guide | `architectures/web-app/usecase.md` |  | 4 / 5 |
+| `ARCH-WEB-COMPONENTS` | rules | `architectures/web-spa/components.md` |  |  |
+| `ARCH-WEB-CONTENT` | overview | `architectures/web-content/overview.md` |  |  |
 
 ## platforms/
 
-| ID | Type | Path | Status |
-|---|---|---|---|
-| `PLAT-BE-JPA` | guide | `platforms/backend/jpa.md` |  |
-| `PLAT-BE-SECURITY` | guide | `platforms/backend/security.md` |  |
-| `PLAT-BE-SPRING` | guide | `platforms/backend/spring.md` |  |
-| `PLAT-LIB-JS-EXPORT` | guide | `platforms/library/js-npm-export.md` |  |
-| `PLAT-LIB-KMP` | guide | `platforms/library/kmp-packaging.md` |  |
-| `PLAT-MOB-COMPOSE` | platform | `platforms/mobile/compose.md` |  |
-| `PLAT-MOB-DATASTORE` | guide | `platforms/mobile/datastore.md` |  |
-| `PLAT-MOB-DS-COMPONENT` | guide | `platforms/mobile/design-system/component.md` |  |
-| `PLAT-MOB-DS-ICONS` | guide | `platforms/mobile/design-system/icons.md` |  |
-| `PLAT-MOB-DS-IMAGES` | guide | `platforms/mobile/design-system/images.md` |  |
-| `PLAT-MOB-DS-THEME` | guide | `platforms/mobile/design-system/theme.md` |  |
-| `PLAT-MOB-FIREBASE` | platform | `platforms/mobile/firebase.md` |  |
-| `PLAT-MOB-HTTP` | guide | `platforms/mobile/http-client.md` |  |
-| `PLAT-MOB-HUAWEI` | guide | `platforms/mobile/huawei.md` |  |
-| `PLAT-MOB-IOS-AUTH` | guide | `platforms/mobile/ios-auth.md` |  |
-| `PLAT-MOB-IOS-BILLING` | guide | `platforms/mobile/ios-billing.md` |  |
-| `PLAT-MOB-IOS-INTEROP` | guide | `platforms/mobile/ios-interop.md` |  |
-| `PLAT-MOB-KMP` | platform | `platforms/mobile/kmp.md` |  |
-| `PLAT-MOB-KMP-IOS` | guide | `platforms/mobile/kmp-ios.md` |  |
-| `PLAT-MOB-KMP-WEB` | guide | `platforms/mobile/kmp-web-target.md` |  |
-| `PLAT-MOB-KOIN` | platform | `platforms/mobile/koin.md` |  |
-| `PLAT-MOB-KOTLIN` | platform | `platforms/mobile/kotlin-coroutines.md` |  |
-| `PLAT-MOB-NAV` | guide | `platforms/mobile/navigation.md` | ⚠ stub |
-| `PLAT-MOB-NOTIF` | guide | `platforms/mobile/notifications.md` |  |
-| `PLAT-MOB-ROOM` | platform | `platforms/mobile/room.md` |  |
-| `PLAT-MOB-SECURE-STORAGE` | guide | `platforms/mobile/secure-storage.md` |  |
-| `PLAT-MOB-SKELETON` | guide | `platforms/mobile/skeleton-loading.md` | ⚠ stub |
-| `PLAT-PY` | platform | `platforms/python/README.md` |  |
-| `PLAT-PY-CLI` | guide | `platforms/python/cli.md` |  |
-| `PLAT-PY-DI` | guide | `platforms/python/di.md` |  |
-| `PLAT-PY-HTTP` | guide | `platforms/python/http.md` |  |
-| `PLAT-PY-IMPORT-LINTER` | guide | `platforms/python/import-linter.md` |  |
-| `PLAT-PY-MCP` | guide | `platforms/python/mcp.md` |  |
-| `PLAT-PY-PACKAGING` | guide | `platforms/python/packaging.md` |  |
-| `PLAT-PY-PERSISTENCE` | guide | `platforms/python/persistence.md` |  |
-| `PLAT-PY-SUBPROCESS` | guide | `platforms/python/subprocess.md` |  |
-| `PLAT-PY-TESTING` | guide | `platforms/python/testing.md` |  |
-| `PLAT-PY-TYPING` | guide | `platforms/python/typing.md` |  |
-| `PLAT-WEB-A11Y` | rules | `platforms/web/accessibility.md` |  |
-| `PLAT-WEB-DEPLOY` | guide | `platforms/web/deploy.md` |  |
-| `PLAT-WEB-DS-COMPONENT` | guide | `platforms/web/design-system/component.md` |  |
-| `PLAT-WEB-DS-ICONS` | guide | `platforms/web/design-system/icons.md` |  |
-| `PLAT-WEB-DS-THEME` | guide | `platforms/web/design-system/theme.md` |  |
-| `PLAT-WEB-FIREBASE` | guide | `platforms/web/firebase.md` |  |
-| `PLAT-WEB-FORMS` | guide | `platforms/web/forms.md` |  |
-| `PLAT-WEB-HTTP` | guide | `platforms/web/http-client.md` |  |
-| `PLAT-WEB-NEXT` | guide | `platforms/web/nextjs.md` |  |
-| `PLAT-WEB-NEXT-APP` | guide | `platforms/web/nextjs-app.md` |  |
-| `PLAT-WEB-NEXT-APP-DEPLOY` | guide | `platforms/web/nextjs-app-deploy.md` |  |
-| `PLAT-WEB-NEXT-DATA` | guide | `platforms/web/nextjs-data.md` |  |
-| `PLAT-WEB-NEXT-FIREBASE` | guide | `platforms/web/firebase-next.md` |  |
-| `PLAT-WEB-NEXT-STATIC` | guide | `platforms/web/nextjs-static.md` |  |
-| `PLAT-WEB-REACT` | guide | `platforms/web/react-typescript.md` |  |
-| `PLAT-WEB-REACT-PATTERNS` | guide | `platforms/web/react-patterns.md` |  |
-| `PLAT-WEB-STATE` | guide | `platforms/web/state.md` |  |
-| `PLAT-WEB-STYLING` | guide | `platforms/web/styling.md` |  |
+| ID | Type | Path | Status | Rules exercised / unproven |
+|---|---|---|---|---|
+| `PLAT-BE-JPA` | guide | `platforms/backend/jpa.md` |  |  |
+| `PLAT-BE-SECURITY` | guide | `platforms/backend/security.md` |  |  |
+| `PLAT-BE-SPRING` | guide | `platforms/backend/spring.md` |  |  |
+| `PLAT-LIB-JS-EXPORT` | guide | `platforms/library/js-npm-export.md` |  |  |
+| `PLAT-LIB-KMP` | guide | `platforms/library/kmp-packaging.md` |  |  |
+| `PLAT-MOB-COMPOSE` | platform | `platforms/mobile/compose.md` |  |  |
+| `PLAT-MOB-DATASTORE` | guide | `platforms/mobile/datastore.md` |  |  |
+| `PLAT-MOB-DS-COMPONENT` | guide | `platforms/mobile/design-system/component.md` |  |  |
+| `PLAT-MOB-DS-ICONS` | guide | `platforms/mobile/design-system/icons.md` |  |  |
+| `PLAT-MOB-DS-IMAGES` | guide | `platforms/mobile/design-system/images.md` |  |  |
+| `PLAT-MOB-DS-THEME` | guide | `platforms/mobile/design-system/theme.md` |  |  |
+| `PLAT-MOB-FIREBASE` | platform | `platforms/mobile/firebase.md` |  |  |
+| `PLAT-MOB-HTTP` | guide | `platforms/mobile/http-client.md` |  |  |
+| `PLAT-MOB-HUAWEI` | guide | `platforms/mobile/huawei.md` |  |  |
+| `PLAT-MOB-IOS-AUTH` | guide | `platforms/mobile/ios-auth.md` |  |  |
+| `PLAT-MOB-IOS-BILLING` | guide | `platforms/mobile/ios-billing.md` |  |  |
+| `PLAT-MOB-IOS-INTEROP` | guide | `platforms/mobile/ios-interop.md` |  |  |
+| `PLAT-MOB-KMP` | platform | `platforms/mobile/kmp.md` |  |  |
+| `PLAT-MOB-KMP-IOS` | guide | `platforms/mobile/kmp-ios.md` |  |  |
+| `PLAT-MOB-KMP-WEB` | guide | `platforms/mobile/kmp-web-target.md` |  |  |
+| `PLAT-MOB-KOIN` | platform | `platforms/mobile/koin.md` |  |  |
+| `PLAT-MOB-KOTLIN` | platform | `platforms/mobile/kotlin-coroutines.md` |  |  |
+| `PLAT-MOB-NAV` | guide | `platforms/mobile/navigation.md` | ⚠ stub |  |
+| `PLAT-MOB-NOTIF` | guide | `platforms/mobile/notifications.md` |  |  |
+| `PLAT-MOB-ROOM` | platform | `platforms/mobile/room.md` |  |  |
+| `PLAT-MOB-SECURE-STORAGE` | guide | `platforms/mobile/secure-storage.md` |  |  |
+| `PLAT-MOB-SKELETON` | guide | `platforms/mobile/skeleton-loading.md` | ⚠ stub |  |
+| `PLAT-PY` | platform | `platforms/python/README.md` |  |  |
+| `PLAT-PY-CLI` | guide | `platforms/python/cli.md` |  |  |
+| `PLAT-PY-DI` | guide | `platforms/python/di.md` |  |  |
+| `PLAT-PY-HTTP` | guide | `platforms/python/http.md` |  |  |
+| `PLAT-PY-IMPORT-LINTER` | guide | `platforms/python/import-linter.md` |  |  |
+| `PLAT-PY-MCP` | guide | `platforms/python/mcp.md` |  |  |
+| `PLAT-PY-PACKAGING` | guide | `platforms/python/packaging.md` |  |  |
+| `PLAT-PY-PERSISTENCE` | guide | `platforms/python/persistence.md` |  |  |
+| `PLAT-PY-SUBPROCESS` | guide | `platforms/python/subprocess.md` |  |  |
+| `PLAT-PY-TESTING` | guide | `platforms/python/testing.md` |  |  |
+| `PLAT-PY-TYPING` | guide | `platforms/python/typing.md` |  |  |
+| `PLAT-WEB-A11Y` | rules | `platforms/web/accessibility.md` |  |  |
+| `PLAT-WEB-DEPLOY` | guide | `platforms/web/deploy.md` |  |  |
+| `PLAT-WEB-DS-COMPONENT` | guide | `platforms/web/design-system/component.md` |  |  |
+| `PLAT-WEB-DS-ICONS` | guide | `platforms/web/design-system/icons.md` |  |  |
+| `PLAT-WEB-DS-THEME` | guide | `platforms/web/design-system/theme.md` |  |  |
+| `PLAT-WEB-FIREBASE` | guide | `platforms/web/firebase.md` |  |  |
+| `PLAT-WEB-FORMS` | guide | `platforms/web/forms.md` |  |  |
+| `PLAT-WEB-HTTP` | guide | `platforms/web/http-client.md` |  |  |
+| `PLAT-WEB-NEXT` | guide | `platforms/web/nextjs.md` |  |  |
+| `PLAT-WEB-NEXT-APP` | guide | `platforms/web/nextjs-app.md` |  |  |
+| `PLAT-WEB-NEXT-APP-DEPLOY` | guide | `platforms/web/nextjs-app-deploy.md` |  |  |
+| `PLAT-WEB-NEXT-DATA` | guide | `platforms/web/nextjs-data.md` |  |  |
+| `PLAT-WEB-NEXT-FIREBASE` | guide | `platforms/web/firebase-next.md` |  |  |
+| `PLAT-WEB-NEXT-STATIC` | guide | `platforms/web/nextjs-static.md` |  |  |
+| `PLAT-WEB-REACT` | guide | `platforms/web/react-typescript.md` |  |  |
+| `PLAT-WEB-REACT-PATTERNS` | guide | `platforms/web/react-patterns.md` |  |  |
+| `PLAT-WEB-STATE` | guide | `platforms/web/state.md` |  |  |
+| `PLAT-WEB-STYLING` | guide | `platforms/web/styling.md` |  |  |
 
 ## build/
 
-| ID | Type | Path | Status |
-|---|---|---|---|
-| `BUILD-APPLE-CI` | guide | `build/apple-ci.md` |  |
-| `BUILD-CONVENTION-PLUGINS` | guide | `build/convention-plugins.md` |  |
-| `BUILD-COVERAGE` | guide | `build/coverage.md` |  |
-| `BUILD-PROJECT-STRUCTURE` | guide | `build/project-structure.md` |  |
-| `BUILD-STATIC-ANALYSIS` | guide | `build/static-analysis.md` |  |
-| `BUILD-VERSION-CATALOG` | guide | `build/version-catalog.md` |  |
+| ID | Type | Path | Status | Rules exercised / unproven |
+|---|---|---|---|---|
+| `BUILD-APPLE-CI` | guide | `build/apple-ci.md` |  |  |
+| `BUILD-CONVENTION-PLUGINS` | guide | `build/convention-plugins.md` |  |  |
+| `BUILD-COVERAGE` | guide | `build/coverage.md` |  |  |
+| `BUILD-PROJECT-STRUCTURE` | guide | `build/project-structure.md` |  |  |
+| `BUILD-STATIC-ANALYSIS` | guide | `build/static-analysis.md` |  |  |
+| `BUILD-VERSION-CATALOG` | guide | `build/version-catalog.md` |  |  |
 
 ## quality-gates/
 
-| ID | Type | Path | Status |
-|---|---|---|---|
-| `QG-MOB-NATIVE` | guide | `quality-gates/mobile-native-tests.md` |  |
-| `QG-REVIEW` | guide | `quality-gates/review.md` |  |
-| `QG-TESTING` | guide | `quality-gates/testing.md` |  |
-| `QG-WEB-TESTING` | guide | `quality-gates/web-testing.md` |  |
+| ID | Type | Path | Status | Rules exercised / unproven |
+|---|---|---|---|---|
+| `QG-MOB-NATIVE` | guide | `quality-gates/mobile-native-tests.md` |  |  |
+| `QG-REVIEW` | guide | `quality-gates/review.md` |  |  |
+| `QG-TESTING` | guide | `quality-gates/testing.md` |  |  |
+| `QG-WEB-TESTING` | guide | `quality-gates/web-testing.md` |  |  |
 
 ## feature-orchestrators/
 
-| ID | Type | Path | Status |
-|---|---|---|---|
-| `ORCH-ALL-CROSS-REPO` | orchestrator | `feature-orchestrators/shared/cross-repo-feature.md` |  |
-| `ORCH-BE-ENDPOINT` | orchestrator | `feature-orchestrators/backend/backend-endpoint.md` |  |
-| `ORCH-MOB-FEAT` | orchestrator | `feature-orchestrators/mobile/mobile-feature.md` |  |
-| `ORCH-MOB-IOS` | orchestrator | `feature-orchestrators/mobile/ios-port.md` |  |
-| `ORCH-PY-ADAPTER` | orchestrator | `feature-orchestrators/python/python-adapter.md` |  |
-| `ORCH-PY-ENTRYPOINT` | orchestrator | `feature-orchestrators/python/python-entrypoint.md` |  |
-| `ORCH-PY-MODULARISE` | orchestrator | `feature-orchestrators/python/python-modularise.md` |  |
-| `ORCH-PY-USECASE` | orchestrator | `feature-orchestrators/python/python-usecase.md` |  |
-| `ORCH-WEB-APP` | orchestrator | `feature-orchestrators/web/app-feature.md` |  |
-| `ORCH-WEB-FEAT` | orchestrator | `feature-orchestrators/web/web-feature.md` |  |
+| ID | Type | Path | Status | Rules exercised / unproven |
+|---|---|---|---|---|
+| `ORCH-ALL-CROSS-REPO` | orchestrator | `feature-orchestrators/shared/cross-repo-feature.md` |  |  |
+| `ORCH-BE-ENDPOINT` | orchestrator | `feature-orchestrators/backend/backend-endpoint.md` |  |  |
+| `ORCH-MOB-FEAT` | orchestrator | `feature-orchestrators/mobile/mobile-feature.md` |  |  |
+| `ORCH-MOB-IOS` | orchestrator | `feature-orchestrators/mobile/ios-port.md` |  |  |
+| `ORCH-PY-ADAPTER` | orchestrator | `feature-orchestrators/python/python-adapter.md` |  |  |
+| `ORCH-PY-ENTRYPOINT` | orchestrator | `feature-orchestrators/python/python-entrypoint.md` |  |  |
+| `ORCH-PY-MODULARISE` | orchestrator | `feature-orchestrators/python/python-modularise.md` |  |  |
+| `ORCH-PY-USECASE` | orchestrator | `feature-orchestrators/python/python-usecase.md` |  |  |
+| `ORCH-WEB-APP` | orchestrator | `feature-orchestrators/web/app-feature.md` |  |  |
+| `ORCH-WEB-FEAT` | orchestrator | `feature-orchestrators/web/web-feature.md` |  |  |

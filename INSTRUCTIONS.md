@@ -54,6 +54,13 @@ Rules are referenced by ID throughout documents. Every rule specifies its
 | `reviewer` | After implementation |
 | `ci` | Automated — checked by pipeline |
 
+A rule may also carry `evidence: exercised | unproven`. `exercised` means it was applied in a real slice of a real
+project and the result recorded; `unproven` means it was written from reasoning or a reference architecture and has
+not been applied yet. Treat an unproven **hard** rule as guidance, not a gate: follow it, but if it conflicts with the
+project's reality, raise that and record the result so the rule can be promoted or changed. A rule with no `evidence`
+field makes no claim either way. `index.md` shows the counts per document, and a lookup warns when its set contains
+unproven rules.
+
 ---
 
 ## Framework Layers

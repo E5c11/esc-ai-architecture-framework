@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-18T16:48:42.439127+00:00",
+  "generated": "2026-10-18T16:51:36.069947+00:00",
   "count": 136,
   "documents": [
     {
@@ -36,7 +36,8 @@
         "layers",
         "rest-api"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-BE-CONTROLLER",
@@ -63,7 +64,8 @@
         "boundary",
         "thin-controller"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-BE-DATASOURCE",
@@ -91,7 +93,8 @@
         "data-access",
         "store"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-BE-ENTITY",
@@ -118,7 +121,8 @@
         "flyway",
         "database"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-BE-ERROR",
@@ -145,7 +149,8 @@
         "global-exception-handler",
         "two-tier"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-BE-PAGINATION",
@@ -175,7 +180,8 @@
         "dto-boundary",
         "ordering"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-BE-PUBLISHING",
@@ -203,7 +209,8 @@
         "admin-content",
         "visibility"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-BE-SERVICE",
@@ -235,7 +242,8 @@
         "refresh-token",
         "rotation"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC",
@@ -271,7 +279,8 @@
         "layers",
         "mvvm"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC-APP-VM",
@@ -302,7 +311,8 @@
         "snackbar",
         "global-state"
       ],
-      "status": "stub"
+      "status": "stub",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC-COMPOSITION",
@@ -335,7 +345,8 @@
         "data-payload-slot",
         "duplicate-fetch"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC-DATASOURCE",
@@ -363,7 +374,8 @@
         "exceptions",
         "abstraction"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC-DI",
@@ -394,7 +406,8 @@
         "viewmodel",
         "modules"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC-ERR-CLASSES",
@@ -421,7 +434,8 @@
         "error-presentation",
         "actionable-errors"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC-ERROR-FLOW",
@@ -451,7 +465,8 @@
         "ui-metadata",
         "layers"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC-FEATURE",
@@ -478,7 +493,8 @@
         "file-placement",
         "directories"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC-REPOSITORY",
@@ -507,7 +523,8 @@
         "cache",
         "multi-source"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC-USECASE",
@@ -538,7 +555,8 @@
         "flow",
         "suspend"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC-VIEW",
@@ -566,7 +584,8 @@
         "scaffold",
         "state-hoisting"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PC-VIEWMODEL",
@@ -598,7 +617,8 @@
         "stateflow",
         "sharedflow"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY",
@@ -644,7 +664,8 @@
         "service",
         "control-plane"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY-COMPOSITION",
@@ -674,7 +695,8 @@
         "settings",
         "entry-point"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY-CONCURRENCY",
@@ -706,7 +728,8 @@
         "cancellation",
         "sync-by-default"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY-DATASOURCE",
@@ -738,7 +761,8 @@
         "migrations",
         "files"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY-DOMAIN",
@@ -769,7 +793,8 @@
         "clock",
         "rule-table"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY-ENTRYPOINT",
@@ -803,7 +828,8 @@
         "rendering",
         "delivery-surface"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY-ERROR",
@@ -836,7 +862,8 @@
         "two-tier",
         "boundaries"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY-GATEWAY",
@@ -870,7 +897,8 @@
         "external-system",
         "timeout"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY-MODULES",
@@ -904,7 +932,8 @@
         "growth",
         "monolith"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY-OBSERVABILITY",
@@ -936,7 +965,8 @@
         "events",
         "redaction"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY-POLICY",
@@ -970,7 +1000,8 @@
         "evidence",
         "seams"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-PY-USECASE",
@@ -1004,7 +1035,8 @@
         "orchestration",
         "stages"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-WEB",
@@ -1034,7 +1066,8 @@
         "folder-structure",
         "feature-folders"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-WEB-APP",
@@ -1083,7 +1116,11 @@
         "static-export",
         "firebase"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "exercised": 12,
+        "unproven": 3
+      }
     },
     {
       "id": "ARCH-WEB-APP-COMPONENT",
@@ -1117,7 +1154,11 @@
         "serialisation",
         "static-export"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "exercised": 4,
+        "unproven": 4
+      }
     },
     {
       "id": "ARCH-WEB-APP-COMPOSITION",
@@ -1153,7 +1194,11 @@
         "server",
         "static-export"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "unproven": 4,
+        "exercised": 5
+      }
     },
     {
       "id": "ARCH-WEB-APP-DATASOURCE",
@@ -1191,7 +1236,11 @@
         "postgres",
         "fake"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "exercised": 13,
+        "unproven": 3
+      }
     },
     {
       "id": "ARCH-WEB-APP-DOMAIN",
@@ -1223,7 +1272,11 @@
         "pipeline",
         "determinism"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "exercised": 3,
+        "unproven": 6
+      }
     },
     {
       "id": "ARCH-WEB-APP-ERR-CLASSES",
@@ -1254,7 +1307,11 @@
         "zod",
         "react-hook-form"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "exercised": 3,
+        "unproven": 1
+      }
     },
     {
       "id": "ARCH-WEB-APP-ERR-FLOW",
@@ -1291,7 +1348,11 @@
         "swallow",
         "validation"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "exercised": 3,
+        "unproven": 5
+      }
     },
     {
       "id": "ARCH-WEB-APP-FEATURE-STRUCTURE",
@@ -1326,7 +1387,11 @@
         "shared",
         "promotion"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "exercised": 4,
+        "unproven": 5
+      }
     },
     {
       "id": "ARCH-WEB-APP-HOOK",
@@ -1362,7 +1427,11 @@
         "subscription",
         "client-component"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "exercised": 7,
+        "unproven": 4
+      }
     },
     {
       "id": "ARCH-WEB-APP-LAYERS",
@@ -1404,7 +1473,8 @@
         "entry-point",
         "reading-guide"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-WEB-APP-MODULES",
@@ -1437,7 +1507,10 @@
         "monorepo",
         "refactoring"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "unproven": 8
+      }
     },
     {
       "id": "ARCH-WEB-APP-OBS",
@@ -1469,7 +1542,10 @@
         "analytics",
         "privacy"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "unproven": 4
+      }
     },
     {
       "id": "ARCH-WEB-APP-REPOSITORY",
@@ -1498,7 +1574,10 @@
         "cache",
         "multi-source"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "unproven": 3
+      }
     },
     {
       "id": "ARCH-WEB-APP-USECASE",
@@ -1533,7 +1612,11 @@
         "idempotence",
         "testing"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {
+        "exercised": 4,
+        "unproven": 5
+      }
     },
     {
       "id": "ARCH-WEB-COMPONENTS",
@@ -1565,7 +1648,8 @@
         "props",
         "composition"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ARCH-WEB-CONTENT",
@@ -1595,7 +1679,8 @@
         "seo",
         "json-ld"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "BUILD-APPLE-CI",
@@ -1625,7 +1710,8 @@
         "kotlin-native",
         "signing"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "BUILD-CONVENTION-PLUGINS",
@@ -1650,7 +1736,8 @@
         "plugins",
         "composability"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "BUILD-COVERAGE",
@@ -1678,7 +1765,8 @@
         "exclusions",
         "quality-gate"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "BUILD-PROJECT-STRUCTURE",
@@ -1704,7 +1792,8 @@
         "modules",
         "typesafe-accessors"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "BUILD-STATIC-ANALYSIS",
@@ -1730,7 +1819,8 @@
         "code-quality",
         "baseline"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "BUILD-VERSION-CATALOG",
@@ -1755,7 +1845,8 @@
         "dependencies",
         "versions"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "CORE-API-STABILITY",
@@ -1785,7 +1876,8 @@
         "public-surface",
         "library"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "CORE-COUPLING",
@@ -1807,7 +1899,8 @@
         "separation-of-concerns",
         "single-responsibility"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "CORE-DI",
@@ -1830,7 +1923,8 @@
         "testability",
         "composition"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "CORE-ERROR",
@@ -1853,7 +1947,8 @@
         "boundaries",
         "observability"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "CORE-NAMING",
@@ -1875,7 +1970,8 @@
         "conventions",
         "intent"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "CORE-SSOT",
@@ -1898,7 +1994,8 @@
         "state",
         "synchronisation"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "CORE-TESTING",
@@ -1922,7 +2019,8 @@
         "fakes",
         "coverage"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ORCH-ALL-CROSS-REPO",
@@ -1953,7 +2051,8 @@
         "contract",
         "orchestration"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ORCH-BE-ENDPOINT",
@@ -1992,7 +2091,8 @@
         "rest",
         "end-to-end"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ORCH-MOB-FEAT",
@@ -2039,7 +2139,8 @@
         "scaffold",
         "end-to-end"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ORCH-MOB-IOS",
@@ -2079,7 +2180,8 @@
         "xcode",
         "release"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ORCH-PY-ADAPTER",
@@ -2119,7 +2221,8 @@
         "subprocess",
         "capabilities"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "ORCH-PY-ENTRYPOINT",
@@ -2160,7 +2263,8 @@
         "surface",
         "front-door"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "ORCH-PY-MODULARISE",
@@ -2199,7 +2303,8 @@
         "monolith",
         "characterization"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ORCH-PY-USECASE",
@@ -2242,7 +2347,8 @@
         "layers",
         "scaffold"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "ORCH-WEB-APP",
@@ -2290,7 +2396,8 @@
         "static-export",
         "server"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "ORCH-WEB-FEAT",
@@ -2325,7 +2432,8 @@
         "firebase",
         "dashboard"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PAT-ANALYTICS-EVENTS",
@@ -2350,7 +2458,8 @@
         "instrumentation",
         "philosophy"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PAT-DATA-ACCESS",
@@ -2377,7 +2486,8 @@
         "interface",
         "storage"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PAT-OBSERVER",
@@ -2403,7 +2513,8 @@
         "subscription",
         "real-time"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PAT-OUTCOME",
@@ -2429,7 +2540,8 @@
         "typed-errors",
         "railway"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-BE-JPA",
@@ -2459,7 +2571,8 @@
         "uuid",
         "timestamps"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-BE-SECURITY",
@@ -2488,7 +2601,8 @@
         "refresh-token",
         "token-rotation"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-BE-SPRING",
@@ -2518,7 +2632,8 @@
         "constructor-injection",
         "time-provider"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-LIB-JS-EXPORT",
@@ -2544,7 +2659,8 @@
         "esmodules",
         "wasmjs"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-LIB-KMP",
@@ -2576,7 +2692,8 @@
         "klib",
         "apple"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-COMPOSE",
@@ -2602,7 +2719,8 @@
         "theming",
         "skeleton"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-DATASTORE",
@@ -2631,7 +2749,8 @@
         "coroutines",
         "flow"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-DS-COMPONENT",
@@ -2661,7 +2780,8 @@
         "accessibility",
         "kmp"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-DS-ICONS",
@@ -2688,7 +2808,8 @@
         "accessibility",
         "kmp"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-DS-IMAGES",
@@ -2716,7 +2837,8 @@
         "kmp",
         "accessibility"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-DS-THEME",
@@ -2744,7 +2866,8 @@
         "dimensions",
         "compose"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-FIREBASE",
@@ -2776,7 +2899,8 @@
         "android",
         "ios"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-HTTP",
@@ -2811,7 +2935,8 @@
         "interceptor",
         "header-provider"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-HUAWEI",
@@ -2841,7 +2966,8 @@
         "rest",
         "koin"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-IOS-AUTH",
@@ -2869,7 +2995,8 @@
         "url-scheme",
         "session"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-IOS-BILLING",
@@ -2897,7 +3024,8 @@
         "entitlements",
         "restore"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-IOS-INTEROP",
@@ -2927,7 +3055,8 @@
         "lifecycle",
         "sharing"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-KMP",
@@ -2956,7 +3085,8 @@
         "ios",
         "android"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-KMP-IOS",
@@ -2986,7 +3116,8 @@
         "framework",
         "source-sets"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-KMP-WEB",
@@ -3018,7 +3149,8 @@
         "uuid",
         "rest"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-KOIN",
@@ -3046,7 +3178,8 @@
         "factory",
         "single"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-KOTLIN",
@@ -3074,7 +3207,8 @@
         "suspend",
         "dispatchers"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-NAV",
@@ -3102,7 +3236,8 @@
         "deeplink",
         "back-stack"
       ],
-      "status": "stub"
+      "status": "stub",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-NOTIF",
@@ -3135,7 +3270,8 @@
         "background",
         "ios"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-ROOM",
@@ -3165,7 +3301,8 @@
         "ios",
         "kmp"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-SECURE-STORAGE",
@@ -3193,7 +3330,8 @@
         "storage",
         "ios"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-MOB-SKELETON",
@@ -3220,7 +3358,8 @@
         "compose",
         "ui-state"
       ],
-      "status": "stub"
+      "status": "stub",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-PY",
@@ -3257,7 +3396,8 @@
         "tooling",
         "baseline"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-PY-CLI",
@@ -3292,7 +3432,8 @@
         "help",
         "intent-verbs"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-PY-DI",
@@ -3321,7 +3462,8 @@
         "fakes",
         "no-container"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-PY-HTTP",
@@ -3355,7 +3497,8 @@
         "error-envelope",
         "openapi"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-PY-IMPORT-LINTER",
@@ -3384,7 +3527,8 @@
         "contracts",
         "fitness-function"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-PY-MCP",
@@ -3417,7 +3561,8 @@
         "schema",
         "tool-error"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-PY-PACKAGING",
@@ -3449,7 +3594,8 @@
         "src-layout",
         "library"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-PY-PERSISTENCE",
@@ -3481,7 +3627,8 @@
         "wal",
         "row-mapping"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-PY-SUBPROCESS",
@@ -3512,7 +3659,8 @@
         "worktree",
         "environment"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-PY-TESTING",
@@ -3547,7 +3695,8 @@
         "characterization",
         "parametrize"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-PY-TYPING",
@@ -3579,7 +3728,8 @@
         "literal",
         "enum"
       ],
-      "status": ""
+      "status": "",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-A11Y",
@@ -3608,7 +3758,8 @@
         "keyboard",
         "focus"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-DEPLOY",
@@ -3635,7 +3786,8 @@
         "sitemap",
         "robots"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-DS-COMPONENT",
@@ -3662,7 +3814,8 @@
         "client-components",
         "tailwind"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-DS-ICONS",
@@ -3687,7 +3840,8 @@
         "lucide-react",
         "accessibility"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-DS-THEME",
@@ -3721,7 +3875,8 @@
         "charts",
         "next-font"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-FIREBASE",
@@ -3750,7 +3905,8 @@
         "environment-variables",
         "real-time"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-FORMS",
@@ -3776,7 +3932,8 @@
         "field-errors",
         "discriminated-union"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-HTTP",
@@ -3807,7 +3964,8 @@
         "testing",
         "msw"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-NEXT",
@@ -3843,7 +4001,8 @@
         "search-params",
         "lint"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-NEXT-APP",
@@ -3872,7 +4031,8 @@
         "outcome",
         "error-digest"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-NEXT-APP-DEPLOY",
@@ -3899,7 +4059,8 @@
         "build",
         "connection-pool"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-NEXT-DATA",
@@ -3932,7 +4093,8 @@
         "revalidation",
         "server-runtime"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-NEXT-FIREBASE",
@@ -3968,7 +4130,8 @@
         "nextjs",
         "pii"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-NEXT-STATIC",
@@ -3998,7 +4161,8 @@
         "client-components",
         "hosting"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-REACT",
@@ -4030,7 +4194,8 @@
         "cleanup",
         "as-const"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-REACT-PATTERNS",
@@ -4065,7 +4230,8 @@
         "error-boundary",
         "memoisation"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-STATE",
@@ -4097,7 +4263,8 @@
         "routing",
         "auth-guard"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "PLAT-WEB-STYLING",
@@ -4123,7 +4290,8 @@
         "inline-styles",
         "common-styles"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "QG-MOB-NATIVE",
@@ -4150,7 +4318,8 @@
         "xcode",
         "integration"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "QG-REVIEW",
@@ -4180,7 +4349,8 @@
         "code-review",
         "enforcement"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "QG-TESTING",
@@ -4209,7 +4379,8 @@
         "coverage",
         "philosophy"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     },
     {
       "id": "QG-WEB-TESTING",
@@ -4239,7 +4410,8 @@
         "server-components",
         "emulator"
       ],
-      "status": "active"
+      "status": "active",
+      "rule_evidence": {}
     }
   ]
 }

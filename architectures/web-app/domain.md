@@ -48,6 +48,7 @@ id: ARCH-WEB-APP-DOM-PURE-01
 statement: Domain functions MUST be free of I/O and ambient state: no network, storage, DOM, environment, randomness, or current-time access, and no mutation of their arguments.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-PURE-01 — Domain functions MUST be free of I/O and ambient state: no network, storage, DOM, environment, randomness, or current-time access, and no mutation of their arguments.
 ```
@@ -57,6 +58,7 @@ id: ARCH-WEB-APP-DOM-CLOCK-01
 statement: Anything that needs the current time or a random or unique value MUST receive it as an argument or through a small port supplied from outside, and MUST NOT call `Date.now()`, `new Date()`, `Math.random()` or `crypto.randomUUID()` itself.
 type: hard
 scope: di
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-CLOCK-01 — Anything that needs the current time or a random or unique value MUST receive it as an argument or through a small port supplied from outside, and MUST NOT call `Date.now()`, `new Date()`, `Math.random()` or `crypto.randomUUID()` itself.
 ```
@@ -74,6 +76,7 @@ id: ARCH-WEB-APP-DOM-VALUE-01
 statement: Domain values MUST be immutable: `readonly` properties, `ReadonlyArray`, `ReadonlyMap` and `as const` data, and a change MUST produce a new value.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-VALUE-01 — Domain values MUST be immutable: `readonly` properties, `ReadonlyArray`, `ReadonlyMap` and `as const` data, and a change MUST produce a new value.
 ```
@@ -83,6 +86,7 @@ id: ARCH-WEB-APP-DOM-SERIAL-01
 statement: A domain value that can cross the Server/Client Component boundary or be stored MUST be plain serialisable data (strings, numbers, booleans, `null`, arrays and plain objects), and MUST NOT be a class instance, a `Date`, a `Map`, a `Set` or a function.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-SERIAL-01 — A domain value that can cross the Server/Client Component boundary or be stored MUST be plain serialisable data (strings, numbers, booleans, `null`, arrays and plain objects), and MUST NOT be a class instance, a `Date`, a `Map`, a `Set` or a function.
 ```
@@ -97,6 +101,7 @@ id: ARCH-WEB-APP-DOM-INVARIANT-01
 statement: A value's invariants MUST be enforced where the value is created, by a factory or parser that returns an `Outcome`, so an invalid value cannot be constructed; validation MUST NOT be deferred to the caller.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-INVARIANT-01 — A value's invariants MUST be enforced where the value is created, by a factory or parser that returns an `Outcome`, so an invalid value cannot be constructed; validation MUST NOT be deferred to the caller.
 ```
@@ -109,6 +114,7 @@ id: ARCH-WEB-APP-DOM-VOCAB-01
 statement: A closed set of choices (statuses, regions, outcome kinds, severities) MUST be a string-literal union or an `as const` object, and bare strings compared at scattered call sites MUST NOT be used.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-VOCAB-01 — A closed set of choices (statuses, regions, outcome kinds, severities) MUST be a string-literal union or an `as const` object, and bare strings compared at scattered call sites MUST NOT be used.
 ```
@@ -124,6 +130,7 @@ id: ARCH-WEB-APP-DOM-TIME-01
 statement: An instant MUST be represented with an explicit timezone (an ISO 8601 instant), a calendar date MUST be a date-only value, and domain code MUST NOT rely on the runtime's local timezone.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-TIME-01 — An instant MUST be represented with an explicit timezone (an ISO 8601 instant), a calendar date MUST be a date-only value, and domain code MUST NOT rely on the runtime's local timezone.
 ```
@@ -137,6 +144,7 @@ id: ARCH-WEB-APP-DOM-DETERMINISM-01
 statement: A transform over a collection SHOULD give the same result for the same records in any order, with an explicit sort and tie-break wherever order is part of the result.
 type: soft
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-DETERMINISM-01 — A transform over a collection SHOULD give the same result for the same records in any order, with an explicit sort and tie-break wherever order is part of the result.
 ```
@@ -149,6 +157,7 @@ id: ARCH-WEB-APP-DOM-NAMING-01
 statement: Domain names SHOULD come from the problem domain, not the implementation: no `Manager`, `Helper`, `Util`, `Handler`, `Dto`, `Doc` or technology names in a domain identifier.
 type: soft
 scope: naming
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-NAMING-01 — Domain names SHOULD come from the problem domain, not the implementation: no `Manager`, `Helper`, `Util`, `Handler`, `Dto`, `Doc` or technology names in a domain identifier.
 ```

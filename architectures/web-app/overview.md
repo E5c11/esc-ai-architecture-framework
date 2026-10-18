@@ -149,6 +149,7 @@ id: ARCH-WEB-APP-DEP-01
 statement: Domain code MUST NOT import from any other layer and MUST NOT import React, Next.js, a provider SDK, or any I/O library.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-01 — Domain code MUST NOT import from any other layer and MUST NOT import React, Next.js, a provider SDK, or any I/O library.
 ```
@@ -158,6 +159,7 @@ id: ARCH-WEB-APP-DEP-02
 statement: A UseCase MUST NOT import React, Next.js, a provider SDK, or a DataSource implementation; it depends on interfaces.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-02 — A UseCase MUST NOT import React, Next.js, a provider SDK, or a DataSource implementation; it depends on interfaces.
 ```
@@ -167,6 +169,7 @@ id: ARCH-WEB-APP-DEP-03
 statement: A provider SDK or client MUST be imported only by the DataSource that wraps it (and by the composition module that constructs that client).
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-03 — A provider SDK or client MUST be imported only by the DataSource that wraps it (and by the composition module that constructs that client).
 ```
@@ -176,6 +179,7 @@ id: ARCH-WEB-APP-DEP-04
 statement: A Hook MUST NOT import a provider SDK or a DataSource, Repository or server-only implementation; it depends on a UseCase or, below the UseCase threshold, on a DataSource or Repository interface.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-04 — A Hook MUST NOT import a provider SDK or a DataSource, Repository or server-only implementation; it depends on a UseCase or, below the UseCase threshold, on a DataSource or Repository interface.
 ```
@@ -185,6 +189,7 @@ id: ARCH-WEB-APP-DEP-05
 statement: A Component MUST NOT import a provider SDK, DataSource, Repository or UseCase, and MUST NOT fetch data itself; it receives data through a Hook or props.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-05 — A Component MUST NOT import a provider SDK, DataSource, Repository or UseCase, and MUST NOT fetch data itself; it receives data through a Hook or props.
 ```
@@ -198,6 +203,7 @@ id: ARCH-WEB-APP-DEP-06
 statement: Concrete DataSources, Repositories and UseCases MUST be constructed only in the composition module (and in tests); every other module receives what it needs.
 type: hard
 scope: di
+evidence: exercised
 enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-06 — Concrete DataSources, Repositories and UseCases MUST be constructed only in the composition module (and in tests); every other module receives what it needs.
 ```
@@ -207,6 +213,7 @@ id: ARCH-WEB-APP-DEP-07
 statement: A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-07 — A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code.
 ```
@@ -216,6 +223,7 @@ id: ARCH-WEB-APP-DEP-08
 statement: The layer contract MUST be declared as a checkable dependency contract in the project's configuration and MUST run in CI.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [ci, planner]
 violation_message: Violates ARCH-WEB-APP-DEP-08 — The layer contract MUST be declared as a checkable dependency contract in the project's configuration and MUST run in CI.
 ```
@@ -341,6 +349,7 @@ id: ARCH-WEB-APP-USECASE-01
 statement: A UseCase-equivalent module SHOULD be introduced once a feature's business logic requires coordinating more than the single external call already in its Server Action or Hook — it SHOULD NOT be added speculatively.
 type: soft
 scope: structure
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-USECASE-01 — Introduce a UseCase-equivalent module only once business logic outgrows a single Server Action or Hook call; do not add the layer speculatively.
 ```
@@ -354,6 +363,7 @@ id: ARCH-WEB-APP-REPO-01
 statement: A Repository SHOULD be introduced only when one entity is assembled from more than one DataSource (for example a cache and a live source), and SHOULD NOT be added speculatively.
 type: soft
 scope: structure
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-REPO-01 — Introduce a Repository only when one entity is assembled from more than one DataSource; do not add the layer speculatively.
 ```
@@ -368,6 +378,7 @@ id: ARCH-WEB-APP-RUNTIME-01
 statement: A project MUST declare its runtime (`server` or `static-export`) as `frameworks.runtime` in its project profile.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [planner, reviewer]
 violation_message: Violates ARCH-WEB-APP-RUNTIME-01 — A project MUST declare its runtime (`server` or `static-export`) as `frameworks.runtime` in its project profile.
 ```
@@ -377,6 +388,7 @@ id: ARCH-WEB-APP-RUNTIME-02
 statement: In the `static-export` runtime, a DataSource MUST NOT embed or read a secret, and every read and write MUST be authorised by the provider's own access rules, not by client code.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-RUNTIME-02 — In the `static-export` runtime, a DataSource MUST NOT embed or read a secret, and every read and write MUST be authorised by the provider's own access rules, not by client code.
 ```
@@ -391,6 +403,7 @@ id: ARCH-WEB-APP-BFF-01
 statement: A separate backend-for-frontend service SHOULD NOT be introduced unless one of these is recorded as the reason: a server-held secret, shaping data across several sources, server rendering, or hiding the data store from the client.
 type: soft
 scope: structure
+evidence: unproven
 enforced_by: [planner, reviewer]
 violation_message: Violates ARCH-WEB-APP-BFF-01 — A separate backend-for-frontend service SHOULD NOT be introduced unless a server-held secret, shaping data across sources, server rendering, or hiding the data store is recorded as the reason.
 ```
@@ -400,6 +413,7 @@ id: ARCH-WEB-APP-TEST-01
 statement: A layer SHOULD be tested against the fake of the layer below it, never against a mocked provider SDK; the per-layer testing rules are in `QG-WEB-TESTING`.
 type: soft
 scope: testing
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-TEST-01 — A layer SHOULD be tested against the fake of the layer below it, never against a mocked provider SDK; the per-layer testing rules are in `QG-WEB-TESTING`.
 ```
@@ -409,6 +423,7 @@ id: ARCH-WEB-APP-OBS-REDACT-01
 statement: Secrets, tokens, credentials, personal data (names, phone numbers, addresses, precise locations) and full provider payloads MUST NOT appear in logs, error messages, error reports, analytics or URLs; values crossing into any of these MUST pass through one redaction function.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-OBS-REDACT-01 — Secrets, tokens, credentials, personal data (names, phone numbers, addresses, precise locations) and full provider payloads MUST NOT appear in logs, error messages, error reports, analytics or URLs; values crossing into any of these MUST pass through one redaction function.
 ```

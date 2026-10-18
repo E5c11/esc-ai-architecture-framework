@@ -89,3 +89,14 @@ fields:
     type: string
     required: false
     description: Additional rationale or implementation guidance.
+
+  evidence:
+    type: enum
+    required: false
+    values: [exercised, unproven]
+    description: >
+      Whether the rule has been applied in a real slice of a real project and held.
+      - exercised: applied in a real refactor or feature, with the result recorded
+      - unproven:  written from reasoning or a reference architecture, not yet applied
+      Absent means no claim is made (rules written before this field existed).
+      An unproven hard rule is a candidate to be treated as soft until it is exercised.

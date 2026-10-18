@@ -30,6 +30,7 @@ id: ARCH-WEB-APP-OBS-LOG-01
 statement: Code MUST log through a logger received from the composition and MUST NOT call `console.*` directly; only the composition module chooses the logger, its level and its destination.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-OBS-LOG-01 — Code MUST log through a logger received from the composition and MUST NOT call `console.*` directly; only the composition module chooses the logger, its level and its destination.
 ```
@@ -43,6 +44,7 @@ id: ARCH-WEB-APP-OBS-LOG-02
 statement: A log entry MUST be a structured record (an event name plus named fields) and MUST NOT be an interpolated sentence, and server code MUST emit severity in the form its log service reads.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-OBS-LOG-02 — A log entry MUST be a structured record (an event name plus named fields) and MUST NOT be an interpolated sentence, and server code MUST emit severity in the form its log service reads.
 ```
@@ -73,6 +75,7 @@ id: ARCH-WEB-APP-OBS-RECORD-01
 statement: An operation that runs outside the page (a build, an import, a scheduled fetch, a function) MUST record its outcome as data (what ran, when, against which inputs and versions, and whether it succeeded), and the UI MUST be able to show that record, including a failure with its reason.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-OBS-RECORD-01 — An operation that runs outside the page (a build, an import, a scheduled fetch, a function) MUST record its outcome as data (what ran, when, against which inputs and versions, and whether it succeeded), and the UI MUST be able to show that record, including a failure with its reason.
 ```
@@ -88,6 +91,7 @@ id: ARCH-WEB-APP-OBS-REPORT-01
 statement: Defects MUST be reported through an injected reporter that tags the release, deduplicates, and is a no-op in tests and previews, and the reporter MUST receive only redacted data.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-OBS-REPORT-01 — Defects MUST be reported through an injected reporter that tags the release, deduplicates, and is a no-op in tests and previews, and the reporter MUST receive only redacted data.
 ```

@@ -39,6 +39,7 @@ id: ARCH-WEB-APP-HOOK-LOGIC-01
 statement: A Hook MUST contain presentation logic only; business rules, calculations on domain data, and decisions about what the data means belong in a UseCase or the domain.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-LOGIC-01 — A Hook MUST contain presentation logic only; business rules, calculations on domain data, and decisions about what the data means belong in a UseCase or the domain.
 ```
@@ -57,6 +58,7 @@ id: ARCH-WEB-APP-HOOK-DEPS-01
 statement: A Hook MUST receive its UseCases and DataSources, typed as interfaces, from the composition through a provider context (or props), and MUST NOT import a constructed instance as a module-level singleton.
 type: hard
 scope: di
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-DEPS-01 — A Hook MUST receive its UseCases and DataSources, typed as interfaces, from the composition through a provider context (or props), and MUST NOT import a constructed instance as a module-level singleton.
 ```
@@ -79,6 +81,7 @@ id: ARCH-WEB-APP-HOOK-STATE-01
 statement: A Hook SHOULD expose its state as a discriminated union (`loading`, `ready` with data, `error` with an `AppError`) rather than separate `data`, `loading` and `error` fields that can contradict each other.
 type: soft
 scope: return-type
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-STATE-01 — A Hook SHOULD expose its state as a discriminated union (`loading`, `ready` with data, `error` with an `AppError`) rather than separate `data`, `loading` and `error` fields that can contradict each other.
 ```
@@ -107,6 +110,7 @@ id: ARCH-WEB-APP-HOOK-SCOPE-01
 statement: A Hook SHOULD own one cohesive screen concern, and a Hook that returns state for more than one unrelated concern SHOULD be split.
 type: soft
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-SCOPE-01 — A Hook SHOULD own one cohesive screen concern, and a Hook that returns state for more than one unrelated concern SHOULD be split.
 ```
@@ -121,6 +125,7 @@ id: ARCH-WEB-APP-HOOK-MAP-01
 statement: A Hook MUST map domain values to presentation shapes before placing them in state, and a Component MUST receive presentation shapes only.
 type: hard
 scope: return-type
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-MAP-01 — A Hook MUST map domain values to presentation shapes before placing them in state, and a Component MUST receive presentation shapes only.
 ```
@@ -133,6 +138,7 @@ id: ARCH-WEB-APP-HOOK-FORMAT-01
 statement: User-facing formatting (dates, numbers, percentages) MUST happen in the Hook's mapping with an explicit locale and timezone, not in the domain.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-FORMAT-01 — User-facing formatting (dates, numbers, percentages) MUST happen in the Hook's mapping with an explicit locale and timezone, not in the domain.
 ```
@@ -148,6 +154,7 @@ id: ARCH-WEB-APP-HOOK-ERROR-01
 statement: Error state MUST store the full `AppError`, not an extracted message string, and the Component MUST decide the user-facing wording from it.
 type: hard
 scope: error-handling
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-ERROR-01 — Error state MUST store the full `AppError`, not an extracted message string, and the Component MUST decide the user-facing wording from it.
 ```
@@ -160,6 +167,7 @@ id: ARCH-WEB-APP-HOOK-ERROR-02
 statement: A Hook over a retryable operation SHOULD expose a `retry` function, and a Hook that holds a dismissible error SHOULD expose a way to clear it.
 type: soft
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-ERROR-02 — A Hook over a retryable operation SHOULD expose a `retry` function, and a Hook that holds a dismissible error SHOULD expose a way to clear it.
 ```
@@ -171,6 +179,7 @@ id: ARCH-WEB-APP-HOOK-RACE-01
 statement: A Hook MUST ignore the result of an asynchronous operation that finishes after the Hook unmounts or its inputs change.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-RACE-01 — A Hook MUST ignore the result of an asynchronous operation that finishes after the Hook unmounts or its inputs change.
 ```
@@ -206,6 +215,7 @@ id: ARCH-WEB-APP-HOOK-ANALYTICS-01
 statement: A Hook that records analytics SHOULD receive its tracker through the composition, and SHOULD fire the event inline at the point the corresponding user action or state change is already being handled.
 type: soft
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-ANALYTICS-01 — A Hook that records analytics SHOULD receive its tracker through the composition, and SHOULD fire the event inline at the point the corresponding user action or state change is already being handled.
 ```
@@ -220,6 +230,7 @@ id: ARCH-WEB-APP-HOOK-NAMING-01
 statement: A Hook is named `use{Feature}` or `use{Feature}{Concern}`, lives in `features/{feature}/hooks/`, and has an explicit return type.
 type: hard
 scope: naming
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-HOOK-NAMING-01 — A Hook is named `use{Feature}` or `use{Feature}{Concern}`, lives in `features/{feature}/hooks/`, and has an explicit return type.
 ```

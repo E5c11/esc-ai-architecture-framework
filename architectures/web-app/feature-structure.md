@@ -54,6 +54,7 @@ id: ARCH-WEB-APP-FEAT-STRUCT-01
 statement: Each feature MUST live under `features/{feature}/` with its layers in the folders above, and a layer folder MUST be created only when the feature has code for it.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-STRUCT-01 — Each feature MUST live under `features/{feature}/` with its layers in the folders above, and a layer folder MUST be created only when the feature has code for it.
 ```
@@ -66,6 +67,7 @@ id: ARCH-WEB-APP-FEAT-PLACE-01
 statement: Each kind of file MUST live in the folder the feature layout assigns to its layer.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-PLACE-01 — Each kind of file MUST live in the folder the feature layout assigns to its layer.
 ```
@@ -81,6 +83,7 @@ id: ARCH-WEB-APP-FEAT-ROUTE-01
 statement: A route file (`page.tsx`, `layout.tsx`) MUST only compose features and route-level boundary files; it MUST NOT contain logic, data fetching of its own, or markup beyond layout.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-ROUTE-01 — A route file (`page.tsx`, `layout.tsx`) MUST only compose features and route-level boundary files; it MUST NOT contain logic, data fetching of its own, or markup beyond layout.
 ```
@@ -90,6 +93,7 @@ id: ARCH-WEB-APP-FEAT-ROUTE-02
 statement: Composition of two or more features on one screen MUST happen in the route (or a layout), never inside either feature.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-ROUTE-02 — Composition of two or more features on one screen MUST happen in the route (or a layout), never inside either feature.
 ```
@@ -112,6 +116,7 @@ id: ARCH-WEB-APP-FEAT-SHARED-01
 statement: Code MUST move to `shared/` only when a second feature actually needs it, and MUST NOT be moved there in advance of a second consumer.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-SHARED-01 — Code MUST move to `shared/` only when a second feature actually needs it, and MUST NOT be moved there in advance of a second consumer.
 ```
@@ -124,6 +129,7 @@ id: ARCH-WEB-APP-FEAT-SHARED-02
 statement: `shared/` MUST NOT host a component, type or function specific to one feature's domain, even to avoid a cross-feature import, and shared UI MUST be typed only against generic presentation shapes, never against a feature's domain model.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-SHARED-02 — `shared/` MUST NOT host a component, type or function specific to one feature's domain, even to avoid a cross-feature import, and shared UI MUST be typed only against generic presentation shapes, never against a feature's domain model.
 ```
@@ -133,6 +139,7 @@ id: ARCH-WEB-APP-FEAT-DATA-01
 statement: Code shared by several DataSources (provider error translation, client setup) MUST live in a top-level `data/` folder that only DataSources and the composition module import, and `shared/` MUST stay free of provider SDK imports.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-DATA-01 — Code shared by several DataSources (provider error translation, client setup) MUST live in a top-level `data/` folder that only DataSources and the composition module import, and `shared/` MUST stay free of provider SDK imports.
 ```
@@ -151,6 +158,7 @@ id: ARCH-WEB-APP-FEAT-SUB-01
 statement: A feature whose layer folders have become hard to scan, or whose screens have separate state, SHOULD be split into sub-features, each with the same shape one level deeper; the point at which that happens is the project's to declare.
 type: soft
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-SUB-01 — A feature whose layer folders have become hard to scan, or whose screens have separate state, SHOULD be split into sub-features, each with the same shape one level deeper; the point at which that happens is the project's to declare.
 ```
@@ -172,6 +180,7 @@ id: ARCH-WEB-APP-FEAT-NAME-01
 statement: Implementations MUST NOT use an `Impl` suffix, and a DataSource implementation MUST put the provider first, as in `FirestoreSnapshotDataSource`, not `SnapshotFirestoreDataSource`.
 type: hard
 scope: naming
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-NAME-01 — Implementations MUST NOT use an `Impl` suffix, and a DataSource implementation MUST put the provider first, as in `FirestoreSnapshotDataSource`, not `SnapshotFirestoreDataSource`.
 ```

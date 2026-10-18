@@ -54,6 +54,7 @@ id: ARCH-WEB-APP-EFLOW-RETURN-01
 statement: An expected failure (a provider error, a validation failure, a denied permission, a missing record that must exist) MUST cross the DataSource and Hook boundaries as a returned error outcome, and a thrown error MUST mean a defect; layers between those two boundaries MAY propagate the outcome or throw internally, provided the UseCase boundary converts back to an outcome.
 type: hard
 scope: error-handling
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-EFLOW-RETURN-01 — An expected failure (a provider error, a validation failure, a denied permission, a missing record that must exist) MUST cross the DataSource and Hook boundaries as a returned error outcome, and a thrown error MUST mean a defect; layers between those two boundaries MAY propagate the outcome or throw internally, provided the UseCase boundary converts back to an outcome.
 ```
@@ -69,6 +70,7 @@ id: ARCH-WEB-APP-EFLOW-SWALLOW-01
 statement: Code MUST NOT catch an error and discard it: every `catch` and `.catch` MUST translate the error into a returned outcome, rethrow it, or (only for a contained side effect) log it, and an empty handler MUST NOT exist.
 type: hard
 scope: error-handling
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-EFLOW-SWALLOW-01 — Code MUST NOT catch an error and discard it: every `catch` and `.catch` MUST translate the error into a returned outcome, rethrow it, or (only for a contained side effect) log it, and an empty handler MUST NOT exist.
 ```
@@ -88,6 +90,7 @@ id: ARCH-WEB-APP-EFLOW-LOG-01
 statement: An unexpected error MUST be logged exactly once, at the layer that first handles it (the DataSource for a provider failure, the boundary for a defect), and a layer above MUST NOT log the same error again.
 type: hard
 scope: error-handling
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-EFLOW-LOG-01 — An unexpected error MUST be logged exactly once, at the layer that first handles it (the DataSource for a provider failure, the boundary for a defect), and a layer above MUST NOT log the same error again.
 ```
@@ -104,6 +107,7 @@ id: ARCH-WEB-APP-EFLOW-VALIDATE-01
 statement: Untrusted input (form values, URL parameters, provider payloads) MUST be parsed with a schema parser where it enters, and a failure MUST become an error outcome, not a thrown error or a default value.
 type: hard
 scope: error-handling
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-EFLOW-VALIDATE-01 — Untrusted input (form values, URL parameters, provider payloads) MUST be parsed with a schema parser where it enters, and a failure MUST become an error outcome, not a thrown error or a default value.
 ```
@@ -113,6 +117,7 @@ id: ARCH-WEB-APP-EFLOW-ASSERT-01
 statement: A type assertion (`as Foo`), a non-null assertion (`!`) or `// @ts-ignore` MUST NOT be used to get past boundary validation or to silence the compiler about data that has not been checked.
 type: hard
 scope: error-handling
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-EFLOW-ASSERT-01 — A type assertion (`as Foo`), a non-null assertion (`!`) or `// @ts-ignore` MUST NOT be used to get past boundary validation or to silence the compiler about data that has not been checked.
 ```
@@ -128,6 +133,7 @@ id: ARCH-WEB-APP-EFLOW-PRESENT-01
 statement: The mapping from `AppError` variant to user-facing message and available action MUST live in one exhaustive presentation module shared by the app, and a feature MUST compose it rather than write its own wording for the same variant.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-EFLOW-PRESENT-01 — The mapping from `AppError` variant to user-facing message and available action MUST live in one exhaustive presentation module shared by the app, and a feature MUST compose it rather than write its own wording for the same variant.
 ```
@@ -141,6 +147,7 @@ id: ARCH-WEB-APP-EFLOW-NETWORK-01
 statement: A connectivity failure (`offline`) MUST be presented as a recoverable state and MUST NOT be reported to the error reporter as a defect.
 type: hard
 scope: error-handling
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-EFLOW-NETWORK-01 — A connectivity failure (`offline`) MUST be presented as a recoverable state and MUST NOT be reported to the error reporter as a defect.
 ```
@@ -160,6 +167,7 @@ id: ARCH-WEB-APP-EFLOW-BOUNDARY-01
 statement: A route-level error boundary (Next.js `error.tsx` or a React error boundary) MUST catch every thrown defect, report it once through the error reporter, and show a recoverable screen with a retry or a way back; an uncaught defect MUST NOT blank the page.
 type: hard
 scope: error-handling
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-EFLOW-BOUNDARY-01 — A route-level error boundary (Next.js `error.tsx` or a React error boundary) MUST catch every thrown defect, report it once through the error reporter, and show a recoverable screen with a retry or a way back; an uncaught defect MUST NOT blank the page.
 ```

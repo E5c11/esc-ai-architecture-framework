@@ -65,6 +65,7 @@ RULE_SCOPES = {
     "di", "error-handling", "testing", "performance",
 }
 RULE_ENFORCERS = {"planner", "executor", "reviewer", "ci"}
+RULE_EVIDENCE = {"exercised", "unproven"}
 
 ALLOWED_TYPES = {
     "principle", "pattern", "guide", "rule-set", "architecture", "platform", "orchestrator",
@@ -361,6 +362,10 @@ def check_rule_schema(rules: list[dict]) -> list[str]:
         scope = rule.get("scope", "")
         if scope and scope not in RULE_SCOPES:
             errors.append(f"{prefix}  INVALID scope {scope!r} (expected one of {sorted(RULE_SCOPES)})")
+
+        evidence = rule.get("evidence", "")
+        if evidence and evidence not in RULE_EVIDENCE:
+            errors.append(f"{prefix}  INVALID evidence {evidence!r} (expected one of {sorted(RULE_EVIDENCE)})")
 
         enforced_by = rule.get("enforced_by", [])
         if isinstance(enforced_by, str):

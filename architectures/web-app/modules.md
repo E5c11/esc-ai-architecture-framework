@@ -32,6 +32,7 @@ id: ARCH-WEB-APP-MOD-SIZE-01
 statement: A project SHOULD declare a maximum module size and enforce it with a lint rule; a module over it SHOULD be split or carry a comment naming the single concept it holds.
 type: soft
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-SIZE-01 — A project SHOULD declare a maximum module size and enforce it with a lint rule; a module over it SHOULD be split or carry a comment naming the single concept it holds.
 ```
@@ -41,6 +42,7 @@ id: ARCH-WEB-APP-MOD-COHESION-01
 statement: A module MUST be describable in one sentence without the word "and", and a module that mixes rendering, business logic and I/O MUST be split along those lines.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-COHESION-01 — A module MUST be describable in one sentence without the word "and", and a module that mixes rendering, business logic and I/O MUST be split along those lines.
 ```
@@ -50,6 +52,7 @@ id: ARCH-WEB-APP-MOD-FUNC-01
 statement: A project SHOULD declare a maximum function length and branch count and enforce them with a lint rule, and a function that both computes and performs I/O SHOULD be split into a pure computation and a thin effectful caller.
 type: soft
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-FUNC-01 — A project SHOULD declare a maximum function length and branch count and enforce them with a lint rule, and a function that both computes and performs I/O SHOULD be split into a pure computation and a thin effectful caller.
 ```
@@ -64,6 +67,7 @@ id: ARCH-WEB-APP-MOD-API-01
 statement: A package or feature MUST list its public exports explicitly in its `index.ts` (its page or root view and public types, never hooks, DataSources, Repositories, UseCases or mappers), MUST NOT use `export *` in a public surface, and other code MUST import only from that surface.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-API-01 — A package or feature MUST list its public exports explicitly in its `index.ts` (its page or root view and public types, never hooks, DataSources, Repositories, UseCases or mappers), MUST NOT use `export *` in a public surface, and other code MUST import only from that surface.
 ```
@@ -77,6 +81,7 @@ id: ARCH-WEB-APP-MOD-CYCLE-01
 statement: Import cycles between modules or packages MUST NOT exist; a cycle MUST be resolved by extracting the shared concept into a lower module, not by importing inside a function or by deferring with a dynamic import.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-CYCLE-01 — Import cycles between modules or packages MUST NOT exist; a cycle MUST be resolved by extracting the shared concept into a lower module, not by importing inside a function or by deferring with a dynamic import.
 ```
@@ -88,6 +93,7 @@ id: ARCH-WEB-APP-MOD-NAME-01
 statement: Modules, folders and packages MUST NOT be named `utils`, `helpers`, `common`, `misc`, `base` or `lib` alone; code belongs in a module named for the concept it implements.
 type: hard
 scope: naming
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-NAME-01 — Modules, folders and packages MUST NOT be named `utils`, `helpers`, `common`, `misc`, `base` or `lib` alone; code belongs in a module named for the concept it implements.
 ```
@@ -128,6 +134,7 @@ id: ARCH-WEB-APP-MOD-PACKAGE-01
 statement: A shared package MUST import nothing from the app or from any package above it, MUST declare its own dependencies, and apps and functions MUST import it only through its public surface; the dependency direction MUST never reverse; logic used by both the app and another runtime lives once, in such a package, and is never copied.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-PACKAGE-01 — A shared package MUST import nothing from the app or from any package above it, MUST declare its own dependencies, and apps and functions MUST import it only through its public surface; the dependency direction MUST never reverse; logic used by both the app and another runtime lives once, in such a package, and is never copied.
 ```
@@ -140,6 +147,7 @@ id: ARCH-WEB-APP-MOD-PACKAGE-03
 statement: A package MUST NOT be extracted from the app until its boundary is enforced by a declared dependency contract and its public surface is explicit.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-PACKAGE-03 — A package MUST NOT be extracted from the app until its boundary is enforced by a declared dependency contract and its public surface is explicit.
 ```

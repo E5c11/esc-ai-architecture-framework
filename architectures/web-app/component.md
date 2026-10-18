@@ -41,6 +41,7 @@ id: ARCH-WEB-APP-COMP-SPLIT-01
 statement: Only a feature's root view MAY call the feature's Hook; every component below it MUST receive what it renders as props and what it can do as callback props.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMP-SPLIT-01 — Only a feature's root view MAY call the feature's Hook; every component below it MUST receive what it renders as props and what it can do as callback props.
 ```
@@ -56,6 +57,7 @@ id: ARCH-WEB-APP-COMP-STATE-01
 statement: A root view MUST handle every status of its Hook's `ViewState` with an exhaustive switch, MUST NOT render with in-flight or undefined data, and MUST choose the error presentation from the `AppError` variant.
 type: hard
 scope: error-handling
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMP-STATE-01 — A root view MUST handle every status of its Hook's `ViewState` with an exhaustive switch, MUST NOT render with in-flight or undefined data, and MUST choose the error presentation from the `AppError` variant.
 ```
@@ -78,6 +80,7 @@ id: ARCH-WEB-APP-COMP-PROPS-01
 statement: A component MUST receive all data it renders as props and surface user actions as callback props, and MUST NOT reach for data through a context, a module import, or a global.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMP-PROPS-01 — A component MUST receive all data it renders as props and surface user actions as callback props, and MUST NOT reach for data through a context, a module import, or a global.
 ```
@@ -90,6 +93,7 @@ id: ARCH-WEB-APP-COMP-LOCAL-01
 statement: A component MUST NOT keep business state or derived display data in `useState`; local state is limited to transient interface state such as open or closed, focus, hover, or an unsaved input draft.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMP-LOCAL-01 — A component MUST NOT keep business state or derived display data in `useState`; local state is limited to transient interface state such as open or closed, focus, hover, or an unsaved input draft.
 ```
@@ -102,6 +106,7 @@ id: ARCH-WEB-APP-COMP-DI-01
 statement: A component MUST NOT read the composition context, call a composition accessor, or construct a dependency, including for cross-cutting concerns such as an analytics tracker.
 type: hard
 scope: di
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMP-DI-01 — A component MUST NOT read the composition context, call a composition accessor, or construct a dependency, including for cross-cutting concerns such as an analytics tracker.
 ```
@@ -120,6 +125,7 @@ id: ARCH-WEB-APP-COMP-SERVER-01
 statement: In the `server` runtime, a Server Component shell MUST contain no hooks, no state, no event handlers and no mutation logic; it obtains initial data through a UseCase or DataSource from the composition root, maps it to presentation props, and renders.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMP-SERVER-01 — In the `server` runtime, a Server Component shell MUST contain no hooks, no state, no event handlers and no mutation logic; it obtains initial data through a UseCase or DataSource from the composition root, maps it to presentation props, and renders.
 ```
@@ -132,6 +138,7 @@ id: ARCH-WEB-APP-COMP-STATIC-01
 statement: In the `static-export` runtime, a Server Component MUST NOT fetch runtime data, because it runs once at build; all runtime data MUST be loaded in the browser by the root view's Hook.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMP-STATIC-01 — In the `static-export` runtime, a Server Component MUST NOT fetch runtime data, because it runs once at build; all runtime data MUST be loaded in the browser by the root view's Hook.
 ```
@@ -150,6 +157,7 @@ id: ARCH-WEB-APP-COMP-NAMING-01
 statement: A feature's route shell is `{Feature}Page.tsx` and its root view `{Feature}View.tsx`; every other component is named for what it shows (`ARCH-WEB-NAME-02`).
 type: hard
 scope: naming
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMP-NAMING-01 — A feature's route shell is `{Feature}Page.tsx` and its root view `{Feature}View.tsx`; every other component is named for what it shows (`ARCH-WEB-NAME-02`).
 ```

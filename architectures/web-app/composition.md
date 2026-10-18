@@ -63,6 +63,7 @@ id: ARCH-WEB-APP-COMPOSE-FACTORY-01
 statement: The composition module MUST expose a factory (`createApp(config, overrides?)`) that returns the whole graph typed by interfaces, and MUST do no work when imported.
 type: hard
 scope: di
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-FACTORY-01 — The composition module MUST expose a factory (`createApp(config, overrides?)`) that returns the whole graph typed by interfaces, and MUST do no work when imported.
 ```
@@ -72,6 +73,7 @@ id: ARCH-WEB-APP-COMPOSE-GLOBAL-01
 statement: Importing a module MUST NOT initialise an SDK, open a connection or listener, read the environment, or populate a global registry; such work happens only when the factory is called.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-GLOBAL-01 — Importing a module MUST NOT initialise an SDK, open a connection or listener, read the environment, or populate a global registry; such work happens only when the factory is called.
 ```
@@ -87,6 +89,7 @@ id: ARCH-WEB-APP-COMPOSE-CONFIG-01
 statement: Configuration MUST be read once, by one `loadConfig` called from the composition module, validated with a schema parser, and passed on as a frozen value; no other module MAY read `process.env` or `NEXT_PUBLIC_*` values.
 type: hard
 scope: di
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-CONFIG-01 — Configuration MUST be read once, by one `loadConfig` called from the composition module, validated with a schema parser, and passed on as a frozen value; no other module MAY read `process.env` or `NEXT_PUBLIC_*` values.
 ```
@@ -100,6 +103,7 @@ id: ARCH-WEB-APP-COMPOSE-SDK-01
 statement: A provider SDK app MUST be initialised at most once per configured app (one name per project or environment), through an idempotent get-or-create keyed by that name, so hot reload, repeated calls and tests cannot create a second instance of the same app.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-SDK-01 — A provider SDK app MUST be initialised at most once per configured app (one name per project or environment), through an idempotent get-or-create keyed by that name, so hot reload, repeated calls and tests cannot create a second instance of the same app.
 ```
@@ -114,6 +118,7 @@ id: ARCH-WEB-APP-COMPOSE-ENV-01
 statement: Where one build can talk to more than one environment (for example a development and a production project), each environment MUST be a named app created by the composition module on demand, the active environment MUST be chosen in that one place, and switching it MUST give consumers the graph of the new environment and MUST release every live subscription held by the graph it leaves; a graph holding none MAY be kept so that its cache survives switching back.
 type: hard
 scope: di
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-ENV-01 — Where one build can talk to more than one environment (for example a development and a production project), each environment MUST be a named app created by the composition module on demand, the active environment MUST be chosen in that one place, and switching it MUST give consumers the graph of the new environment and MUST release every live subscription held by the graph it leaves; a graph holding none MAY be kept so that its cache survives switching back.
 ```
@@ -150,6 +155,7 @@ id: ARCH-WEB-APP-COMPOSE-ENV-02
 statement: The active environment SHOULD be visible wherever a write can happen, and switching to an environment that holds real data SHOULD be an explicit, confirmed action.
 type: soft
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-ENV-02 — The active environment SHOULD be visible wherever a write can happen, and switching to an environment that holds real data SHOULD be an explicit, confirmed action.
 ```
@@ -159,6 +165,7 @@ id: ARCH-WEB-APP-COMPOSE-ENV-03
 statement: An operation that reads from or writes to more than one environment (a promotion from development to production) MUST receive each environment's store explicitly from the composition and MUST NOT depend on which environment is active.
 type: hard
 scope: di
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-ENV-03 — An operation that reads from or writes to more than one environment (a promotion from development to production) MUST receive each environment's store explicitly from the composition and MUST NOT depend on which environment is active.
 ```
@@ -178,6 +185,7 @@ id: ARCH-WEB-APP-COMPOSE-CONTEXT-01
 statement: The graph MUST reach Client Components through one provider context at the root of the client tree, exposed through typed accessors that return interfaces, and an accessor used without a provider MUST throw a clear error.
 type: hard
 scope: di
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-CONTEXT-01 — The graph MUST reach Client Components through one provider context at the root of the client tree, exposed through typed accessors that return interfaces, and an accessor used without a provider MUST throw a clear error.
 ```
@@ -192,6 +200,7 @@ id: ARCH-WEB-APP-COMPOSE-SPLIT-01
 statement: In the `server` runtime the server graph and the client graph MUST be separate modules, the server module MUST be unimportable from client code, and a server-only DataSource MUST NOT appear in the client graph.
 type: hard
 scope: structure
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-SPLIT-01 — In the `server` runtime the server graph and the client graph MUST be separate modules, the server module MUST be unimportable from client code, and a server-only DataSource MUST NOT appear in the client graph.
 ```

@@ -49,6 +49,7 @@ id: ARCH-WEB-APP-ERR-TYPE-01
 statement: Error types crossing the DataSource boundary (a Server Action or Route Handler in the `server` runtime, a browser-side DataSource in `static-export`) MUST be a typed discriminated union — never a raw thrown Error, fetch Response, Firestore error, or Postgres driver error.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-ERR-TYPE-01 — Error types crossing the DataSource boundary MUST be a typed discriminated union — never a raw thrown Error, fetch Response, Firestore error, or Postgres driver error.
 ```
@@ -58,6 +59,7 @@ id: ARCH-WEB-APP-ERR-MAP-01
 statement: A provider error (REST error response, Postgres error, Firestore or callable-function error) MUST be translated exactly once, at the DataSource that calls the provider (in the `server` runtime, the Server Action or Route Handler or the DataSource module it calls); a value that is already an `AppError` MUST be passed through unchanged, never re-wrapped.
 type: hard
 scope: error-handling
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-ERR-MAP-01 — A provider error MUST be translated exactly once, at the DataSource that calls the provider.
 ```
@@ -67,6 +69,7 @@ id: ARCH-WEB-APP-ERR-UNKNOWN-01
 statement: Unknown failures MUST be logged with full cause (server-side in the `server` runtime; through the client error reporter in `static-export`) and mapped to an explicit `unexpected` outcome — never returned as empty data or false success.
 type: hard
 scope: error-handling
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-ERR-UNKNOWN-01 — Unknown failures MUST be logged with full cause and mapped to an explicit `unexpected` outcome.
 ```
@@ -92,6 +95,7 @@ id: ARCH-WEB-APP-ERR-CANCEL-01
 statement: An aborted client-side request (AbortController) SHOULD remain distinguishable from operational failure.
 type: soft
 scope: error-handling
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-ERR-CANCEL-01 — An aborted client-side request SHOULD remain distinguishable from operational failure.
 ```

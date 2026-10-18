@@ -47,6 +47,7 @@ id: ARCH-WEB-APP-DS-INTERFACE-01
 statement: Every DataSource MUST define an interface, and every consumer MUST depend on the interface, never on an implementation; the same applies to a Repository.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-INTERFACE-01 — Every DataSource MUST define an interface, and every consumer MUST depend on the interface, never on an implementation; the same applies to a Repository.
 ```
@@ -56,6 +57,7 @@ id: ARCH-WEB-APP-DS-ONE-01
 statement: A DataSource MUST wrap exactly one provider; two providers MUST be two DataSources, coordinated above them.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-ONE-01 — A DataSource MUST wrap exactly one provider; two providers MUST be two DataSources, coordinated above them.
 ```
@@ -65,6 +67,7 @@ id: ARCH-WEB-APP-DS-RESPONSIBILITY-01
 statement: A DataSource MUST contain only query construction, payload parsing, type mapping and error translation.
 type: hard
 scope: error-handling
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-RESPONSIBILITY-01 — A DataSource MUST contain only query construction, payload parsing, type mapping and error translation.
 ```
@@ -97,6 +100,7 @@ id: ARCH-WEB-APP-DS-RETURN-01
 statement: A one-shot DataSource operation MUST return `Promise<Outcome<T>>` and MUST NOT reject for an expected failure.
 type: hard
 scope: return-type
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-RETURN-01 — A one-shot DataSource operation MUST return `Promise<Outcome<T>>` and MUST NOT reject for an expected failure.
 ```
@@ -106,6 +110,7 @@ id: ARCH-WEB-APP-DS-RETURN-02
 statement: Data the provider pushes changes for MUST be exposed as a subscription that delivers an `Outcome` on every emission, including errors, and returns an unsubscribe function.
 type: hard
 scope: return-type
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-RETURN-02 — Data the provider pushes changes for MUST be exposed as a subscription that delivers an `Outcome` on every emission, including errors, and returns an unsubscribe function.
 ```
@@ -115,6 +120,7 @@ id: ARCH-WEB-APP-DS-RETURN-03
 statement: A DataSource MUST NOT turn a one-shot provider call into a subscription (for example by polling) or hide a subscription behind a one-shot call.
 type: hard
 scope: return-type
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-RETURN-03 — A DataSource MUST NOT turn a one-shot provider call into a subscription (for example by polling) or hide a subscription behind a one-shot call.
 ```
@@ -129,6 +135,7 @@ id: ARCH-WEB-APP-DS-SUBSCRIBE-01
 statement: A subscription MUST start only when `subscribe…` is called, MUST be one provider listener per call, and MUST be fully released by the returned unsubscribe function.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-SUBSCRIBE-01 — A subscription MUST start only when `subscribe…` is called, MUST be one provider listener per call, and MUST be fully released by the returned unsubscribe function.
 ```
@@ -143,6 +150,7 @@ id: ARCH-WEB-APP-DS-PAGE-01
 statement: A list read over a collection that grows MUST be paginated with a limit, a unique order (the document id as the tie-break) and a cursor (`startAfter`), and MUST NOT use `offset`.
 type: hard
 scope: performance
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-PAGE-01 — A list read over a collection that grows MUST be paginated with a limit, a unique order (the document id as the tie-break) and a cursor (`startAfter`), and MUST NOT use `offset`.
 ```
@@ -154,6 +162,7 @@ id: ARCH-WEB-APP-DS-AGG-01
 statement: Totals and breakdowns over a growing collection MUST NOT be computed by reading every document in the client; they MUST come from a server-side aggregate or a precomputed document.
 type: hard
 scope: performance
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-AGG-01 — Totals and breakdowns over a growing collection MUST NOT be computed by reading every document in the client; they MUST come from a server-side aggregate or a precomputed document.
 ```
@@ -172,6 +181,7 @@ id: ARCH-WEB-APP-DS-PARSE-01
 statement: A DataSource MUST parse every provider payload with a schema parser into a domain value, treating the payload as `unknown` until it has.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-PARSE-01 — A DataSource MUST parse every provider payload with a schema parser into a domain value, treating the payload as `unknown` until it has.
 ```
@@ -195,6 +205,7 @@ id: ARCH-WEB-APP-DS-MALFORMED-01
 statement: A payload that fails parsing MUST become an explicit error outcome that names the record, and MUST NOT be silently dropped, defaulted or counted as zero.
 type: hard
 scope: error-handling
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-MALFORMED-01 — A payload that fails parsing MUST become an explicit error outcome that names the record, and MUST NOT be silently dropped, defaulted or counted as zero.
 ```
@@ -209,6 +220,7 @@ id: ARCH-WEB-APP-DS-MAPPING-01
 statement: DataSource methods MUST return domain values and MUST NOT return documents, snapshots, DTOs, driver rows, `Response` objects or any other provider type.
 type: hard
 scope: return-type
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-MAPPING-01 — DataSource methods MUST return domain values and MUST NOT return documents, snapshots, DTOs, driver rows, `Response` objects or any other provider type.
 ```
@@ -218,6 +230,7 @@ id: ARCH-WEB-APP-DS-MAPPING-02
 statement: Mapping and parsing functions MUST live beside the DataSource that owns them, as private functions in its file or a mapper file in the same folder, and MUST NOT be inlined in a business method.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-MAPPING-02 — Mapping and parsing functions MUST live beside the DataSource that owns them, as private functions in its file or a mapper file in the same folder, and MUST NOT be inlined in a business method.
 ```
@@ -227,6 +240,7 @@ id: ARCH-WEB-APP-DS-EMPTY-01
 statement: "Not found" for a single-record lookup and "no rows" for a list MUST be successful outcomes (`null` and an empty array), and `notFound` MUST be reserved for an operation on a specific identity that must exist.
 type: hard
 scope: return-type
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-EMPTY-01 — "Not found" for a single-record lookup and "no rows" for a list MUST be successful outcomes (`null` and an empty array), and `notFound` MUST be reserved for an operation on a specific identity that must exist.
 ```
@@ -242,6 +256,7 @@ id: ARCH-WEB-APP-DS-SCHEMA-01
 statement: A change to a stored document's shape MUST ship with one of: an idempotent backfill with a dry run, a versioned reader that maps the old shape explicitly and whose exclusions are counted and shown, or a recorded decision to discard; a reader that silently defaults a missing field is none of these.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-SCHEMA-01 — A change to a stored document's shape MUST ship with one of: an idempotent backfill with a dry run, a versioned reader that maps the old shape explicitly and whose exclusions are counted and shown, or a recorded decision to discard; a reader that silently defaults a missing field is none of these.
 ```
@@ -320,6 +335,7 @@ id: ARCH-WEB-APP-DS-NAMING-01
 statement: A DataSource interface is named `{Entity}DataSource`, and an implementation puts the provider first (`Firestore{Entity}DataSource`).
 type: hard
 scope: naming
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DS-NAMING-01 — A DataSource interface is named `{Entity}DataSource`, and an implementation puts the provider first (`Firestore{Entity}DataSource`).
 ```

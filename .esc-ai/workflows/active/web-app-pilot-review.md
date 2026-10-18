@@ -46,9 +46,12 @@ Of these, `MOD-*` and the naming rules are checkable by existing lint rules and 
 ## What this says about the rule set
 - The rules that earned their place are the **structural and data-boundary** ones, the failures that cost something real (duplicate writes, silent defaults, wrong error mapping, layering drift). Those are also the ones with mechanical checks or real-provider tests.
 - The largest untested block is behavioural (errors, observability, domain style). They are plausible, and written from the same reasoning as the ones that held, but they have no evidence. Treat them as **soft until exercised**: 44 of the 55 are currently hard.
-- Recommendation: do not delete them, but mark the unexercised hard rules `status: unproven` in the index so a project can see which rules have been through a real slice, and promote them as evidence arrives.
+- Recommendation: do not delete them, but mark the unexercised rules so a project can see which have been through a real slice, and promote them as evidence arrivess.
 
 ## Next slices that would test the most unexercised rules
 1. A page with a live listener and a Repository (the app's `Portal` uses `onSnapshot` and batches): subscriptions, `REP-*`, `UC-WRITE-01`.
 2. A lint configuration generated from the declared limits: tests the `MOD-*` group without refactoring.
 3. A server-runtime project (`ampm-backend`'s content dashboard is the intended consumer) for the Next.js server rules.
+
+## Update: the unproven marker is in
+Rules carry `evidence: exercised | unproven` (schema, validator, index counts, lookup warning, `INSTRUCTIONS.md`). All 113 web-app architecture rules are marked: 58 exercised, 55 unproven. When a slice exercises a rule, change its marker and record what happened in the findings doc.

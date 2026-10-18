@@ -304,6 +304,15 @@ def count_phases(orchestrator_text: str) -> int:
 # Index building
 # ---------------------------------------------------------------------------
 
+def _rule_evidence(text: str) -> dict:
+    counts: dict[str, int] = {}
+    for block in re.findall(r"```rule\n(.*?)```", text, re.DOTALL):
+        m = re.search(r"^evidence: (\w+)\s*$", block, re.MULTILINE)
+        if m:
+            counts[m.group(1)] = counts.get(m.group(1), 0) + 1
+    return counts
+
+
 def build_index(root: Path) -> dict[str, dict]:
     """Scan all framework docs and build an in-memory index."""
     index: dict[str, dict] = {}
@@ -329,6 +338,7 @@ def build_index(root: Path) -> dict[str, dict]:
                 "related":  meta.get("related",  []) if isinstance(meta.get("related"),  list) else [],
                 "platform": platform,
                 "status":   meta.get("status", ""),
+                "rule_evidence": _rule_evidence(text),
             }
     return index
 
@@ -382,6 +392,16 @@ def merge_profile_docs(docs: list[dict], extra_ids: list[str], index: dict[str, 
 # Shared output helpers
 # ---------------------------------------------------------------------------
 
+def warn_unproven(docs: list[dict]) -> None:
+    """Report how many rules in the loaded set have not been exercised in a real slice."""
+    unproven = sum((d.get("rule_evidence") or {}).get("unproven", 0) for d in docs)
+    if unproven:
+        print(f"Note: {unproven} rule(s) in this set are marked unproven (written from reasoning, not yet "
+              "applied in a real project); treat an unproven hard rule as guidance until it is exercised.",
+              file=sys.stderr)
+        print(file=sys.stderr)
+
+
 def warn_stubs(docs: list[dict]) -> None:
     stubs = [d for d in docs if d.get("status") == "stub"]
     if stubs:
@@ -411,6 +431,7 @@ def cmd_lookup(
         docs = merge_profile_docs(docs, extra_ids, index)
 
     warn_stubs(docs)
+    warn_unproven(docs)
 
     profile_ids = set(extra_ids or [])
 

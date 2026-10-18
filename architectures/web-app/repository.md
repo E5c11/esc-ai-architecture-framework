@@ -67,6 +67,7 @@ id: ARCH-WEB-APP-REP-SSOT-01
 statement: A Repository MUST designate one DataSource as authoritative for each entity; every other copy MUST be derived, rebuildable, and labelled as such, and consumers MUST read through the Repository, never from a secondary source directly.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-REP-SSOT-01 — A Repository MUST designate one DataSource as authoritative for each entity; every other copy MUST be derived, rebuildable, and labelled as such, and consumers MUST read through the Repository, never from a secondary source directly.
 ```
@@ -76,6 +77,7 @@ id: ARCH-WEB-APP-REP-SSOT-02
 statement: A Repository MUST update a secondary copy only from a successful read of the authoritative source, and MUST NOT let a failed or partial read overwrite it.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-REP-SSOT-02 — A Repository MUST update a secondary copy only from a successful read of the authoritative source, and MUST NOT let a failed or partial read overwrite it.
 ```
@@ -104,6 +106,7 @@ id: ARCH-WEB-APP-REP-FALLBACK-01
 statement: When a fallback strategy is exhausted, a Repository MUST return the original error outcome, and MUST NOT swallow it or substitute an empty value.
 type: hard
 scope: error-handling
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-REP-FALLBACK-01 — When a fallback strategy is exhausted, a Repository MUST return the original error outcome, and MUST NOT swallow it or substitute an empty value.
 ```

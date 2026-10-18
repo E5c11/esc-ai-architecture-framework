@@ -106,6 +106,16 @@ def parse_front_matter(text: str) -> dict:
     return result
 
 
+def _rule_evidence(text: str) -> dict:
+    """Counts of exercised and unproven rules in a document; empty when none is marked."""
+    counts: dict[str, int] = {}
+    for block in re.findall(r"```rule\n(.*?)```", text, re.DOTALL):
+        m = re.search(r"^evidence: (\w+)\s*$", block, re.MULTILINE)
+        if m:
+            counts[m.group(1)] = counts.get(m.group(1), 0) + 1
+    return counts
+
+
 def collect_documents(root: Path) -> list[dict]:
     documents = []
     for layer_dir in LAYER_DIRS:
@@ -137,6 +147,7 @@ def collect_documents(root: Path) -> list[dict]:
                 "related":      meta.get("related",  []) if isinstance(meta.get("related"),  list) else [],
                 "tags":         meta.get("tags",     []) if isinstance(meta.get("tags"),     list) else [],
                 "status":       meta.get("status", ""),
+                "rule_evidence": _rule_evidence(text),
             })
     return documents
 
@@ -169,11 +180,13 @@ def write_markdown_index(documents: list[dict], out_path: Path) -> None:
             continue
         lines.append(f"## {layer}/")
         lines.append("")
-        lines.append("| ID | Type | Path | Status |")
-        lines.append("|---|---|---|---|")
+        lines.append("| ID | Type | Path | Status | Rules exercised / unproven |")
+        lines.append("|---|---|---|---|---|")
         for doc in sorted(docs, key=lambda d: d["id"]):
             status = "⚠ stub" if doc.get("status") == "stub" else ""
-            lines.append(f"| `{doc['id']}` | {doc['type']} | `{doc['path']}` | {status} |")
+            ev = doc.get("rule_evidence") or {}
+            evidence = f"{ev.get('exercised', 0)} / {ev.get('unproven', 0)}" if ev else ""
+            lines.append(f"| `{doc['id']}` | {doc['type']} | `{doc['path']}` | {status} | {evidence} |")
         lines.append("")
 
     out_path.write_text("\n".join(lines), encoding="utf-8")

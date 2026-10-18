@@ -36,6 +36,7 @@ id: ARCH-WEB-APP-UC-LOGIC-01
 statement: A UseCase MUST contain business logic that justifies its existence; a UseCase that only forwards a call to a DataSource or Repository MUST be removed.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-UC-LOGIC-01 — A UseCase MUST contain business logic that justifies its existence; a UseCase that only forwards a call to a DataSource or Repository MUST be removed.
 ```
@@ -55,6 +56,7 @@ id: ARCH-WEB-APP-UC-SINGLE-01
 statement: A UseCase MUST do one operation and expose one public entry point.
 type: hard
 scope: structure
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-UC-SINGLE-01 — A UseCase MUST do one operation and expose one public entry point.
 ```
@@ -83,6 +85,7 @@ id: ARCH-WEB-APP-UC-ORCH-01
 statement: An Orchestrator MUST contain no logic: no branching on data and no calculation, only sequencing and passing results between steps.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-UC-ORCH-01 — An Orchestrator MUST contain no logic: no branching on data and no calculation, only sequencing and passing results between steps.
 ```
@@ -104,6 +107,7 @@ id: ARCH-WEB-APP-UC-STATELESS-01
 statement: A UseCase MUST hold no state between calls: no module-level variable, cache, or counter that a call reads or writes.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-UC-STATELESS-01 — A UseCase MUST hold no state between calls: no module-level variable, cache, or counter that a call reads or writes.
 ```
@@ -119,6 +123,7 @@ id: ARCH-WEB-APP-UC-RETURN-01
 statement: A UseCase MUST return `Outcome` of domain values, MUST NOT return provider, DataSource or Repository types, and MUST NOT emit loading states.
 type: hard
 scope: return-type
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-UC-RETURN-01 — A UseCase MUST return `Outcome` of domain values, MUST NOT return provider, DataSource or Repository types, and MUST NOT emit loading states.
 ```
@@ -149,6 +154,7 @@ id: ARCH-WEB-APP-UC-WRITE-01
 statement: A UseCase that writes more than one document in one store MUST do so in one atomic operation the DataSource provides (a batch, a transaction, or a single callable), with no exception.
 type: hard
 scope: behavior
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-UC-WRITE-01 — A UseCase that writes more than one document in one store MUST do so in one atomic operation the DataSource provides (a batch, a transaction, or a single callable), with no exception.
 ```
@@ -160,6 +166,7 @@ id: ARCH-WEB-APP-UC-WRITE-02
 statement: A write that spans two stores or projects (so no single batch can cover it) MUST be idempotent and ordered: the target is written first under a deterministic id by an upsert, and the marker or source update second, so repeating it after a partial failure cannot duplicate.
 type: hard
 scope: behavior
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-UC-WRITE-02 — A write that spans two stores or projects (so no single batch can cover it) MUST be idempotent and ordered: the target is written first under a deterministic id by an upsert, and the marker or source update second, so repeating it after a partial failure cannot duplicate.
 ```
@@ -178,6 +185,7 @@ id: ARCH-WEB-APP-UC-SIDE-01
 statement: A side effect that must not block the result MUST be started without being awaited, MUST have its own failure handled and logged, and MUST NOT leave an unhandled promise rejection.
 type: hard
 scope: error-handling
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-UC-SIDE-01 — A side effect that must not block the result MUST be started without being awaited, MUST have its own failure handled and logged, and MUST NOT leave an unhandled promise rejection.
 ```
@@ -198,6 +206,7 @@ id: ARCH-WEB-APP-UC-NAMING-01
 statement: A UseCase is named `{Action}{Entity}UseCase` as a type and `create{Action}{Entity}` as its factory, and lives in `features/{feature}/useCases/{Action}{Entity}UseCase.ts`.
 type: hard
 scope: naming
+evidence: unproven
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-UC-NAMING-01 — A UseCase is named `{Action}{Entity}UseCase` as a type and `create{Action}{Entity}` as its factory, and lives in `features/{feature}/useCases/{Action}{Entity}UseCase.ts`.
 ```
