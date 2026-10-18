@@ -40,3 +40,27 @@ Measured 2026-10-18 against the 110-rule architecture. Verdicts are evidence for
 
 ## Not done
 The login race, the other eleven hooks that import the SDK, the Next.js static-export step, and a server-side aggregate.
+
+---
+
+# Slice 2: Notifications (writes, a use case, two projects)
+
+Commits `1e99a8e`, `22819f5` in the pilot branch. Tested with 108 tests, 8 of them against the Firestore emulator (`firebase emulators:exec`), so no write touched dev or prod. Page is 643 lines in the original and 8 files (largest 236 lines) now.
+
+## What it exercised
+- `UC-WRITE-02`: the original `promoteNotificationToProd` did `addDoc` into prod (new id every call), then marked dev. A failed second write plus a retry duplicated the notification in prod, which real users receive. The new use case upserts under the dev id first and marks second; retry-after-failure is a test in both the fake and the emulator and leaves one prod document. **A real bug fixed, not a style gain.** Behaviour change: the prod document id is now the dev id (it was an auto id).
+- A UseCase that earns its place (two stores, ordering, partial-failure message) while create is a plain DataSource call (no forwarding UseCase, `UC-LOGIC-01`).
+- `EFLOW-RETURN-01` (value at boundaries): plumbing was `if (!x.ok) return x` four times in the use case. Cheap at this size.
+- Contract test shared by the fake and the emulator (`DS-TEST-01`, now in the testing gate): **found a wrong error check in my own earlier work** (below).
+
+## Findings that change the framework
+1. **`instanceof FirestoreError` never matches.** Firestore throws `FirebaseError` with a `code`. It compiles, passes against a fake, and mis-reports every real failure as "unexpected", including permission-denied. It was in my Learning store and in the framework's own example. Found only by the emulator test. Docs fixed (`b974877`). Supports keeping "test the translation against the provider's emulator" as a rule, not advice.
+2. **`COMPOSE-ENV-01` says a switch must discard the graph.** The pilot decision (one cache per environment) kept one graph per environment instead, which is fine only because neither holds a subscription. The rule's wording ("releasing every subscription") should allow retaining a graph with no live subscriptions.
+3. **Promotion needs both environments at once.** A graph built "for the active environment" cannot express "always copy dev to prod". The graph carries both stores and exposes the active one. The rule set has no word for this; the multi-environment rules assume one active environment.
+4. **The layout needs a home for shared DataSource utilities.** `toAppError` is now written twice (Learning and Notifications). `shared/` is forbidden from importing the SDK by the template rules (correctly), so a shared Firestore helper has nowhere to live. Proposed: a `data/` folder at the same level as `features/`, allowed to import the SDK, imported only by DataSources.
+5. **The check caught two layout mistakes of mine again** (a use case filed under `domain/`, a component importing the form type from the domain). Both are the kind of drift the architecture exists to stop; the import check is earning its keep.
+6. **Cost:** original `useNotifications` module-level cache is gone (no per-environment cache for notifications; the graph holds none). The page now re-reads on mount. Cheap here (2 dev, 15 prod documents).
+7. `DS-PAGE-01`: the list reads the whole collection. A known violation, harmless at 15 documents; the rule has a trigger ("a collection that grows") that a project must judge, which is the local-rule point.
+
+## Not exercised
+`server` runtime rules, observability, security-rules tests (the emulator ran without rules), real login race, the other pages.
