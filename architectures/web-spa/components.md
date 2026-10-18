@@ -3,14 +3,29 @@ id: ARCH-WEB-COMPONENTS
 type: rules
 layer: architectures
 platform: [web]
-architecture: web-spa
-requires: [ARCH-WEB, CORE-COUPLING, CORE-DI]
-related: [PLAT-WEB-REACT, PLAT-WEB-STATE, PLAT-WEB-A11Y]
+architecture: [web-spa, web-app, web-content]
+requires: [CORE-COUPLING, CORE-DI]
+related: [ARCH-WEB, ARCH-WEB-APP, ARCH-WEB-APP-COMPONENT, PLAT-WEB-REACT, PLAT-WEB-STATE, PLAT-WEB-A11Y]
 tags: [components, container, presentation, error-boundary, state-guards, props, composition]
 status: active
 ---
 
 # Component Architecture
+
+## Scope
+
+These rules serve `web-spa`, `web-app` and `web-content` (`ARCH-WEB-CONTENT`
+already cites this document for shared components). Rules that describe the SPA's
+container/hook model or its folder layout are `web-spa` only; `web-app` has its own
+equivalents in `ARCH-WEB-APP-COMPONENT`. `requires` deliberately lists no
+architecture overview, so a `web-app` lookup does not load the SPA model.
+
+| Rule | Applies to | In `web-app` |
+|---|---|---|
+| `ARCH-WEB-PROPS-01`, `-PROPS-02`, `ARCH-WEB-COMP-01`, `ARCH-WEB-NAME-01`, `-NAME-02`, `ARCH-WEB-EXPORT-01` | all three | Same. Next.js requires a default export from route files (`page.tsx`, `layout.tsx`); the soft export rule governs everything else |
+| `ARCH-WEB-CP-01`, `-CP-02` (container guards three states) | `web-spa` | The root view switches exhaustively on the Hook's `ViewState` (`ARCH-WEB-APP-COMP-STATE-01`) |
+| `ARCH-WEB-EB-01` (route `ErrorBoundary`) | `web-spa` | Route boundary files (`error.tsx`); see `PLAT-WEB-NEXT` |
+| `ARCH-WEB-SHARE-01` (`src/components/`) | `web-spa` | The two-feature rule applies; location and promotion are `ARCH-WEB-APP-FEATURE-STRUCTURE` |
 
 ## Container / Presentation split
 

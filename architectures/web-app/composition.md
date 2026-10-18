@@ -1,0 +1,178 @@
+---
+id: ARCH-WEB-APP-COMPOSITION
+type: rules
+layer: architectures
+platform: [web]
+architecture: [web-app]
+requires: [ARCH-WEB-APP, ARCH-WEB-APP-DATASOURCE, ARCH-WEB-APP-USECASE, CORE-DI, CORE-TESTING]
+related: [ARCH-WEB-APP-REPOSITORY, ARCH-WEB-APP-HOOK, ARCH-PY-COMPOSITION, ARCH-PC-COMPOSITION, PLAT-WEB-HTTP]
+tags: [composition, di, context, config, singleton, sdk-initialisation, test-graph, server, static-export]
+status: active
+---
+
+# Composition
+
+## Responsibility
+
+The composition module is the one place that knows which concrete DataSources,
+Repositories and UseCases exist. It reads configuration, builds the provider clients,
+wires the layers together, and hands the finished graph to whoever asks. Everything
+else receives its collaborators; nothing else goes looking for them.
+
+(This is the dependency-injection root, as in `ARCH-PY-COMPOSITION`. It is not the
+mobile `ARCH-PC-COMPOSITION`, which concerns composing two features on one screen;
+that concern is the route's, see `ARCH-WEB-APP-FEATURE-STRUCTURE`.)
+
+TypeScript needs no container for this. A function that builds objects and passes
+them along is easier to read, has a plain stack trace, and has no runtime magic
+(`PLAT-WEB-HTTP-DI-01` is the existing precedent in this framework). The import
+boundary is `ARCH-WEB-APP-DEP-06`: concrete objects are constructed only here and in
+tests. This document owns the rest: how the module is shaped and when it runs.
+
+## Shape
+
+```
+composition/
+├── createApp.ts          createApp(config, overrides?) → AppGraph. Pure construction; no side effects at import
+├── config.ts             loadConfig(source) → Config. The only reader of environment values
+├── graph.ts              AppGraph: the interfaces the graph exposes (UseCases, DataSources)
+├── AppProvider.tsx       Client context provider; useAppGraph(), useUseCases()
+├── client.ts             The graph for the browser
+└── server.ts             The graph for the server (server runtime only); server-only
+```
+
+```typescript
+// composition/createApp.ts
+export function createApp(config: Config, overrides: Partial<AppGraph> = {}): AppGraph {
+  const firebase = getOrCreateFirebase(config.firebase);          // once, idempotent
+  const snapshots = new FirestoreSnapshotDataSource(firebase.firestore);
+  const feeds = new CallableFeedDataSource(firebase.functions);
+  return {
+    snapshots, feeds,
+    loadRegionFigures: createLoadRegionFigures({ snapshots }),
+    saveFeed: createSaveFeed({ feeds }),
+    ...overrides,                                                  // tests and previews swap parts
+  };
+}
+```
+
+## Rules
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-FACTORY-01
+statement: The composition module MUST expose a factory (`createApp(config, overrides?)`) that returns the whole graph typed by interfaces, and MUST do no work when imported.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-FACTORY-01 — The composition module MUST expose a factory (`createApp(config, overrides?)`) that returns the whole graph typed by interfaces, and MUST do no work when imported.
+```
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-GLOBAL-01
+statement: Importing a module MUST NOT initialise an SDK, open a connection or listener, read the environment, or populate a global registry; such work happens only when the factory is called.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-GLOBAL-01 — Importing a module MUST NOT initialise an SDK, open a connection or listener, read the environment, or populate a global registry; such work happens only when the factory is called.
+```
+
+A module that calls `initializeApp(...)` or `getFirestore()` at its top level runs
+during `next build`, during tests, and on the server when it is only meant for the
+browser. It makes a test depend on import order and makes a fake impossible to
+substitute. Every one of those problems disappears when construction is a function
+call.
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-CONFIG-01
+statement: Configuration MUST be read once, by one `loadConfig` called from the composition module, validated with a schema parser, and passed on as a frozen value; no other module MAY read `process.env` or `NEXT_PUBLIC_*` values.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-CONFIG-01 — Configuration MUST be read once, by one `loadConfig` called from the composition module, validated with a schema parser, and passed on as a frozen value; no other module MAY read `process.env` or `NEXT_PUBLIC_*` values.
+```
+
+A missing or malformed value fails at startup with a message naming the value, not
+three screens later as `undefined`. Which values are safe to expose to the browser is
+`PLAT-WEB-NEXT-ENV-01`; this rule makes sure there is one place that decides.
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-SDK-01
+statement: A provider SDK MUST be initialised at most once per runtime, through an idempotent get-or-create, so hot reload, repeated calls and tests cannot create a second instance.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-SDK-01 — A provider SDK MUST be initialised at most once per runtime, through an idempotent get-or-create, so hot reload, repeated calls and tests cannot create a second instance.
+```
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-CHOICE-01
+statement: Choosing between interchangeable implementations (the live provider, the emulator, a fake) MUST be done in the composition module from configuration, and an unknown choice MUST fail with a clear configuration error rather than fall back silently.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-CHOICE-01 — Choosing between interchangeable implementations (the live provider, the emulator, a fake) MUST be done in the composition module from configuration, and an unknown choice MUST fail with a clear configuration error rather than fall back silently.
+```
+
+A build that quietly falls back to a fake looks healthy and shows invented data. A
+build wired to the production provider from a development machine does worse. The
+choice is explicit and its failure is loud.
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-CONTEXT-01
+statement: The graph MUST reach Client Components through one provider context at the root of the client tree, exposed through typed accessors that return interfaces, and an accessor used without a provider MUST throw a clear error.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-CONTEXT-01 — The graph MUST reach Client Components through one provider context at the root of the client tree, exposed through typed accessors that return interfaces, and an accessor used without a provider MUST throw a clear error.
+```
+
+This is the mechanism `ARCH-WEB-APP-HOOK-DEPS-01` relies on. A test wraps a hook in
+`AppProvider` with a graph built from fakes.
+
+## The two runtimes
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-SPLIT-01
+statement: In the `server` runtime the server graph and the client graph MUST be separate modules, the server module MUST be unimportable from client code, and a server-only DataSource MUST NOT appear in the client graph.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-SPLIT-01 — In the `server` runtime the server graph and the client graph MUST be separate modules, the server module MUST be unimportable from client code, and a server-only DataSource MUST NOT appear in the client graph.
+```
+
+In `static-export` there is one graph, the client graph, and no secret in it
+(`ARCH-WEB-APP-RUNTIME-02`).
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-LAZY-01
+statement: A heavy or optional dependency SHOULD be imported inside the factory that needs it, so a route that never uses it does not pay for it in the bundle.
+type: soft
+scope: performance
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-LAZY-01 — A heavy or optional dependency SHOULD be imported inside the factory that needs it, so a route that never uses it does not pay for it in the bundle.
+```
+
+## Testing
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-TEST-01
+statement: A test MUST build its own graph with `createApp` and fakes or overrides, and MUST NOT import a graph built by another module or rely on state left by another test.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-TEST-01 — A test MUST build its own graph with `createApp` and fakes or overrides, and MUST NOT import a graph built by another module or rely on state left by another test.
+```
+
+The same override mechanism builds previews and demos: the app can run with an
+in-memory graph and no backend, which is also how a screen is developed before its
+provider exists.
+
+## Violations
+
+- `initializeApp(...)` or `getFirestore()` at a module's top level
+- `process.env` or a `NEXT_PUBLIC_*` value read outside `loadConfig`
+- A second SDK instance created by a hot reload or a test
+- A hook or component importing a graph built in another module
+- A silent fallback to a fake when configuration is missing
+- A server-only DataSource reachable from client code
+- A test that depends on a module-level graph or another test's leftovers

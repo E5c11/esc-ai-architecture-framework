@@ -33,7 +33,7 @@ implementation is imported only by the composition module
 
 ```
 features/{feature}/data/
-├── {Entity}DataSource.ts              Interface (and the domain types it speaks in)
+├── {Entity}DataSource.ts              Interface, written in domain types imported from `domain/`
 ├── Firestore{Entity}DataSource.ts     Implementation over the Firestore SDK
 ├── Http{Entity}DataSource.ts          Implementation over the HTTP executor
 ├── Callable{Action}DataSource.ts      Implementation over a callable function

@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-17T20:40:23.858138+00:00",
-  "count": 125,
+  "generated": "2026-10-18T05:51:44.356497+00:00",
+  "count": 129,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -1061,7 +1061,11 @@
         "ARCH-WEB-APP-REPOSITORY",
         "ARCH-WEB-APP-DOMAIN",
         "ARCH-WEB-APP-USECASE",
-        "ARCH-WEB-APP-HOOK"
+        "ARCH-WEB-APP-HOOK",
+        "ARCH-WEB-APP-COMPONENT",
+        "ARCH-WEB-APP-COMPOSITION",
+        "ARCH-WEB-APP-FEATURE-STRUCTURE",
+        "ARCH-WEB-APP-MODULES"
       ],
       "tags": [
         "web",
@@ -1075,6 +1079,76 @@
         "server-actions",
         "static-export",
         "firebase"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ARCH-WEB-APP-COMPONENT",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/web-app/component.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-HOOK",
+        "ARCH-WEB-COMPONENTS",
+        "ARCH-WEB-APP-DOMAIN",
+        "PLAT-WEB-NEXT"
+      ],
+      "related": [
+        "ARCH-PC-VIEW",
+        "PLAT-WEB-A11Y",
+        "PLAT-WEB-DS-COMPONENT",
+        "QG-WEB-TESTING"
+      ],
+      "tags": [
+        "component",
+        "view",
+        "server-component",
+        "client-component",
+        "view-state",
+        "props",
+        "serialisation",
+        "static-export"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ARCH-WEB-APP-COMPOSITION",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/web-app/composition.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-DATASOURCE",
+        "ARCH-WEB-APP-USECASE",
+        "CORE-DI",
+        "CORE-TESTING"
+      ],
+      "related": [
+        "ARCH-WEB-APP-REPOSITORY",
+        "ARCH-WEB-APP-HOOK",
+        "ARCH-PY-COMPOSITION",
+        "ARCH-PC-COMPOSITION",
+        "PLAT-WEB-HTTP"
+      ],
+      "tags": [
+        "composition",
+        "di",
+        "context",
+        "config",
+        "singleton",
+        "sdk-initialisation",
+        "test-graph",
+        "server",
+        "static-export"
       ],
       "status": "active"
     },
@@ -1179,6 +1253,41 @@
       "status": "active"
     },
     {
+      "id": "ARCH-WEB-APP-FEATURE-STRUCTURE",
+      "type": "guide",
+      "layer": "architectures",
+      "path": "architectures/web-app/feature-structure.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-COMPONENT",
+        "ARCH-WEB-APP-HOOK",
+        "CORE-NAMING",
+        "CORE-COUPLING"
+      ],
+      "related": [
+        "ARCH-WEB-APP-MODULES",
+        "ARCH-WEB-APP-COMPOSITION",
+        "ARCH-PC-FEATURE",
+        "PLAT-WEB-DS-COMPONENT",
+        "PLAT-WEB-NEXT"
+      ],
+      "tags": [
+        "feature",
+        "structure",
+        "folders",
+        "routes",
+        "app-router",
+        "public-surface",
+        "shared",
+        "promotion"
+      ],
+      "status": "active"
+    },
+    {
       "id": "ARCH-WEB-APP-HOOK",
       "type": "guide",
       "layer": "architectures",
@@ -1211,6 +1320,39 @@
         "race",
         "subscription",
         "client-component"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ARCH-WEB-APP-MODULES",
+      "type": "rules",
+      "layer": "architectures",
+      "path": "architectures/web-app/modules.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-FEATURE-STRUCTURE",
+        "ARCH-WEB-APP-DOMAIN",
+        "CORE-COUPLING",
+        "CORE-NAMING"
+      ],
+      "related": [
+        "ARCH-WEB-APP-COMPOSITION",
+        "ARCH-PY-MODULES"
+      ],
+      "tags": [
+        "modules",
+        "cohesion",
+        "size",
+        "public-surface",
+        "barrel",
+        "cycles",
+        "packages",
+        "monorepo",
+        "refactoring"
       ],
       "status": "active"
     },
@@ -1288,11 +1430,13 @@
       ],
       "architecture": "web-spa",
       "requires": [
-        "ARCH-WEB",
         "CORE-COUPLING",
         "CORE-DI"
       ],
       "related": [
+        "ARCH-WEB",
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-COMPONENT",
         "PLAT-WEB-REACT",
         "PLAT-WEB-STATE",
         "PLAT-WEB-A11Y"
