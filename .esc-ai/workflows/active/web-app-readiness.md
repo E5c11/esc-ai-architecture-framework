@@ -328,39 +328,74 @@ with no framework present.
 
 ## Phase 9 — Mechanical enforcement (`esc-ai-execution-framework`)
 
-Separate repository; commit there. First **investigate** and record the answers
-at the top of this phase before building:
+Separate repository; committed there (`c9d20df`).
 
-1. What gates does onboarding generate for an npm component today
-   (`esc_exec/npm.py` detects frameworks and source roots)? `npm test`, type
-   check, lint, or only detection? List the gap precisely.
-2. `architecture.py`'s `forbidden-import` accepts only `.kt` and `.java`
-   (`path.suffix not in {".kt", ".java"}`). Decide between extending the scanner
-   to `.ts`/`.tsx` (parse `import … from`, dynamic `import()`, `require`) and
-   shelling out to dependency-cruiser. The scanner is dependency-free and
-   consistent with the other rule types; dependency-cruiser understands
-   `tsconfig` paths and aliases. Pick one and record why. Whichever is chosen
-   must resolve path aliases, or the check passes vacuously, which the framework
-   already treats as a failure (see "fail closed on vacuous gates").
+### Investigation (2026-10-18)
 
-Then build, with tests:
+1. **npm gates.** `esc_exec/npm.py` detected frameworks and source roots and nothing else.
+   Onboarding generated a verification profile only for `build.system: gradle`
+   (`generate_gradle_verification_profile`, which raised "supports Gradle only" for
+   anything else), so an npm component had no verification profile at all and
+   `verification plan` failed with "has no paths.verification_profile". A Next.js
+   repository therefore had **no verification gates**. The existing onboarding test
+   asserted exactly that ("skips verification profile").
+2. **The import check.** `forbidden-import` accepted only `.kt` and `.java` files
+   (`path.suffix not in {".kt", ".java"}`), took a single `source_root`, matched with
+   `fnmatchcase` over the imported name, and **passed when it scanned zero files**. The
+   profile schema was strict (`additionalProperties: false`), and `architecture profile
+   generate` wrote an empty profile that `check` then rejected.
+3. **Next.js 16 changed the lint story.** `next lint` is removed and `next build` no longer
+   lints, so a gate set built around `next build` lints nothing and passes.
 
-- TypeScript support for `forbidden-import`, with package-name globs
-  (`firebase/*`, `next/*`, `react`) and relative-path layers.
-- A layer-contract rule type (or a generated set of `forbidden-import` rules)
-  that expresses `ARCH-WEB-APP-DEP-*`: for each layer, the folders it may and may
-  not import, the way an `import-linter` contract does for Python.
-- Generated gates for an npm component: the project's type-check, lint and test
-  scripts, run progressively like the existing gates, failing closed when a
-  script is missing rather than passing.
-- A starter `esc-architecture-profile.yaml` for `web-app` covering the rules that
-  can be mechanical: components import no provider SDK; hooks import no
-  DataSource implementation; the domain package imports nothing from the app, React,
-  Next or Firebase; DataSource implementations are imported only by the
-  composition module and tests.
+### Decisions
 
-Back in this repository, flip `enforced_by` to `[ci, reviewer]` **only** for the
-rules a real check now covers.
+- **Scanner, not dependency-cruiser.** The check stays dependency-free and keeps the bounded
+  JSON report and the rule format the other rule types use. It reads imports by regular
+  expression after blanking comments and resolves `tsconfig.json` aliases itself. The cost is
+  the limits listed in `esc_exec/ts_imports.py` (no computed dynamic imports); the fail-closed
+  rule is what stops those limits turning into a pass. dependency-cruiser would resolve more
+  and add a Node toolchain to a Python engine; revisit if the scanner's limits bite.
+- **Fail closed in two places.** A rule that scans no files is a violation; an npm component
+  with no `test` script gets no profile (reported by onboarding) instead of an empty test
+  gate. Missing lint, typecheck and build are recorded in the profile's notes.
+- **A template, with a layout check.** `--template web-app` carries the mechanical
+  `ARCH-WEB-APP-DEP` rules and a `required-path` rule, so a layout the template did not
+  assume fails visibly instead of leaving the other rules checking nothing.
+
+### Built
+
+- `esc_exec/ts_imports.py`: comment stripping, specifier extraction (static, type,
+  side-effect, re-export, dynamic, `require`), `tsconfig` alias resolution (`paths`,
+  `baseUrl`, relative `extends`), glob matching (`**`, `*`, `?`).
+- `forbidden-import` over TypeScript and JavaScript, with `source_roots`, `exclude`,
+  `include_tests`, `except_own_feature`, `optional` and profile `pattern_sets`;
+  `files_scanned` in each result; the schema extended to match.
+- `esc_exec/architecture_templates.py` and `architecture profile generate --template web-app`.
+- npm verification profiles from `package.json` scripts (package manager from the lockfile,
+  workspace members run in their own directory, bare `vitest` run once, repository test in
+  the final gate for a workspace member); `verification profile generate` dispatches by build
+  system; onboarding reports `skipped_verification_profiles`.
+- 43 new tests; the engine's own `import-linter` contracts and `ruff` rules pass with the two
+  new modules classified as core.
+- Here: `enforced_by` flipped to `[ci, reviewer]` for `ARCH-WEB-APP-DEP-01` to `-07` and
+  `[ci, planner]` for `-08`, with the partial coverage of `-02` and `-06` stated in the
+  overview.
+
+### Left open
+
+- **No JUnit report for npm checks.** The generated checks have no `report`, so a failing npm
+  gate yields the exit code and logs but not the summarised failing-test list a Gradle gate
+  gives. Vitest can write JUnit XML; wiring it needs a per-runner reporter flag.
+- **The architecture check is not added to the generated verification profile.** At onboarding
+  the architecture profile has no rules yet, so a gate that ran it would fail. Add
+  `esc-exec architecture check …` to the component gate once the profile is authored (the
+  guide says so).
+- **Coverage of the architecture rules is the import-shaped subset.** Rules about calls and
+  construction (`ARCH-WEB-APP-COMPOSE-*`), `export *` (`ARCH-WEB-APP-MOD-API-01`) and
+  similar are not import-shaped and remain reviewer-enforced.
+- **Not run against a real Next.js project.** The template is tested against synthetic
+  layouts shaped like the documented folder structure. Phase 10's dry run is the first real
+  one.
 
 ## Phase 10 — Wiring, cross-check and dry run
 

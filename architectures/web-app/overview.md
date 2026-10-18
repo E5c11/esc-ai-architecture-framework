@@ -149,7 +149,7 @@ id: ARCH-WEB-APP-DEP-01
 statement: Domain code MUST NOT import from any other layer and MUST NOT import React, Next.js, a provider SDK, or any I/O library.
 type: hard
 scope: structure
-enforced_by: [reviewer]
+enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-01 — Domain code MUST NOT import from any other layer and MUST NOT import React, Next.js, a provider SDK, or any I/O library.
 ```
 
@@ -158,7 +158,7 @@ id: ARCH-WEB-APP-DEP-02
 statement: UseCase and Repository code MUST NOT import React, Next.js, a provider SDK, or a DataSource implementation; they depend on interfaces.
 type: hard
 scope: structure
-enforced_by: [reviewer]
+enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-02 — UseCase and Repository code MUST NOT import React, Next.js, a provider SDK, or a DataSource implementation; they depend on interfaces.
 ```
 
@@ -167,7 +167,7 @@ id: ARCH-WEB-APP-DEP-03
 statement: A provider SDK or client MUST be imported only by the DataSource that wraps it (and by the composition module that constructs that client).
 type: hard
 scope: structure
-enforced_by: [reviewer]
+enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-03 — A provider SDK or client MUST be imported only by the DataSource that wraps it (and by the composition module that constructs that client).
 ```
 
@@ -176,7 +176,7 @@ id: ARCH-WEB-APP-DEP-04
 statement: A Hook MUST NOT import a provider SDK or a DataSource or Repository implementation; it depends on a UseCase or, below the UseCase threshold, on a DataSource or Repository interface.
 type: hard
 scope: structure
-enforced_by: [reviewer]
+enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-04 — A Hook MUST NOT import a provider SDK or a DataSource or Repository implementation; it depends on a UseCase or, below the UseCase threshold, on a DataSource or Repository interface.
 ```
 
@@ -185,7 +185,7 @@ id: ARCH-WEB-APP-DEP-05
 statement: A Component MUST NOT import a provider SDK, DataSource, Repository or UseCase, and MUST NOT fetch data itself; it receives data through a Hook or props.
 type: hard
 scope: structure
-enforced_by: [reviewer]
+enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-05 — A Component MUST NOT import a provider SDK, DataSource, Repository or UseCase, and MUST NOT fetch data itself; it receives data through a Hook or props.
 ```
 
@@ -198,7 +198,7 @@ id: ARCH-WEB-APP-DEP-06
 statement: Concrete DataSources, Repositories and UseCases MUST be constructed only in the composition module (and in tests); every other module receives what it needs.
 type: hard
 scope: di
-enforced_by: [reviewer]
+enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-06 — Concrete DataSources, Repositories and UseCases MUST be constructed only in the composition module (and in tests); every other module receives what it needs.
 ```
 
@@ -207,7 +207,7 @@ id: ARCH-WEB-APP-DEP-07
 statement: A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code.
 type: hard
 scope: structure
-enforced_by: [reviewer]
+enforced_by: [ci, reviewer]
 violation_message: Violates ARCH-WEB-APP-DEP-07 — A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code.
 ```
 
@@ -216,70 +216,87 @@ id: ARCH-WEB-APP-DEP-08
 statement: The layer contract MUST be declared as a checkable dependency contract in the project's configuration and MUST run in CI.
 type: hard
 scope: structure
-enforced_by: [planner, reviewer]
+enforced_by: [ci, planner]
 violation_message: Violates ARCH-WEB-APP-DEP-08 — The layer contract MUST be declared as a checkable dependency contract in the project's configuration and MUST run in CI.
 ```
 
 A dependency rule that only lives in a document is a suggestion. The Python
-architecture meets the equivalent rule (`ARCH-PY-DEP-04`) with `import-linter`;
-the web equivalent is a declared contract over `import` statements and path
-aliases, run as an architecture check. Until a project declares one, the eight
-rules above are reviewer-enforced.
+architecture meets the equivalent rule (`ARCH-PY-DEP-04`) with `import-linter`; the web
+equivalent is a declared contract over `import` statements and path aliases, run as an
+architecture check (see "Declaring the contract"). `DEP-01` to `DEP-07` are checked
+mechanically once a project declares and runs that contract, and `DEP-08` is the rule
+that it does. A project with no declared contract has only a reviewer.
 
 ### Declaring the contract
 
 A contract states, for each layer, which folders it covers and which imports it must
-not contain. It uses the rule format of the execution framework's architecture
+not contain. It is written in the rule format of the execution framework's architecture
 profile (`esc-architecture-profile.yaml`), so the same file describes the contract and
-runs it. A worked example for a project laid out as in "Feature folder structure"
-(layer folders are matched by glob; `{provider-sdks}` stands for the project's own
-list, for example `firebase/*`, `pg`, `undici`):
+runs it. Generate the starting point rather than writing it:
+
+```bash
+esc-exec architecture profile generate <repository> <component> --template web-app
+esc-exec architecture check <repository> <component> .execution/architecture/web.json
+```
+
+The template detects whether the folders in "Feature folder structure" sit under `src/` or
+the component root, adds the provider SDKs found in `package.json` to a `provider-sdks`
+pattern set, and writes one rule per dependency rule it can check. An abridged result:
 
 ```yaml
+pattern_sets:
+  provider-sdks: [firebase, "firebase/**", firebase-admin, "firebase-admin/**"]
+  framework: [react, "react/**", react-dom, "react-dom/**", next, "next/**"]
+  data-implementations: ["**/data/Firestore*", "**/data/Http*", "**/data/Callable*", "**/data/Default*"]
+  feature-internals: ["**/features/*/components/**", "**/features/*/hooks/**", "**/features/*/useCases/**",
+                      "**/features/*/domain/**", "**/features/*/data/**"]
 rules:
-- id: web.domain-pure                       # ARCH-WEB-APP-DEP-01
+- id: web.layout-present                    # the folders the other rules check exist
+  type: required-path
+  paths: [src/features, src/app]
+- id: web.domain-is-pure                    # ARCH-WEB-APP-DEP-01
   type: forbidden-import
-  description: Domain imports no framework, SDK, or other layer.
-  source_roots: [features/*/domain, shared/domain, packages/*/src]
-  patterns: [react, react-dom, next, next/*, "{provider-sdks}", "**/hooks/**", "**/data/**", "**/components/**", "**/useCases/**"]
-
-- id: web.usecase-and-repository-no-sdk     # ARCH-WEB-APP-DEP-02
+  optional: true
+  source_roots: [src/features/*/domain, src/shared/domain]
+  patterns: ["{framework}", "{provider-sdks}", "**/hooks/**", "**/data/**", "**/components/**",
+             "**/useCases/**", "**/composition/**", "**/app/**"]
+- id: web.sdk-only-in-datasources           # ARCH-WEB-APP-DEP-03
   type: forbidden-import
-  description: UseCases and Repositories depend on interfaces, never React, Next, SDKs, or implementations.
-  source_roots: [features/*/useCases]
-  patterns: [react, react-dom, next, next/*, "{provider-sdks}", "**/data/Firestore*", "**/data/Http*", "**/data/Callable*"]
-
-- id: web.sdk-only-in-datasource            # ARCH-WEB-APP-DEP-03
-  type: forbidden-import
-  description: Provider SDKs are imported only by DataSources and the composition module.
-  source_roots: [features/*/components, features/*/hooks, features/*/useCases, features/*/domain, shared]
+  optional: true
+  source_roots: [src/features/*/components, src/features/*/hooks, src/features/*/useCases,
+                 src/features/*/domain, src/shared, src/app]
   patterns: ["{provider-sdks}"]
-
-- id: web.hook-no-implementation            # ARCH-WEB-APP-DEP-04
+- id: web.components-nothing-below-hooks    # ARCH-WEB-APP-DEP-05
   type: forbidden-import
-  description: A Hook imports a UseCase or an interface, never an implementation or an SDK.
-  source_roots: [features/*/hooks]
-  patterns: ["{provider-sdks}", "**/data/Firestore*", "**/data/Http*", "**/data/Callable*", "**/data/Default*"]
-
-- id: web.component-no-data                 # ARCH-WEB-APP-DEP-05
+  optional: true
+  source_roots: [src/features/*/components, src/shared/ui]
+  exclude: ["**/*Page.tsx"]                 # the Server Component shell (ARCH-WEB-APP-COMP-SERVER-01)
+  patterns: ["{provider-sdks}", "**/data/**", "**/useCases/**", "**/domain/**", "**/composition/**"]
+- id: web.features-through-their-index      # ARCH-WEB-APP-DEP-07
   type: forbidden-import
-  description: Components import nothing below the Hook.
-  source_roots: [features/*/components, shared/ui]
-  patterns: ["{provider-sdks}", "**/data/**", "**/useCases/**", "**/domain/**", "composition/**"]
-
-- id: web.no-feature-internals              # ARCH-WEB-APP-DEP-07
-  type: forbidden-import
-  description: A feature is imported only through its index.
-  source_roots: [features/*, app]
-  patterns: ["features/*/components/**", "features/*/hooks/**", "features/*/data/**", "features/*/useCases/**", "features/*/domain/**"]
+  optional: true
+  source_roots: [src/features/*, src/app]
+  patterns: ["{feature-internals}"]
   except_own_feature: true                  # a feature may import its own internals
 ```
 
-Two of these need the checker to understand more than `forbidden-import` does today:
-glob `source_roots`, and `except_own_feature`. The checker also has to scan `.ts` and
-`.tsx` files and resolve path aliases. Until it does, this example is the specification
-a reviewer applies by hand, and the rules stay reviewer-enforced. A contract that
-passes because it resolved no imports is a failed check, not a pass.
+What the check does and does not cover, so the rules above are not over-claimed:
+
+- It reads `.ts`, `.tsx`, `.js` and the other module extensions, resolves relative imports
+  and the aliases in `tsconfig.json`, and skips test files, `node_modules` and build output.
+  It does not see a dynamic import with a computed argument.
+- `ARCH-WEB-APP-DEP-02` is checked for UseCases. A Repository sits in the `data` folder beside
+  the DataSource implementations that legitimately import an SDK, so a folder rule cannot
+  separate them and that half stays with the reviewer.
+- `ARCH-WEB-APP-DEP-06` is checked as "no layer outside `data` and the composition module
+  imports an implementation". A construction that does not go through an import (a
+  `new` on an injected class) is not seen.
+- A rule that scans no files fails, and a profile whose `web.layout-present` fails is a
+  layout the template did not assume, in which case the other rules are checking nothing.
+
+The check runs where the project runs its other checks: as a command in the component gate
+of the verification profile, and as a CI step. A contract that is declared but never run is
+not a contract.
 
 ## Feature folder structure
 
