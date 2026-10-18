@@ -124,7 +124,7 @@ Legacy banners, sections and section items (`portal_items`, `portal_sections`) a
 The current content model on the Portal page (`promo_items`, `promo_destinations`) as `features/promotions`: domain (grouping by destination, destination validation), two stores with Firestore, fake and contract suites, a `saveDestination` use case, `usePromotions`, and a temporary page adapter. Also extracted `shared/useCases/promoteAcrossProjects`, now used by portal and promotions, and `orThrow` in `shared/outcome`. The page lost its grouping loop and both old hooks; the six record interfaces in `types/firestore.ts` that nothing uses any more were deleted.
 
 ## Result
-- 206 tests across the whole suite pass against the real emulator (63 more than before this slice's start, 47 of them new in this slice and the extraction); `tsc` clean, lint 0 problems, architecture check 0 violations in new code.
+- 206 tests across the whole suite pass against the real emulator (47 more than the 159 before this slice, covering the slice and the extraction); `tsc` clean, lint 0 problems, architecture check 0 violations in new code.
 - Read verified in Chrome on dev and prod with a temporary admin account (deleted afterwards): destinations, items grouped under each destination in order, and the edit form's prefilled destinations and section. Prod output matches what the old page rendered. No write clicked against a real project.
 
 ## Findings
