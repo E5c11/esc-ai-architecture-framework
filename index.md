@@ -1,6 +1,6 @@
 # Framework Document Index
 
-*Generated 2026-10-18 — 135 documents*
+*Generated 2026-10-18 — 136 documents*
 
 ## core/
 
@@ -69,6 +69,7 @@
 | `ARCH-WEB-APP-ERR-FLOW` | guide | `architectures/web-app/error-flow.md` |  |
 | `ARCH-WEB-APP-FEATURE-STRUCTURE` | guide | `architectures/web-app/feature-structure.md` |  |
 | `ARCH-WEB-APP-HOOK` | guide | `architectures/web-app/hook.md` |  |
+| `ARCH-WEB-APP-LAYERS` | overview | `architectures/web-app/layers.md` |  |
 | `ARCH-WEB-APP-MODULES` | rules | `architectures/web-app/modules.md` |  |
 | `ARCH-WEB-APP-OBS` | rules | `architectures/web-app/observability.md` |  |
 | `ARCH-WEB-APP-REPOSITORY` | guide | `architectures/web-app/repository.md` |  |

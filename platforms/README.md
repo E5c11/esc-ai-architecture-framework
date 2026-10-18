@@ -20,4 +20,4 @@ platforms/
 ## Document ID prefix: `PLAT-`
 
 Subdirectory convention: `PLAT-{PLATFORM_CODE}-{DOCUMENT}`
-Examples: `PLAT-MOB-KOIN`, `PLAT-BE-JPA`, `PLAT-WEB-HOOKS`, `PLAT-PY-TESTING`
+Examples: `PLAT-MOB-KOIN`, `PLAT-BE-JPA`, `PLAT-WEB-STATE`, `PLAT-PY-TESTING`

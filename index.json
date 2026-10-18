@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-18T07:04:29.601091+00:00",
-  "count": 135,
+  "generated": "2026-10-18T09:57:32.366666+00:00",
+  "count": 136,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -1056,6 +1056,7 @@
       ],
       "related": [
         "ARCH-PC",
+        "ARCH-WEB-APP-LAYERS",
         "ARCH-WEB-APP-ERR-CLASSES",
         "ARCH-WEB-APP-DATASOURCE",
         "ARCH-WEB-APP-REPOSITORY",
@@ -1360,6 +1361,49 @@
         "race",
         "subscription",
         "client-component"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ARCH-WEB-APP-LAYERS",
+      "type": "overview",
+      "layer": "architectures",
+      "path": "architectures/web-app/layers.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "ARCH-WEB-APP",
+        "ARCH-WEB-APP-DOMAIN",
+        "ARCH-WEB-APP-DATASOURCE",
+        "ARCH-WEB-APP-REPOSITORY",
+        "ARCH-WEB-APP-USECASE",
+        "ARCH-WEB-APP-HOOK",
+        "ARCH-WEB-APP-COMPONENT",
+        "ARCH-WEB-APP-COMPOSITION",
+        "ARCH-WEB-APP-FEATURE-STRUCTURE",
+        "ARCH-WEB-APP-MODULES",
+        "ARCH-WEB-APP-ERR-CLASSES",
+        "ARCH-WEB-APP-ERR-FLOW",
+        "ARCH-WEB-APP-OBS",
+        "PLAT-WEB-REACT-PATTERNS",
+        "PLAT-WEB-STATE",
+        "PLAT-WEB-DS-THEME",
+        "QG-WEB-TESTING"
+      ],
+      "related": [
+        "ORCH-WEB-APP",
+        "PLAT-WEB-NEXT",
+        "PLAT-WEB-NEXT-STATIC",
+        "PLAT-WEB-NEXT-DATA"
+      ],
+      "tags": [
+        "web-app",
+        "layers",
+        "index",
+        "entry-point",
+        "reading-guide"
       ],
       "status": "active"
     },
@@ -2214,28 +2258,38 @@
         "CORE-COUPLING",
         "CORE-NAMING",
         "CORE-TESTING",
-        "ARCH-WEB-APP",
-        "ARCH-WEB-APP-ERR-CLASSES",
+        "ARCH-WEB-APP-LAYERS",
         "PLAT-WEB-NEXT",
-        "PLAT-WEB-NEXT-APP",
         "PLAT-WEB-REACT",
+        "PLAT-WEB-REACT-PATTERNS",
         "PLAT-WEB-STATE",
-        "PLAT-WEB-HTTP",
         "PLAT-WEB-FORMS",
         "PLAT-WEB-DS-THEME",
+        "PLAT-WEB-DS-COMPONENT",
+        "PLAT-WEB-DS-ICONS",
+        "PLAT-WEB-A11Y",
         "QG-WEB-TESTING"
       ],
       "related": [
         "QG-REVIEW",
-        "ORCH-WEB-FEAT"
+        "ORCH-WEB-FEAT",
+        "PLAT-WEB-NEXT-APP",
+        "PLAT-WEB-NEXT-DATA",
+        "PLAT-WEB-NEXT-STATIC",
+        "PLAT-WEB-NEXT-FIREBASE",
+        "PLAT-WEB-HTTP"
       ],
       "tags": [
         "web",
         "feature",
         "nextjs",
-        "server-actions",
-        "route-handlers",
-        "orchestrator"
+        "layers",
+        "datasource",
+        "usecase",
+        "hook",
+        "orchestrator",
+        "static-export",
+        "server"
       ],
       "status": "active"
     },

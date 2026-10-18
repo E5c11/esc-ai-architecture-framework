@@ -110,6 +110,14 @@ PROFILE_DOC_MAP: dict[str, dict[str, list[str]]] = {
     "forms": {
         "react-hook-form": ["PLAT-WEB-FORMS"],
     },
+    # A web-app project's runtime (architectures/web-app/overview.md, ARCH-WEB-APP-RUNTIME-01)
+    # decides where its DataSource runs, so it selects the platform guides that differ by
+    # runtime. `static-export` is the browser-to-Firebase shape PLAT-WEB-NEXT-FIREBASE is
+    # written for; a static-export project on another backend ignores that guide.
+    "runtime": {
+        "server": ["PLAT-WEB-NEXT-APP", "PLAT-WEB-NEXT-APP-DEPLOY", "PLAT-WEB-NEXT-DATA", "PLAT-WEB-HTTP"],
+        "static-export": ["PLAT-WEB-NEXT-STATIC", "PLAT-WEB-NEXT-FIREBASE"],
+    },
     # Values are a tracking philosophy, not a library, so unlike every other
     # entry above the value itself doesn't imply a platform -- all resolve to
     # the same platform-agnostic pattern doc. See PAT-ANALYTICS-EVENTS: a
@@ -124,6 +132,13 @@ PROFILE_DOC_MAP: dict[str, dict[str, list[str]]] = {
         "funnel-critical-only": ["PAT-ANALYTICS-EVENTS"],
         "none": [],
     },
+}
+
+# Architecture style an onboarding answer selects -> the entry document that brings in the whole
+# architecture. Exported to profile-doc-map.json as `architecture_styles`; a consumer that does not
+# know the key ignores it.
+STYLE_DOC_MAP: dict[str, list[str]] = {
+    "web-app": ["ARCH-WEB-APP-LAYERS"],
 }
 
 TARGET_DOC_MAP: dict[str, list[str]] = {

@@ -5,7 +5,7 @@ layer: architectures
 platform: [web]
 architecture: [web-app]
 requires: [CORE-COUPLING, CORE-NAMING, CORE-DI, CORE-SSOT, PAT-DATA-ACCESS, PAT-OUTCOME, PAT-OBSERVER]
-related: [ARCH-PC, ARCH-WEB-APP-ERR-CLASSES, ARCH-WEB-APP-DATASOURCE, ARCH-WEB-APP-REPOSITORY, ARCH-WEB-APP-DOMAIN, ARCH-WEB-APP-USECASE, ARCH-WEB-APP-HOOK, ARCH-WEB-APP-COMPONENT, ARCH-WEB-APP-COMPOSITION, ARCH-WEB-APP-FEATURE-STRUCTURE, ARCH-WEB-APP-MODULES, ARCH-WEB-APP-ERR-FLOW, ARCH-WEB-APP-OBS]
+related: [ARCH-PC, ARCH-WEB-APP-LAYERS, ARCH-WEB-APP-ERR-CLASSES, ARCH-WEB-APP-DATASOURCE, ARCH-WEB-APP-REPOSITORY, ARCH-WEB-APP-DOMAIN, ARCH-WEB-APP-USECASE, ARCH-WEB-APP-HOOK, ARCH-WEB-APP-COMPONENT, ARCH-WEB-APP-COMPOSITION, ARCH-WEB-APP-FEATURE-STRUCTURE, ARCH-WEB-APP-MODULES, ARCH-WEB-APP-ERR-FLOW, ARCH-WEB-APP-OBS]
 tags: [web, nextjs, layers, pragmatic-clean, datasource, usecase, hook, dependency-direction, server-actions, static-export, firebase]
 status: active
 ---
@@ -223,9 +223,9 @@ violation_message: Violates ARCH-WEB-APP-DEP-08 — The layer contract MUST be d
 A dependency rule that only lives in a document is a suggestion. The Python
 architecture meets the equivalent rule (`ARCH-PY-DEP-04`) with `import-linter`; the web
 equivalent is a declared contract over `import` statements and path aliases, run as an
-architecture check (see "Declaring the contract"). `DEP-01` to `DEP-07` are checked
-mechanically once a project declares and runs that contract, and `DEP-08` is the rule
-that it does. A project with no declared contract has only a reviewer.
+architecture check (see "Declaring the contract"). `ARCH-WEB-APP-DEP-01` to `ARCH-WEB-APP-DEP-07` are checked
+mechanically once a project declares and runs that contract, and `ARCH-WEB-APP-DEP-08` is the
+rule that it does. A project with no declared contract has only a reviewer.
 
 ### Declaring the contract
 
@@ -414,7 +414,9 @@ by `ARCH-WEB-COMPONENTS`; this document cites that instead of duplicating it.
 ## Layer documents
 
 The per-layer documents hold each layer's detailed rules, in the shape of the
-`ARCH-PC` layer documents. They live beside this overview in `architectures/web-app/`.
+`ARCH-PC` layer documents. They live beside this overview in `architectures/web-app/`;
+`ARCH-WEB-APP-LAYERS` is the single entry point that requires all of them, with a reading
+guide by task.
 
 | Concern | Document |
 |---|---|

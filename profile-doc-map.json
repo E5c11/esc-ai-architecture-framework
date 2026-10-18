@@ -1,4 +1,9 @@
 {
+  "architecture_styles": {
+    "web-app": [
+      "ARCH-WEB-APP-LAYERS"
+    ]
+  },
   "frameworks": {
     "analytics": {
       "comprehensive": [
@@ -80,6 +85,18 @@
       ],
       "workmanager": [
         "PLAT-MOB-NOTIF"
+      ]
+    },
+    "runtime": {
+      "server": [
+        "PLAT-WEB-NEXT-APP",
+        "PLAT-WEB-NEXT-APP-DEPLOY",
+        "PLAT-WEB-NEXT-DATA",
+        "PLAT-WEB-HTTP"
+      ],
+      "static-export": [
+        "PLAT-WEB-NEXT-STATIC",
+        "PLAT-WEB-NEXT-FIREBASE"
       ]
     },
     "secure-storage": {

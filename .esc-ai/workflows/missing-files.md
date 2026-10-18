@@ -92,6 +92,43 @@ project consumes `web-content` yet.
 `web-spa`-only rather than broadened — see `ORCH-WEB-APP`'s closing note for
 why its container-guard/`ErrorBoundary` rules don't transfer to `web-app`.
 
+## Completed (web-app readiness, 2026-10-18)
+
+Closed by `workflows/archive/web-app-readiness.md`: `web-app` rebuilt as pragmatic clean for
+Next.js with two runtimes (`server`, `static-export`), at the depth of `ARCH-PC` and `ARCH-PY`.
+
+| Doc ID(s) | Files | Notes |
+|-----------|-------|-------|
+| `ARCH-WEB-APP` (rewritten), `ARCH-WEB-APP-LAYERS` | `architectures/web-app/overview.md`, `layers.md` | Layer mapping, dependency rules `DEP-01..08`, runtimes, worked contract; `LAYERS` is the single entry point that requires every layer document |
+| `ARCH-WEB-APP-DOMAIN`, `-DATASOURCE`, `-REPOSITORY`, `-USECASE`, `-HOOK`, `-COMPONENT` | `architectures/web-app/*.md` | One document per layer |
+| `ARCH-WEB-APP-COMPOSITION`, `-FEATURE-STRUCTURE`, `-MODULES`, `-ERR-FLOW`, `-OBS` | `architectures/web-app/*.md` | Wiring, folder layout, module growth and packages, end-to-end errors, observability |
+| `PLAT-WEB-REACT-PATTERNS`, `PLAT-WEB-NEXT-FIREBASE`, `PLAT-WEB-NEXT-DATA`, `PLAT-WEB-NEXT-STATIC` | `platforms/web/*.md` | React 19 patterns; Firebase on Next; caching (Cache Components); static export |
+| `PLAT-WEB-DS-THEME` (rewritten) | `platforms/web/design-system/theme.md` | Tailwind 4 CSS-first, semantic tokens, dark mode, contrast, data-viz, typography |
+| `PLAT-WEB-NEXT`, `-NEXT-APP`, `-REACT`, `-STATE`, `QG-WEB-TESTING`, `ORCH-WEB-APP` (updated) | | Pinned versions (Next 16, React 19, Tailwind 4), `proxy.ts`, async request APIs, widened to `web-app`, layered orchestrator for both runtimes |
+
+`schemas/project-profile.yaml` is at `1.4` (`frameworks.runtime`); `PROFILE_DOC_MAP` gained
+`runtime`, and `profile-doc-map.json` gained `architecture_styles` (`web-app` ->
+`ARCH-WEB-APP-LAYERS`). The execution framework checks the dependency rules mechanically
+(`esc-exec architecture profile generate --template web-app`).
+
+### Still open after the readiness work
+
+- **`ampm-backend` (the `server`-runtime consumer) must declare `frameworks.runtime: server`.**
+  `ORCH-WEB-APP` no longer requires the server platform guides directly; they arrive through
+  the profile's `runtime`. Without the field a lookup returns the common set only.
+- **`cloud: firebase` selects the mobile Firebase guide for every platform.** `PROFILE_DOC_MAP`
+  is a flat, platform-blind map. `PLAT-WEB-NEXT-FIREBASE` is reached through
+  `runtime: static-export` instead. A platform-aware map would fix this properly.
+- **A repository-level project profile applies to every component.** A framework-free domain
+  package in the same repository would receive the Next.js guides. The execution framework now
+  accepts an explicit `profile_ids` answer per component; the web-app dry run used it to give the
+  package `ARCH-WEB-APP-DOMAIN` and `ARCH-WEB-APP-MODULES`.
+- **Rules that are not import-shaped stay reviewer-enforced** (`ARCH-WEB-APP-COMPOSE-*`,
+  `ARCH-WEB-APP-MOD-API-01`'s `export *`, and similar).
+- **No JUnit report for generated npm verification checks** (exit code and logs only).
+- **`PLAT-WEB-A11Y` stays `web-spa`-only**, as decided in `workflows/archive/web-platform-docs.md`.
+  Its architecture-agnostic rules are cited from `ORCH-WEB-APP`.
+
 ## Completed (migrated from AMPM agents/instructions)
 
 These were created during the AMPM → esc-ai-framework (now esc-ai-architecture-framework)

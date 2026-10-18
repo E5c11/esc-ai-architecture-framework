@@ -399,34 +399,78 @@ Separate repository; committed there (`c9d20df`).
 
 ## Phase 10 — Wiring, cross-check and dry run
 
-- `ORCH-WEB-APP`: updated `requires` and phases for the new layers (domain →
-  DataSource → UseCase → hook → component → composition → tests), with variant
-  notes for `static-export`. If the two runtimes diverge enough in steps, add
-  `ORCH-WEB-APP-STATIC` in the `ORCH-WEB-FEAT` Goal/Read/Steps/Validation format
-  rather than overloading one file.
-- `PROFILE_DOC_MAP` (`tools/lookup.py`, `profile-doc-map.json`): `frameworks.runtime`
-  selects the variant docs; `ui: next` with `cloud: firebase` selects
-  `PLAT-WEB-NEXT-FIREBASE`. The existing `cloud: firebase` entry selects the
-  mobile doc, so confirm how resolution combines platform and architecture
-  before adding entries (as the earlier workflow's Phase 8 did).
-- Resolve the dangling IDs `PLAT-WEB-HOOKS` (reword the `platforms/README.md`
-  example to a real ID) and `PLAT-WEB-NEXT-STYLE`.
-- `python tools/validate.py` full repo: zero duplicate IDs, zero new broken
-  citations (the 23 existing mobile WARNs stay). `requires`/`related` are hard
-  failures; trim forward references at commit time and backfill, as the earlier
-  workflow did.
-- `python tools/index.py` to regenerate `index.json` and `index.md`.
-- Update `workflows/missing-files.md`: anything deliberately not written, with
-  the reason.
-- **Dry run:** run `escape-ai repository analyze` on a scratch copy of
-  `ilitha-ops-firebase` laid out as the target (`apps/web` Next.js static
-  export, `packages/pipeline` framework-free, functions importing the pipeline).
-  Record which docs resolve, which do not, what onboarding asks, and whether the
-  generated architecture profile passes on the scratch copy and fails when a
-  deliberate violation is added. Fix resolution gaps before declaring done.
-- Move this file to `archive/` with an Outcome section: what changed, judgement
-  calls, anything left open.
+Done 2026-10-18 (this repository, and `esc-ai-execution-framework` for the onboarding changes).
+
+### Wiring
+
+- **`ORCH-WEB-APP` rewritten** as a nine-phase, layer-by-layer recipe (domain, DataSource and its
+  fake, DataSource implementation, Repository/UseCase if needed, composition, Hook, Components, route
+  and boundaries, test and enforcement gate) with `server` and `static-export` steps inline. No second
+  orchestrator (`ORCH-WEB-APP-STATIC`) was needed: the runtimes differ in the DataSource and the
+  shell, not in the order of work.
+- **`ARCH-WEB-APP-LAYERS`** added (`architectures/web-app/layers.md`): the single entry point that
+  requires the overview, every layer document and the shared platform guides. The dry run showed why
+  it is needed: onboarding seeds a component with a few document IDs and resolves their `requires`
+  chains, and no existing seed reached the layer documents.
+- **`PROFILE_DOC_MAP`** gained `runtime` (`server` selects `PLAT-WEB-NEXT-APP`, `-APP-DEPLOY`,
+  `-DATA` and `PLAT-WEB-HTTP`; `static-export` selects `PLAT-WEB-NEXT-STATIC` and
+  `PLAT-WEB-NEXT-FIREBASE`), and `profile-doc-map.json` gained `architecture_styles`
+  (`web-app` to `ARCH-WEB-APP-LAYERS`). The lookup combines platform and architecture only through
+  `requires` chains and the flat map, so the platform-blind `cloud: firebase` entry was left alone
+  and recorded as open.
+- **Execution framework:** `refine_profile_ids_for_style` reads `architecture_styles`, does not add
+  the server runtime's guide to a project that already selected the static one, an onboarding answer
+  may carry an explicit `profile_ids` per component, and `architecture profile generate --template`
+  fills the empty profile onboarding writes (it never overwrites one with rules).
+- **Dangling IDs:** `PLAT-WEB-HOOKS` in `platforms/README.md` reworded to a real ID. `PLAT-WEB-NEXT-STYLE`
+  appears only in an archived workflow's history and was left as written.
+- `python tools/validate.py` passes; the 23 existing mobile WARNs are unchanged and none is new. The SPA
+  orchestrator `ORCH-WEB-FEAT` resolves the same 14 documents as before the whole workflow.
+
+### Dry run
+
+A scratch repository laid out as the target (`apps/web` Next.js static export with Firebase,
+`packages/pipeline` framework-free, a `context/project-profile.yaml` declaring
+`runtime: static-export`), onboarded with the real `esc-exec` and this framework:
+
+| Step | Result |
+|---|---|
+| `repository analyze` | Both components detected; the profile's `runtime` selected the static-export guides |
+| `repository answer` | `web` got `PLAT-WEB-NEXT`, `-STATIC`, `-FIREBASE`, `ARCH-WEB-APP-LAYERS` (28 documents once resolved: none missing, none non-active); `pipeline` got an explicit `ARCH-WEB-APP-DOMAIN`, `-MODULES` (21) |
+| Manifests and indexes | Valid, including the scoped package id `@ilitha/pipeline` |
+| Verification profile | Generated for both from `package.json`; a bare `vitest` script runs as `vitest run`; the workspace member runs in its directory and adds the repository test and the build to the final gate |
+| `verification plan` | Built (focused input-required, component ready, final ready) |
+| `architecture profile generate --template web-app` | Filled onboarding's empty profile with 8 rules |
+| `architecture check`, clean layout | Passed; `files_scanned` showed each rule read real files |
+| `architecture check`, injected violations | Failed with exactly the right rules: a Firebase import in a Component (`DEP-03`, `DEP-05`), an implementation and React in the domain (`DEP-01`, `DEP-06`), a deep import of another feature through an alias (`DEP-07`) |
+
+Three defects surfaced and were fixed in the execution framework: the server runtime's guide was
+added on top of the static one, a repository-level profile gave the domain package the Next.js
+guides, and the template could not fill the empty profile onboarding had already written.
 
 ## Outcome
 
-_Not started._
+All ten phases complete. The `web-app` architecture is now:
+
+- **`architectures/web-app/`**: 14 documents, 141 rules, written to the `ARCH-PC` template; eight of the
+  rules (`ARCH-WEB-APP-DEP-01` to `-08`) are checked mechanically.
+- **`platforms/web/`**: 19 documents, 123 rules, including the new React patterns, Firebase on Next,
+  Next.js caching, static export and the Tailwind 4 theme guides, pinned to Next 16, React 19 and
+  Tailwind 4 as checked upstream on 2026-10-18.
+- **Execution framework** (`esc-ai-execution-framework`): TypeScript import checks with a `web-app`
+  template, npm verification profiles, and the onboarding changes above.
+
+Judgement calls worth recording:
+
+- **One architecture, two runtimes** (`frameworks.runtime`), not a second architecture value; the
+  layer documents hold for both and say where they differ.
+- **Hooks do not call providers.** A DataSource layer sits between them, as in `ARCH-PC`.
+- **A regex scanner over dependency-cruiser**, with the fail-closed rule covering its limits.
+- **`PLAT-WEB-NEXT-FB-EXPORT-01` and `-02` were renamed** to `PLAT-WEB-NEXT-STATIC-CONFIG-01` and
+  `-ROUTES-01` (one phase old, uncited elsewhere) because they are not Firebase-specific.
+- **`PLAT-WEB-A11Y` stays `web-spa`-only**, as the earlier workflow decided.
+- **`ARCH-WEB-APP` ended with more rules (141) than its 90 to 110 target.** The surplus is in the
+  DataSource, Hook and UseCase documents, which carry what this project's data pipeline taught; not
+  padded, but trim if it proves heavy.
+
+Open items are in `workflows/missing-files.md` under "Still open after the readiness work".

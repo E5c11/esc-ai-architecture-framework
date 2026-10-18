@@ -146,7 +146,10 @@ fields:
           Web-app runtime (web-app only). Values: server, static-export. `server` runs
           its DataSource in a Server Action or Route Handler; `static-export` runs it in
           the browser (Next.js `output: 'export'`). Required for a web-app project;
-          omit for every other architecture. See ARCH-WEB-APP-RUNTIME-01.
+          omit for every other architecture. See ARCH-WEB-APP-RUNTIME-01. The value selects the
+          platform guides that differ by runtime (tools/lookup.py PROFILE_DOC_MAP): `server` brings
+          PLAT-WEB-NEXT-APP, -APP-DEPLOY, -DATA and PLAT-WEB-HTTP; `static-export` brings
+          PLAT-WEB-NEXT-STATIC and PLAT-WEB-NEXT-FIREBASE (the browser-to-Firebase shape).
       analytics:
         type: string
         description: >
