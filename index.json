@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-18T06:16:19.671599+00:00",
-  "count": 131,
+  "generated": "2026-10-18T06:21:08.318768+00:00",
+  "count": 133,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -3679,7 +3679,8 @@
         "PLAT-WEB-STATE"
       ],
       "related": [
-        "PLAT-WEB-DEPLOY"
+        "PLAT-WEB-DEPLOY",
+        "PLAT-WEB-NEXT-FIREBASE"
       ],
       "tags": [
         "firebase",
@@ -3834,6 +3835,41 @@
       "status": "active"
     },
     {
+      "id": "PLAT-WEB-NEXT-FIREBASE",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/firebase-next.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "PLAT-WEB-NEXT",
+        "ARCH-WEB-APP-DATASOURCE",
+        "ARCH-WEB-APP-COMPOSITION",
+        "ARCH-WEB-APP-ERR-CLASSES"
+      ],
+      "related": [
+        "PLAT-WEB-FIREBASE",
+        "PLAT-WEB-NEXT-APP-DEPLOY",
+        "PLAT-WEB-DEPLOY",
+        "ARCH-WEB-APP-OBS"
+      ],
+      "tags": [
+        "firebase",
+        "firestore",
+        "auth",
+        "security-rules",
+        "callable-functions",
+        "emulator",
+        "hosting",
+        "static-export",
+        "nextjs",
+        "pii"
+      ],
+      "status": "active"
+    },
+    {
       "id": "PLAT-WEB-REACT",
       "type": "guide",
       "layer": "platforms",
@@ -3862,6 +3898,41 @@
         "hooks",
         "cleanup",
         "as-const"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "PLAT-WEB-REACT-PATTERNS",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/react-patterns.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-spa",
+      "requires": [
+        "PLAT-WEB-REACT"
+      ],
+      "related": [
+        "PLAT-WEB-STATE",
+        "PLAT-WEB-FORMS",
+        "PLAT-WEB-NEXT",
+        "PLAT-WEB-NEXT-APP",
+        "ARCH-WEB-COMPONENTS"
+      ],
+      "tags": [
+        "react",
+        "react-19",
+        "effects",
+        "derived-state",
+        "keys",
+        "strict-mode",
+        "suspense",
+        "use",
+        "use-action-state",
+        "use-optimistic",
+        "error-boundary",
+        "memoisation"
       ],
       "status": "active"
     },

@@ -5,7 +5,7 @@ layer: platforms
 platform: [web]
 architecture: web-spa
 requires: [ARCH-WEB, PLAT-WEB-REACT, PLAT-WEB-STATE]
-related: [PLAT-WEB-DEPLOY]
+related: [PLAT-WEB-DEPLOY, PLAT-WEB-NEXT-FIREBASE]
 tags: [firebase, firestore, auth, on-snapshot, hooks, environment-variables, real-time]
 status: active
 ---
@@ -17,7 +17,7 @@ application: `import.meta.env.VITE_*` configuration, Firestore called from
 hooks in `src/hooks/`, one `AuthContext`. A `web-app` does not follow it as
 written: its hooks do not call the provider directly (a DataSource layer does),
 its configuration uses Next's `NEXT_PUBLIC_*` convention, and its folder layout
-differs. Firebase guidance for `web-app` is a separate document. These rules
+differs. Firebase guidance for `web-app` is `PLAT-WEB-NEXT-FIREBASE`. These rules
 carry over unchanged and are cited, not restated, there: `PLAT-WEB-FB-CONFIG-02`
 (no committed `.env`), `PLAT-WEB-FB-CLEANUP-01` (always unsubscribe), and
 `PLAT-WEB-FB-TYPES-01`'s principle (one typed interface per collection; the
