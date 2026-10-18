@@ -24,7 +24,7 @@ failures nobody planned for. It restates `ARCH-PC-ERROR-FLOW` for a web app, wit
 
 ```
 Provider
-  fails in its own terms (a rejected fetch, FirestoreError, FunctionsError, a driver error)
+  fails in its own terms (a rejected fetch, a `FirebaseError` with a `code`, a driver error)
         ↓
 DataSource                                           (ARCH-WEB-APP-ERR-MAP-01)
   catches the provider failure, translates it once to AppError, logs unknowns once

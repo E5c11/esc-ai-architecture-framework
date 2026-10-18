@@ -250,7 +250,7 @@ This is the Firestore stand-in for a migration file, since a schemaless store ha
 
 ## Error handling
 
-Provider failures (a rejected `fetch`, a Firestore `FirestoreError`, a callable's
+Provider failures (a rejected `fetch`, a Firestore `FirebaseError`, a callable's
 `FunctionsError`, a driver error) are an implementation detail of the provider. They
 do not cross the DataSource boundary. The translation rule, the error union and
 the unknown-failure rule are owned by `ARCH-WEB-APP-ERR-CLASSES`
@@ -263,7 +263,7 @@ Translate in one function per provider, not at every call site:
 function toAppError(e: unknown): AppError {
   // An abort never reaches here: the caller rethrows it first (ARCH-WEB-APP-ERR-CANCEL-01).
   if (isAppError(e)) return e;                              // pass through unchanged
-  if (e instanceof FirestoreError) {
+  if (e instanceof FirebaseError) {                         // from 'firebase/app'; carries `code`
     if (e.code === 'permission-denied') return { type: 'forbidden' };
     if (e.code === 'unauthenticated')   return { type: 'unauthorized' };
     if (e.code === 'unavailable')       return { type: 'offline' };
@@ -272,6 +272,8 @@ function toAppError(e: unknown): AppError {
   return { type: 'unexpected', message: 'Something went wrong.' };
 }
 ```
+
+Test the translation against the provider's emulator, not only a fake: the Firebase SDK throws `FirebaseError` (not the `FirestoreError` class its own types suggest), so an `instanceof FirestoreError` check compiles, passes against a fake, and never matches a real failure.
 
 Catch order, most specific first: an abort (rethrown unchanged, before any general
 `catch`), an already-mapped `AppError`, a known provider error, then everything else.
