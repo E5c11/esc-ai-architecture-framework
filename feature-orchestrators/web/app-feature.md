@@ -104,7 +104,7 @@ Read: `ARCH-WEB-APP-DATASOURCE`, `ARCH-WEB-APP-ERR-CLASSES`
 
 - [ ] The interface mentions no provider type.
 - [ ] The fake passes the contract tests.
-- [ ] Bounded reads are declared (`ARCH-WEB-APP-DS-BOUND-01`).
+- [ ] Bounded reads are declared (`ARCH-WEB-APP-DS-PAGE-01`).
 
 ---
 
@@ -123,8 +123,8 @@ and `PLAT-WEB-NEXT-APP`
 2. Parse every payload with a schema parser; never assert a type (`ARCH-WEB-APP-DS-PARSE-01`). A payload
    that fails parsing is an error naming the record (`ARCH-WEB-APP-DS-MALFORMED-01`).
 3. Translate provider errors once, in one function, using the table in `PLAT-WEB-NEXT-FIREBASE` for
-   Firestore and callables (`ARCH-WEB-APP-ERR-MAP-01`, `ARCH-WEB-APP-DS-ERROR-01`). Rethrow an abort.
-4. **`server` runtime:** the DataSource is `server-only` (`ARCH-WEB-APP-DS-SERVER-01`,
+   Firestore and callables (`ARCH-WEB-APP-ERR-MAP-01`). Rethrow an abort.
+4. **`server` runtime:** the DataSource is `server-only` (`ARCH-WEB-APP-COMPOSE-SPLIT-01`,
    `PLAT-WEB-NEXT-SERVERONLY-01`) and is called from a Server Action or Route Handler that returns an
    `Outcome` (`PLAT-WEB-NEXT-APP-THROW-01`); a mutating action invalidates what it changed
    (`PLAT-WEB-NEXT-APP-REVALIDATE-01`).
@@ -155,7 +155,7 @@ Read: `ARCH-WEB-APP-USECASE`, `ARCH-WEB-APP-REPOSITORY`
    One operation each, named in the domain's language (`ARCH-WEB-APP-UC-SINGLE-01`).
 2. Introduce a Repository only when one entity is assembled from more than one DataSource
    (`ARCH-WEB-APP-REPO-01`).
-3. Pass time and anything ambient in as arguments (`ARCH-WEB-APP-UC-IO-01`); hold no state between
+3. Pass time and anything ambient in as arguments (`ARCH-WEB-APP-DOM-PURE-01`); hold no state between
    calls (`ARCH-WEB-APP-UC-STATELESS-01`).
 4. State what a failed second write means (`ARCH-WEB-APP-UC-WRITE-01`); contain side effects
    (`ARCH-WEB-APP-UC-SIDE-01`).
@@ -178,7 +178,7 @@ Read: `ARCH-WEB-APP-COMPOSITION`
 ### Steps
 
 1. Register the DataSource (and Repository, UseCase) in `createApp` (`ARCH-WEB-APP-DEP-06`). Choose
-   between implementations from configuration (`ARCH-WEB-APP-COMPOSE-CHOICE-01`).
+   between implementations from configuration (`ARCH-WEB-APP-COMPOSE-CONFIG-01`).
 2. Add any new configuration to `loadConfig`, validated, and nowhere else
    (`ARCH-WEB-APP-COMPOSE-CONFIG-01`).
 3. Expose the new interface through the typed accessor (`ARCH-WEB-APP-COMPOSE-CONTEXT-01`).
@@ -214,7 +214,7 @@ Read: `ARCH-WEB-APP-HOOK`, `PLAT-WEB-REACT`, `PLAT-WEB-REACT-PATTERNS`
    (`ARCH-WEB-APP-HOOK-ERROR-01`, `-02`).
 5. If the hook wraps a form submit, map a `validation` error into `setError` (`PLAT-WEB-FORMS-ERR-01`).
 6. **`server` runtime:** reach the server only through a Server Action or Route Handler
-   (`ARCH-WEB-APP-HOOK-SERVER-01`).
+   (`ARCH-WEB-APP-DEP-04`).
 
 ### Validation
 
@@ -271,7 +271,7 @@ Read: `ARCH-WEB-APP-FEATURE-STRUCTURE`, `PLAT-WEB-NEXT`
 
 1. Add `app/.../page.tsx` that composes the feature and nothing else
    (`ARCH-WEB-APP-FEAT-ROUTE-01`); export only the page and public types from `index.ts`
-   (`ARCH-WEB-APP-FEAT-PUBLIC-01`).
+   (`ARCH-WEB-APP-DEP-07`).
 2. Add `loading.tsx`, `error.tsx` and `not-found.tsx` where the segment needs them
    (`PLAT-WEB-NEXT-BOUNDARY-01`); the error boundary reports once and offers retry
    (`ARCH-WEB-APP-EFLOW-BOUNDARY-01`).

@@ -85,6 +85,6 @@ Commits `1e99a8e`, `22819f5` in the pilot branch. Tested with 108 tests, 8 of th
 1. `EFLOW-ASSERT-01`: a linter can ban `@ts-ignore`, non-null assertions and `{...} as T`, but not tell a plain `x as T` over unchecked data from a legitimate narrowing (ESLint `assertionStyle: 'never'` flagged 128 sites, most of them fine, including the parsers). Kept partial; the rest stays with a reviewer.
 2. `MOD-FUNC-01`: ESLint's `complexity` counts `??`, so a mapper with many defaults trips it. It was a fair signal here (it pushed the legacy defaults into one object) but is noisy for mapping code.
 3. A JSX component is mostly markup, so one function-length limit flags every component. The generator accepts a separate `maxComponentFunctionLines`; without it the rule is unusable on React.
-4. `MOD-NAME-01` is a folder-name rule, not a lint rule; it belongs in the architecture check (`forbidden-path`), not yet generated.
+4. `MOD-NAME-01` is a folder-name rule, not a lint rule; it is now generated into the web-app template as `web.no-grab-bag-names` (`forbidden-path`). On the pilot it flags only the old `src/utils` and `src/common`; moving `aggregations` and `dateUtils` into `shared/domain` also surfaced `DOM-CLOCK-01` violations, fixed by `shared/clock/` and passing `now` into the aggregations.
 
-Marked exercised: `MOD-SIZE-01`, `MOD-FUNC-01`, `MOD-CYCLE-01`, `MOD-API-01`, `EFLOW-SWALLOW-01`, `OBS-LOG-01`.
+Marked exercised: `MOD-NAME-01`, `MOD-SIZE-01`, `MOD-FUNC-01`, `MOD-CYCLE-01`, `MOD-API-01`, `EFLOW-SWALLOW-01`, `OBS-LOG-01`.

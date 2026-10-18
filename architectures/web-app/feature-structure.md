@@ -44,7 +44,7 @@ data/                                 Code several DataSources share (error tran
 shared/
 ├── ui/                               Presentational components two or more features use
 ├── domain/                           Domain code two or more features use
-└── lib/                              Framework-free helpers named for a concept (see the modules document)
+└── {concept}/                        Framework-free code named for what it does (dates/, money/); never lib/, utils/ or common/
 
 composition/                          Builds and wires the graph (ARCH-WEB-APP-COMPOSITION)
 ```

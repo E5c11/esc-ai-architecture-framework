@@ -93,12 +93,12 @@ id: ARCH-WEB-APP-MOD-NAME-01
 statement: Modules, folders and packages MUST NOT be named `utils`, `helpers`, `common`, `misc`, `base` or `lib` alone; code belongs in a module named for the concept it implements.
 type: hard
 scope: naming
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-MOD-NAME-01 — Modules, folders and packages MUST NOT be named `utils`, `helpers`, `common`, `misc`, `base` or `lib` alone; code belongs in a module named for the concept it implements.
 ```
 
-`shared/lib/dates.ts` and `shared/lib/rate.ts` say what they hold. `shared/utils.ts` is a
+`shared/domain/dates.ts` and `shared/domain/rate.ts` say what they hold. `shared/utils.ts` is a
 place where unrelated code goes to avoid a decision.
 
 ## Splitting a module that has grown
