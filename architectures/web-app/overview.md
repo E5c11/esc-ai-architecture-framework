@@ -5,7 +5,7 @@ layer: architectures
 platform: [web]
 architecture: [web-app]
 requires: [CORE-COUPLING, CORE-NAMING, CORE-DI, CORE-SSOT, PAT-DATA-ACCESS, PAT-OUTCOME, PAT-OBSERVER]
-related: [ARCH-PC, ARCH-WEB-APP-ERR-CLASSES, ARCH-WEB-APP-DATASOURCE, ARCH-WEB-APP-REPOSITORY, ARCH-WEB-APP-DOMAIN, ARCH-WEB-APP-USECASE, ARCH-WEB-APP-HOOK, ARCH-WEB-APP-COMPONENT, ARCH-WEB-APP-COMPOSITION, ARCH-WEB-APP-FEATURE-STRUCTURE, ARCH-WEB-APP-MODULES]
+related: [ARCH-PC, ARCH-WEB-APP-ERR-CLASSES, ARCH-WEB-APP-DATASOURCE, ARCH-WEB-APP-REPOSITORY, ARCH-WEB-APP-DOMAIN, ARCH-WEB-APP-USECASE, ARCH-WEB-APP-HOOK, ARCH-WEB-APP-COMPONENT, ARCH-WEB-APP-COMPOSITION, ARCH-WEB-APP-FEATURE-STRUCTURE, ARCH-WEB-APP-MODULES, ARCH-WEB-APP-ERR-FLOW, ARCH-WEB-APP-OBS]
 tags: [web, nextjs, layers, pragmatic-clean, datasource, usecase, hook, dependency-direction, server-actions, static-export, firebase]
 status: active
 ---
@@ -226,6 +226,61 @@ the web equivalent is a declared contract over `import` statements and path
 aliases, run as an architecture check. Until a project declares one, the eight
 rules above are reviewer-enforced.
 
+### Declaring the contract
+
+A contract states, for each layer, which folders it covers and which imports it must
+not contain. It uses the rule format of the execution framework's architecture
+profile (`esc-architecture-profile.yaml`), so the same file describes the contract and
+runs it. A worked example for a project laid out as in "Feature folder structure"
+(layer folders are matched by glob; `{provider-sdks}` stands for the project's own
+list, for example `firebase/*`, `pg`, `undici`):
+
+```yaml
+rules:
+- id: web.domain-pure                       # ARCH-WEB-APP-DEP-01
+  type: forbidden-import
+  description: Domain imports no framework, SDK, or other layer.
+  source_roots: [features/*/domain, shared/domain, packages/*/src]
+  patterns: [react, react-dom, next, next/*, "{provider-sdks}", "**/hooks/**", "**/data/**", "**/components/**", "**/useCases/**"]
+
+- id: web.usecase-and-repository-no-sdk     # ARCH-WEB-APP-DEP-02
+  type: forbidden-import
+  description: UseCases and Repositories depend on interfaces, never React, Next, SDKs, or implementations.
+  source_roots: [features/*/useCases]
+  patterns: [react, react-dom, next, next/*, "{provider-sdks}", "**/data/Firestore*", "**/data/Http*", "**/data/Callable*"]
+
+- id: web.sdk-only-in-datasource            # ARCH-WEB-APP-DEP-03
+  type: forbidden-import
+  description: Provider SDKs are imported only by DataSources and the composition module.
+  source_roots: [features/*/components, features/*/hooks, features/*/useCases, features/*/domain, shared]
+  patterns: ["{provider-sdks}"]
+
+- id: web.hook-no-implementation            # ARCH-WEB-APP-DEP-04
+  type: forbidden-import
+  description: A Hook imports a UseCase or an interface, never an implementation or an SDK.
+  source_roots: [features/*/hooks]
+  patterns: ["{provider-sdks}", "**/data/Firestore*", "**/data/Http*", "**/data/Callable*", "**/data/Default*"]
+
+- id: web.component-no-data                 # ARCH-WEB-APP-DEP-05
+  type: forbidden-import
+  description: Components import nothing below the Hook.
+  source_roots: [features/*/components, shared/ui]
+  patterns: ["{provider-sdks}", "**/data/**", "**/useCases/**", "**/domain/**", "composition/**"]
+
+- id: web.no-feature-internals              # ARCH-WEB-APP-DEP-07
+  type: forbidden-import
+  description: A feature is imported only through its index.
+  source_roots: [features/*, app]
+  patterns: ["features/*/components/**", "features/*/hooks/**", "features/*/data/**", "features/*/useCases/**", "features/*/domain/**"]
+  except_own_feature: true                  # a feature may import its own internals
+```
+
+Two of these need the checker to understand more than `forbidden-import` does today:
+glob `source_roots`, and `except_own_feature`. The checker also has to scan `.ts` and
+`.tsx` files and resolve path aliases. Until it does, this example is the specification
+a reviewer applies by hand, and the rules stay reviewer-enforced. A contract that
+passes because it resolved no imports is a failed check, not a pass.
+
 ## Feature folder structure
 
 ```
@@ -341,10 +396,18 @@ by `ARCH-WEB-COMPONENTS`; this document cites that instead of duplicating it.
 ## Layer documents
 
 The per-layer documents hold each layer's detailed rules, in the shape of the
-`ARCH-PC` layer documents. They live beside this overview in
-`architectures/web-app/`: `datasource.md`, `repository.md`, `domain.md`,
-`usecase.md`, `hook.md`, `component.md`, `composition.md`,
-`feature-structure.md`, `modules.md`, `error-flow.md` and `observability.md`.
-Typed errors are in `error-classes.md` (`ARCH-WEB-APP-ERR-CLASSES`). Until a
-layer's document exists, this overview's boundary, contract and dependency tables
-are the authority for that layer.
+`ARCH-PC` layer documents. They live beside this overview in `architectures/web-app/`.
+
+| Concern | Document |
+|---|---|
+| Provider boundary | `ARCH-WEB-APP-DATASOURCE`, `ARCH-WEB-APP-REPOSITORY` |
+| Pure rules and transforms | `ARCH-WEB-APP-DOMAIN` |
+| Business operations | `ARCH-WEB-APP-USECASE` |
+| Presentation | `ARCH-WEB-APP-HOOK`, `ARCH-WEB-APP-COMPONENT` |
+| Wiring | `ARCH-WEB-APP-COMPOSITION` |
+| Layout and growth | `ARCH-WEB-APP-FEATURE-STRUCTURE`, `ARCH-WEB-APP-MODULES` |
+| Failure and visibility | `ARCH-WEB-APP-ERR-CLASSES`, `ARCH-WEB-APP-ERR-FLOW`, `ARCH-WEB-APP-OBS` |
+
+Where a layer document and this overview overlap, this overview owns the dependency
+rules (`ARCH-WEB-APP-DEP-01` to `-08`) and the layer-inclusion decisions; the layer
+documents own everything else about their layer.

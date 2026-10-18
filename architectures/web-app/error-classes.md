@@ -5,7 +5,7 @@ layer: architectures
 platform: [web]
 architecture: [web-app]
 requires: [ARCH-WEB-APP, PAT-OUTCOME, CORE-ERROR]
-related: [ARCH-PC-ERR-CLASSES]
+related: [ARCH-PC-ERR-CLASSES, ARCH-WEB-APP-ERR-FLOW]
 tags: [error-handling, outcome, typed-errors, datasource, server-actions, route-handlers, static-export, zod, react-hook-form]
 status: active
 ---
