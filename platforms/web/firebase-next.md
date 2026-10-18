@@ -59,11 +59,11 @@ directory, or short-lived credentials) and deletes it when the task is finished.
 
 ```rule
 id: PLAT-WEB-NEXT-FB-INIT-01
-statement: Firebase MUST be initialised only inside the composition factory through an idempotent get-or-create (`getApps()` before `initializeApp`), and the factory MUST be called on the client after mount, never at module scope and never during prerendering.
+statement: Firebase MUST be initialised only inside the composition factory through an idempotent get-or-create keyed by the app's name (look the name up in `getApps()` before `initializeApp(config, name)`), and the factory MUST be called on the client after mount, never at module scope and never during prerendering.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-NEXT-FB-INIT-01 — Firebase MUST be initialised only inside the composition factory through an idempotent get-or-create (`getApps()` before `initializeApp`), and the factory MUST be called on the client after mount, never at module scope and never during prerendering.
+violation_message: Violates PLAT-WEB-NEXT-FB-INIT-01 — Firebase MUST be initialised only inside the composition factory through an idempotent get-or-create keyed by the app's name (look the name up in `getApps()` before `initializeApp(config, name)`), and the factory MUST be called on the client after mount, never at module scope and never during prerendering.
 ```
 
 `next build` prerenders every page, **including Client Components**, in Node. A module
@@ -73,6 +73,21 @@ the provider renders its loading state, and the graph is created in an effect on
 client. This is the rule `ARCH-WEB-APP-COMPOSE-GLOBAL-01` and
 `ARCH-WEB-APP-COMPOSE-SDK-01` apply to this SDK specifically, and it is why a Strict
 Mode double mount (`PLAT-WEB-RP-STRICT-01`) must not create a second app.
+
+A project that talks to two Firebase projects from one build (a development and a production
+project, chosen at run time) has two **named** apps. `getApp()` with no name returns the default app
+and `initializeApp(config)` with no name creates it, so two environments need
+`initializeApp(config, 'dev')` and `initializeApp(config, 'prod')`, each created once, on demand, and
+chosen only in the composition (`ARCH-WEB-APP-COMPOSE-ENV-01`). Each project has its own security
+rules, so each environment's access boundary is tested separately (`ARCH-WEB-APP-DS-RULES-01`).
+
+```typescript
+// composition/firebase.ts
+export function getOrCreateFirebase(config: FirebaseConfig, name: string): FirebaseHandles {
+  const app = getApps().find(existing => existing.name === name) ?? initializeApp(config, name);
+  return { app, firestore: getFirestore(app), functions: getFunctions(app, config.functionsRegion) };
+}
+```
 
 ```typescript
 // composition/AppProvider.tsx

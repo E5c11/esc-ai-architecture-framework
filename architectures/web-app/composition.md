@@ -35,7 +35,7 @@ tests. This document owns the rest: how the module is shaped and when it runs.
 composition/
 ├── createApp.ts          createApp(config, overrides?) → AppGraph. Pure construction; no side effects at import
 ├── config.ts             loadConfig(source) → Config. The only reader of environment values
-├── graph.ts              AppGraph: the interfaces the graph exposes (UseCases, DataSources)
+├── graph.ts              AppGraph: the interfaces the graph exposes (UseCases, DataSources) and `dispose()`
 ├── AppProvider.tsx       Client context provider; useAppGraph(), useUseCases()
 ├── client.ts             The graph for the browser
 └── server.ts             The graph for the server (server runtime only); server-only
@@ -44,7 +44,7 @@ composition/
 ```typescript
 // composition/createApp.ts
 export function createApp(config: Config, overrides: Partial<AppGraph> = {}): AppGraph {
-  const firebase = getOrCreateFirebase(config.firebase);          // once, idempotent
+  const firebase = getOrCreateFirebase(config.firebase);          // one named app per environment, idempotent
   const snapshots = new FirestoreSnapshotDataSource(firebase.firestore);
   const feeds = new CallableFeedDataSource(firebase.functions);
   return {
@@ -97,12 +97,61 @@ three screens later as `undefined`. Which values are safe to expose to the brows
 
 ```rule
 id: ARCH-WEB-APP-COMPOSE-SDK-01
-statement: A provider SDK MUST be initialised at most once per runtime, through an idempotent get-or-create, so hot reload, repeated calls and tests cannot create a second instance.
+statement: A provider SDK app MUST be initialised at most once per configured app (one name per project or environment), through an idempotent get-or-create keyed by that name, so hot reload, repeated calls and tests cannot create a second instance of the same app.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-COMPOSE-SDK-01 — A provider SDK MUST be initialised at most once per runtime, through an idempotent get-or-create, so hot reload, repeated calls and tests cannot create a second instance.
+violation_message: Violates ARCH-WEB-APP-COMPOSE-SDK-01 — A provider SDK app MUST be initialised at most once per configured app (one name per project or environment), through an idempotent get-or-create keyed by that name, so hot reload, repeated calls and tests cannot create a second instance of the same app.
 ```
+
+The unit is the *app*, not the process: a program that legitimately talks to two projects (a
+development and a production one) has two apps, each created once, each under its own name. What
+the rule forbids is a second instance of the same app, which is what a hot reload, a repeated call or
+a test that builds its own graph produces.
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-ENV-01
+statement: Where one build can talk to more than one environment (for example a development and a production project), each environment MUST be a named app created by the composition module on demand, the active environment MUST be chosen in that one place, and switching it MUST discard the current graph, releasing every subscription, and build a new one.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-ENV-01 — Where one build can talk to more than one environment (for example a development and a production project), each environment MUST be a named app created by the composition module on demand, the active environment MUST be chosen in that one place, and switching it MUST discard the current graph, releasing every subscription, and build a new one.
+```
+
+```typescript
+// composition/environment.ts: the only place the active environment is chosen
+export type EnvironmentName = 'dev' | 'prod';
+
+export function createAppFor(env: EnvironmentName, config: Config): AppGraph {
+  return createApp({ ...config, firebase: config.environments[env], appName: env });   // named app
+}
+
+// AppProvider: a change of environment is a new graph, never a mutated one
+useEffect(() => {
+  const graph = createAppFor(environment, config);
+  setGraph(graph);
+  return () => graph.dispose();            // releases listeners; the named app itself is reused
+}, [environment, config]);
+```
+
+Both apps must not exist as module-level constants created at import
+(`ARCH-WEB-APP-COMPOSE-GLOBAL-01`), and neither a DataSource nor a Hook may choose, hold or reach for
+an environment: they receive the graph for the active one. Mutating a live graph's providers in place
+leaves a Hook still subscribed to the environment the user just left, showing its data under the new
+environment's name. A new graph, built after the old one is released, cannot.
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-ENV-02
+statement: The active environment MUST be visible wherever a write can happen, and switching to an environment that holds real data SHOULD be an explicit, confirmed action.
+type: soft
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-ENV-02 — The active environment MUST be visible wherever a write can happen, and switching to an environment that holds real data SHOULD be an explicit, confirmed action.
+```
+
+An administration tool that can write to production from the same screen that edits a test project is
+one unnoticed toggle from a real incident. The indicator belongs to the component layer; the rule
+that the choice lives in the composition is `ARCH-WEB-APP-COMPOSE-ENV-01`.
 
 ```rule
 id: ARCH-WEB-APP-COMPOSE-CHOICE-01
@@ -172,6 +221,8 @@ provider exists.
 - `initializeApp(...)` or `getFirestore()` at a module's top level
 - `process.env` or a `NEXT_PUBLIC_*` value read outside `loadConfig`
 - A second SDK instance created by a hot reload or a test
+- Two environments held as module-level constants, or switched by mutating a live graph
+- A Hook or DataSource that picks the environment itself
 - A hook or component importing a graph built in another module
 - A silent fallback to a fake when configuration is missing
 - A server-only DataSource reachable from client code

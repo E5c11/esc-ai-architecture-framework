@@ -182,12 +182,14 @@ Read: `ARCH-WEB-APP-COMPOSITION`
 2. Add any new configuration to `loadConfig`, validated, and nowhere else
    (`ARCH-WEB-APP-COMPOSE-CONFIG-01`).
 3. Expose the new interface through the typed accessor (`ARCH-WEB-APP-COMPOSE-CONTEXT-01`).
+   If the build can talk to more than one environment, the new object is built for the active one and
+   rebuilt when it changes (`ARCH-WEB-APP-COMPOSE-ENV-01`).
 4. **`server` runtime:** the server-only objects go in the server graph, never the client graph
    (`ARCH-WEB-APP-COMPOSE-SPLIT-01`).
 
 ### Validation
 
-- [ ] Nothing runs on import; the SDK is initialised once, on the client after mount
+- [ ] Nothing runs on import; each SDK app is initialised once, on the client after mount
       (`ARCH-WEB-APP-COMPOSE-GLOBAL-01`, `PLAT-WEB-NEXT-FB-INIT-01`).
 - [ ] A test can build its own graph with fakes (`ARCH-WEB-APP-COMPOSE-TEST-01`).
 
