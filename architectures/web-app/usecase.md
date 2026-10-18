@@ -154,7 +154,7 @@ id: ARCH-WEB-APP-UC-WRITE-01
 statement: A UseCase that writes more than one document in one store MUST do so in one atomic operation the DataSource provides (a batch, a transaction, or a single callable), with no exception.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-UC-WRITE-01 — A UseCase that writes more than one document in one store MUST do so in one atomic operation the DataSource provides (a batch, a transaction, or a single callable), with no exception.
 ```

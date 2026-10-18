@@ -70,10 +70,10 @@
 | `ARCH-WEB-APP-FEATURE-STRUCTURE` | guide | `architectures/web-app/feature-structure.md` |  | 4 / 5 |
 | `ARCH-WEB-APP-HOOK` | guide | `architectures/web-app/hook.md` |  | 7 / 4 |
 | `ARCH-WEB-APP-LAYERS` | overview | `architectures/web-app/layers.md` |  |  |
-| `ARCH-WEB-APP-MODULES` | rules | `architectures/web-app/modules.md` |  | 4 / 4 |
+| `ARCH-WEB-APP-MODULES` | rules | `architectures/web-app/modules.md` |  | 5 / 3 |
 | `ARCH-WEB-APP-OBS` | rules | `architectures/web-app/observability.md` |  | 1 / 3 |
 | `ARCH-WEB-APP-REPOSITORY` | guide | `architectures/web-app/repository.md` |  | 0 / 3 |
-| `ARCH-WEB-APP-USECASE` | guide | `architectures/web-app/usecase.md` |  | 4 / 5 |
+| `ARCH-WEB-APP-USECASE` | guide | `architectures/web-app/usecase.md` |  | 5 / 4 |
 | `ARCH-WEB-COMPONENTS` | rules | `architectures/web-spa/components.md` |  |  |
 | `ARCH-WEB-CONTENT` | overview | `architectures/web-content/overview.md` |  |  |
 

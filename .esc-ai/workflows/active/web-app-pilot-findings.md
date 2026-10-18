@@ -88,3 +88,31 @@ Commits `1e99a8e`, `22819f5` in the pilot branch. Tested with 108 tests, 8 of th
 4. `MOD-NAME-01` is a folder-name rule, not a lint rule; it is now generated into the web-app template as `web.no-grab-bag-names` (`forbidden-path`). On the pilot it flags only the old `src/utils` and `src/common`; moving `aggregations` and `dateUtils` into `shared/domain` also surfaced `DOM-CLOCK-01` violations, fixed by `shared/clock/` and passing `now` into the aggregations.
 
 Marked exercised: `MOD-NAME-01`, `MOD-SIZE-01`, `MOD-FUNC-01`, `MOD-CYCLE-01`, `MOD-API-01`, `EFLOW-SWALLOW-01`, `OBS-LOG-01`.
+
+---
+
+# Slice 3: Portal content
+
+Legacy banners, sections and section items (`portal_items`, `portal_sections`) as `features/portal`: domain, two stores (`PortalItemStore`, `PortalSectionStore`) with a Firestore implementation, a fake and one contract suite each, two use cases, and a `usePortal` hook. The 1,863-line `Portal.tsx` page stays one file for now; it swapped its hook and types and lost its own order-calculation code. The promo items and destinations on the same page are not migrated.
+
+## Result
+- 44 slice tests, 159 in the whole suite, all passing against the real Firestore emulator. New code: `tsc` clean, lint 0 problems, architecture check 0 violations.
+- Read verified in Chrome on dev and prod with a temporary admin sign-in (both accounts deleted afterwards): banners, sections and lazily opened section items match what is stored, including the dev item that predates `placements` and `promoted_at`. No write was clicked against a real project; writes are covered by the emulator suite.
+
+## What the slice exercised
+- `UC-WRITE-01` now **exercised**. The reorder is one batch inside one store, and the contract test (fake and emulator alike) proves that a reorder naming a missing id changes nothing.
+- `UC-WRITE-02` a second time (portal promote), with the clock injected (`now`), which `DOM-CLOCK-01` required.
+- `DS-PARSE-01` and `DS-MALFORMED-01` against real documents: the parser needed `placements` and `promoted_at` optional (found by reading both projects first), and an unknown stored field (`collectionPath`) is ignored. A malformed document names its id and field, never its contents (tested).
+- A use case that reads from the store instead of the page's state: `setHomeBanner` computes the next banner position from `listBanners()`, so a stale page cannot hand out a duplicate position.
+
+## What it did not exercise, and why
+1. **No live listener, no Repository.** I expected Portal to cover both; it reads once with `getDocs` and each entity has one source. `REPO-01` correctly says there is nothing to build, so the Repository rules (`REP-SSOT-01/02`, `REP-FALLBACK-01`) stay unproven. A real consumer needs a live listener plus a cache; none exists in this app yet.
+2. `DS-PAGE-01`: the four collections hold 3 to 4 documents in each project, so the unbounded reads are a documented gap, not a cost.
+
+## Findings
+1. **Refetch after a write, not optimistic local state.** The old hook patched its own lists after each write (and had a branch to sync banners with section items). The new hook re-reads the affected lists, so the screen shows what is stored. It costs a few reads on a tiny collection; it removed the state-sync code (the old hook was 242 lines, `usePortal` is about 100). Worth a sentence in the Hook rules if a second slice agrees.
+2. **A legacy page contract rejects on failure; the architecture returns values.** The existing modals and cards rely on thrown errors. `usePortal` returns `Outcome` and a labelled temporary adapter (`usePortalForPage`) turns a failure into a rejection with the readable message. The rule held; the adapter is the cost of not rewriting the page in this slice, and it is deleted when the page becomes a view.
+3. **The page had to change shape in small ways:** the forms no longer send the promotion marker (the store owns it: `update` never writes `promoted_at`), `promoted_at` became `promotedAt`, and the home-banner toggle lost its caller-side `maxOrder` calculation. A reviewer reading the page diff sees these as behaviour-preserving; the contract tests are what prove it.
+4. **A test graph builder (`src/test/graph.ts`)** was needed once the graph grew a third feature: two older hook tests each listed every graph member. One helper, tests name only what they care about.
+5. **Duplication to watch, not yet to extract:** the cross-project promote use case now exists twice (notifications, portal items) with the same shape and different stores. Two copies, different types; a third would justify a shared helper (`FEAT-SHARED-01`).
+6. **Environment gotcha, not a rule:** the dashboard signs out any account not in its `VITE_DASHBOARD_EMAILS` allow-list without a message, which looked like a login failure. Vite's dependency re-optimisation also reloads the page mid sign-in the first time.
