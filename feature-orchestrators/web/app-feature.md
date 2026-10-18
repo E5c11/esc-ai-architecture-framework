@@ -233,8 +233,8 @@ Read: `QG-WEB-TESTING`, `PLAT-WEB-NEXT-APP-DEPLOY`
 1. Test the Server Action directly per `QG-WEB-TESTING-SA-01` — call it,
    assert on its `Outcome`, don't mount the form.
 2. Test the Provider-boundary call with MSW per `QG-WEB-TESTING-MSW-01`.
-3. If this feature added or changed a `middleware.ts`-gated route, add or
-   update the E2E coverage `QG-WEB-TESTING-MW-01` requires.
+3. If this feature added or changed a route gated by `proxy.ts`
+   (`middleware.ts` before Next.js 16), add or update the E2E coverage `QG-WEB-TESTING-MW-01` requires.
 4. Run `next build` — zero TypeScript errors
    (`PLAT-WEB-NEXT-APP-DEPLOY-BUILD-01`).
 

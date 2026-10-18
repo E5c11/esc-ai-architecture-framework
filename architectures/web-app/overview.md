@@ -381,10 +381,11 @@ violation_message: Violates ARCH-WEB-APP-BFF-01 — A separate backend-for-front
 A `server`-runtime app already has a server boundary (Server Actions and Route
 Handlers); that is not a BFF in this sense. A BFF is an additional service.
 
-**Auth enforcement.** In the `server` runtime: `middleware.ts`, not a per-page
+**Auth enforcement.** In the `server` runtime: `proxy.ts` (`middleware.ts` before
+Next.js 16), not a per-page
 guard component. Auth is checked once, before any Server Component renders, rather
 than repeated per protected route the way `web-spa`'s `AuthGuard` does. In the
-`static-export` runtime there is no request-time middleware; the provider's access
+`static-export` runtime there is no request-time proxy; the provider's access
 rules enforce access (`ARCH-WEB-APP-RUNTIME-02`) and the client reflects the
 signed-in state.
 

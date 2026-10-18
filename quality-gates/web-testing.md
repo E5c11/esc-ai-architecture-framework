@@ -6,7 +6,7 @@ platform: [web]
 architecture: [all]
 requires: [QG-TESTING, CORE-TESTING]
 related: [PLAT-WEB-HTTP, PLAT-WEB-FORMS]
-tags: [testing, vitest, react-testing-library, msw, server-actions, middleware, e2e]
+tags: [testing, vitest, react-testing-library, msw, server-actions, proxy, e2e, server-components, emulator]
 status: active
 ---
 
@@ -106,23 +106,64 @@ described in `PLAT-WEB-HTTP`'s testing section instead; MSW is specifically
 for testing at the network boundary, not every test that happens to call a
 Server Action.
 
-## Middleware-gated auth
+## Proxy-gated auth
 
 ```rule
 id: QG-WEB-TESTING-MW-01
-statement: An auth flow gated by `middleware.ts` MUST be covered by an integration/E2E test — a component or unit test cannot exercise the middleware boundary.
+statement: An auth flow gated by `proxy.ts` (`middleware.ts` before Next.js 16) MUST be covered by an integration/E2E test — a component or unit test cannot exercise the middleware boundary.
 type: soft
 scope: testing
 enforced_by: [reviewer]
-violation_message: Violates QG-WEB-TESTING-MW-01 — middleware-gated auth needs an E2E layer (e.g. Playwright); no lower test level reaches it.
+violation_message: Violates QG-WEB-TESTING-MW-01 — proxy-gated auth needs an E2E layer (e.g. Playwright); no lower test level reaches it.
 ```
 
-`middleware.ts` runs at the Next.js routing layer itself, before any
+`proxy.ts` (`middleware.ts` before Next.js 16) runs at the Next.js routing layer itself, before any
 component renders — there is no way to mount a component or call a
 function in a unit test that actually exercises it. An E2E test (Playwright
 or equivalent) that navigates to a protected route as an unauthenticated
 user and asserts on the redirect is the only test level that reaches this
 boundary at all.
+
+## Setup
+
+Vitest with React Testing Library, as the Next.js guide sets it up: `vitest`,
+`@vitejs/plugin-react`, `jsdom`, `@testing-library/react`, `@testing-library/dom` and
+`vite-tsconfig-paths`, with `environment: 'jsdom'`. Domain and UseCase tests need none
+of it and run in the default Node environment.
+
+## Async Server Components
+
+```rule
+id: QG-WEB-TESTING-RSC-01
+statement: An `async` Server Component MUST be covered by an end-to-end test, not a Vitest or React Testing Library test, and its logic MUST be kept small enough that this is sufficient.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates QG-WEB-TESTING-RSC-01 — An `async` Server Component MUST be covered by an end-to-end test, not a Vitest or React Testing Library test, and its logic MUST be kept small enough that this is sufficient.
+```
+
+Per the Next.js documentation, Vitest does not support `async` Server Components;
+synchronous Server and Client Components can be unit tested. The architecture keeps the
+Server Component shell thin (`ARCH-WEB-APP-COMP-SERVER-01`): it obtains data through a
+UseCase or DataSource and maps it to props, so the logic worth testing is in layers that
+have their own tests, and one end-to-end check that the shell renders real data covers
+the rest.
+
+## Testing by layer
+
+Which test, with which double, for each layer. The rule for each layer is owned by its
+layer document; this table is the index.
+
+| Layer | Test | Double | Owner |
+|---|---|---|---|
+| Domain | Plain inputs and outputs | None | `ARCH-WEB-APP-DOMAIN` |
+| UseCase, Repository | Against DataSource fakes | In-memory fake | `ARCH-WEB-APP-UC-TEST-01` |
+| DataSource | Shared contract tests against the real provider's emulator (or MSW for HTTP) and against the fake | Emulator or network mock, never a mocked SDK | `ARCH-WEB-APP-DS-TEST-01`, `ARCH-WEB-APP-DS-RULES-01` |
+| Hook | `renderHook` inside a test provider with fakes | Fake graph from `createApp` | `ARCH-WEB-APP-HOOK-TEST-01` |
+| Presentational component | Plain props, queried by role | None | `ARCH-WEB-APP-COMP-TEST-01` |
+| Root view | Hook-level fake covering each `ViewState` | Fake graph | `ARCH-WEB-APP-COMP-TEST-01` |
+| Async Server Component, proxy | End-to-end | A real running app | `QG-WEB-TESTING-RSC-01`, `QG-WEB-TESTING-MW-01` |
+| Static export on its host | Direct load of every route | The real host | `PLAT-WEB-NEXT-STATIC-DIRECT-01` |
 
 ## What not to test
 

@@ -72,30 +72,36 @@ Server Component — Next.js caches render output until told otherwise.
 
 ```rule
 id: PLAT-WEB-NEXT-APP-REVALIDATE-01
-statement: A Server Action that mutates data MUST call `revalidatePath`/`revalidateTag` for every path whose Server Component render depends on that data.
+statement: A Server Action that mutates data MUST invalidate every cached result that depends on it: `updateTag` where the user must see their own change immediately, `revalidateTag(tag, profile)` where stale-while-revalidate is acceptable, and `revalidatePath` for a route that has no tag.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-NEXT-APP-REVALIDATE-01 — a mutating Server Action that doesn't revalidate leaves the affected Server Component stale until a hard refresh.
+violation_message: Violates PLAT-WEB-NEXT-APP-REVALIDATE-01 — a mutating Server Action that doesn't invalidate leaves the affected Server Component stale until a hard refresh.
 ```
 
 ```typescript
 'use server';
+import { updateTag, revalidateTag } from 'next/cache';
+import { tags } from '@/features/questions/cacheTags';       // one module (PLAT-WEB-NEXT-DATA-TAG-01)
+
 export async function updateQuestion(
   input: UpdateQuestionInput,
 ): Promise<Outcome<Question>> {
   const result = await questionsProvider.update(input);
   if (!result.ok) return result;
-  revalidatePath(`/questions/${input.id}`);
-  revalidatePath('/questions');   // the list view also depends on this data
+  updateTag(tags.question(input.id));          // read-your-writes: the editor sees the change now
+  revalidateTag(tags.questionList, 'max');     // the list may be briefly stale
   return { ok: true, data: result.data };
 }
 ```
 
-Prefer `revalidateTag` over `revalidatePath` once two or more unrelated
-routes depend on the same underlying data — tagging the fetch once at the
-read site avoids having to enumerate every dependent path at every mutation
-site.
+Written for Next.js 16 (`PLAT-WEB-NEXT`): `revalidateTag` takes a second argument naming a
+`cacheLife` profile and the one-argument form is deprecated; `updateTag` is for Server
+Actions only and expires and refreshes the data within the same request; `refresh`
+refreshes the client router from an action. Prefer tags over `revalidatePath` once two or
+more unrelated routes depend on the same data: tagging once at the read site avoids
+enumerating every dependent path at every mutation site. The tag names come from one
+module (`PLAT-WEB-NEXT-DATA-TAG-01`).
 
 ## Route Handler vs. Server Action
 

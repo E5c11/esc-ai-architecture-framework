@@ -26,10 +26,10 @@ no architecture overview, so a `web-app` lookup does not load the SPA model.
 |---|---|---|
 | Tier 1 (`useState`), Tier 3 (Context) | `web-spa`, `web-app` | Same |
 | `PLAT-WEB-STATE-CTX-01` | `web-spa`, `web-app` | Same |
-| `PLAT-WEB-STATE-CTX-02` | `web-spa`, `web-app` | Applies wherever auth state exists in the client. Where a server runtime enforces auth in `middleware.ts` (`PLAT-WEB-NEXT-MW-01`), `AuthContext` only mirrors the result for display and is never the access boundary |
+| `PLAT-WEB-STATE-CTX-02` | `web-spa`, `web-app` | Applies wherever auth state exists in the client. Where a server runtime enforces auth in `proxy.ts` (`PLAT-WEB-NEXT-MW-01`), `AuthContext` only mirrors the result for display and is never the access boundary |
 | `PLAT-WEB-STATE-HOOK-01` | `web-spa` | A `web-app` hook exposes `Outcome`-typed state (`PAT-OUTCOME`), per `ARCH-WEB-APP` |
 | `PLAT-WEB-STATE-HOOK-02` | `web-spa` | A `web-app` hook lives in `features/{feature}/hooks/` (`ARCH-WEB-APP`'s feature folder structure) |
-| Routing, `PLAT-WEB-ROUTE-GUARD-01`, SEO meta tags | `web-spa` | File-based routing and `middleware.ts` (`PLAT-WEB-NEXT`) |
+| Routing, `PLAT-WEB-ROUTE-GUARD-01`, SEO meta tags | `web-spa` | File-based routing and `proxy.ts` (`PLAT-WEB-NEXT`) |
 
 ## State management tiers
 

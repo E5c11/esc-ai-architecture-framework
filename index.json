@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-18T06:21:08.318768+00:00",
-  "count": 133,
+  "generated": "2026-10-18T06:55:47.302331+00:00",
+  "count": 135,
   "documents": [
     {
       "id": "ARCH-BE",
@@ -3650,17 +3650,23 @@
       ],
       "related": [
         "PLAT-WEB-DS-COMPONENT",
-        "PLAT-WEB-DS-ICONS"
+        "PLAT-WEB-DS-ICONS",
+        "PLAT-WEB-NEXT",
+        "PLAT-WEB-A11Y"
       ],
       "tags": [
         "design-system",
         "theme",
         "tailwind",
+        "tailwind-v4",
         "tokens",
         "colors",
         "spacing",
         "typography",
-        "dark-mode"
+        "dark-mode",
+        "data-viz",
+        "charts",
+        "next-font"
       ],
       "status": "active"
     },
@@ -3764,7 +3770,10 @@
       ],
       "related": [
         "ARCH-WEB-APP",
-        "ARCH-WEB-CONTENT"
+        "ARCH-WEB-CONTENT",
+        "PLAT-WEB-NEXT-APP",
+        "PLAT-WEB-NEXT-DATA",
+        "PLAT-WEB-NEXT-STATIC"
       ],
       "tags": [
         "nextjs",
@@ -3773,8 +3782,13 @@
         "layouts",
         "server-components",
         "client-components",
-        "middleware",
-        "env-vars"
+        "proxy",
+        "env-vars",
+        "versions",
+        "error-boundaries",
+        "server-only",
+        "search-params",
+        "lint"
       ],
       "status": "active"
     },
@@ -3835,6 +3849,39 @@
       "status": "active"
     },
     {
+      "id": "PLAT-WEB-NEXT-DATA",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/nextjs-data.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "PLAT-WEB-NEXT",
+        "PLAT-WEB-NEXT-APP",
+        "ARCH-WEB-APP-DATASOURCE"
+      ],
+      "related": [
+        "PLAT-WEB-NEXT-STATIC",
+        "PLAT-WEB-HTTP",
+        "ARCH-WEB-APP-DOMAIN"
+      ],
+      "tags": [
+        "nextjs",
+        "caching",
+        "cache-components",
+        "use-cache",
+        "cache-life",
+        "cache-tag",
+        "suspense",
+        "streaming",
+        "revalidation",
+        "server-runtime"
+      ],
+      "status": "active"
+    },
+    {
       "id": "PLAT-WEB-NEXT-FIREBASE",
       "type": "guide",
       "layer": "platforms",
@@ -3851,6 +3898,7 @@
       ],
       "related": [
         "PLAT-WEB-FIREBASE",
+        "PLAT-WEB-NEXT-STATIC",
         "PLAT-WEB-NEXT-APP-DEPLOY",
         "PLAT-WEB-DEPLOY",
         "ARCH-WEB-APP-OBS"
@@ -3866,6 +3914,36 @@
         "static-export",
         "nextjs",
         "pii"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "PLAT-WEB-NEXT-STATIC",
+      "type": "guide",
+      "layer": "platforms",
+      "path": "platforms/web/nextjs-static.md",
+      "platform": [
+        "web"
+      ],
+      "architecture": "web-app",
+      "requires": [
+        "PLAT-WEB-NEXT",
+        "ARCH-WEB-APP"
+      ],
+      "related": [
+        "PLAT-WEB-NEXT-FIREBASE",
+        "PLAT-WEB-NEXT-DATA",
+        "PLAT-WEB-DEPLOY"
+      ],
+      "tags": [
+        "nextjs",
+        "static-export",
+        "output-export",
+        "prerender",
+        "generate-static-params",
+        "trailing-slash",
+        "client-components",
+        "hosting"
       ],
       "status": "active"
     },
@@ -4103,8 +4181,10 @@
         "react-testing-library",
         "msw",
         "server-actions",
-        "middleware",
-        "e2e"
+        "proxy",
+        "e2e",
+        "server-components",
+        "emulator"
       ],
       "status": "active"
     }

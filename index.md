@@ -1,6 +1,6 @@
 # Framework Document Index
 
-*Generated 2026-10-18 — 133 documents*
+*Generated 2026-10-18 — 135 documents*
 
 ## core/
 
@@ -129,7 +129,9 @@
 | `PLAT-WEB-NEXT` | guide | `platforms/web/nextjs.md` |  |
 | `PLAT-WEB-NEXT-APP` | guide | `platforms/web/nextjs-app.md` |  |
 | `PLAT-WEB-NEXT-APP-DEPLOY` | guide | `platforms/web/nextjs-app-deploy.md` |  |
+| `PLAT-WEB-NEXT-DATA` | guide | `platforms/web/nextjs-data.md` |  |
 | `PLAT-WEB-NEXT-FIREBASE` | guide | `platforms/web/firebase-next.md` |  |
+| `PLAT-WEB-NEXT-STATIC` | guide | `platforms/web/nextjs-static.md` |  |
 | `PLAT-WEB-REACT` | guide | `platforms/web/react-typescript.md` |  |
 | `PLAT-WEB-REACT-PATTERNS` | guide | `platforms/web/react-patterns.md` |  |
 | `PLAT-WEB-STATE` | guide | `platforms/web/state.md` |  |

@@ -5,7 +5,7 @@ layer: platforms
 platform: [web]
 architecture: [web-app]
 requires: [PLAT-WEB-NEXT, ARCH-WEB-APP-DATASOURCE, ARCH-WEB-APP-COMPOSITION, ARCH-WEB-APP-ERR-CLASSES]
-related: [PLAT-WEB-FIREBASE, PLAT-WEB-NEXT-APP-DEPLOY, PLAT-WEB-DEPLOY, ARCH-WEB-APP-OBS]
+related: [PLAT-WEB-FIREBASE, PLAT-WEB-NEXT-STATIC, PLAT-WEB-NEXT-APP-DEPLOY, PLAT-WEB-DEPLOY, ARCH-WEB-APP-OBS]
 tags: [firebase, firestore, auth, security-rules, callable-functions, emulator, hosting, static-export, nextjs, pii]
 status: active
 ---
@@ -235,32 +235,11 @@ and is really a configuration error.
 
 ## Static export and Hosting
 
-```rule
-id: PLAT-WEB-NEXT-FB-EXPORT-01
-statement: A `static-export` project MUST set `output: 'export'`, MUST set `images.unoptimized` (or a custom image loader), and MUST NOT use a feature the export does not support: Server Actions, request-time Route Handlers, middleware, or `headers`, `redirects` and `rewrites` in the Next configuration.
-type: hard
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-NEXT-FB-EXPORT-01 — A `static-export` project MUST set `output: 'export'`, MUST set `images.unoptimized` (or a custom image loader), and MUST NOT use a feature the export does not support: Server Actions, request-time Route Handlers, middleware, or `headers`, `redirects` and `rewrites` in the Next configuration.
-```
-
-`next build` fails or warns on these; a configuration that only appears to work in
-development is not the production behaviour. Headers, redirects and rewrites belong in
-`firebase.json` (below).
-
-```rule
-id: PLAT-WEB-NEXT-FB-EXPORT-02
-statement: A route segment whose values are created at run time (a record id, a region added after the build) MUST NOT be a static dynamic segment; the value MUST travel in a search parameter or client-side route state, and a dynamic segment MUST be used only for values known at build time and listed by `generateStaticParams`.
-type: hard
-scope: structure
-enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-NEXT-FB-EXPORT-02 — A route segment whose values are created at run time (a record id, a region added after the build) MUST NOT be a static dynamic segment; the value MUST travel in a search parameter or client-side route state, and a dynamic segment MUST be used only for values known at build time and listed by `generateStaticParams`.
-```
-
-A static export has one HTML file per route. A path the build did not generate is a 404,
-however valid the record is. If adding a region is a configuration change and a redeploy
-anyway, a build-time segment is fine; if it is data created at run time, it must not be a
-path segment.
+What a static export may use, how its routes are generated, and how to verify it on the
+host are `PLAT-WEB-NEXT-STATIC`'s (`PLAT-WEB-NEXT-STATIC-CONFIG-01`,
+`PLAT-WEB-NEXT-STATIC-ROUTES-01`, `PLAT-WEB-NEXT-STATIC-DIRECT-01`). This section is what
+is specific to Firebase Hosting. Headers, redirects and rewrites, which a static export
+cannot put in the Next.js configuration, belong in `firebase.json`.
 
 ```rule
 id: PLAT-WEB-NEXT-FB-HOSTING-01
@@ -348,6 +327,5 @@ violation_message: Violates PLAT-WEB-NEXT-FB-COST-01 — A project on a pay-as-y
 - An aggregated snapshot that grows toward the 1 MiB document limit
 - Offline persistence enabled over customer records with no data-policy decision
 - A callable that trusts the client's role
-- A route segment for a record created after the build
 - HTML cached for a day, or hashed assets not cached at all
 - Rules or functions deployed as a side effect of a UI deploy
