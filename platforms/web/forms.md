@@ -129,6 +129,15 @@ zod's `.flatten().fieldErrors` for this reason — the mapping above is a
 direct pass-through, not a translation layer that has to reshape one error
 format into another.
 
+## Native forms
+
+`react-hook-form` earns its place when a form validates on the client for immediate feedback or has
+field arrays. A form with no client-side validation can use a native `<form action>` with
+`useActionState`: one schema, on the server, and the action returns the same `validation` error, whose
+`fieldErrors` the form shows beside each field. Every rule above still holds (one schema,
+`PLAT-WEB-FORMS-SSOT-01`; field-level errors, `PLAT-WEB-FORMS-ERR-01`, with the form's own rendering
+standing in for `setError`). Verified on a Next.js 16.3 app with two such forms.
+
 ## `zodResolver` wiring and field arrays
 
 Worked examples, not new rules — the shape varies too much per content type

@@ -33,14 +33,14 @@ Next.js 16 has two caching models:
 
 ```rule
 id: PLAT-WEB-NEXT-DATA-MODEL-01
-statement: A `server`-runtime project MUST declare which caching model it uses in `next.config`, MUST set `partialPrefetching` explicitly when `cacheComponents` is on, and MUST NOT write code for one model while configured for the other.
+statement: A `server`-runtime project MUST declare which caching model it uses in `next.config`, MUST set `partialPrefetching` explicitly when `cacheComponents` is on and the targeted Next.js version has that option (16.3 and later), and MUST NOT write code for one model while configured for the other.
 type: hard
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-NEXT-DATA-MODEL-01 — A `server`-runtime project MUST declare which caching model it uses in `next.config`, MUST set `partialPrefetching` explicitly when `cacheComponents` is on, and MUST NOT write code for one model while configured for the other.
+violation_message: Violates PLAT-WEB-NEXT-DATA-MODEL-01 — A `server`-runtime project MUST declare which caching model it uses in `next.config`, MUST set `partialPrefetching` explicitly when `cacheComponents` is on and the targeted Next.js version has that option (16.3 and later), and MUST NOT write code for one model while configured for the other.
 ```
 
-New projects SHOULD use Cache Components. Enabling it on an existing app is not a rename:
+`partialPrefetching` does not exist in Next.js 16.2 (a project on 16.2 sets `cacheComponents` alone); it is part of the version recorded under `PLAT-WEB-NEXT-VERSION-01`. New projects SHOULD use Cache Components. Enabling it on an existing app is not a rename:
 it can surface build errors for uncached data outside `<Suspense>`, and it is an upgrade
 step of its own (`PLAT-WEB-NEXT-VERSION-01`). The rules below are written for Cache
 Components.
@@ -59,6 +59,23 @@ violation_message: Violates PLAT-WEB-NEXT-DATA-FETCH-01 — A Server Component M
 This is `ARCH-WEB-APP-DEP-05`'s exception for the Server Component shell
 (`ARCH-WEB-APP-COMP-SERVER-01`), and the executor rule `PLAT-WEB-HTTP-LIB-01`, applied to
 rendering.
+
+## Request-time reads
+
+```rule
+id: PLAT-WEB-NEXT-DATA-DYNAMIC-01
+statement: A Server Component that reads data which changes between requests, but which Next.js cannot see changing (an in-process store, any read that resolves without I/O), MUST make the read request-time with `await connection()` inside a `<Suspense>` boundary, or MUST cache it deliberately with `use cache`.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-NEXT-DATA-DYNAMIC-01 — A Server Component that reads data which changes between requests, but which Next.js cannot see changing (an in-process store, any read that resolves without I/O), MUST make the read request-time with `await connection()` inside a `<Suspense>` boundary, or MUST cache it deliberately with `use cache`.
+```
+
+Next.js decides what is dynamic from the request APIs, `fetch` and I/O it observes while prerendering.
+A read of an in-memory store finishes without any of those, so the route is prerendered with whatever the
+store held at build time and that value is frozen into the page: it builds as `Static`, no error is raised,
+and after a write the page still shows the old data. Verified on Next.js 16.3 with an in-process store
+(not verified for a real database client). `connection()` marks the read as request-time.
 
 ## Caching
 

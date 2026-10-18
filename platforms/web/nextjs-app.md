@@ -65,6 +65,44 @@ gets logged with full cause server-side before being mapped to an explicit
 `unexpected` outcome; throwing loses that log-then-map step, not just the
 client-visible message.
 
+## Every action is an endpoint
+
+Next.js registers each export of a `'use server'` file as a callable server reference, whether or not a
+form uses it. A read helper or an update function exported from such a file is therefore reachable by
+any HTTP client that has its action id; TypeScript types are not checked at run time. Observed on a real
+app: an unauthenticated POST listed customer records and, through an unchecked `{ ...existing, ...patch }`,
+overwrote a customer's name and a creation timestamp. This is the Server Action counterpart of
+`PLAT-WEB-NEXT-FB-CALLABLE-01`.
+
+```rule
+id: PLAT-WEB-NEXT-APP-ACTION-01
+statement: Every export of a `'use server'` file is a public endpoint: it MUST be a deliberate entry point and nothing else, MUST take its input as `unknown` and validate it with a schema that rejects unknown keys, and MUST check the caller's authority wherever the data is not public.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-NEXT-APP-ACTION-01 — Every export of a `'use server'` file is a public endpoint: it MUST be a deliberate entry point and nothing else, MUST take its input as `unknown` and validate it with a schema that rejects unknown keys, and MUST check the caller's authority wherever the data is not public.
+```
+
+```typescript
+// ❌ Wrong — exported, so callable; the patch is typed but never checked
+'use server';
+export async function updateFault(id: string, patch: UpdateFaultInput) {
+  return store.update(id, { ...existing, ...patch });
+}
+
+// ✅ Correct — one entry point; the use case parses `unknown` with a strict schema
+'use server';
+export async function saveFaultTriage(id: string, _prev: FormState, formData: FormData): Promise<FormState> {
+  return toFormState(await serverGraph().triageFault(id, pickFields(formData, TRIAGE_FIELDS)));
+}
+```
+
+A form also carries fields the framework adds, so the action picks only the form's named fields before
+the strict schema sees them. Put the schema in the use case, not only in the action, so that every entry
+point (a Server Action today, a Route Handler later) gets the same checks (`PLAT-WEB-FORMS-SSOT-01`).
+Reads for rendering are not actions: a Server Component calls the server DataSource or use case directly
+(`PLAT-WEB-NEXT-DATA-FETCH-01`).
+
 ## Revalidation
 
 A mutating Server Action does not automatically update any already-rendered
@@ -94,6 +132,10 @@ export async function updateQuestion(
   return { ok: true, data: result.data };
 }
 ```
+
+Revalidation applies to cached results. A project that caches nothing (Cache Components, reads made
+request-time and uncached) has nothing to invalidate, and a `revalidatePath` added out of habit only
+hides that; removing every call from such an app left it correct on a production build.
 
 Written for Next.js 16 (`PLAT-WEB-NEXT`): `revalidateTag` takes a second argument naming a
 `cacheLife` profile and the one-argument form is deprecated; `updateTag` is for Server

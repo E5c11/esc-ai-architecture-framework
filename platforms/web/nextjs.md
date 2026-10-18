@@ -229,6 +229,11 @@ asynchronous code, which is why expected failures are returned as outcomes
 (`PLAT-WEB-RP-BOUNDARY-01`). `catchError` from `next/error` makes a boundary for a
 component-level region, such as a chart panel.
 
+A `notFound()` called inside a `<Suspense>`-streamed part cannot change the response status: the status
+line leaves with the static shell, so the page answers `200` with the not-found screen (a soft 404). That is
+harmless for an internal tool and wrong for a public page that must answer `404`; there, call `notFound()`
+before the boundary.
+
 ## URL as state
 
 ```rule
