@@ -181,14 +181,7 @@ document adds nothing to them.
 
 ## Testing
 
-```rule
-id: ARCH-WEB-APP-COMP-TEST-01
-statement: A presentational component MUST be tested with plain props and no providers, querying by role and label, and a root view MUST be tested with a Hook-level fake covering each status of the `ViewState`.
-type: hard
-scope: testing
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-COMP-TEST-01 — A presentational component MUST be tested with plain props and no providers, querying by role and label, and a root view MUST be tested with a Hook-level fake covering each status of the `ViewState`.
-```
+(`ARCH-WEB-APP-COMP-TEST-01` now lives in `QG-WEB-TESTING`.)
 
 A presentational component that cannot be rendered with props alone has a hidden
 dependency (`ARCH-WEB-APP-COMP-SPLIT-01`). The patterns are in `QG-WEB-TESTING`.

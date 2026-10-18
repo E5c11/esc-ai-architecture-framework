@@ -29,11 +29,11 @@ script).
 
 ```rule
 id: ARCH-WEB-APP-MOD-SIZE-01
-statement: A module SHOULD stay under 300 lines and MUST NOT exceed 600; a module over 300 lines MUST carry a comment naming the single concept it holds, or be split.
+statement: A module SHOULD stay under 300 lines and SHOULD NOT exceed 600; a module over 300 lines SHOULD carry a comment naming the single concept it holds, or be split.
 type: soft
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-MOD-SIZE-01 — A module SHOULD stay under 300 lines and MUST NOT exceed 600; a module over 300 lines MUST carry a comment naming the single concept it holds, or be split.
+violation_message: Violates ARCH-WEB-APP-MOD-SIZE-01 — A module SHOULD stay under 300 lines and SHOULD NOT exceed 600; a module over 300 lines SHOULD carry a comment naming the single concept it holds, or be split.
 ```
 
 ```rule
@@ -47,11 +47,11 @@ violation_message: Violates ARCH-WEB-APP-MOD-COHESION-01 — A module MUST be de
 
 ```rule
 id: ARCH-WEB-APP-MOD-FUNC-01
-statement: A function SHOULD stay under 50 lines and 10 branches, and a function that both computes and performs I/O MUST be split into a pure computation and a thin effectful caller.
+statement: A function SHOULD stay under 50 lines and 10 branches, and a function that both computes and performs I/O SHOULD be split into a pure computation and a thin effectful caller.
 type: soft
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-MOD-FUNC-01 — A function SHOULD stay under 50 lines and 10 branches, and a function that both computes and performs I/O MUST be split into a pure computation and a thin effectful caller.
+violation_message: Violates ARCH-WEB-APP-MOD-FUNC-01 — A function SHOULD stay under 50 lines and 10 branches, and a function that both computes and performs I/O SHOULD be split into a pure computation and a thin effectful caller.
 ```
 
 The pure half is domain code (`ARCH-WEB-APP-DOMAIN`) and is tested with plain inputs. The

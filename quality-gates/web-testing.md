@@ -165,6 +165,74 @@ layer document; this table is the index.
 | Async Server Component, proxy | End-to-end | A real running app | `QG-WEB-TESTING-RSC-01`, `QG-WEB-TESTING-MW-01` |
 | Static export on its host | Direct load of every route | The real host | `PLAT-WEB-NEXT-STATIC-DIRECT-01` |
 
+
+## Architecture testing rules
+
+Moved here from the architecture documents (audit Q6): how each layer is tested, not what the layer is. The architecture keeps one soft rule, `ARCH-WEB-APP-TEST-01`.
+
+```rule
+id: ARCH-WEB-APP-COMP-TEST-01
+statement: A presentational component MUST be tested with plain props and no providers, querying by role and label, and a root view MUST be tested with a Hook-level fake covering each status of the `ViewState`.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMP-TEST-01 — A presentational component MUST be tested with plain props and no providers, querying by role and label, and a root view MUST be tested with a Hook-level fake covering each status of the `ViewState`.
+```
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-TEST-01
+statement: A test MUST build its own graph with `createApp` and fakes or overrides, and MUST NOT import a graph built by another module or rely on state left by another test.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-TEST-01 — A test MUST build its own graph with `createApp` and fakes or overrides, and MUST NOT import a graph built by another module or rely on state left by another test.
+```
+
+```rule
+id: ARCH-WEB-APP-DS-RULES-01
+statement: Every read and write a `static-export` DataSource performs MUST be covered by an automated test of the provider's access rules, run against the provider's emulator.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-DS-RULES-01 — Every read and write a `static-export` DataSource performs MUST be covered by an automated test of the provider's access rules, run against the provider's emulator.
+```
+
+```rule
+id: ARCH-WEB-APP-DS-TEST-01
+statement: Every DataSource interface MUST ship an in-memory fake, and the fake and the real implementation MUST both pass the same contract tests.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-DS-TEST-01 — Every DataSource interface MUST ship an in-memory fake, and the fake and the real implementation MUST both pass the same contract tests.
+```
+
+```rule
+id: ARCH-WEB-APP-DOM-TABLE-02
+statement: A rule table or classification list that cannot be keyed by a closed type (keyword lists, mappings from free text) MUST be checked by a test for completeness and conflicts, and every `switch` over a vocabulary MUST end in an exhaustiveness check.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-DOM-TABLE-02 — A rule table or classification list that cannot be keyed by a closed type MUST be checked by a test for completeness and conflicts, and every `switch` over a vocabulary MUST end in an exhaustiveness check.
+```
+
+```rule
+id: ARCH-WEB-APP-HOOK-TEST-01
+statement: A Hook MUST be tested by rendering it inside a test provider that supplies fakes of its UseCases or DataSources, asserting on the state it exposes, and MUST NOT be tested against a mocked SDK or by asserting on rendered markup.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-HOOK-TEST-01 — A Hook MUST be tested by rendering it inside a test provider that supplies fakes of its UseCases or DataSources, asserting on the state it exposes, and MUST NOT be tested against a mocked SDK or by asserting on rendered markup.
+```
+
+```rule
+id: ARCH-WEB-APP-UC-TEST-01
+statement: A UseCase MUST be tested against the in-memory fakes of its DataSources and Repositories, with no framework, DOM, network or emulator, and every branch that makes a decision MUST have a test.
+type: hard
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-UC-TEST-01 — A UseCase MUST be tested against the in-memory fakes of its DataSources and Repositories, with no framework, DOM, network or emulator, and every branch that makes a decision MUST have a test.
+```
+
 ## What not to test
 
 Same exclusions `QG-TESTING` already states, applied here: don't test

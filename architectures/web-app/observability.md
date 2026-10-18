@@ -68,14 +68,7 @@ The once-only rule for logging an error is `ARCH-WEB-APP-EFLOW-LOG-01`.
 
 ## Redaction
 
-```rule
-id: ARCH-WEB-APP-OBS-REDACT-01
-statement: Secrets, tokens, credentials, personal data (names, phone numbers, addresses, precise locations) and full provider payloads MUST NOT appear in logs, error messages, error reports, analytics or URLs; values crossing into any of these MUST pass through one redaction function.
-type: hard
-scope: behavior
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-OBS-REDACT-01 — Secrets, tokens, credentials, personal data (names, phone numbers, addresses, precise locations) and full provider payloads MUST NOT appear in logs, error messages, error reports, analytics or URLs; values crossing into any of these MUST pass through one redaction function.
-```
+(`ARCH-WEB-APP-OBS-REDACT-01` now lives in `ARCH-WEB-APP`, because it applies to every project.)
 
 An app that stores customer records will see those records in every error that
 mentions one. A parse failure on a row must name the row's identity (a record id), not

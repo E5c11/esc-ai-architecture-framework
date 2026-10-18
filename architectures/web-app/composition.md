@@ -142,11 +142,11 @@ environment's name. A new graph, built after the old one is released, cannot.
 
 ```rule
 id: ARCH-WEB-APP-COMPOSE-ENV-02
-statement: The active environment MUST be visible wherever a write can happen, and switching to an environment that holds real data SHOULD be an explicit, confirmed action.
+statement: The active environment SHOULD be visible wherever a write can happen, and switching to an environment that holds real data SHOULD be an explicit, confirmed action.
 type: soft
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-COMPOSE-ENV-02 — The active environment MUST be visible wherever a write can happen, and switching to an environment that holds real data SHOULD be an explicit, confirmed action.
+violation_message: Violates ARCH-WEB-APP-COMPOSE-ENV-02 — The active environment SHOULD be visible wherever a write can happen, and switching to an environment that holds real data SHOULD be an explicit, confirmed action.
 ```
 
 An administration tool that can write to production from the same screen that edits a test project is
@@ -203,14 +203,7 @@ violation_message: Violates ARCH-WEB-APP-COMPOSE-LAZY-01 — A heavy or optional
 
 ## Testing
 
-```rule
-id: ARCH-WEB-APP-COMPOSE-TEST-01
-statement: A test MUST build its own graph with `createApp` and fakes or overrides, and MUST NOT import a graph built by another module or rely on state left by another test.
-type: hard
-scope: testing
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-COMPOSE-TEST-01 — A test MUST build its own graph with `createApp` and fakes or overrides, and MUST NOT import a graph built by another module or rely on state left by another test.
-```
+(`ARCH-WEB-APP-COMPOSE-TEST-01` now lives in `QG-WEB-TESTING`.)
 
 The same override mechanism builds previews and demos: the app can run with an
 in-memory graph and no backend, which is also how a screen is developed before its

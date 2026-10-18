@@ -172,14 +172,6 @@ enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-NAME-01 — Implementations MUST NOT use an `Impl` suffix, and a DataSource implementation MUST put the provider first, as in `FirestoreSnapshotDataSource`, not `SnapshotFirestoreDataSource`.
 ```
 
-```rule
-id: ARCH-WEB-APP-FEAT-TEST-01
-statement: A test file MUST sit beside the file it tests as `{name}.test.ts(x)`, and a layer's tests MUST use only the doubles that layer's document allows.
-type: soft
-scope: testing
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-FEAT-TEST-01 — A test file MUST sit beside the file it tests as `{name}.test.ts(x)`, and a layer's tests MUST use only the doubles that layer's document allows.
-```
 
 The doubles per layer: none for the domain, DataSource fakes for UseCases and
 Repositories, a test provider with fakes for Hooks, plain props for presentational

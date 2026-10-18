@@ -89,9 +89,9 @@ error logged.
 
 ```rule
 id: ARCH-WEB-APP-ERR-CANCEL-01
-statement: An aborted client-side request (AbortController) MUST remain distinguishable from operational failure.
+statement: An aborted client-side request (AbortController) SHOULD remain distinguishable from operational failure.
 type: soft
 scope: error-handling
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-ERR-CANCEL-01 — An aborted client-side request MUST remain distinguishable from operational failure.
+violation_message: Violates ARCH-WEB-APP-ERR-CANCEL-01 — An aborted client-side request SHOULD remain distinguishable from operational failure.
 ```

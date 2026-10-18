@@ -338,7 +338,7 @@ own.
 
 ```rule
 id: ARCH-WEB-APP-USECASE-01
-statement: A UseCase-equivalent module MUST be introduced once a feature's business logic requires coordinating more than the single external call already in its Server Action or Hook — it MUST NOT be added speculatively.
+statement: A UseCase-equivalent module SHOULD be introduced once a feature's business logic requires coordinating more than the single external call already in its Server Action or Hook — it SHOULD NOT be added speculatively.
 type: soft
 scope: structure
 enforced_by: [reviewer]
@@ -351,7 +351,7 @@ layer appears when logic outgrows one call, not before.
 
 ```rule
 id: ARCH-WEB-APP-REPO-01
-statement: A Repository MUST be introduced only when one entity is assembled from more than one DataSource (for example a cache and a live source), and MUST NOT be added speculatively.
+statement: A Repository SHOULD be introduced only when one entity is assembled from more than one DataSource (for example a cache and a live source), and SHOULD NOT be added speculatively.
 type: soft
 scope: structure
 enforced_by: [reviewer]
@@ -393,6 +393,24 @@ type: soft
 scope: structure
 enforced_by: [planner, reviewer]
 violation_message: Violates ARCH-WEB-APP-BFF-01 — A separate backend-for-frontend service SHOULD NOT be introduced unless a server-held secret, shaping data across sources, server rendering, or hiding the data store is recorded as the reason.
+```
+
+```rule
+id: ARCH-WEB-APP-TEST-01
+statement: A layer SHOULD be tested against the fake of the layer below it, never against a mocked provider SDK; the per-layer testing rules are in `QG-WEB-TESTING`.
+type: soft
+scope: testing
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-TEST-01 — A layer SHOULD be tested against the fake of the layer below it, never against a mocked provider SDK; the per-layer testing rules are in `QG-WEB-TESTING`.
+```
+
+```rule
+id: ARCH-WEB-APP-OBS-REDACT-01
+statement: Secrets, tokens, credentials, personal data (names, phone numbers, addresses, precise locations) and full provider payloads MUST NOT appear in logs, error messages, error reports, analytics or URLs; values crossing into any of these MUST pass through one redaction function.
+type: hard
+scope: behavior
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-OBS-REDACT-01 — Secrets, tokens, credentials, personal data (names, phone numbers, addresses, precise locations) and full provider payloads MUST NOT appear in logs, error messages, error reports, analytics or URLs; values crossing into any of these MUST pass through one redaction function.
 ```
 
 A `server`-runtime app already has a server boundary (Server Actions and Route

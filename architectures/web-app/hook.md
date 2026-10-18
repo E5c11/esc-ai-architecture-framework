@@ -76,11 +76,11 @@ The composition module owns what that context holds (`ARCH-WEB-APP-DEP-06`).
 
 ```rule
 id: ARCH-WEB-APP-HOOK-STATE-01
-statement: A Hook MUST expose its state as a discriminated union (`loading`, `ready` with data, `error` with an `AppError`), and MUST NOT expose separate `data`, `loading` and `error` fields that can contradict each other.
-type: hard
+statement: A Hook SHOULD expose its state as a discriminated union (`loading`, `ready` with data, `error` with an `AppError`) rather than separate `data`, `loading` and `error` fields that can contradict each other.
+type: soft
 scope: return-type
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-HOOK-STATE-01 — A Hook MUST expose its state as a discriminated union (`loading`, `ready` with data, `error` with an `AppError`), and MUST NOT expose separate `data`, `loading` and `error` fields that can contradict each other.
+violation_message: Violates ARCH-WEB-APP-HOOK-STATE-01 — A Hook SHOULD expose its state as a discriminated union (`loading`, `ready` with data, `error` with an `AppError`) rather than separate `data`, `loading` and `error` fields that can contradict each other.
 ```
 
 ```typescript
@@ -104,11 +104,11 @@ labelled-stale value (`ARCH-WEB-APP-REP-SSOT-01`) to the screen.
 
 ```rule
 id: ARCH-WEB-APP-HOOK-SCOPE-01
-statement: A Hook MUST own one cohesive screen concern, and a Hook that returns state for more than one unrelated concern MUST be split.
+statement: A Hook SHOULD own one cohesive screen concern, and a Hook that returns state for more than one unrelated concern SHOULD be split.
 type: soft
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-HOOK-SCOPE-01 — A Hook MUST own one cohesive screen concern, and a Hook that returns state for more than one unrelated concern MUST be split.
+violation_message: Violates ARCH-WEB-APP-HOOK-SCOPE-01 — A Hook SHOULD own one cohesive screen concern, and a Hook that returns state for more than one unrelated concern SHOULD be split.
 ```
 
 State shared across screens is not a hook's to own: it lives in a Context
@@ -221,11 +221,11 @@ the Hook does not manage server cache state itself.
 
 ```rule
 id: ARCH-WEB-APP-HOOK-ANALYTICS-01
-statement: A Hook that records analytics MUST receive its tracker through the composition, and MUST fire the event inline at the point the corresponding user action or state change is already being handled.
+statement: A Hook that records analytics SHOULD receive its tracker through the composition, and SHOULD fire the event inline at the point the corresponding user action or state change is already being handled.
 type: soft
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-HOOK-ANALYTICS-01 — A Hook that records analytics MUST receive its tracker through the composition, and MUST fire the event inline at the point the corresponding user action or state change is already being handled.
+violation_message: Violates ARCH-WEB-APP-HOOK-ANALYTICS-01 — A Hook that records analytics SHOULD receive its tracker through the composition, and SHOULD fire the event inline at the point the corresponding user action or state change is already being handled.
 ```
 
 The philosophy (which events, how many) is `PAT-ANALYTICS-EVENTS`. A tracker call
@@ -247,14 +247,7 @@ The explicit return type is `PLAT-WEB-TS-HOOKS-01`; the location replaces the
 
 ## Testing
 
-```rule
-id: ARCH-WEB-APP-HOOK-TEST-01
-statement: A Hook MUST be tested by rendering it inside a test provider that supplies fakes of its UseCases or DataSources, asserting on the state it exposes, and MUST NOT be tested against a mocked SDK or by asserting on rendered markup.
-type: hard
-scope: testing
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-HOOK-TEST-01 — A Hook MUST be tested by rendering it inside a test provider that supplies fakes of its UseCases or DataSources, asserting on the state it exposes, and MUST NOT be tested against a mocked SDK or by asserting on rendered markup.
-```
+(`ARCH-WEB-APP-HOOK-TEST-01` now lives in `QG-WEB-TESTING`.)
 
 A hook test covers each branch of the state union (loading, ready, ready with stale
 data, each error variant), the change-of-input race, and unmount cleanup. The mapping

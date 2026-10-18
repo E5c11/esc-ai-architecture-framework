@@ -252,14 +252,7 @@ Use a verb phrase from the domain: `LoadRegionFigures`, `SaveFeed`, `RebuildSnap
 
 ## Testing
 
-```rule
-id: ARCH-WEB-APP-UC-TEST-01
-statement: A UseCase MUST be tested against the in-memory fakes of its DataSources and Repositories, with no framework, DOM, network or emulator, and every branch that makes a decision MUST have a test.
-type: hard
-scope: testing
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-UC-TEST-01 — A UseCase MUST be tested against the in-memory fakes of its DataSources and Repositories, with no framework, DOM, network or emulator, and every branch that makes a decision MUST have a test.
-```
+(`ARCH-WEB-APP-UC-TEST-01` now lives in `QG-WEB-TESTING`.)
 
 The fakes pass the DataSource contract tests (`ARCH-WEB-APP-DS-TEST-01`), so a UseCase
 test that passes against a fake is evidence about the real DataSource, not about a

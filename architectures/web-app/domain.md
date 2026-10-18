@@ -122,14 +122,7 @@ enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-DOM-TABLE-01 — Behaviour that varies by a closed vocabulary SHOULD be a lookup table keyed by that vocabulary, typed so a missing key is a compile error, not an if/else or switch ladder.
 ```
 
-```rule
-id: ARCH-WEB-APP-DOM-TABLE-02
-statement: A rule table or classification list that cannot be keyed by a closed type (keyword lists, mappings from free text) MUST be checked by a test for completeness and conflicts, and every `switch` over a vocabulary MUST end in an exhaustiveness check.
-type: hard
-scope: testing
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DOM-TABLE-02 — A rule table or classification list that cannot be keyed by a closed type MUST be checked by a test for completeness and conflicts, and every `switch` over a vocabulary MUST end in an exhaustiveness check.
-```
+(`ARCH-WEB-APP-DOM-TABLE-02` now lives in `QG-WEB-TESTING`.)
 
 A free-text classifier is domain code and is the part most likely to be quietly
 wrong. The rules a record falls through (for example "no outcome recorded") are
@@ -150,11 +143,11 @@ wrong number that no test on the developer's machine catches.
 
 ```rule
 id: ARCH-WEB-APP-DOM-DETERMINISM-01
-statement: A transform over a collection MUST give the same result for the same records in any order, with an explicit sort and tie-break wherever order is part of the result.
+statement: A transform over a collection SHOULD give the same result for the same records in any order, with an explicit sort and tie-break wherever order is part of the result.
 type: soft
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DOM-DETERMINISM-01 — A transform over a collection MUST give the same result for the same records in any order, with an explicit sort and tie-break wherever order is part of the result.
+violation_message: Violates ARCH-WEB-APP-DOM-DETERMINISM-01 — A transform over a collection SHOULD give the same result for the same records in any order, with an explicit sort and tie-break wherever order is part of the result.
 ```
 
 A provider returns records in no promised order, and an aggregation that depends on
@@ -162,11 +155,11 @@ arrival order changes when the provider does.
 
 ```rule
 id: ARCH-WEB-APP-DOM-NAMING-01
-statement: Domain names MUST come from the problem domain, not the implementation: no `Manager`, `Helper`, `Util`, `Handler`, `Dto`, `Doc` or technology names in a domain identifier.
+statement: Domain names SHOULD come from the problem domain, not the implementation: no `Manager`, `Helper`, `Util`, `Handler`, `Dto`, `Doc` or technology names in a domain identifier.
 type: soft
 scope: naming
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DOM-NAMING-01 — Domain names MUST come from the problem domain, not the implementation: no `Manager`, `Helper`, `Util`, `Handler`, `Dto`, `Doc` or technology names in a domain identifier.
+violation_message: Violates ARCH-WEB-APP-DOM-NAMING-01 — Domain names SHOULD come from the problem domain, not the implementation: no `Manager`, `Helper`, `Util`, `Handler`, `Dto`, `Doc` or technology names in a domain identifier.
 ```
 
 ## Entities vs value objects

@@ -302,14 +302,7 @@ the server. Connection pooling on a scale-to-zero host is
 The DataSource runs in the browser. It has no secrets (`ARCH-WEB-APP-RUNTIME-02`);
 the provider's access rules decide what it may read and write.
 
-```rule
-id: ARCH-WEB-APP-DS-RULES-01
-statement: Every read and write a `static-export` DataSource performs MUST be covered by an automated test of the provider's access rules, run against the provider's emulator.
-type: hard
-scope: testing
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DS-RULES-01 — Every read and write a `static-export` DataSource performs MUST be covered by an automated test of the provider's access rules, run against the provider's emulator.
-```
+(`ARCH-WEB-APP-DS-RULES-01` now lives in `QG-WEB-TESTING`.)
 
 When the browser is the caller, the rules are the only access control. A
 DataSource whose reads and writes have no rules test has no verified security
@@ -318,14 +311,7 @@ each role the app has and for a signed-out caller.
 
 ## Testing
 
-```rule
-id: ARCH-WEB-APP-DS-TEST-01
-statement: Every DataSource interface MUST ship an in-memory fake, and the fake and the real implementation MUST both pass the same contract tests.
-type: hard
-scope: testing
-enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DS-TEST-01 — Every DataSource interface MUST ship an in-memory fake, and the fake and the real implementation MUST both pass the same contract tests.
-```
+(`ARCH-WEB-APP-DS-TEST-01` now lives in `QG-WEB-TESTING`.)
 
 Layers above a DataSource are tested against its fake (`ARCH-WEB-APP-DEP-02`
 means they cannot import anything else). The shared contract tests are what keep

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-18T11:33:08.487074+00:00",
+  "generated": "2026-10-18T11:41:49.363054+00:00",
   "count": 136,
   "documents": [
     {
@@ -1386,7 +1386,6 @@
         "ARCH-WEB-APP-MODULES",
         "ARCH-WEB-APP-ERR-CLASSES",
         "ARCH-WEB-APP-ERR-FLOW",
-        "ARCH-WEB-APP-OBS",
         "PLAT-WEB-REACT-PATTERNS",
         "PLAT-WEB-STATE",
         "PLAT-WEB-DS-THEME",
