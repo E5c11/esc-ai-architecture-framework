@@ -111,11 +111,11 @@ a test that builds its own graph produces.
 
 ```rule
 id: ARCH-WEB-APP-COMPOSE-ENV-01
-statement: Where one build can talk to more than one environment (for example a development and a production project), each environment MUST be a named app created by the composition module on demand, the active environment MUST be chosen in that one place, and switching it MUST discard the current graph, releasing every subscription, and build a new one.
+statement: Where one build can talk to more than one environment (for example a development and a production project), each environment MUST be a named app created by the composition module on demand, the active environment MUST be chosen in that one place, and switching it MUST give consumers the graph of the new environment and MUST release every live subscription held by the graph it leaves; a graph holding none MAY be kept so that its cache survives switching back.
 type: hard
 scope: di
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-COMPOSE-ENV-01 — Where one build can talk to more than one environment (for example a development and a production project), each environment MUST be a named app created by the composition module on demand, the active environment MUST be chosen in that one place, and switching it MUST discard the current graph, releasing every subscription, and build a new one.
+violation_message: Violates ARCH-WEB-APP-COMPOSE-ENV-01 — Where one build can talk to more than one environment (for example a development and a production project), each environment MUST be a named app created by the composition module on demand, the active environment MUST be chosen in that one place, and switching it MUST give consumers the graph of the new environment and MUST release every live subscription held by the graph it leaves; a graph holding none MAY be kept so that its cache survives switching back.
 ```
 
 ```typescript
@@ -134,6 +134,11 @@ useEffect(() => {
 }, [environment, config]);
 ```
 
+A graph that holds only one-shot reads (no listener) is safe to keep per environment: switching back reuses
+its cache instead of re-reading, and nothing can show the wrong environment's data because each graph is bound
+to its own. Keeping a graph that holds a listener is not, because that listener keeps updating state nobody is
+looking at.
+
 Both apps must not exist as module-level constants created at import
 (`ARCH-WEB-APP-COMPOSE-GLOBAL-01`), and neither a DataSource nor a Hook may choose, hold or reach for
 an environment: they receive the graph for the active one. Mutating a live graph's providers in place
@@ -148,6 +153,17 @@ scope: behavior
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-COMPOSE-ENV-02 — The active environment SHOULD be visible wherever a write can happen, and switching to an environment that holds real data SHOULD be an explicit, confirmed action.
 ```
+
+```rule
+id: ARCH-WEB-APP-COMPOSE-ENV-03
+statement: An operation that reads from or writes to more than one environment (a promotion from development to production) MUST receive each environment's store explicitly from the composition and MUST NOT depend on which environment is active.
+type: hard
+scope: di
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-COMPOSE-ENV-03 — An operation that reads from or writes to more than one environment (a promotion from development to production) MUST receive each environment's store explicitly from the composition and MUST NOT depend on which environment is active.
+```
+
+A graph built "for the active environment" cannot express "always copy from development to production". The graph carries both stores and exposes the active one for ordinary reads; the cross-environment operation is built from the two named stores, so it does the same thing whichever environment the user is looking at. Such an operation writes to real data, so `ARCH-WEB-APP-COMPOSE-ENV-02` applies to it, and as a write across two stores it follows `ARCH-WEB-APP-UC-WRITE-02`.
 
 An administration tool that can write to production from the same screen that edits a test project is
 one unnoticed toggle from a real incident. The indicator belongs to the component layer; the rule

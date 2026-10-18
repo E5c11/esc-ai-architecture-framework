@@ -39,6 +39,8 @@ features/{feature}/
 ├── content/                          Static strings, tables, chart definitions
 └── index.ts                          The feature's public surface
 
+data/                                 Code several DataSources share (error translation, client setup). May import the SDK
+
 shared/
 ├── ui/                               Presentational components two or more features use
 ├── domain/                           Domain code two or more features use
@@ -125,6 +127,17 @@ scope: structure
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-SHARED-02 — `shared/` MUST NOT host a component, type or function specific to one feature's domain, even to avoid a cross-feature import, and shared UI MUST be typed only against generic presentation shapes, never against a feature's domain model.
 ```
+
+```rule
+id: ARCH-WEB-APP-FEAT-DATA-01
+statement: Code shared by several DataSources (provider error translation, client setup) MUST live in a top-level `data/` folder that only DataSources and the composition module import, and `shared/` MUST stay free of provider SDK imports.
+type: hard
+scope: structure
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-FEAT-DATA-01 — Code shared by several DataSources (provider error translation, client setup) MUST live in a top-level `data/` folder that only DataSources and the composition module import, and `shared/` MUST stay free of provider SDK imports.
+```
+
+Without a home for it, a helper such as the one that turns a Firestore failure into an `AppError` is copied into every feature's DataSource, and the copies drift. `shared/` cannot be the home, because it is imported by components and must stay SDK-free (`ARCH-WEB-APP-DEP-03`).
 
 A `shared/` folder that collects whatever was inconvenient to import across features
 becomes a second, unowned application. The fix for a cross-feature need is the route

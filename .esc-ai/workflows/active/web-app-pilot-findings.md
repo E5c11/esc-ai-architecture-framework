@@ -64,3 +64,8 @@ Commits `1e99a8e`, `22819f5` in the pilot branch. Tested with 108 tests, 8 of th
 
 ## Not exercised
 `server` runtime rules, observability, security-rules tests (the emulator ran without rules), real login race, the other pages.
+
+## Applied after slice 2
+- `COMPOSE-ENV-01` reworded: switching gives consumers the new environment's graph and releases live subscriptions; a graph holding none may be kept.
+- New `COMPOSE-ENV-03`: an operation spanning environments receives each store explicitly and does not depend on the active one.
+- New `FEAT-DATA-01` and a top-level `data/` folder for code shared by DataSources; the `web-app` template gained `web.shared-data-only-for-datasources`. In the pilot one `toAppError` replaced two copies, and the check passes with 0 violations in new code.
