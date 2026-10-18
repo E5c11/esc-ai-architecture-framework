@@ -33,6 +33,33 @@ active scene/controller as an explicit failure or unavailable capability.
 thread from a currently active scene/controller; platform adapters must not retain obsolete
 controllers across lifecycle transitions.
 
+## Popover-capable controllers on iPad
+
+Some controllers can present as a popover on iPad and, on current iPadOS, UIKit may still
+force one. `UIActivityViewController` (share sheets) and `UIAlertController` with the
+`actionSheet` style are the common cases. Without an anchor, UIKit raises an
+`NSGenericException` ("UIPopoverPresentationController should have a non-nil sourceView or
+barButtonItem") and the app crashes.
+
+**Rule PLAT-MOB-IOS-POPOVER-01 (hard):** Any UIKit controller that can present as a popover on
+iPad (UIActivityViewController, UIAlertController actionSheet) MUST have its
+popoverPresentationController anchored (sourceView + sourceRect, or barButtonItem) before
+presentation — setting a non-popover modalPresentationStyle alone is not sufficient, since UIKit
+may still force a popover. Enforced by: executor, reviewer. Violation: "Violates
+PLAT-MOB-IOS-POPOVER-01 — popover-capable controller presented without an anchor crashes on iPad
+(NSGenericException)."
+
+```kotlin
+controller.popoverPresentationController?.let { popover ->
+    popover.sourceView = presenter.view
+    popover.sourceRect = presenter.view.bounds
+}
+presenter.presentViewController(controller, animated = true, completion = null)
+```
+
+*Violation signal:* iPad handled only by forcing `modalPresentationStyle` (e.g. `FullScreen`)
+with no popover anchor.
+
 ## Permissions
 
 Model at least not-determined, denied/restricted and authorized states. Request permission
@@ -68,4 +95,5 @@ must restore any temporary policy after the feature exits.
 - [ ] Success, cancellation, unavailable and failure are distinct outcomes.
 - [ ] Deferred capability is disabled/hidden rather than a successful NoOp.
 - [ ] Lifecycle recreation and background/foreground transitions are tested.
-
+- [ ] Popover-capable controllers (share sheets, action sheets) are anchored before presentation,
+      not just given a non-popover presentation style.
