@@ -52,11 +52,11 @@ A forwarding UseCase is boilerplate that every future change must edit twice.
 
 ```rule
 id: ARCH-WEB-APP-UC-SINGLE-01
-statement: A UseCase MUST do one operation and expose one public entry point, and MUST be named for the operation in the domain's language, not for a screen, a provider, or a technology.
+statement: A UseCase MUST do one operation and expose one public entry point.
 type: hard
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-UC-SINGLE-01 — A UseCase MUST do one operation and expose one public entry point, and MUST be named for the operation in the domain's language, not for a screen, a provider, or a technology.
+violation_message: Violates ARCH-WEB-APP-UC-SINGLE-01 — A UseCase MUST do one operation and expose one public entry point.
 ```
 
 A UseCase is a function built from its dependencies (or a class with one `execute`

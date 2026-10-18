@@ -63,11 +63,11 @@ An empty `useCases/` folder is a promise the feature has not kept
 
 ```rule
 id: ARCH-WEB-APP-FEAT-PLACE-01
-statement: Each kind of file MUST go in its own layer folder: presentation types and the presentation mapping in `hooks/`, entities and value objects in `domain/`, DataSource and Repository interfaces with their implementations and mappers in `data/`, and error types in the shared error module, not in the feature.
+statement: Each kind of file MUST live in the folder the feature layout assigns to its layer.
 type: hard
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-FEAT-PLACE-01 — Each kind of file MUST go in its own layer folder: presentation types and the presentation mapping in `hooks/`, entities and value objects in `domain/`, DataSource and Repository interfaces with their implementations and mappers in `data/`, and error types in the shared error module, not in the feature.
+violation_message: Violates ARCH-WEB-APP-FEAT-PLACE-01 — Each kind of file MUST live in the folder the feature layout assigns to its layer.
 ```
 
 Presentation types and domain types are different things; do not mix them in one

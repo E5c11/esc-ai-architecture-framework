@@ -155,11 +155,11 @@ violation_message: Violates ARCH-WEB-APP-DEP-01 — Domain code MUST NOT import 
 
 ```rule
 id: ARCH-WEB-APP-DEP-02
-statement: UseCase and Repository code MUST NOT import React, Next.js, a provider SDK, or a DataSource implementation; they depend on interfaces.
+statement: A UseCase MUST NOT import React, Next.js, a provider SDK, or a DataSource implementation; it depends on interfaces.
 type: hard
 scope: structure
 enforced_by: [ci, reviewer]
-violation_message: Violates ARCH-WEB-APP-DEP-02 — UseCase and Repository code MUST NOT import React, Next.js, a provider SDK, or a DataSource implementation; they depend on interfaces.
+violation_message: Violates ARCH-WEB-APP-DEP-02 — A UseCase MUST NOT import React, Next.js, a provider SDK, or a DataSource implementation; it depends on interfaces.
 ```
 
 ```rule
@@ -173,11 +173,11 @@ violation_message: Violates ARCH-WEB-APP-DEP-03 — A provider SDK or client MUS
 
 ```rule
 id: ARCH-WEB-APP-DEP-04
-statement: A Hook MUST NOT import a provider SDK or a DataSource or Repository implementation; it depends on a UseCase or, below the UseCase threshold, on a DataSource or Repository interface.
+statement: A Hook MUST NOT import a provider SDK or a DataSource, Repository or server-only implementation; it depends on a UseCase or, below the UseCase threshold, on a DataSource or Repository interface.
 type: hard
 scope: structure
 enforced_by: [ci, reviewer]
-violation_message: Violates ARCH-WEB-APP-DEP-04 — A Hook MUST NOT import a provider SDK or a DataSource or Repository implementation; it depends on a UseCase or, below the UseCase threshold, on a DataSource or Repository interface.
+violation_message: Violates ARCH-WEB-APP-DEP-04 — A Hook MUST NOT import a provider SDK or a DataSource, Repository or server-only implementation; it depends on a UseCase or, below the UseCase threshold, on a DataSource or Repository interface.
 ```
 
 ```rule
@@ -204,11 +204,11 @@ violation_message: Violates ARCH-WEB-APP-DEP-06 — Concrete DataSources, Reposi
 
 ```rule
 id: ARCH-WEB-APP-DEP-07
-statement: A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code; a feature's `index.ts` MUST export only its page or root view and its public types, never hooks, DataSources, Repositories, UseCases or mappers.
+statement: A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code.
 type: hard
 scope: structure
 enforced_by: [ci, reviewer]
-violation_message: Violates ARCH-WEB-APP-DEP-07 — A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code; a feature's `index.ts` MUST export only its page or root view and its public types, never hooks, DataSources, Repositories, UseCases or mappers.
+violation_message: Violates ARCH-WEB-APP-DEP-07 — A feature MUST NOT import another feature's internals; it imports only that feature's public surface, and code two features share MUST move to shared code.
 ```
 
 ```rule
@@ -365,11 +365,11 @@ one source, so a DataSource behind its interface is the whole data boundary.
 
 ```rule
 id: ARCH-WEB-APP-RUNTIME-01
-statement: A project MUST declare its runtime (`server` or `static-export`) as `frameworks.runtime` in its project profile, and MUST NOT use a feature the declared runtime does not support.
+statement: A project MUST declare its runtime (`server` or `static-export`) as `frameworks.runtime` in its project profile.
 type: hard
 scope: structure
 enforced_by: [planner, reviewer]
-violation_message: Violates ARCH-WEB-APP-RUNTIME-01 — A project MUST declare its runtime (`server` or `static-export`) as `frameworks.runtime` in its project profile, and MUST NOT use a feature the declared runtime does not support.
+violation_message: Violates ARCH-WEB-APP-RUNTIME-01 — A project MUST declare its runtime (`server` or `static-export`) as `frameworks.runtime` in its project profile.
 ```
 
 ```rule

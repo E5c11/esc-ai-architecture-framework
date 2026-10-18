@@ -101,11 +101,11 @@ all three (`ARCH-WEB-APP-OBS-REDACT-01`).
 
 ```rule
 id: ARCH-WEB-APP-EFLOW-VALIDATE-01
-statement: Untrusted input (form values, URL and search parameters, provider payloads, stored data) MUST be parsed with a schema parser at the boundary where it enters, and a failure MUST become a `validation` or `unexpected` error outcome, not a thrown error or a default value.
+statement: Untrusted input (form values, URL parameters, provider payloads) MUST be parsed with a schema parser where it enters, and a failure MUST become an error outcome, not a thrown error or a default value.
 type: hard
 scope: error-handling
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-EFLOW-VALIDATE-01 — Untrusted input (form values, URL and search parameters, provider payloads, stored data) MUST be parsed with a schema parser at the boundary where it enters, and a failure MUST become a `validation` or `unexpected` error outcome, not a thrown error or a default value.
+violation_message: Violates ARCH-WEB-APP-EFLOW-VALIDATE-01 — Untrusted input (form values, URL parameters, provider payloads) MUST be parsed with a schema parser where it enters, and a failure MUST become an error outcome, not a thrown error or a default value.
 ```
 
 ```rule

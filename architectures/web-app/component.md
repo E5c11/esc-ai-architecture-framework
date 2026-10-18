@@ -75,11 +75,11 @@ makes the guard checkable by the compiler instead of by a reviewer.
 
 ```rule
 id: ARCH-WEB-APP-COMP-PROPS-01
-statement: A component MUST receive all data it renders as props and surface user actions as callback props named `on{Event}`, and MUST NOT reach for data through a context, a module import, or a global.
+statement: A component MUST receive all data it renders as props and surface user actions as callback props, and MUST NOT reach for data through a context, a module import, or a global.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-COMP-PROPS-01 — A component MUST receive all data it renders as props and surface user actions as callback props named `on{Event}`, and MUST NOT reach for data through a context, a module import, or a global.
+violation_message: Violates ARCH-WEB-APP-COMP-PROPS-01 — A component MUST receive all data it renders as props and surface user actions as callback props, and MUST NOT reach for data through a context, a module import, or a global.
 ```
 
 Theme and locale providers are not data in this sense. The composition context is

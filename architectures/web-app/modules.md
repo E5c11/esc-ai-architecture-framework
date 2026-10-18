@@ -61,11 +61,11 @@ effectful half is a few lines of glue, with nothing left in it worth a test.
 
 ```rule
 id: ARCH-WEB-APP-MOD-API-01
-statement: A package or feature MUST list its public exports explicitly in its `index.ts`, MUST NOT use `export *` in a public surface, and other code MUST import only from that surface, never from a file inside it.
+statement: A package or feature MUST list its public exports explicitly in its `index.ts` (its page or root view and public types, never hooks, DataSources, Repositories, UseCases or mappers), MUST NOT use `export *` in a public surface, and other code MUST import only from that surface.
 type: hard
 scope: structure
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-MOD-API-01 — A package or feature MUST list its public exports explicitly in its `index.ts`, MUST NOT use `export *` in a public surface, and other code MUST import only from that surface, never from a file inside it.
+violation_message: Violates ARCH-WEB-APP-MOD-API-01 — A package or feature MUST list its public exports explicitly in its `index.ts` (its page or root view and public types, never hooks, DataSources, Repositories, UseCases or mappers), MUST NOT use `export *` in a public surface, and other code MUST import only from that surface.
 ```
 
 `export *` makes the public surface whatever the files happen to export today, so an

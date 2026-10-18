@@ -130,11 +130,11 @@ what lets the domain change shape without every Component changing with it.
 
 ```rule
 id: ARCH-WEB-APP-HOOK-FORMAT-01
-statement: User-facing formatting (dates, numbers, percentages, currency, plurals) MUST happen in the Hook's mapping with an explicit locale and timezone, and MUST NOT depend on the runtime's defaults or be done in the domain.
+statement: User-facing formatting (dates, numbers, percentages) MUST happen in the Hook's mapping with an explicit locale and timezone, not in the domain.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-HOOK-FORMAT-01 — User-facing formatting (dates, numbers, percentages, currency, plurals) MUST happen in the Hook's mapping with an explicit locale and timezone, and MUST NOT depend on the runtime's defaults or be done in the domain.
+violation_message: Violates ARCH-WEB-APP-HOOK-FORMAT-01 — User-facing formatting (dates, numbers, percentages) MUST happen in the Hook's mapping with an explicit locale and timezone, not in the domain.
 ```
 
 Formatting with `Intl` and no explicit locale or timezone renders differently on the
@@ -168,11 +168,11 @@ violation_message: Violates ARCH-WEB-APP-HOOK-ERROR-02 — A Hook over a retryab
 
 ```rule
 id: ARCH-WEB-APP-HOOK-RACE-01
-statement: A Hook that starts an asynchronous operation or a subscription MUST release it when the Hook unmounts or its inputs change, and MUST ignore any result that arrives after that.
+statement: A Hook MUST ignore the result of an asynchronous operation that finishes after the Hook unmounts or its inputs change.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-HOOK-RACE-01 — A Hook that starts an asynchronous operation or a subscription MUST release it when the Hook unmounts or its inputs change, and MUST ignore any result that arrives after that.
+violation_message: Violates ARCH-WEB-APP-HOOK-RACE-01 — A Hook MUST ignore the result of an asynchronous operation that finishes after the Hook unmounts or its inputs change.
 ```
 
 ```typescript

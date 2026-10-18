@@ -94,11 +94,11 @@ interface SnapshotDataSource {
 
 ```rule
 id: ARCH-WEB-APP-DS-RETURN-01
-statement: A one-shot DataSource operation MUST return `Promise<Outcome<T>>` and MUST NOT reject for an expected failure; an abort is not a failure and is rethrown unchanged.
+statement: A one-shot DataSource operation MUST return `Promise<Outcome<T>>` and MUST NOT reject for an expected failure.
 type: hard
 scope: return-type
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DS-RETURN-01 — A one-shot DataSource operation MUST return `Promise<Outcome<T>>` and MUST NOT reject for an expected failure; an abort is not a failure and is rethrown unchanged.
+violation_message: Violates ARCH-WEB-APP-DS-RETURN-01 — A one-shot DataSource operation MUST return `Promise<Outcome<T>>` and MUST NOT reject for an expected failure.
 ```
 
 ```rule
@@ -169,11 +169,11 @@ function sent.
 
 ```rule
 id: ARCH-WEB-APP-DS-PARSE-01
-statement: A DataSource MUST parse every provider payload with a schema parser into a domain value, MUST treat the payload as `unknown` until it has, and MUST NOT use a type assertion (`as Foo`) to give it a type.
+statement: A DataSource MUST parse every provider payload with a schema parser into a domain value, treating the payload as `unknown` until it has.
 type: hard
 scope: behavior
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DS-PARSE-01 — A DataSource MUST parse every provider payload with a schema parser into a domain value, MUST treat the payload as `unknown` until it has, and MUST NOT use a type assertion (`as Foo`) to give it a type.
+violation_message: Violates ARCH-WEB-APP-DS-PARSE-01 — A DataSource MUST parse every provider payload with a schema parser into a domain value, treating the payload as `unknown` until it has.
 ```
 
 ```typescript
@@ -192,11 +192,11 @@ wrong number on a chart.
 
 ```rule
 id: ARCH-WEB-APP-DS-MALFORMED-01
-statement: A payload that fails parsing MUST become an explicit `unexpected` error outcome whose message names the record and whose cause is logged, and MUST NOT be silently dropped, defaulted or counted as zero.
+statement: A payload that fails parsing MUST become an explicit error outcome that names the record, and MUST NOT be silently dropped, defaulted or counted as zero.
 type: hard
 scope: error-handling
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DS-MALFORMED-01 — A payload that fails parsing MUST become an explicit `unexpected` error outcome whose message names the record and whose cause is logged, and MUST NOT be silently dropped, defaulted or counted as zero.
+violation_message: Violates ARCH-WEB-APP-DS-MALFORMED-01 — A payload that fails parsing MUST become an explicit error outcome that names the record, and MUST NOT be silently dropped, defaulted or counted as zero.
 ```
 
 A collection read where one record is malformed returns the error; it does not
@@ -317,11 +317,11 @@ mocked SDK.
 
 ```rule
 id: ARCH-WEB-APP-DS-NAMING-01
-statement: The interface is named `{Entity}DataSource`, and an implementation is named with the provider first: `Firestore{Entity}DataSource`, `Http{Entity}DataSource`, `Callable{Action}DataSource`, `Fake{Entity}DataSource`.
+statement: A DataSource interface is named `{Entity}DataSource`, and an implementation puts the provider first (`Firestore{Entity}DataSource`).
 type: hard
 scope: naming
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DS-NAMING-01 — The interface is named `{Entity}DataSource`, and an implementation is named with the provider first: `Firestore{Entity}DataSource`, `Http{Entity}DataSource`, `Callable{Action}DataSource`, `Fake{Entity}DataSource`.
+violation_message: Violates ARCH-WEB-APP-DS-NAMING-01 — A DataSource interface is named `{Entity}DataSource`, and an implementation puts the provider first (`Firestore{Entity}DataSource`).
 ```
 
 ## Construction scope
