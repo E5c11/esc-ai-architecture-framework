@@ -139,18 +139,27 @@ components mount. The hook that calls `subscribe…` returns the unsubscribe fro
 its effect (`PLAT-WEB-TS-CLEANUP-01`).
 
 ```rule
-id: ARCH-WEB-APP-DS-BOUND-01
-statement: Where a collection grows with users or content, a list read MUST have a limit and a unique order (the document id as the tie-break), or be served from a server-side aggregate, and a client MUST NOT read a whole growing collection to compute figures.
+id: ARCH-WEB-APP-DS-PAGE-01
+statement: A list read over a collection that grows MUST be paginated with a limit, a unique order (the document id as the tie-break) and a cursor (`startAfter`), and MUST NOT use `offset`.
 type: hard
 scope: performance
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-DS-BOUND-01 — Where a collection grows with users or content, a list read MUST have a limit and a unique order (the document id as the tie-break), or be served from a server-side aggregate, and a client MUST NOT read a whole growing collection to compute figures.
+violation_message: Violates ARCH-WEB-APP-DS-PAGE-01 — A list read over a collection that grows MUST be paginated with a limit, a unique order (the document id as the tie-break) and a cursor (`startAfter`), and MUST NOT use `offset`.
 ```
 
-A collection that is a fixed taxonomy is bounded and may be read whole. Document-store reads are billed and delivered per document, so a listener or read over an unbounded collection costs more every month it runs. Where users can list a collection, also cap the query in the security rules (`allow list: if request.query.limit <= 100;`); for an admin-only collection that cap is a SHOULD.
+Standard practice for any list a person browses. A collection that is a fixed set may be read whole.
 
-Document-store reads are billed and delivered per document. A listener on an
-unbounded collection costs more every month the app runs.
+```rule
+id: ARCH-WEB-APP-DS-AGG-01
+statement: Totals and breakdowns over a growing collection MUST NOT be computed by reading every document in the client; they MUST come from a server-side aggregate or a precomputed document.
+type: hard
+scope: performance
+enforced_by: [reviewer]
+violation_message: Violates ARCH-WEB-APP-DS-AGG-01 — Totals and breakdowns over a growing collection MUST NOT be computed by reading every document in the client; they MUST come from a server-side aggregate or a precomputed document.
+```
+
+Pagination answers "the next page"; it does not answer "the rate across everything", which would need every page. How large a collection may get before this applies is a decision for the project, recorded as a project-local rule (for example a read budget), not a number in this framework.
+
 
 ## Parsing and mapping
 

@@ -32,3 +32,4 @@ Rules removed in the 2026-10-18 audit. Citations were redirected to the target.
 | `ARCH-WEB-APP-UC-RETURN-02` | merge | `ARCH-WEB-APP-DS-RETURN-02` |
 | `ARCH-WEB-APP-UC-ERROR-01` | merge | `ARCH-WEB-APP-EFLOW-SWALLOW-01` |
 | `ARCH-WEB-APP-UC-CANCEL-01` | merge | `ARCH-WEB-APP-ERR-CANCEL-01` |
+| `ARCH-WEB-APP-DS-BOUND-01` | split | `ARCH-WEB-APP-DS-PAGE-01`, `ARCH-WEB-APP-DS-AGG-01` |
