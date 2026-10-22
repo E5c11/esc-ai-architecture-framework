@@ -40,9 +40,14 @@ id: PLAT-WEB-NEXT-STATIC-CONFIG-01
 statement: A `static-export` project MUST set `output: 'export'`, MUST NOT use the default image loader (it MUST set a custom `images.loader` or `images.unoptimized`), and MUST NOT use a feature the export does not support.
 type: hard
 scope: structure
-enforced_by: [reviewer]
+enforced_by: [ci, reviewer]
 violation_message: Violates PLAT-WEB-NEXT-STATIC-CONFIG-01 — A `static-export` project MUST set `output: 'export'`, MUST NOT use the default image loader (it MUST set a custom `images.loader` or `images.unoptimized`), and MUST NOT use a feature the export does not support.
 ```
+
+The architecture check covers the mechanical part for a `static-export` project: `output: 'export'` is set in
+`next.config.*` (`web.static-export-output`), nothing imports `next/headers` or `next/server`
+(`web.static-export-no-request-apis`), and no file carries a `'use server'` directive
+(`web.static-export-no-server-actions`). The image-loader clause and the rest of the unsupported list stay with a reviewer.
 
 Unsupported with `output: 'export'`, as the Next.js documentation lists them: dynamic
 routes with `dynamicParams: true` or without `generateStaticParams()`; Route Handlers
