@@ -90,3 +90,19 @@ sign out. `SIGNOUT-01` clears the persisted mirror too. Found while planning: `a
 rotated-away refresh token once its successor was used (`AMPM-BE-AUTH-REFRESH-REUSE-01`), so without
 `REFRESH-03` a background tab signs every tab out. Pilot: `ampm-website` task
 `keep-signed-in-ampm-website`.
+
+**Result, 2026-10-31.** Both slices passed a browser test against the dev backend.
+
+- `keep-signed-in-ampm-website`: steps 1 to 9 pass, including five two-tab refresh races (normal network,
+  Slow 3G, and a forced overlap with the lock held by a third tab) with no refresh token presented twice,
+  no refresh refused and nobody signed out; sign-out in one tab signs out the other. The run found that
+  `REFRESH-03` as first written assumed the access token travels with the stored pair; the statement now
+  says "refresh with the latest stored refresh token", which is what was built and tested. Also added from
+  the run: the residual risk of an analytics origin in `connect-src`, checking the CSP in the host emulator
+  (zod's `new Function` probe showed up only there), the two ways a session ends (sign-out and a refused
+  refresh), and the Web Locks fallback's dependence on the backend's reuse policy. `STORE-01` and
+  `REFRESH-03` are now `evidence: exercised`.
+- `refer-and-win-entry-points-ampm-website`: the home page (a content route) composes the competition
+  banner feature. Clarified from the run: shared UI state is not feature state, the provider wraps the
+  narrowest element (one graph per page), and an optional island may render nothing on failure.
+  `ARCH-WEB-APP-FEAT-CONTENT-01` is now `evidence: exercised`.

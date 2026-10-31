@@ -111,10 +111,10 @@ a feature with a Hook and a DataSource adds layers that hold nothing.
 
 ```rule
 id: ARCH-WEB-APP-FEAT-CONTENT-01
-statement: A route whose page is only build-time content (no data access, no state, no user action beyond links) MAY render its content and shared presentational components directly instead of composing a feature, and MUST then follow `ARCH-WEB-CONTENT`'s text, shared-content and metadata rules; as soon as it gains data access, state or an action, that part MUST move into a feature.
+statement: A route whose page is only build-time content (no data access, no feature state, no user action beyond links) MAY render its content and shared presentational components directly instead of composing a feature, and MUST then follow `ARCH-WEB-CONTENT`'s text, shared-content and metadata rules; as soon as it gains data access, feature state or an action, that part MUST move into a feature.
 type: hard
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [planner, reviewer]
 violation_message: Violates ARCH-WEB-APP-FEAT-CONTENT-01 — A content-only route MAY render content and shared presentational components directly, and MUST then follow `ARCH-WEB-CONTENT`'s text, shared-content and metadata rules; data access, state or an action MUST move into a feature.
 ```
@@ -126,6 +126,20 @@ that mixes both, such as a marketing page with a sign-up form, renders the conte
 directly and the form as a feature, and the route composes the two
 (`ARCH-WEB-APP-FEAT-ROUTE-02`). This is how a site that began as `web-content` adopts
 `web-app` for its first interactive feature without restructuring every page.
+
+Three points from the first slice (`ampm-website` home page with a competition banner):
+
+- **Shared UI state is not feature state.** A navigation menu that opens and closes, or a download bar that
+  expands on scroll, keeps the route content-only. What moves into a feature is data access, state derived
+  from data, and actions.
+- **Provider scope.** The route wraps only the feature in the composition's provider, so the rest of the
+  page stays a Server Component. Each wrapped island builds its own graph; when a route gains a second
+  island, wrap the narrowest element that contains both (or move the provider to the layout), so the page
+  has one graph.
+- **An optional island may render nothing.** A banner or teaser on a content page shows nothing while it
+  loads, when there is nothing to show, and when its data fails; the Hook still holds the `AppError`
+  (`ARCH-WEB-APP-HOOK-ERROR-01`) and the Component decides to render nothing, and the failure is logged once
+  by the DataSource. A broken extra must not put an error on a page whose job is content.
 
 ## Public surface
 

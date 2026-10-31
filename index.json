@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-31T16:57:07.857409+00:00",
+  "generated": "2026-10-31T17:35:44.575108+00:00",
   "count": 137,
   "documents": [
     {
@@ -1430,8 +1430,8 @@
       ],
       "status": "active",
       "rule_evidence": {
-        "exercised": 5,
-        "unproven": 5
+        "exercised": 6,
+        "unproven": 4
       }
     },
     {
@@ -4135,8 +4135,7 @@
       ],
       "status": "active",
       "rule_evidence": {
-        "exercised": 11,
-        "unproven": 2
+        "exercised": 13
       }
     },
     {

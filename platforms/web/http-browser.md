@@ -138,7 +138,7 @@ id: PLAT-WEB-HTTP-BROWSER-STORE-01
 statement: Tokens MUST be kept in memory and MAY be mirrored to `sessionStorage`; the refresh token MAY be persisted to `localStorage` only when the user chose to stay signed in on that device, the backend rotates refresh tokens and refuses a reused one, and the page is served with a Content Security Policy that limits script and connect origins; the access token MUST NOT be persisted beyond the tab, and no token MUST be written to IndexedDB, a cookie set by script, a URL, a log or an analytics event.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-STORE-01 — Tokens live in memory, optionally mirrored to `sessionStorage`; only the refresh token, only with the user's "stay signed in" choice, rotation with reuse detection and a CSP, may go to `localStorage`; never the access token there, and no token in IndexedDB, a script cookie, a URL, a log or analytics.
 ```
@@ -158,7 +158,11 @@ a rotated-away one (`REFRESH-02`), so a stolen token stops working at the owner'
 whose `script-src` and `connect-src` list only the origins the site needs, which makes it much harder to
 inject a script and to send a token anywhere. A static export usually needs `'unsafe-inline'` in
 `script-src` for the framework's inline bootstrap; `connect-src` is then the part that limits
-exfiltration. Unticked, the session is exactly the `sessionStorage` one above. Persisted tokens are shared
+exfiltration. An analytics or collection origin in `connect-src` (Google Analytics accepts hits for any
+measurement ID) is still a channel out, so list only what the site needs and record the residual risk.
+Check the policy under the real header, in the host's emulator, on every route, with zero violations:
+`next dev` does not apply it, and some libraries probe `eval` at load (zod builds parsers with `new Function`
+unless configured jitless) and are reported only under the header. Unticked, the session is exactly the `sessionStorage` one above. Persisted tokens are shared
 by every tab, which needs `PLAT-WEB-HTTP-BROWSER-REFRESH-03`. A refresh cookie the backend sets as
 `HttpOnly` is safer still, but it needs the API on the site's own registrable domain (browsers block
 cross-site cookies) and CSRF protection: a backend design, outside this guide.
@@ -259,23 +263,39 @@ the writes, or survive a reload with a pair the backend no longer recognises.
 
 ```rule
 id: PLAT-WEB-HTTP-BROWSER-REFRESH-03
-statement: When tokens are persisted where several tabs share them, a refresh MUST be serialised across tabs, each tab MUST re-read the stored pair before refreshing and adopt a newer one instead of calling the backend, a tab MUST pick up a pair or a sign-out written by another tab, and a refresh rejected for a token the store has since replaced MUST NOT clear the session.
+statement: When the refresh token is persisted where several tabs share it, a refresh MUST be serialised across tabs, each tab MUST re-read the stored refresh token before and after its refresh call and refresh only with the latest one, a tab MUST pick up a refresh token or a sign-out written by another tab, and a refresh rejected for a token the store has since replaced MUST NOT clear the session.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-HTTP-BROWSER-REFRESH-03 — With tokens shared between tabs, refresh MUST be serialised across tabs, each tab re-reads and adopts a newer stored pair before refreshing, tabs pick up each other's pair and sign-out, and a rejection for an already-replaced token MUST NOT clear the session.
+violation_message: Violates PLAT-WEB-HTTP-BROWSER-REFRESH-03 — With a refresh token shared between tabs, refresh MUST be serialised across tabs and always use the latest stored token (re-read before and after the call), tabs pick up each other's token and sign-out, and a rejection for an already-replaced token MUST NOT clear the session.
 ```
 
 The single-flight promise of `REFRESH-01` lives in one tab. Two tabs that each refresh with the same
 stored refresh token race: the second presents a token the first already rotated away, the backend refuses
 it, and if that tab then clears the store it signs the user out of every tab. The Web Locks API
 (`navigator.locks.request('<app>-refresh', …)`) serialises the refresh across tabs of one origin; inside
-the lock the tab reads the stored pair again, and when it is newer than the one it holds it adopts it and
-retries without calling the backend. A `storage` event delivers another tab's write (a new pair, or the
-removal that means signed out) to the session store, which notifies its subscribers. Where Web Locks is
-missing, re-reading the store before refreshing and treating a rejection as "signed out" only when the
-store still holds the rejected token is the fallback.
+the lock the tab reads the stored refresh token again and adopts it when it differs from the one it holds
+("newer" is simply "different": every write a tab sees comes after the one it holds). Only the refresh token
+is shared (`STORE-01` keeps the access token out of storage), so a tab that adopted a newer refresh token
+still needs an access token: it refreshes once more with the adopted token, which is safe because no token
+is presented twice. Two tabs whose access tokens expire together therefore make two serialised refreshes,
+not one; the test is "no refresh token presented twice, nobody signed out". Re-read after the call as well:
+a sign-out, or a new sign-in, may have arrived meanwhile, and then the result belongs to nobody. A `storage`
+event delivers another tab's write (a new refresh token, a new kept sign-in, or the removal that means signed
+out) to the session store, which notifies its subscribers; a tab with a session-only sign-in keeps its own
+token and ignores them.
+
+The store needs two ways to end a session: sign-out (`SIGNOUT-01`, every mirror, every tab) and a refused
+refresh, which ends the session only while the store still holds the refused token, and clears the shared
+record only when that record holds it, so a session-only tab's dead token cannot sign out a kept session.
+When `localStorage` cannot be read, that says nothing about other tabs (do not treat it as signed out); when
+it cannot be written, the sign-in falls back to session-only.
+
+Where Web Locks is missing, re-reading before and after the call is the fallback. It still lets two tabs
+present the same token now and then, which is safe only if the backend refuses just the reused token; a
+backend that revokes the whole token family on reuse signs both tabs out, so check the backend's policy
+before relying on the fallback.
 
 ## Signing out
 

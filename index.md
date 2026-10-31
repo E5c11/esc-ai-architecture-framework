@@ -67,7 +67,7 @@
 | `ARCH-WEB-APP-DOMAIN` | rules | `architectures/web-app/domain.md` |  | 4 / 5 |
 | `ARCH-WEB-APP-ERR-CLASSES` | guide | `architectures/web-app/error-classes.md` |  | 3 / 1 |
 | `ARCH-WEB-APP-ERR-FLOW` | guide | `architectures/web-app/error-flow.md` |  | 5 / 3 |
-| `ARCH-WEB-APP-FEATURE-STRUCTURE` | guide | `architectures/web-app/feature-structure.md` |  | 5 / 5 |
+| `ARCH-WEB-APP-FEATURE-STRUCTURE` | guide | `architectures/web-app/feature-structure.md` |  | 6 / 4 |
 | `ARCH-WEB-APP-HOOK` | guide | `architectures/web-app/hook.md` |  | 8 / 3 |
 | `ARCH-WEB-APP-LAYERS` | overview | `architectures/web-app/layers.md` |  |  |
 | `ARCH-WEB-APP-MODULES` | rules | `architectures/web-app/modules.md` |  | 5 / 3 |
@@ -127,7 +127,7 @@
 | `PLAT-WEB-FIREBASE` | guide | `platforms/web/firebase.md` |  |  |
 | `PLAT-WEB-FORMS` | guide | `platforms/web/forms.md` |  |  |
 | `PLAT-WEB-HTTP` | guide | `platforms/web/http-client.md` |  |  |
-| `PLAT-WEB-HTTP-BROWSER` | guide | `platforms/web/http-browser.md` |  | 11 / 2 |
+| `PLAT-WEB-HTTP-BROWSER` | guide | `platforms/web/http-browser.md` |  | 13 / 0 |
 | `PLAT-WEB-NEXT` | guide | `platforms/web/nextjs.md` |  |  |
 | `PLAT-WEB-NEXT-APP` | guide | `platforms/web/nextjs-app.md` |  |  |
 | `PLAT-WEB-NEXT-APP-DEPLOY` | guide | `platforms/web/nextjs-app-deploy.md` |  |  |
