@@ -82,6 +82,11 @@ enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-NEXT-STATIC-BROWSER-01 — Browser-only APIs (`window`, `document`, `localStorage`, `navigator`) MUST be used only inside effects or event handlers, never at module scope or during render, because Client Components are prerendered during the build.
 ```
 
+Reading a browser value that the first render needs (whether `navigator.share` exists, the current
+time for a countdown) through `useSyncExternalStore` with a server snapshot is the allowed form: the
+server snapshot renders during the build, and the client snapshot replaces it after hydration without a
+mismatch.
+
 This is the mechanism behind `PLAT-WEB-NEXT-FB-INIT-01` and
 `ARCH-WEB-APP-COMPOSE-GLOBAL-01`: a module that touches `window` or initialises an SDK
 at its top level fails the build, or worse, works in development and fails in production.

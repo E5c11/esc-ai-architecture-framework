@@ -57,8 +57,10 @@ enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-LIB-01 — Browser DataSources MUST call the backend only through one shared request executor built by the composition, and MUST NOT call `fetch` themselves.
 ```
 
-The executor interface and `HttpResult` are `PLAT-WEB-HTTP`'s (`PLAT-WEB-HTTP-LIB-01`);
-only its construction and its policies differ. Headers, the base URL, the access token, the
+The executor's shape is `PLAT-WEB-HTTP`'s (`PLAT-WEB-HTTP-LIB-01`) with two differences a browser
+needs: a success carries `data: unknown`, never a generic `T` behind a cast, because the DataSource parses
+it (`ARCH-WEB-APP-DS-PARSE-01`, `ARCH-WEB-APP-EFLOW-ASSERT-01`); and a failure says whether it was an abort,
+so a cancelled request does not look like a lost connection. A call passes `{ auth, signal }`. Headers, the base URL, the access token, the
 single refresh and the retry live in one place, so a DataSource is query construction,
 parsing, mapping and error translation (`ARCH-WEB-APP-DS-RESPONSIBILITY-01`).
 
@@ -71,20 +73,24 @@ export function createBrowserExecutor(deps: {
   fetchFn?: typeof fetch;            // injected so the executor is tested with a fake
 }): HttpRequestExecutor {
   const fetchFn = deps.fetchFn ?? ((input, init) => fetch(input, init));
-  async function send<T>(path: string, init: RequestInit, auth: boolean, retried = false): Promise<HttpResult<T>> {
+  async function send(path: string, init: RequestInit, options: RequestOptions, retried = false): Promise<HttpResult> {
     let res: Response;
     try {
-      res = await fetchFn(`${deps.baseUrl}${path}`, { ...init, headers: deps.headers.getHeaders(auth) });
-    } catch {
-      return { ok: false, status: 0, body: null };          // network failure -> `offline` in the mapping
+      res = await fetchFn(`${deps.baseUrl}${path}`, { ...init, headers: deps.headers.getHeaders(options.auth), signal: options.signal });
+    } catch (cause) {
+      // No response: an abort stays an abort (ARCH-WEB-APP-ERR-CANCEL-01); anything else is `offline`.
+      return { ok: false, status: 0, body: null, aborted: isAbort(cause) };
     }
-    if (res.status === 401 && auth && !retried && (await deps.refresher.refresh())) {
-      return send<T>(path, init, auth, true);                // once, after the shared refresh
+    if (res.status === 401 && options.auth && !retried) {
+      const refresh = await deps.refresher.refresh();
+      if (refresh === 'refreshed') return send(path, init, options, true);   // once, after the shared refresh
+      if (refresh === 'unavailable') return { ok: false, status: 0, body: null }; // session kept, call fails as offline
+      // 'rejected': the refresher cleared the session; the 401 reaches the DataSource
     }
-    if (!res.ok) return { ok: false, status: res.status, body: await safeJson(res) };
-    return { ok: true, status: res.status, data: (res.status === 204 ? undefined : await res.json()) as T };
+    const body = await safeJson(res);                        // `unknown`: the DataSource parses it
+    return res.ok ? { ok: true, status: res.status, data: body } : { ok: false, status: res.status, body };
   }
-  // getJson / postJson / patchJson / deleteJson call send(path, init, auth)
+  // getJson / postJson / patchJson / deleteJson call send(path, init, options)
 }
 ```
 
@@ -102,7 +108,9 @@ This is `ARCH-WEB-APP-COMPOSE-CONFIG-01` and `PLAT-WEB-NEXT-STATIC-ENV-01` appli
 REST backend: `NEXT_PUBLIC_*` values are inlined into the bundle, so anyone can read them,
 and an artifact built for the development backend and deployed to production talks to
 development without an error. A required value that is missing fails `loadConfig` with a
-message naming it; it is never replaced by a default that points at another environment.
+message naming it. A default backend URL is allowed only when the project has exactly one deployed
+environment and the default is that environment, recorded beside the default; then a build for any other
+environment must set the URL, and its deploy step checks it did. With two deploy targets there is no default.
 
 ## The session
 
@@ -118,8 +126,11 @@ violation_message: Violates PLAT-WEB-HTTP-BROWSER-SESSION-01 — The tokens MUST
 
 One owner of auth state, the rule `PLAT-WEB-FB-AUTH-01` sets for Firebase, here without an
 SDK to be that owner. The store exposes `get()`, `set(tokens)`, `clear()` and
-`subscribe(listener)` returning an unsubscribe function (`ARCH-WEB-APP-DS-RETURN-02`); the
-signed-in state a Hook sees is derived from it (signed in, signed out), never the token.
+`subscribe(listener)` returning an unsubscribe function (`ARCH-WEB-APP-DS-RETURN-02`), plus `restore()`,
+which reads the storage mirror once. The store starts signed out (it is built during the prerender, too),
+so `restore()` runs in the browser, from the first subscription to the signed-in state, which a Hook
+makes in an effect. The signed-in state a Hook sees is derived from the store (signed in, signed out,
+and identity fields such as the user id), never a token; the auth DataSource exposes it as a subscription.
 
 ```rule
 id: PLAT-WEB-HTTP-BROWSER-STORE-01
@@ -134,7 +145,8 @@ violation_message: Violates PLAT-WEB-HTTP-BROWSER-STORE-01 — Tokens MUST be ke
 Any script on the page can read every one of these places, so none is safe from a
 cross-site scripting bug; the choice limits **how long** a stolen token stays usable.
 `sessionStorage` is cleared when the tab closes and is not shared between tabs, so a
-signed-in tab does not leave a session behind on a shared school computer. A project that
+signed-in tab does not leave a session behind on a shared school computer. The mirror may also hold the
+identity the page shows after a reload (user id, the email signed in with), and nothing more. A project that
 needs a session to outlive the tab records the reason and the extra exposure in its own
 policy; a cookie the backend sets as `HttpOnly` is a backend design, outside this guide.
 Reading `sessionStorage` happens only in the browser, after hydration
@@ -145,12 +157,12 @@ and error reports redact tokens with everything else (`ARCH-WEB-APP-OBS-REDACT-0
 
 ```rule
 id: PLAT-WEB-HTTP-BROWSER-AUTH-01
-statement: The executor MUST attach the access token through an injected header provider that reads the session store, a call MUST say whether it needs authentication, and a DataSource MUST NOT read, pass or store a token itself.
+statement: The executor MUST attach the access token through an injected header provider that reads the session store, a call MUST say whether it needs authentication, and a DataSource MUST NOT read, pass or store a token, except the auth DataSource, which MAY store the tokens a sign-in returns and send the refresh token to logout.
 type: hard
 scope: behavior
 evidence: unproven
 enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-HTTP-BROWSER-AUTH-01 — The executor MUST attach the access token through an injected header provider that reads the session store, a call MUST say whether it needs authentication, and a DataSource MUST NOT read, pass or store a token itself.
+violation_message: Violates PLAT-WEB-HTTP-BROWSER-AUTH-01 — The executor MUST attach the access token through an injected header provider that reads the session store, a call MUST say whether it needs authentication, and only the auth DataSource MAY handle a token, to store a sign-in's tokens and to send the refresh token to logout.
 ```
 
 `PLAT-MOB-HTTP-AUTH-01` for the browser. Sign-in, registration and password-reset calls are
@@ -158,12 +170,12 @@ unauthenticated; sending a stale token to them invites a confusing 401.
 
 ```rule
 id: PLAT-WEB-HTTP-BROWSER-REFRESH-01
-statement: On a 401 from an authenticated call the executor MUST run one shared refresh for every request waiting on it, MUST retry each original request once after a successful refresh, and MUST clear the session and return the 401 when the refresh fails; the refresh call itself MUST NOT trigger a refresh.
+statement: On a 401 from an authenticated call the executor MUST run one shared refresh for every request waiting on it and MUST retry each original request once after it succeeds; when the backend rejects the refresh token the session MUST be cleared and the 401 returned, when the refresh cannot reach the backend the session MUST be kept and the call fail as offline, and the refresh and logout calls MUST NOT trigger a refresh.
 type: hard
 scope: behavior
 evidence: unproven
 enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-HTTP-BROWSER-REFRESH-01 — On a 401 from an authenticated call the executor MUST run one shared refresh for every request waiting on it, MUST retry each original request once after a successful refresh, and MUST clear the session and return the 401 when the refresh fails; the refresh call itself MUST NOT trigger a refresh.
+violation_message: Violates PLAT-WEB-HTTP-BROWSER-REFRESH-01 — On a 401 from an authenticated call the executor MUST run one shared refresh for every waiting request and retry each once after it succeeds; a rejected refresh token clears the session and returns the 401, an unreachable backend keeps the session and fails the call as offline, and refresh and logout calls MUST NOT trigger a refresh.
 ```
 
 `PLAT-MOB-HTTP-AUTH-02` for the browser. A screen that loads three things at once gets
@@ -173,24 +185,27 @@ spent, so the user is signed out for no reason. The refresher holds the in-fligh
 and hands it to every caller until it settles:
 
 ```typescript
+export type RefreshOutcome = 'refreshed' | 'rejected' | 'unavailable';
+
 export function createTokenRefresher(deps: { store: SessionStore; refreshCall: RefreshCall }): TokenRefresher {
-  let inFlight: Promise<boolean> | null = null;
+  let inFlight: Promise<RefreshOutcome> | null = null;
   return {
     refresh() {
       inFlight ??= run().finally(() => { inFlight = null; });
       return inFlight;
     },
   };
-  async function run(): Promise<boolean> {
+  async function run(): Promise<RefreshOutcome> {
     const current = deps.store.get();
-    if (!current) return false;
+    if (!current) return 'rejected';
     const result = await deps.refreshCall(current.refreshToken);   // unauthenticated, never refreshes itself
+    if (deps.store.get() !== current) return 'rejected';           // signed out or in again meanwhile: discard
     if (!result.ok) {
-      if (result.status === 400 || result.status === 401) deps.store.clear();  // token rejected: signed out
-      return false;                                                // offline or 5xx: keep the session, fail this call
+      if (result.rejected) deps.store.clear();                     // token refused: signed out
+      return result.rejected ? 'rejected' : 'unavailable';         // offline, 5xx, 429: keep the session
     }
-    deps.store.set(result.tokens);
-    return true;
+    deps.store.set({ ...current, ...result.tokens });               // the pair, in one write (REFRESH-02)
+    return 'refreshed';
   }
 }
 ```
@@ -198,7 +213,15 @@ export function createTokenRefresher(deps: { store: SessionStore; refreshCall: R
 Only a refresh token the backend **rejected** ends the session. A refresh that failed
 because the network dropped or the backend returned a 5xx or a 429 leaves the session in
 place and fails the current call, so a flaky connection does not sign the user out (the
-same distinction `ARCH-WEB-APP-EFLOW-NETWORK-01` draws for presentation).
+same distinction `ARCH-WEB-APP-EFLOW-NETWORK-01` draws for presentation). "Rejected" is decided from the
+backend's answer to the refresh call (a 400 or 401, or its refresh-token error codes), never from the
+original call's 401. A refresh that settles after the user signed out, or signed in again, belongs to
+nobody and is discarded.
+
+A request that was sent with an access token the session has since replaced (another call's refresh
+finished while it was in flight) retries with the current token instead of starting a second refresh. With
+a rotating refresh token a second refresh is harmless but wasted; without the check, it is one more
+request racing a reload.
 
 ```rule
 id: PLAT-WEB-HTTP-BROWSER-REFRESH-02
@@ -226,7 +249,8 @@ violation_message: Violates PLAT-WEB-HTTP-BROWSER-SIGNOUT-01 — Signing out MUS
 ```
 
 A failed logout call (offline, already expired) is not an error the user can act on; the
-local session is what the user asked to end, so it always ends.
+local session is what the user asked to end, so it always ends. Logout carries the refresh token in its
+body and is sent unauthenticated, so a 401 from it never starts a refresh (`PLAT-WEB-HTTP-BROWSER-REFRESH-01`).
 
 ## Errors
 
@@ -246,18 +270,27 @@ parses it (`ARCH-WEB-APP-DS-PARSE-01`), then maps:
 
 | Backend answer | `AppError` |
 |---|---|
+| Aborted by the caller | `cancelled` |
 | Network failure (status 0) | `offline` |
 | 401 after the refresh | `unauthorized` |
 | 403 | `forbidden` |
 | 404 on an identity that must exist | `notFound` |
+| 429, or the backend's rate-limit code | `rateLimited` |
 | A code that names a field (e.g. "email already registered", "password too short") | `validation` with that field |
 | Anything else, including an unparseable body | `unexpected`, logged once (`ARCH-WEB-APP-ERR-UNKNOWN-01`) |
+
+A call's own codes are checked before the table: "invalid credentials" on a sign-in is a 401 that
+means "wrong password", not "session ended", so the sign-in DataSource maps it first.
 
 The `message` the backend sends is for its developers; the wording the user sees comes
 from the presentation module (`ARCH-WEB-APP-EFLOW-PRESENT-01`). When a screen needs to act
 on a code that has no `AppError` variant (for example "this email is already registered:
-offer sign-in instead"), the DataSource maps it to `validation` on the field it concerns
-with a stable key, and the Hook decides what to offer from that key.
+offer sign-in instead"), the DataSource maps it to `validation` with a stable key, on the field
+it concerns or, for a code about the whole form such as invalid credentials, on a named form-level
+key. The Hook turns those feature keys into a small presentation union of its own (for example
+`{ kind: 'alreadyRegistered' }`), because a Component may not import the domain's keys
+(`ARCH-WEB-APP-DEP-05`); every other error reaches the Component as the full `AppError`
+(`ARCH-WEB-APP-HOOK-ERROR-01`).
 
 ## Access and origins
 
@@ -278,17 +311,19 @@ is nothing else in the HTML.
 
 ```rule
 id: PLAT-WEB-HTTP-BROWSER-CORS-01
-statement: Every origin a build is deployed to MUST be in the allowed origins of the backend environment that build targets before the deploy, and a plan that adds a deployed origin or calls a backend path with a new method or header MUST include the backend change.
+statement: Every origin the host serves a build from, including the host's default domains, MUST be in the allowed origins of the backend environment that build targets before the deploy, or the plan MUST record which of those origins are left unsupported, and a plan that adds an origin or calls a backend path with a new method or header MUST include the backend change.
 type: hard
 scope: structure
 evidence: unproven
 enforced_by: [planner, reviewer]
-violation_message: Violates PLAT-WEB-HTTP-BROWSER-CORS-01 — Every origin a build is deployed to MUST be in the allowed origins of the backend environment that build targets before the deploy, and a plan that adds a deployed origin or a new method or header MUST include the backend change.
+violation_message: Violates PLAT-WEB-HTTP-BROWSER-CORS-01 — Every origin the host serves a build from, including its default domains, MUST be allowed by the targeted backend before the deploy or recorded as unsupported, and a plan that adds an origin or a new method or header MUST include the backend change.
 ```
 
 A CORS rejection shows in the browser as a network failure (`offline`) with no response to
 inspect, and only in a deployed build: local development usually runs on an origin the
-backend already allows. With bearer tokens in a header and no cookies, the backend does
+backend already allows. Hosts serve the same files from more than one origin (Firebase Hosting also
+serves `<project>.web.app` and `<project>.firebaseapp.com`); a visitor on one the backend does not allow
+sees a page that cannot sign in. With bearer tokens in a header and no cookies, the backend does
 not need to allow credentials, and should not.
 
 ## Testing
@@ -304,7 +339,9 @@ violation_message: Violates PLAT-WEB-HTTP-BROWSER-TEST-01 — The executor, the 
 ```
 
 These are the failures no manual test reliably finds: a token expiring during a burst of
-requests, or a refresh racing a reload. They are plain TypeScript with no React, so they
+requests, or a refresh racing a reload. The refresher alone may be tested against a fake refresh call, as
+long as the executor's tests cover the refresh over a fake `fetch`; the sign-out case is tested at the auth
+DataSource, which owns sign-out. They are plain TypeScript with no React, so they
 run under the project's ordinary unit-test runner. DataSources above the executor are
 tested against a fake `HttpRequestExecutor` (`ARCH-WEB-APP-TEST-01`, `QG-WEB-TESTING`).
 

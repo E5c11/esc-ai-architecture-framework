@@ -34,9 +34,15 @@ type AppError =
   | { type: 'unauthorized' }
   | { type: 'forbidden' }
   | { type: 'notFound' }
+  | { type: 'rateLimited' }
+  | { type: 'cancelled' }
   | { type: 'validation'; fieldErrors: Record<string, string[]> }
   | { type: 'unexpected'; message: string };
 ```
+
+`rateLimited` is a provider telling the caller to slow down (HTTP 429, a quota error): recoverable
+by waiting, and not a defect, so it is not `unexpected`. `cancelled` is the caller's own abort
+(`ARCH-WEB-APP-ERR-CANCEL-01`); a Hook ignores it rather than showing it.
 
 `validation` is shaped like zod's `.flatten().fieldErrors` deliberately — it
 composes directly with react-hook-form's `setError` instead of introducing a
