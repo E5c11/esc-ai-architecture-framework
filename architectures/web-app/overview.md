@@ -421,13 +421,22 @@ violation_message: Violates ARCH-WEB-APP-TEST-01 — A layer SHOULD be tested ag
 
 ```rule
 id: ARCH-WEB-APP-OBS-REDACT-01
-statement: Secrets, tokens, credentials, personal data (names, phone numbers, addresses, precise locations) and full provider payloads MUST NOT appear in logs, error messages, error reports, analytics or URLs; values crossing into any of these MUST pass through one redaction function.
+statement: Secrets, tokens, credentials, personal data (names, email addresses, user ids, phone numbers, addresses, precise locations), share codes and full provider payloads MUST NOT appear in logs, error messages, error reports, analytics or URLs; one set of redaction rules MUST be applied to values where they enter a log and to the whole payload in the error reporter's send hooks.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-OBS-REDACT-01 — Secrets, tokens, credentials, personal data (names, phone numbers, addresses, precise locations) and full provider payloads MUST NOT appear in logs, error messages, error reports, analytics or URLs; values crossing into any of these MUST pass through one redaction function.
+violation_message: Violates ARCH-WEB-APP-OBS-REDACT-01 — Secrets, tokens, credentials, personal data (incl. emails and user ids), share codes and full provider payloads MUST NOT appear in logs, error messages, error reports, analytics or URLs; one set of redaction rules applies where values enter a log and to the whole payload in the reporter's send hooks.
 ```
+
+An error reporter SDK builds most of what leaves the page itself (request headers, breadcrumbs, spans, the
+user, IP inference), so redacting the values the app logs is not enough: the reporter's send hooks
+(`beforeSend`, `beforeBreadcrumb`, `beforeSendSpan` in Sentry) apply the same rules to the whole payload,
+query strings included, also in free text such as an exception message. Check a real payload, not only unit
+tests: the `ampm-website` pilot found a query surviving inside an exception message only on the live
+envelope. Some data is derived by the reporting service from the connection and never passes the client
+(Sentry stores a location from the IP); switch that off in the service's settings. A rendered error message
+counts as an "error message": a boundary shows presentation copy, never `error.message`.
 
 A `server`-runtime app already has a server boundary (Server Actions and Route
 Handlers); that is not a BFF in this sense. A BFF is an additional service.

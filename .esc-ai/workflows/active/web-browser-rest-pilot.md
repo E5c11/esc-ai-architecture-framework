@@ -106,3 +106,17 @@ rotated-away refresh token once its successor was used (`AMPM-BE-AUTH-REFRESH-RE
   banner feature. Clarified from the run: shared UI state is not feature state, the provider wraps the
   narrowest element (one graph per page), and an optional island may render nothing on failure.
   `ARCH-WEB-APP-FEAT-CONTENT-01` is now `evidence: exercised`.
+
+## Third slice: error reporting to Sentry (2026-10-31)
+
+`ampm-website` task `sentry-error-reporting-ampm-website`: `@sentry/browser` behind the logger, started from
+`instrumentation-client.ts`, scrubbed in the send hooks, ingest host in the CSP, source maps uploaded and
+removed before deploy. Live smoke test on askmoreprepmore.com: the first envelope kept a query inside the
+exception message (fixed in `f4320aa`), the second was clean; the stored event showed a server-derived
+location (a Sentry project setting, not client data). `ARCH-WEB-APP-OBS-REDACT-01` now names emails, user
+ids and share codes and requires the reporter's send hooks and a real-payload check;
+`ARCH-WEB-APP-EFLOW-LOG-01` allows one record in several sinks and names the global handler;
+`ARCH-WEB-APP-EFLOW-BOUNDARY-01` says how a boundary above the composition gets the reporter;
+`ARCH-WEB-APP-ERR-UNKNOWN-01` defines "full cause". The first three move to `evidence: exercised`.
+Not yet reflected: `ARCH-WEB-APP-COMPOSE-CONFIG-01` and `-COMPOSE-GLOBAL-01` should name
+`instrumentation-client` as a second, browser-only entry with a lighter parser.

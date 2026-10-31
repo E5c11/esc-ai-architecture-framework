@@ -80,6 +80,11 @@ enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-ERR-UNKNOWN-01 — Unknown failures MUST be logged with full cause and mapped to an explicit `unexpected` outcome.
 ```
 
+In `static-export` the code logs through the injected logger and the composition backs that logger with the
+client error reporter, so a call site never reports separately. "Full cause" means the failure's identity
+(operation, status, error code, schema paths) and, for a defect, its stack, after redaction
+(`ARCH-WEB-APP-OBS-REDACT-01`), never the provider's body.
+
 Rationale specific to this rule: Next.js strips a thrown Server Action error to
 an opaque digest in production — the caller sees neither the message nor the
 stack. Returning an explicit `unexpected` outcome instead of throwing is what

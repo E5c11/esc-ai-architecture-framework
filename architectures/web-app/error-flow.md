@@ -87,12 +87,12 @@ if (!result.ok) return setState({ status: 'error', error: result.error });
 
 ```rule
 id: ARCH-WEB-APP-EFLOW-LOG-01
-statement: An unexpected error MUST be logged exactly once, at the layer that first handles it (the DataSource for a provider failure, the boundary for a defect), and a layer above MUST NOT log the same error again.
+statement: An unexpected error MUST be recorded exactly once, at the layer that first handles it (the DataSource for a provider failure, the boundary for a defect, the reporter's global handler for a defect outside render), and a layer above MUST NOT record the same error again; one record MAY go to several sinks (the console and the error reporter).
 type: hard
 scope: error-handling
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
-violation_message: Violates ARCH-WEB-APP-EFLOW-LOG-01 — An unexpected error MUST be logged exactly once, at the layer that first handles it (the DataSource for a provider failure, the boundary for a defect), and a layer above MUST NOT log the same error again.
+violation_message: Violates ARCH-WEB-APP-EFLOW-LOG-01 — An unexpected error MUST be recorded exactly once, at the layer that first handles it (DataSource, boundary, or the reporter's global handler outside render); one record MAY go to several sinks.
 ```
 
 The same failure logged at four layers is four entries to reconcile and no clearer cause.
@@ -167,10 +167,17 @@ id: ARCH-WEB-APP-EFLOW-BOUNDARY-01
 statement: A route-level error boundary (Next.js `error.tsx` or a React error boundary) MUST catch every thrown defect, report it once through the error reporter, and show a recoverable screen with a retry or a way back; an uncaught defect MUST NOT blank the page.
 type: hard
 scope: error-handling
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates ARCH-WEB-APP-EFLOW-BOUNDARY-01 — A route-level error boundary (Next.js `error.tsx` or a React error boundary) MUST catch every thrown defect, report it once through the error reporter, and show a recoverable screen with a retry or a way back; an uncaught defect MUST NOT blank the page.
 ```
+
+A route boundary sits above the composition's provider (it wraps the page that mounts it), so it cannot
+take the reporter from the graph; it gets it from the composition's factory directly. "Once" relies on the
+reporter knowing the error it already sent (Sentry marks the error object as captured, and React 19 does not
+rethrow a caught error); a hand-written reporter needs its own dedupe. A defect in an event handler, effect
+or timer never reaches a boundary: the reporter's global handler is its boundary. Keep a root
+`global-error.tsx` too (`PLAT-WEB-NEXT-BOUNDARY-01`), or a root-layout defect has no screen.
 
 The boundary files themselves, and where they sit in the route tree, are
 `PLAT-WEB-NEXT`'s concern; this rule is what they are for.
