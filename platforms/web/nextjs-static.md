@@ -4,6 +4,7 @@ type: guide
 layer: platforms
 platform: [web]
 architecture: [web-app]
+runtime: [static-export]
 requires: [PLAT-WEB-NEXT, ARCH-WEB-APP]
 related: [PLAT-WEB-NEXT-FIREBASE, PLAT-WEB-NEXT-DATA, PLAT-WEB-DEPLOY]
 tags: [nextjs, static-export, output-export, prerender, generate-static-params, trailing-slash, client-components, hosting]

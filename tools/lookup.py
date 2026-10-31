@@ -62,6 +62,11 @@ LAYER_ORDER = {
 }
 
 # Maps project profile frameworks fields to additional doc IDs.
+#
+# A value may name documents for more than one platform or runtime (`cloud: firebase` is a mobile
+# guide and a Next.js guide). `applicable_extra_docs` keeps only the documents whose own `platform`
+# and `runtime` metadata match the profile, so a value never brings a guide for another platform or
+# for a runtime the project does not run.
 PROFILE_DOC_MAP: dict[str, dict[str, list[str]]] = {
     "database": {
         "room":       ["PLAT-MOB-ROOM"],
@@ -80,11 +85,11 @@ PROFILE_DOC_MAP: dict[str, dict[str, list[str]]] = {
         "ktor":     ["PLAT-MOB-HTTP"],
         "http":     ["PLAT-MOB-HTTP"],
         "retrofit": ["PLAT-MOB-HTTP"],
-        "fetch":    ["PLAT-WEB-HTTP"],
-        "axios":    ["PLAT-WEB-HTTP"],
+        "fetch":    ["PLAT-WEB-HTTP", "PLAT-WEB-HTTP-BROWSER"],
+        "axios":    ["PLAT-WEB-HTTP", "PLAT-WEB-HTTP-BROWSER"],
     },
     "cloud": {
-        "firebase": ["PLAT-MOB-FIREBASE"],
+        "firebase": ["PLAT-MOB-FIREBASE", "PLAT-WEB-NEXT-FIREBASE"],
     },
     "notifications": {
         "workmanager": ["PLAT-MOB-NOTIF"],
@@ -112,11 +117,12 @@ PROFILE_DOC_MAP: dict[str, dict[str, list[str]]] = {
     },
     # A web-app project's runtime (architectures/web-app/overview.md, ARCH-WEB-APP-RUNTIME-01)
     # decides where its DataSource runs, so it selects the platform guides that differ by
-    # runtime. `static-export` is the browser-to-Firebase shape PLAT-WEB-NEXT-FIREBASE is
-    # written for; a static-export project on another backend ignores that guide.
+    # runtime. The provider guide comes from the provider's own key, not from the runtime:
+    # a static export on Firebase declares `cloud: firebase` (PLAT-WEB-NEXT-FIREBASE), one
+    # calling its own REST backend declares `network: fetch` (PLAT-WEB-HTTP-BROWSER).
     "runtime": {
         "server": ["PLAT-WEB-NEXT-APP", "PLAT-WEB-NEXT-APP-DEPLOY", "PLAT-WEB-NEXT-DATA", "PLAT-WEB-HTTP"],
-        "static-export": ["PLAT-WEB-NEXT-STATIC", "PLAT-WEB-NEXT-FIREBASE"],
+        "static-export": ["PLAT-WEB-NEXT-STATIC"],
     },
     # Values are a tracking philosophy, not a library, so unlike every other
     # entry above the value itself doesn't imply a platform -- all resolve to
@@ -337,10 +343,44 @@ def build_index(root: Path) -> dict[str, dict]:
                 "requires": meta.get("requires", []) if isinstance(meta.get("requires"), list) else [],
                 "related":  meta.get("related",  []) if isinstance(meta.get("related"),  list) else [],
                 "platform": platform,
+                "runtime":  _as_list(meta.get("runtime", [])),
                 "status":   meta.get("status", ""),
                 "rule_evidence": _rule_evidence(text),
             }
     return index
+
+
+def _as_list(value) -> list[str]:
+    if isinstance(value, list):
+        return value
+    return [value] if value else []
+
+
+def doc_applies_to_profile(doc: dict, platform: str | None, runtime: str | None) -> bool:
+    """
+    Whether a document's own `platform` and `runtime` metadata admit a project on `platform` and `runtime`.
+    A document with no `runtime` applies to every runtime, and a profile that declares no platform or
+    runtime is not filtered on it, so profiles and documents written before these fields keep resolving
+    exactly as they did.
+    """
+    doc_platforms = _as_list(doc.get("platform", []))
+    if platform and doc_platforms and "all" not in doc_platforms and platform not in doc_platforms:
+        return False
+    doc_runtimes = _as_list(doc.get("runtime", []))
+    if runtime and doc_runtimes and runtime not in doc_runtimes:
+        return False
+    return True
+
+
+def applicable_extra_docs(extra_ids: list[str], profile: dict, index: dict[str, dict]) -> list[str]:
+    """Drop profile-selected documents written for another platform or runtime than the profile's."""
+    platform = profile.get("platform") if isinstance(profile.get("platform"), str) else None
+    frameworks = profile.get("frameworks", {})
+    runtime = frameworks.get("runtime") if isinstance(frameworks, dict) else None
+    return [
+        doc_id for doc_id in extra_ids
+        if doc_id not in index or doc_applies_to_profile(index[doc_id], platform, runtime)
+    ]
 
 
 def build_index_from_file(index_path: Path) -> dict[str, dict]:
@@ -590,7 +630,7 @@ def main() -> int:
             print(f"Error: profile not found: {profile_path}", file=sys.stderr)
             return 1
         profile = parse_profile(profile_path)
-        extra_ids = profile_extra_docs(profile)
+        extra_ids = applicable_extra_docs(profile_extra_docs(profile), profile, index)
         if extra_ids:
             print(f"Profile adds: {', '.join(extra_ids)}\n")
 

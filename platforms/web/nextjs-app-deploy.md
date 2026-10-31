@@ -4,6 +4,7 @@ type: guide
 layer: platforms
 platform: [web]
 architecture: [web-app]
+runtime: [server]
 requires: [PLAT-WEB-NEXT-APP]
 related: [PLAT-WEB-DEPLOY]
 tags: [deploy, docker, cloud-run, standalone, domain-mapping, tls, build, connection-pool]

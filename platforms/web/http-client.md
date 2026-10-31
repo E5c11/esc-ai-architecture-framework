@@ -4,6 +4,7 @@ type: guide
 layer: platforms
 platform: [web]
 architecture: [web-app]
+runtime: [server]
 requires: [ARCH-WEB-APP, ARCH-WEB-APP-ERR-CLASSES, CORE-DI]
 related: [PLAT-WEB-NEXT-APP, QG-WEB-TESTING]
 tags: [http, fetch, rest, executor, header-provider, retry, typed-errors, testing, msw]
@@ -15,7 +16,10 @@ status: active
 ## Scope
 
 This doc covers REST calls made from the Route Handler/Server Action
-boundary only. `ARCH-WEB-APP`'s own layer-boundary rule — "Client Component
+boundary only, in the `server` runtime. A `static-export` web-app has no such
+boundary: its DataSources call the backend from the browser and hold the tokens
+themselves, which `PLAT-WEB-HTTP-BROWSER` covers. That guide reuses this one's
+executor interface and `HttpResult`. `ARCH-WEB-APP`'s own layer-boundary rule — "Client Component
 ... never fetches a backend or opens a DB connection itself" — already
 establishes that there is no client-side REST layer to document: every call
 this doc governs happens server-side, inside a Route Handler or Server

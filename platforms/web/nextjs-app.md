@@ -4,6 +4,7 @@ type: guide
 layer: platforms
 platform: [web]
 architecture: [web-app]
+runtime: [server]
 requires: [PLAT-WEB-NEXT, ARCH-WEB-APP, ARCH-WEB-APP-ERR-CLASSES]
 related: [PLAT-WEB-HTTP, PLAT-WEB-NEXT-APP-DEPLOY, QG-WEB-TESTING]
 tags: [nextjs, server-actions, route-handlers, revalidation, outcome, error-digest]

@@ -15,9 +15,15 @@
 #   ---
 
 schema:
-  version: "1.3"
+  version: "1.4"
   type: document-metadata
   changelog:
+    "1.4": >
+      Added the optional `runtime` field (`server`, `static-export`) — a web-app document that
+      applies to only one runtime says so, and tools/lookup.py (and esc-exec, through the
+      `applicability` section of profile-doc-map.json) drops it for a project on the other
+      runtime. A document with no `runtime` applies to every runtime. See
+      architectures/web-app/overview.md (ARCH-WEB-APP-RUNTIME-01).
     "1.3": >
       Added `python` to the `platform` enum and `python-app` to the `architecture` enum —
       Practical Clean expressed for Python programs with one or more delivery surfaces
@@ -88,6 +94,15 @@ fields:
     description: >
       Which architectures this document applies to.
       Use [all] for architecture-agnostic documents.
+
+  runtime:
+    type: array
+    required: false
+    values: [server, static-export]
+    description: >
+      The web-app runtimes this document applies to. Omit it when the document applies to
+      every runtime (most do). A profile-selected document whose `runtime` does not include the
+      project's `frameworks.runtime` is not loaded for that project.
 
   requires:
     type: array

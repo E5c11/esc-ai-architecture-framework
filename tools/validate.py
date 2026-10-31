@@ -8,7 +8,7 @@ Checks:
   3. All IDs referenced in `requires` and `related` exist (reference check).
   4. No circular `requires` chains (cycle check).
   5. Document ID prefix matches the document's layer directory.
-  6. Metadata fields (`type`, `layer`, `platform`, `architecture`, `status`)
+  6. Metadata fields (`type`, `layer`, `platform`, `architecture`, `status`, optional `runtime`)
      use only recognized values.
   7. Every ```rule block matches schemas/rule.yaml (required fields, enums).
   8. No two ```rule blocks anywhere in the repo share the same rule ID.
@@ -81,6 +81,7 @@ ALLOWED_ARCHITECTURES = {
     "vertical-slice", "hexagonal", "all"
 }
 ALLOWED_STATUSES = {"", "active", "stub", "deprecated"}
+ALLOWED_RUNTIMES = {"server", "static-export"}
 
 
 # ---------------------------------------------------------------------------
@@ -208,6 +209,7 @@ def collect_documents(root: Path) -> list[dict]:
                 "platform": meta.get("platform", []) if isinstance(meta.get("platform"), list) else [meta.get("platform", "")],
                 "architecture": meta.get("architecture", []) if isinstance(meta.get("architecture"), list) else [meta.get("architecture", "")],
                 "status":   meta.get("status", ""),
+                "runtime":  meta.get("runtime", []) if isinstance(meta.get("runtime"), list) else ([meta["runtime"]] if meta.get("runtime") else []),
                 "requires": meta.get("requires", []) if isinstance(meta.get("requires"), list) else [],
                 "related":  meta.get("related",  []) if isinstance(meta.get("related"),  list) else [],
                 "body":     text,
@@ -296,6 +298,13 @@ def check_metadata_values(documents: list[dict]) -> list[str]:
                     f"  INVALID METADATA  {field}={invalid!r} in {path}; "
                     f"allowed={sorted(allowed)!r}"
                 )
+        # Optional: only a document that differs by web-app runtime declares it.
+        invalid_runtimes = [value for value in doc["runtime"] if value not in ALLOWED_RUNTIMES]
+        if invalid_runtimes:
+            errors.append(
+                f"  INVALID METADATA  runtime={invalid_runtimes!r} in {path}; "
+                f"allowed={sorted(ALLOWED_RUNTIMES)!r}"
+            )
     return errors
 
 

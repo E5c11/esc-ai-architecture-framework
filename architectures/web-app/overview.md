@@ -394,9 +394,10 @@ violation_message: Violates ARCH-WEB-APP-RUNTIME-02 — In the `static-export` r
 ```
 
 Everything that ships in a browser bundle is public. Under `static-export` the
-provider's access rules (Firestore security rules, callable-function auth checks)
-are the access boundary; a client-side route guard is a convenience for the user
-interface and is never the boundary.
+provider's access rules are the access boundary: Firestore security rules and
+callable-function auth checks for Firebase, or the project's own REST backend
+authorising every call by its bearer token (`PLAT-WEB-HTTP-BROWSER`). A client-side
+route guard is a convenience for the user interface and is never the boundary.
 
 ```rule
 id: ARCH-WEB-APP-BFF-01
@@ -437,7 +438,9 @@ guard component. Auth is checked once, before any Server Component renders, rath
 than repeated per protected route the way `web-spa`'s `AuthGuard` does. In the
 `static-export` runtime there is no request-time proxy; the provider's access
 rules enforce access (`ARCH-WEB-APP-RUNTIME-02`) and the client reflects the
-signed-in state.
+signed-in state. With Firebase the SDK owns that state (`PLAT-WEB-NEXT-FIREBASE`);
+with the project's own backend a session store in the composition owns it
+(`PLAT-WEB-HTTP-BROWSER-SESSION-01`).
 
 ## Deliberately out of scope
 

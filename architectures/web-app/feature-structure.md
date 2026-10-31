@@ -103,6 +103,30 @@ show something feature B owns, the route renders B and passes it to A as `childr
 or a slot prop. A imports nothing of B (`ARCH-WEB-APP-DEP-07`), and the cross-feature
 decision does not hide in a hook "because the route felt like too many layers".
 
+### Content routes in a web-app
+
+Many web-apps also carry pages that are only content: a home page, an FAQ, a privacy
+policy. They have no data, no state and no user action beyond links, so wrapping each in
+a feature with a Hook and a DataSource adds layers that hold nothing.
+
+```rule
+id: ARCH-WEB-APP-FEAT-CONTENT-01
+statement: A route whose page is only build-time content (no data access, no state, no user action beyond links) MAY render its content and shared presentational components directly instead of composing a feature, and MUST then follow `ARCH-WEB-CONTENT`'s text, shared-content and metadata rules; as soon as it gains data access, state or an action, that part MUST move into a feature.
+type: hard
+scope: structure
+evidence: unproven
+enforced_by: [planner, reviewer]
+violation_message: Violates ARCH-WEB-APP-FEAT-CONTENT-01 — A content-only route MAY render content and shared presentational components directly, and MUST then follow `ARCH-WEB-CONTENT`'s text, shared-content and metadata rules; data access, state or an action MUST move into a feature.
+```
+
+The rules that apply to such a route are `ARCH-WEB-CONTENT-NOLITERAL-01` (text from a
+content object), `ARCH-WEB-CONTENT-SHARED-01` (content used twice moves to
+`content/shared/`) and `ARCH-WEB-CONTENT-SEO-01` (the route owns its metadata). A route
+that mixes both, such as a marketing page with a sign-up form, renders the content
+directly and the form as a feature, and the route composes the two
+(`ARCH-WEB-APP-FEAT-ROUTE-02`). This is how a site that began as `web-content` adopts
+`web-app` for its first interactive feature without restructuring every page.
+
 ## Public surface
 
 The import side is `ARCH-WEB-APP-DEP-07`: other code imports a feature only through

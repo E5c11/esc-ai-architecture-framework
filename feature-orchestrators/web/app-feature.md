@@ -20,7 +20,7 @@ requires:
   - PLAT-WEB-DS-ICONS
   - PLAT-WEB-A11Y
   - QG-WEB-TESTING
-related: [QG-REVIEW, ORCH-WEB-FEAT, PLAT-WEB-NEXT-APP, PLAT-WEB-NEXT-DATA, PLAT-WEB-NEXT-STATIC, PLAT-WEB-NEXT-FIREBASE, PLAT-WEB-HTTP]
+related: [QG-REVIEW, ORCH-WEB-FEAT, PLAT-WEB-NEXT-APP, PLAT-WEB-NEXT-DATA, PLAT-WEB-NEXT-STATIC, PLAT-WEB-NEXT-FIREBASE, PLAT-WEB-HTTP, PLAT-WEB-HTTP-BROWSER]
 tags: [web, feature, nextjs, layers, datasource, usecase, hook, orchestrator, static-export, server]
 status: active
 ---
@@ -41,7 +41,8 @@ shape `ORCH-WEB-FEAT` uses for `web-spa`, restated for `ARCH-WEB-APP`'s layers.
 2. Find the project's runtime: `frameworks.runtime` in its project profile
    (`ARCH-WEB-APP-RUNTIME-01`). Then also read the platform guides for it:
    - `server`: `PLAT-WEB-NEXT-APP`, `PLAT-WEB-NEXT-APP-DEPLOY`, `PLAT-WEB-NEXT-DATA`, `PLAT-WEB-HTTP`.
-   - `static-export`: `PLAT-WEB-NEXT-STATIC`, `PLAT-WEB-NEXT-FIREBASE`.
+   - `static-export`: `PLAT-WEB-NEXT-STATIC`, then the provider's guide: `PLAT-WEB-NEXT-FIREBASE` for
+     Firebase, `PLAT-WEB-HTTP-BROWSER` for the project's own REST backend.
    A profile passed to `tools/lookup.py --profile` adds these automatically.
 3. Decide what the feature is: **read-only** (skip the form steps in Phases 1, 7), or **mutating**
    (needs a `PLAT-WEB-FORMS` schema and a form), and whether it needs a **UseCase** or a
@@ -113,8 +114,8 @@ Read: `ARCH-WEB-APP-DATASOURCE`, `ARCH-WEB-APP-ERR-CLASSES`
 **Goal:** The real implementation exists, passes the same contract, and is the only code that touches
 the provider.
 
-Read: `ARCH-WEB-APP-DATASOURCE`, then the runtime's guides: `PLAT-WEB-NEXT-FIREBASE` or `PLAT-WEB-HTTP`
-and `PLAT-WEB-NEXT-APP`
+Read: `ARCH-WEB-APP-DATASOURCE`, then the runtime's guides: `PLAT-WEB-HTTP` and `PLAT-WEB-NEXT-APP`
+(`server`), `PLAT-WEB-NEXT-FIREBASE` or `PLAT-WEB-HTTP-BROWSER` (`static-export`)
 
 ### Steps
 
@@ -132,6 +133,12 @@ and `PLAT-WEB-NEXT-APP`
    for every read and write, with a case per role and a signed-out caller (`ARCH-WEB-APP-DS-RULES-01`,
    `PLAT-WEB-NEXT-FB-RULES-01`); a subscription starts only when called and is fully released
    (`ARCH-WEB-APP-DS-SUBSCRIBE-01`).
+6. **`static-export` runtime, own REST backend:** the DataSource calls only the shared executor and never
+   handles a token (`PLAT-WEB-HTTP-BROWSER-LIB-01`, `PLAT-WEB-HTTP-BROWSER-AUTH-01`); the backend's error
+   codes are named constants and map to `AppError` there (`PLAT-WEB-HTTP-BROWSER-ERR-01`). The first
+   feature that signs a user in also builds the executor, session store and refresher in `data/`, with
+   their tests (`PLAT-WEB-HTTP-BROWSER-SESSION-01`, `-REFRESH-01`, `-TEST-01`), and the plan lists the
+   backend's allowed origins for every deployed environment (`PLAT-WEB-HTTP-BROWSER-CORS-01`).
 
 ### Validation
 

@@ -1,4 +1,145 @@
 {
+  "applicability": {
+    "ARCH-WEB-APP-LAYERS": {
+      "platform": [
+        "web"
+      ]
+    },
+    "PAT-ANALYTICS-EVENTS": {
+      "platform": [
+        "mobile",
+        "web"
+      ]
+    },
+    "PLAT-MOB-DATASTORE": {
+      "platform": [
+        "mobile"
+      ]
+    },
+    "PLAT-MOB-FIREBASE": {
+      "platform": [
+        "mobile"
+      ]
+    },
+    "PLAT-MOB-HTTP": {
+      "platform": [
+        "mobile"
+      ]
+    },
+    "PLAT-MOB-IOS-AUTH": {
+      "platform": [
+        "mobile"
+      ]
+    },
+    "PLAT-MOB-IOS-BILLING": {
+      "platform": [
+        "mobile"
+      ]
+    },
+    "PLAT-MOB-KMP-IOS": {
+      "platform": [
+        "mobile"
+      ]
+    },
+    "PLAT-MOB-NOTIF": {
+      "platform": [
+        "mobile"
+      ]
+    },
+    "PLAT-MOB-ROOM": {
+      "platform": [
+        "mobile"
+      ]
+    },
+    "PLAT-MOB-SECURE-STORAGE": {
+      "platform": [
+        "mobile"
+      ]
+    },
+    "PLAT-PY-CLI": {
+      "platform": [
+        "python"
+      ]
+    },
+    "PLAT-PY-HTTP": {
+      "platform": [
+        "python"
+      ]
+    },
+    "PLAT-PY-MCP": {
+      "platform": [
+        "python"
+      ]
+    },
+    "PLAT-PY-PERSISTENCE": {
+      "platform": [
+        "python"
+      ]
+    },
+    "PLAT-WEB-FORMS": {
+      "platform": [
+        "web"
+      ]
+    },
+    "PLAT-WEB-HTTP": {
+      "platform": [
+        "web"
+      ],
+      "runtime": [
+        "server"
+      ]
+    },
+    "PLAT-WEB-HTTP-BROWSER": {
+      "platform": [
+        "web"
+      ],
+      "runtime": [
+        "static-export"
+      ]
+    },
+    "PLAT-WEB-NEXT": {
+      "platform": [
+        "web"
+      ]
+    },
+    "PLAT-WEB-NEXT-APP": {
+      "platform": [
+        "web"
+      ],
+      "runtime": [
+        "server"
+      ]
+    },
+    "PLAT-WEB-NEXT-APP-DEPLOY": {
+      "platform": [
+        "web"
+      ],
+      "runtime": [
+        "server"
+      ]
+    },
+    "PLAT-WEB-NEXT-DATA": {
+      "platform": [
+        "web"
+      ],
+      "runtime": [
+        "server"
+      ]
+    },
+    "PLAT-WEB-NEXT-FIREBASE": {
+      "platform": [
+        "web"
+      ]
+    },
+    "PLAT-WEB-NEXT-STATIC": {
+      "platform": [
+        "web"
+      ],
+      "runtime": [
+        "static-export"
+      ]
+    }
+  },
   "architecture_styles": {
     "web-app": [
       "ARCH-WEB-APP-LAYERS"
@@ -32,7 +173,8 @@
     },
     "cloud": {
       "firebase": [
-        "PLAT-MOB-FIREBASE"
+        "PLAT-MOB-FIREBASE",
+        "PLAT-WEB-NEXT-FIREBASE"
       ]
     },
     "database": {
@@ -64,10 +206,12 @@
     },
     "network": {
       "axios": [
-        "PLAT-WEB-HTTP"
+        "PLAT-WEB-HTTP",
+        "PLAT-WEB-HTTP-BROWSER"
       ],
       "fetch": [
-        "PLAT-WEB-HTTP"
+        "PLAT-WEB-HTTP",
+        "PLAT-WEB-HTTP-BROWSER"
       ],
       "http": [
         "PLAT-MOB-HTTP"
@@ -95,8 +239,7 @@
         "PLAT-WEB-HTTP"
       ],
       "static-export": [
-        "PLAT-WEB-NEXT-STATIC",
-        "PLAT-WEB-NEXT-FIREBASE"
+        "PLAT-WEB-NEXT-STATIC"
       ]
     },
     "secure-storage": {

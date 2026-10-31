@@ -22,9 +22,16 @@
 #     convention-plugins: true
 
 schema:
-  version: "1.4"
+  version: "1.5"
   type: project-profile
   changelog:
+    "1.5": >
+      Profile-selected documents are now filtered by their own `platform` and `runtime`
+      metadata, so one framework value can name guides for several platforms or runtimes
+      (`cloud: firebase` is a mobile and a Next.js guide; `network: fetch` is the server and the
+      browser HTTP guide). `runtime: static-export` no longer brings PLAT-WEB-NEXT-FIREBASE by
+      itself: a static export on Firebase declares `cloud: firebase`, one on its own REST
+      backend declares `network: fetch` (PLAT-WEB-HTTP-BROWSER).
     "1.4": >
       Added `frameworks.runtime` (`server` / `static-export`) — a `web-app` project's
       runtime decides where its DataSource executes (a Server Action or Route Handler
@@ -149,7 +156,8 @@ fields:
           omit for every other architecture. See ARCH-WEB-APP-RUNTIME-01. The value selects the
           platform guides that differ by runtime (tools/lookup.py PROFILE_DOC_MAP): `server` brings
           PLAT-WEB-NEXT-APP, -APP-DEPLOY, -DATA and PLAT-WEB-HTTP; `static-export` brings
-          PLAT-WEB-NEXT-STATIC and PLAT-WEB-NEXT-FIREBASE (the browser-to-Firebase shape).
+          PLAT-WEB-NEXT-STATIC. The provider guide comes from the provider's key: `cloud: firebase`
+          (PLAT-WEB-NEXT-FIREBASE) or `network: fetch` (PLAT-WEB-HTTP-BROWSER in a static export).
       analytics:
         type: string
         description: >

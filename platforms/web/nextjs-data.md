@@ -4,6 +4,7 @@ type: guide
 layer: platforms
 platform: [web]
 architecture: [web-app]
+runtime: [server]
 requires: [PLAT-WEB-NEXT, PLAT-WEB-NEXT-APP, ARCH-WEB-APP-DATASOURCE]
 related: [PLAT-WEB-NEXT-STATIC, PLAT-WEB-HTTP, ARCH-WEB-APP-DOMAIN]
 tags: [nextjs, caching, cache-components, use-cache, cache-life, cache-tag, suspense, streaming, revalidation, server-runtime]

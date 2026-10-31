@@ -136,12 +136,17 @@ def collect_documents(root: Path) -> list[dict]:
             if isinstance(architecture, list):
                 architecture = architecture[0] if architecture else ""
 
+            runtime = meta.get("runtime", [])
+            if isinstance(runtime, str):
+                runtime = [runtime] if runtime else []
+
             documents.append({
                 "id":           meta.get("id", ""),
                 "type":         meta.get("type", ""),
                 "layer":        layer_dir,
                 "path":         str(md_file.relative_to(root)),
                 "platform":     platform,
+                "runtime":      runtime,
                 "architecture": architecture,
                 "requires":     meta.get("requires", []) if isinstance(meta.get("requires"), list) else [],
                 "related":      meta.get("related",  []) if isinstance(meta.get("related"),  list) else [],
@@ -193,8 +198,36 @@ def write_markdown_index(documents: list[dict], out_path: Path) -> None:
     print(f"Written: {out_path}")
 
 
-def write_profile_doc_map(out_path: Path) -> None:
-    data = {"frameworks": PROFILE_DOC_MAP, "targets": TARGET_DOC_MAP, "architecture_styles": STYLE_DOC_MAP}
+def profile_doc_applicability(documents: list[dict]) -> dict[str, dict]:
+    """
+    `platform` and `runtime` of every document the maps can select, so a consumer filters a profile's
+    documents the way tools/lookup.py::applicable_extra_docs does without reading the documents.
+    `runtime` is present only for a document that declares one.
+    """
+    mapped: set[str] = set()
+    for values in PROFILE_DOC_MAP.values():
+        for doc_ids in values.values():
+            mapped.update(doc_ids)
+    for doc_ids in [*TARGET_DOC_MAP.values(), *STYLE_DOC_MAP.values()]:
+        mapped.update(doc_ids)
+    applicability: dict[str, dict] = {}
+    for doc in documents:
+        if doc["id"] not in mapped:
+            continue
+        entry: dict = {"platform": doc["platform"]}
+        if doc.get("runtime"):
+            entry["runtime"] = doc["runtime"]
+        applicability[doc["id"]] = entry
+    return applicability
+
+
+def write_profile_doc_map(out_path: Path, documents: list[dict]) -> None:
+    data = {
+        "frameworks": PROFILE_DOC_MAP,
+        "targets": TARGET_DOC_MAP,
+        "architecture_styles": STYLE_DOC_MAP,
+        "applicability": profile_doc_applicability(documents),
+    }
     out_path.write_text(json.dumps(data, indent=2, sort_keys=True), encoding="utf-8")
     print(f"Written: {out_path}")
 
@@ -214,7 +247,7 @@ def main() -> int:
 
     write_json_index(documents,    out_dir / "index.json")
     write_markdown_index(documents, out_dir / "index.md")
-    write_profile_doc_map(out_dir / "profile-doc-map.json")
+    write_profile_doc_map(out_dir / "profile-doc-map.json", documents)
 
     return 0
 
