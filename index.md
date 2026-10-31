@@ -127,7 +127,7 @@
 | `PLAT-WEB-FIREBASE` | guide | `platforms/web/firebase.md` |  |  |
 | `PLAT-WEB-FORMS` | guide | `platforms/web/forms.md` |  |  |
 | `PLAT-WEB-HTTP` | guide | `platforms/web/http-client.md` |  |  |
-| `PLAT-WEB-HTTP-BROWSER` | guide | `platforms/web/http-browser.md` |  | 0 / 12 |
+| `PLAT-WEB-HTTP-BROWSER` | guide | `platforms/web/http-browser.md` |  | 12 / 0 |
 | `PLAT-WEB-NEXT` | guide | `platforms/web/nextjs.md` |  |  |
 | `PLAT-WEB-NEXT-APP` | guide | `platforms/web/nextjs-app.md` |  |  |
 | `PLAT-WEB-NEXT-APP-DEPLOY` | guide | `platforms/web/nextjs-app-deploy.md` |  |  |

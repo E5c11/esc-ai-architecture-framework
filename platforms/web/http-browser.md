@@ -52,7 +52,7 @@ id: PLAT-WEB-HTTP-BROWSER-LIB-01
 statement: Browser DataSources MUST call the backend only through one shared request executor built by the composition, and MUST NOT call `fetch` themselves.
 type: hard
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-LIB-01 — Browser DataSources MUST call the backend only through one shared request executor built by the composition, and MUST NOT call `fetch` themselves.
 ```
@@ -74,15 +74,16 @@ export function createBrowserExecutor(deps: {
 }): HttpRequestExecutor {
   const fetchFn = deps.fetchFn ?? ((input, init) => fetch(input, init));
   async function send(path: string, init: RequestInit, options: RequestOptions, retried = false): Promise<HttpResult> {
+    const headers = deps.headers.getHeaders(options.auth);
     let res: Response;
     try {
-      res = await fetchFn(`${deps.baseUrl}${path}`, { ...init, headers: deps.headers.getHeaders(options.auth), signal: options.signal });
+      res = await fetchFn(`${deps.baseUrl}${path}`, { ...init, headers, signal: options.signal });
     } catch (cause) {
       // No response: an abort stays an abort (ARCH-WEB-APP-ERR-CANCEL-01); anything else is `offline`.
       return { ok: false, status: 0, body: null, aborted: isAbort(cause) };
     }
     if (res.status === 401 && options.auth && !retried) {
-      const refresh = await deps.refresher.refresh();
+      const refresh = await deps.refresher.refresh(headers.Authorization?.replace(/^Bearer /, '')); // the token it carried
       if (refresh === 'refreshed') return send(path, init, options, true);   // once, after the shared refresh
       if (refresh === 'unavailable') return { ok: false, status: 0, body: null }; // session kept, call fails as offline
       // 'rejected': the refresher cleared the session; the 401 reaches the DataSource
@@ -99,7 +100,7 @@ id: PLAT-WEB-HTTP-BROWSER-CONFIG-01
 statement: The backend base URL and any client identifier header the backend requires MUST come from build-time public configuration read by the composition's `loadConfig`, MUST be treated as public identification and never as a secret or as access control, and a build MUST target exactly one backend environment.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-CONFIG-01 — The backend base URL and any client identifier header MUST come from build-time public configuration read by `loadConfig`, MUST be treated as public identification, never as a secret or access control, and a build MUST target exactly one backend environment.
 ```
@@ -119,7 +120,7 @@ id: PLAT-WEB-HTTP-BROWSER-SESSION-01
 statement: The tokens MUST be owned by one session store created by the composition; only the header provider, the token refresher and the auth DataSource MAY read or write it, and Hooks MUST learn the signed-in state through a subscription the composition exposes, never by reading a token.
 type: hard
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-SESSION-01 — The tokens MUST be owned by one session store created by the composition; only the header provider, the token refresher and the auth DataSource MAY read or write it, and Hooks MUST learn the signed-in state through a composition subscription, never by reading a token.
 ```
@@ -137,7 +138,7 @@ id: PLAT-WEB-HTTP-BROWSER-STORE-01
 statement: Tokens MUST be kept in memory and MAY be mirrored to `sessionStorage` so a reload in the same tab keeps the session; they MUST NOT be written to `localStorage`, IndexedDB, a cookie set by script, a URL, a log or an analytics event.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-STORE-01 — Tokens MUST be kept in memory and MAY be mirrored to `sessionStorage`; they MUST NOT be written to `localStorage`, IndexedDB, a cookie set by script, a URL, a log or an analytics event.
 ```
@@ -160,7 +161,7 @@ id: PLAT-WEB-HTTP-BROWSER-AUTH-01
 statement: The executor MUST attach the access token through an injected header provider that reads the session store, a call MUST say whether it needs authentication, and a DataSource MUST NOT read, pass or store a token, except the auth DataSource, which MAY store the tokens a sign-in returns and send the refresh token to logout.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-AUTH-01 — The executor MUST attach the access token through an injected header provider that reads the session store, a call MUST say whether it needs authentication, and only the auth DataSource MAY handle a token, to store a sign-in's tokens and to send the refresh token to logout.
 ```
@@ -170,12 +171,12 @@ unauthenticated; sending a stale token to them invites a confusing 401.
 
 ```rule
 id: PLAT-WEB-HTTP-BROWSER-REFRESH-01
-statement: On a 401 from an authenticated call the executor MUST run one shared refresh for every request waiting on it and MUST retry each original request once after it succeeds; when the backend rejects the refresh token the session MUST be cleared and the 401 returned, when the refresh cannot reach the backend the session MUST be kept and the call fail as offline, and the refresh and logout calls MUST NOT trigger a refresh.
+statement: On a 401 from an authenticated call the executor MUST run one shared refresh for every request waiting on it and MUST retry each original request once after it succeeds; when the backend rejects the refresh token the session MUST be cleared and the 401 returned, when the refresh cannot reach the backend the session MUST be kept and the call fail as offline, a 401 for a request sent with an access token the session has since replaced MUST be retried with the current token without a refresh, and the refresh and logout calls MUST NOT trigger a refresh.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-HTTP-BROWSER-REFRESH-01 — On a 401 from an authenticated call the executor MUST run one shared refresh for every waiting request and retry each once after it succeeds; a rejected refresh token clears the session and returns the 401, an unreachable backend keeps the session and fails the call as offline, and refresh and logout calls MUST NOT trigger a refresh.
+violation_message: Violates PLAT-WEB-HTTP-BROWSER-REFRESH-01 — On a 401 from an authenticated call the executor MUST run one shared refresh for every waiting request and retry each once after it succeeds; a rejected refresh token clears the session and returns the 401, an unreachable backend keeps the session and fails the call as offline, a 401 sent with a since-replaced token retries without a refresh, and refresh and logout calls MUST NOT trigger a refresh.
 ```
 
 `PLAT-MOB-HTTP-AUTH-02` for the browser. A screen that loads three things at once gets
@@ -190,7 +191,12 @@ export type RefreshOutcome = 'refreshed' | 'rejected' | 'unavailable';
 export function createTokenRefresher(deps: { store: SessionStore; refreshCall: RefreshCall }): TokenRefresher {
   let inFlight: Promise<RefreshOutcome> | null = null;
   return {
-    refresh() {
+    refresh(sentAccessToken) {
+      const current = deps.store.get();
+      // Another call's refresh already replaced the token this request carried: retry, do not refresh again.
+      if (!inFlight && current && sentAccessToken !== undefined && current.accessToken !== sentAccessToken) {
+        return Promise.resolve('refreshed');
+      }
       inFlight ??= run().finally(() => { inFlight = null; });
       return inFlight;
     },
@@ -219,16 +225,19 @@ original call's 401. A refresh that settles after the user signed out, or signed
 nobody and is discarded.
 
 A request that was sent with an access token the session has since replaced (another call's refresh
-finished while it was in flight) retries with the current token instead of starting a second refresh. With
-a rotating refresh token a second refresh is harmless but wasted; without the check, it is one more
-request racing a reload.
+finished while it was in flight) retries with the current token instead of starting a second refresh. The
+single-flight promise alone does not cover it: it only joins 401s that arrive while a refresh is running,
+and a slow response arrives after. The executor passes the token the request carried to the refresher,
+which answers "refreshed" at once when the session already holds a newer one. Without this, every
+refresh during a burst of slow requests rotates the refresh token again, and with reuse detection on the
+backend that can end the session (found by the `ampm-website` pilot on a real backend).
 
 ```rule
 id: PLAT-WEB-HTTP-BROWSER-REFRESH-02
 statement: When the backend returns a new refresh token with each refresh, the session store MUST replace the access and refresh tokens together in one write, and the old refresh token MUST NOT be used again.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-REFRESH-02 — When the backend returns a new refresh token with each refresh, the session store MUST replace the access and refresh tokens together in one write, and the old refresh token MUST NOT be used again.
 ```
@@ -243,7 +252,7 @@ id: PLAT-WEB-HTTP-BROWSER-SIGNOUT-01
 statement: Signing out MUST clear the session store and its storage mirror whether or not the backend's logout call succeeds, and SHOULD call that logout endpoint first so the backend can revoke the refresh token.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-SIGNOUT-01 — Signing out MUST clear the session store and its storage mirror whether or not the backend's logout call succeeds, and SHOULD call the logout endpoint first so the backend can revoke the refresh token.
 ```
@@ -259,7 +268,7 @@ id: PLAT-WEB-HTTP-BROWSER-ERR-01
 statement: A backend error body MUST be parsed and mapped to an `AppError` in the DataSource, the backend's error codes MUST be named constants in one module beside the DataSources, and a Hook or Component MUST NOT compare a raw status or error code.
 type: hard
 scope: error-handling
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-ERR-01 — A backend error body MUST be parsed and mapped to an `AppError` in the DataSource, the backend's error codes MUST be named constants in one module beside the DataSources, and a Hook or Component MUST NOT compare a raw status or error code.
 ```
@@ -299,7 +308,7 @@ id: PLAT-WEB-HTTP-BROWSER-GUARD-01
 statement: A client-side check of the signed-in state MUST only decide what the screen shows, every protected read and write MUST be an authenticated backend call the backend authorises, and the static build MUST NOT contain protected data.
 type: hard
 scope: behavior
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-GUARD-01 — A client-side check of the signed-in state MUST only decide what the screen shows, every protected read and write MUST be an authenticated backend call the backend authorises, and the static build MUST NOT contain protected data.
 ```
@@ -314,7 +323,7 @@ id: PLAT-WEB-HTTP-BROWSER-CORS-01
 statement: Every origin the host serves a build from, including the host's default domains, MUST be in the allowed origins of the backend environment that build targets before the deploy, or the plan MUST record which of those origins are left unsupported, and a plan that adds an origin or calls a backend path with a new method or header MUST include the backend change.
 type: hard
 scope: structure
-evidence: unproven
+evidence: exercised
 enforced_by: [planner, reviewer]
 violation_message: Violates PLAT-WEB-HTTP-BROWSER-CORS-01 — Every origin the host serves a build from, including its default domains, MUST be allowed by the targeted backend before the deploy or recorded as unsupported, and a plan that adds an origin or a new method or header MUST include the backend change.
 ```
@@ -330,12 +339,12 @@ not need to allow credentials, and should not.
 
 ```rule
 id: PLAT-WEB-HTTP-BROWSER-TEST-01
-statement: The executor, the refresher and the session store MUST be tested with an injected fake `fetch` and an in-memory storage, covering at least: the header on authenticated calls only, two concurrent 401s sharing one refresh, a rejected refresh clearing the session, a network failure during refresh keeping it, the rotated pair replacing the old one, and sign-out clearing the session when the logout call fails.
+statement: The executor, the refresher and the session store MUST be tested with an injected fake `fetch` and an in-memory storage, covering at least: the header on authenticated calls only, two concurrent 401s sharing one refresh, a 401 that arrives after another call's refresh finished retrying without a second refresh, a rejected refresh clearing the session, a network failure during refresh keeping it, the rotated pair replacing the old one, and sign-out clearing the session when the logout call fails.
 type: hard
 scope: testing
-evidence: unproven
+evidence: exercised
 enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-HTTP-BROWSER-TEST-01 — The executor, the refresher and the session store MUST be tested with an injected fake `fetch` and an in-memory storage, covering the header on authenticated calls only, two concurrent 401s sharing one refresh, a rejected refresh clearing the session, a network failure during refresh keeping it, the rotated pair replacing the old one, and sign-out clearing the session when logout fails.
+violation_message: Violates PLAT-WEB-HTTP-BROWSER-TEST-01 — The executor, the refresher and the session store MUST be tested with an injected fake `fetch` and an in-memory storage, covering the header on authenticated calls only, two concurrent 401s sharing one refresh, a late 401 retrying without a second refresh, a rejected refresh clearing the session, a network failure during refresh keeping it, the rotated pair replacing the old one, and sign-out clearing the session when logout fails.
 ```
 
 These are the failures no manual test reliably finds: a token expiring during a burst of

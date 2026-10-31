@@ -65,9 +65,16 @@ Slice: `ampm-website` branch `esc-ai-task-sign-up-page-ampm-website`, commit `32
 check (13 rules, 0 violations). The run's own notes are in that repo's
 `.esc-ai/workflows/active/sign-up-page-ampm-website/README.md`.
 
-**Evidence stays `unproven`** until the manual test against the dev backend passes (test plan in the
-website task). Then set `evidence: exercised` on every rule above except `ARCH-WEB-APP-FEAT-CONTENT-01`,
-which needs a slice that changes a content-only route.
+**Live test, 2026-10-31, dev backend: passed.** Chrome DevTools (a second Claude session) ran 18 browser
+steps against `localhost:3000` with the dev backend, and the Android emulator (dev build 2.6.0-dev01) ran
+the two app steps: an account registered on the web signs in to the app with the same code, and a fresh
+app user entering that code after a first lesson credits the web account (score 1, rank 17). Step 12 failed
+first: a 401 that arrived 3 to 30 ms after another call's refresh finished started a second refresh (an
+extra rotation, risky with reuse detection). Fixed in `ampm-website` `c9080d2` (the executor passes the
+token it sent; the refresher skips the refresh when the session already holds a newer one), with a unit
+test reproducing the timing. `REFRESH-01` and `TEST-01` now require it. Re-run on a normal network and
+Slow 3G: one refresh each. All 12 `PLAT-WEB-HTTP-BROWSER` rules are now `evidence: exercised`;
+`ARCH-WEB-APP-FEAT-CONTENT-01` stays `unproven` (needs a slice that changes a content-only route).
 
 Open, not decided here: `QG-WEB-TESTING` DataSource contract tests (fake and real run the same suite) were
 not written for the new DataSources, and the project has no fake `AccountDataSource`.
