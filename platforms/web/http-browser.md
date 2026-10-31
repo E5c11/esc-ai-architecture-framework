@@ -135,21 +135,33 @@ and identity fields such as the user id), never a token; the auth DataSource exp
 
 ```rule
 id: PLAT-WEB-HTTP-BROWSER-STORE-01
-statement: Tokens MUST be kept in memory and MAY be mirrored to `sessionStorage` so a reload in the same tab keeps the session; they MUST NOT be written to `localStorage`, IndexedDB, a cookie set by script, a URL, a log or an analytics event.
+statement: Tokens MUST be kept in memory and MAY be mirrored to `sessionStorage`; the refresh token MAY be persisted to `localStorage` only when the user chose to stay signed in on that device, the backend rotates refresh tokens and refuses a reused one, and the page is served with a Content Security Policy that limits script and connect origins; the access token MUST NOT be persisted beyond the tab, and no token MUST be written to IndexedDB, a cookie set by script, a URL, a log or an analytics event.
 type: hard
 scope: behavior
-evidence: exercised
+evidence: unproven
 enforced_by: [reviewer]
-violation_message: Violates PLAT-WEB-HTTP-BROWSER-STORE-01 — Tokens MUST be kept in memory and MAY be mirrored to `sessionStorage`; they MUST NOT be written to `localStorage`, IndexedDB, a cookie set by script, a URL, a log or an analytics event.
+violation_message: Violates PLAT-WEB-HTTP-BROWSER-STORE-01 — Tokens live in memory, optionally mirrored to `sessionStorage`; only the refresh token, only with the user's "stay signed in" choice, rotation with reuse detection and a CSP, may go to `localStorage`; never the access token there, and no token in IndexedDB, a script cookie, a URL, a log or analytics.
 ```
 
 Any script on the page can read every one of these places, so none is safe from a
 cross-site scripting bug; the choice limits **how long** a stolen token stays usable.
 `sessionStorage` is cleared when the tab closes and is not shared between tabs, so a
 signed-in tab does not leave a session behind on a shared school computer. The mirror may also hold the
-identity the page shows after a reload (user id, the email signed in with), and nothing more. A project that
-needs a session to outlive the tab records the reason and the extra exposure in its own
-policy; a cookie the backend sets as `HttpOnly` is a backend design, outside this guide.
+identity the page shows after a reload (user id, the email signed in with), and nothing more.
+
+**Staying signed in.** A session that ends with the tab makes a home-screen shortcut useless, so a
+project may offer "Keep me signed in on this device". Then the refresh token (and the displayed identity)
+goes to `localStorage`; the access token stays in memory and is fetched again with the refresh token after
+a reload. Three conditions make that acceptable, and the statement requires all three: the user chose it
+(default ticked is fine; a shared computer unticks it), the backend rotates the refresh token and refuses
+a rotated-away one (`REFRESH-02`), so a stolen token stops working at the owner's next refresh, and a CSP
+whose `script-src` and `connect-src` list only the origins the site needs, which makes it much harder to
+inject a script and to send a token anywhere. A static export usually needs `'unsafe-inline'` in
+`script-src` for the framework's inline bootstrap; `connect-src` is then the part that limits
+exfiltration. Unticked, the session is exactly the `sessionStorage` one above. Persisted tokens are shared
+by every tab, which needs `PLAT-WEB-HTTP-BROWSER-REFRESH-03`. A refresh cookie the backend sets as
+`HttpOnly` is safer still, but it needs the API on the site's own registrable domain (browsers block
+cross-site cookies) and CSRF protection: a backend design, outside this guide.
 Reading `sessionStorage` happens only in the browser, after hydration
 (`PLAT-WEB-NEXT-STATIC-BROWSER-01`); the store starts signed out during the build. Logs
 and error reports redact tokens with everything else (`ARCH-WEB-APP-OBS-REDACT-01`).
@@ -245,11 +257,31 @@ violation_message: Violates PLAT-WEB-HTTP-BROWSER-REFRESH-02 — When the backen
 A store that writes the access token and the refresh token separately can be read between
 the writes, or survive a reload with a pair the backend no longer recognises.
 
+```rule
+id: PLAT-WEB-HTTP-BROWSER-REFRESH-03
+statement: When tokens are persisted where several tabs share them, a refresh MUST be serialised across tabs, each tab MUST re-read the stored pair before refreshing and adopt a newer one instead of calling the backend, a tab MUST pick up a pair or a sign-out written by another tab, and a refresh rejected for a token the store has since replaced MUST NOT clear the session.
+type: hard
+scope: behavior
+evidence: unproven
+enforced_by: [reviewer]
+violation_message: Violates PLAT-WEB-HTTP-BROWSER-REFRESH-03 — With tokens shared between tabs, refresh MUST be serialised across tabs, each tab re-reads and adopts a newer stored pair before refreshing, tabs pick up each other's pair and sign-out, and a rejection for an already-replaced token MUST NOT clear the session.
+```
+
+The single-flight promise of `REFRESH-01` lives in one tab. Two tabs that each refresh with the same
+stored refresh token race: the second presents a token the first already rotated away, the backend refuses
+it, and if that tab then clears the store it signs the user out of every tab. The Web Locks API
+(`navigator.locks.request('<app>-refresh', …)`) serialises the refresh across tabs of one origin; inside
+the lock the tab reads the stored pair again, and when it is newer than the one it holds it adopts it and
+retries without calling the backend. A `storage` event delivers another tab's write (a new pair, or the
+removal that means signed out) to the session store, which notifies its subscribers. Where Web Locks is
+missing, re-reading the store before refreshing and treating a rejection as "signed out" only when the
+store still holds the rejected token is the fallback.
+
 ## Signing out
 
 ```rule
 id: PLAT-WEB-HTTP-BROWSER-SIGNOUT-01
-statement: Signing out MUST clear the session store and its storage mirror whether or not the backend's logout call succeeds, and SHOULD call that logout endpoint first so the backend can revoke the refresh token.
+statement: Signing out MUST clear the session store and every storage mirror (the persisted one too, which signs out every tab) whether or not the backend's logout call succeeds, and SHOULD call that logout endpoint first so the backend can revoke the refresh token.
 type: hard
 scope: behavior
 evidence: exercised

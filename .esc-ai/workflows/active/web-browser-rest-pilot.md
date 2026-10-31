@@ -78,3 +78,15 @@ Slow 3G: one refresh each. All 12 `PLAT-WEB-HTTP-BROWSER` rules are now `evidenc
 
 Open, not decided here: `QG-WEB-TESTING` DataSource contract tests (fake and real run the same suite) were
 not written for the new DataSources, and the project has no fake `AccountDataSource`.
+
+## Second slice: staying signed in (2026-10-31)
+
+`STORE-01` now allows the refresh token in `localStorage` when the user opts in to "Keep me signed in",
+the backend rotates with reuse detection, and a CSP limits script and connect origins; it is back to
+`unproven` because the changed clause is untested. New `REFRESH-03` (unproven): with tokens shared by
+tabs, refresh is serialised across tabs (Web Locks), each tab adopts a newer stored pair before
+refreshing, tabs sync through `storage` events, and a rejection for an already-replaced token does not
+sign out. `SIGNOUT-01` clears the persisted mirror too. Found while planning: `ampm-backend` refuses a
+rotated-away refresh token once its successor was used (`AMPM-BE-AUTH-REFRESH-REUSE-01`), so without
+`REFRESH-03` a background tab signs every tab out. Pilot: `ampm-website` task
+`keep-signed-in-ampm-website`.
